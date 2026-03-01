@@ -13,6 +13,7 @@ from bot.services.yandex_api import fetch_all_coefficients
 from bot.services.notifier import check_and_notify
 from bot.services.event_notifier import check_and_notify_events
 from bot.services.event_parser import fetch_and_store_events
+from bot.services.payment import init_yookassa
 from bot.web.api import create_app
 
 # Import models to ensure they're registered with SQLAlchemy
@@ -52,6 +53,9 @@ async def _initial_fetch():
 async def main():
     await init_db()
     logger.info("Database initialized")
+
+    # Initialize payment system
+    init_yookassa()
 
     bot = Bot(token=settings.bot_token)
     storage = MemoryStorage()

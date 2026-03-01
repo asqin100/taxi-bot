@@ -6,6 +6,7 @@ from aiohttp import web
 from bot.services.yandex_api import get_cached_coefficients, get_top_zones
 from bot.services.zones import get_zones
 from bot.services.hex_grid import hex_grid_json
+from bot.services.payment import process_payment_webhook
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +67,24 @@ async def api_hexgrid(request: web.Request) -> web.Response:
     return web.json_response(data)
 
 
+async def webhook_yookassa(request: web.Request) -> web.Response:
+    """Handle YooKassa payment webhook."""
+    try:
+        webhook_data = await request.json()
+        logger.info(f"Received YooKassa webhook: {webhook_data.get('event')}")
+
+        success = await process_payment_webhook(webhook_data)
+
+        if success:
+            return web.json_response({"status": "ok"})
+        else:
+            return web.json_response({"status": "error"}, status=400)
+
+    except Exception as e:
+        logger.error(f"Webhook processing error: {e}")
+        return web.json_response({"status": "error", "message": str(e)}, status=500)
+
+
 def create_app() -> web.Application:
     app = web.Application()
     app.router.add_get("/", index)
@@ -73,5 +92,6 @@ def create_app() -> web.Application:
     app.router.add_get("/api/zones", api_zones)
     app.router.add_get("/api/top", api_top)
     app.router.add_get("/api/hexgrid", api_hexgrid)
+    app.router.add_post("/webhook/yookassa", webhook_yookassa)
     app.router.add_get("/{name}", static_file)
     return app

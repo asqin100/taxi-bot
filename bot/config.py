@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     yandex_geocoder_key: str = ""  # Yandex Geocoder API key
     tomtom_api_key: str = ""  # TomTom Traffic API key
     anthropic_api_key: str = ""  # Claude API key for AI advisor
+    yookassa_shop_id: str = ""  # YooKassa shop ID
+    yookassa_secret_key: str = ""  # YooKassa secret key
     db_url: str = f"sqlite+aiosqlite:///{BASE_DIR / 'data' / 'bot.db'}"
     parse_interval_seconds: int = 120
     default_surge_threshold: float = 1.5

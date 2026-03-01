@@ -7,6 +7,8 @@ from bot.services.subscription import (
     format_subscription_info,
     format_tier_comparison,
 )
+from bot.services.payment import create_payment, format_payment_info
+from bot.models.subscription import SubscriptionTier
 from bot.services.message_manager import send_and_cleanup
 
 router = Router()
@@ -71,20 +73,48 @@ async def cb_subscription_upgrade(callback: CallbackQuery):
 
 @router.callback_query(F.data.startswith("subscription:buy:"))
 async def cb_subscription_buy(callback: CallbackQuery):
-    """Handle subscription purchase (placeholder for payment integration)."""
-    tier = callback.data.split(":")[-1]
+    """Handle subscription purchase."""
+    tier_str = callback.data.split(":")[-1]
+    user_id = callback.from_user.id
 
-    text = (
-        "💳 <b>ОПЛАТА ПОДПИСКИ</b>\n\n"
-        f"Вы выбрали тариф: <b>{tier.upper()}</b>\n\n"
-        "⚠️ <i>Интеграция с платёжной системой в разработке.</i>\n\n"
-        "Для активации подписки свяжитесь с администратором:\n"
-        "@admin"
-    )
+    # Map string to enum
+    tier_map = {
+        "pro": SubscriptionTier.PRO,
+        "premium": SubscriptionTier.PREMIUM
+    }
+    tier = tier_map.get(tier_str)
 
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="◀️ Назад", callback_data="subscription:upgrade")],
-    ])
+    if not tier:
+        await callback.answer("❌ Неверный тариф", show_alert=True)
+        return
 
-    await send_and_cleanup(callback.message, text, reply_markup=keyboard, parse_mode="HTML")
+    # Send "processing" message
+    await callback.message.edit_text("⏳ Создаю платёж...")
+
+    # Create payment
+    payment_info = await create_payment(user_id, tier, duration_days=30)
+
+    if not payment_info:
+        # Fallback to manual payment
+        text = (
+            "💳 <b>ОПЛАТА ПОДПИСКИ</b>\n\n"
+            f"Вы выбрали тариф: <b>{tier_str.upper()}</b>\n\n"
+            "⚠️ <i>Автоматическая оплата временно недоступна.</i>\n\n"
+            "Для активации подписки свяжитесь с администратором:\n"
+            "@admin"
+        )
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="◀️ Назад", callback_data="subscription:upgrade")],
+        ])
+    else:
+        # Show payment link
+        text = format_payment_info(payment_info)
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="💳 Перейти к оплате", url=payment_info["confirmation_url"])],
+            [InlineKeyboardButton(text="◀️ Отмена", callback_data="subscription:upgrade")],
+        ])
+
+    await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
     await callback.answer()
