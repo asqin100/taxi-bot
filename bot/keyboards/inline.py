@@ -120,7 +120,10 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="📊 Рейтинг", callback_data="menu:leaderboard"),
             InlineKeyboardButton(text="⭐ Подписка", callback_data="menu:subscription"),
         ],
-        [InlineKeyboardButton(text="⚙️ Настройки", callback_data="cmd:settings")],
+        [
+            InlineKeyboardButton(text="⚙️ Настройки", callback_data="cmd:settings"),
+            InlineKeyboardButton(text="❓ Справка", callback_data="help:main"),
+        ],
     ])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
