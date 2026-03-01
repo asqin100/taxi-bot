@@ -35,6 +35,10 @@ async def get_subscription(user_id: int) -> Subscription:
         return subscription
 
 
+# Alias for compatibility
+get_user_subscription = get_subscription
+
+
 async def upgrade_subscription(
     user_id: int,
     tier: SubscriptionTier,

@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     yandex_mob_id: str = ""
     yandex_geocoder_key: str = ""  # Yandex Geocoder API key
     tomtom_api_key: str = ""  # TomTom Traffic API key
+    anthropic_api_key: str = ""  # Claude API key for AI advisor
     db_url: str = f"sqlite+aiosqlite:///{BASE_DIR / 'data' / 'bot.db'}"
     parse_interval_seconds: int = 120
     default_surge_threshold: float = 1.5

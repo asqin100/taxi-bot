@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
+from aiogram.fsm.storage.memory import MemoryStorage
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bot.config import settings
@@ -53,7 +54,8 @@ async def main():
     logger.info("Database initialized")
 
     bot = Bot(token=settings.bot_token)
-    dp = Dispatcher()
+    storage = MemoryStorage()
+    dp = Dispatcher(storage=storage)
 
     # Middleware
     dp.message.middleware(ThrottleMiddleware(rate_limit=0.5))
