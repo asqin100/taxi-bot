@@ -6,7 +6,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bot.config import settings
 from bot.database.db import init_db
-from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements
+from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges
 from bot.middlewares.auth import ThrottleMiddleware
 from bot.services.yandex_api import fetch_all_coefficients
 from bot.services.notifier import check_and_notify
@@ -20,6 +20,7 @@ from bot.models.shift import Shift
 from bot.models.subscription import Subscription
 from bot.models.financial_settings import UserFinancialSettings
 from bot.models.achievement import UserAchievement
+from bot.models.challenge import UserChallenge
 
 from aiohttp import web
 
@@ -71,6 +72,7 @@ async def main():
     dp.include_router(subscription.router)
     dp.include_router(ai_advisor.router)
     dp.include_router(achievements.router)
+    dp.include_router(challenges.router)
 
     # Initial fetch in background (non-blocking)
     asyncio.create_task(_initial_fetch())

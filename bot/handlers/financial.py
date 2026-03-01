@@ -212,6 +212,10 @@ async def process_notes(message: Message, state: FSMContext):
     # Check achievements
     unlocked_achievements = await check_shift_achievements(user_id, shift)
 
+    # Check challenge progress
+    from bot.services.challenges import update_challenge_progress, format_challenge_completion
+    completed_challenge = await update_challenge_progress(user_id, shift)
+
     # Format result
     result_text = (
         f"✅ <b>Смена завершена!</b>\n\n"
@@ -248,6 +252,15 @@ async def process_notes(message: Message, state: FSMContext):
                 [InlineKeyboardButton(text="📊 Главное меню", callback_data="cmd:menu")]
             ])
             await message.answer(achievement_text, parse_mode="HTML", reply_markup=achievement_keyboard)
+
+    # Send challenge completion notification
+    if completed_challenge:
+        challenge_text = format_challenge_completion(completed_challenge)
+        challenge_keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="🏆 Мой челлендж", callback_data="menu:challenge")],
+            [InlineKeyboardButton(text="📊 Главное меню", callback_data="cmd:menu")]
+        ])
+        await message.answer(challenge_text, parse_mode="HTML", reply_markup=challenge_keyboard)
 
     await state.clear()
 
