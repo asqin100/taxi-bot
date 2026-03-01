@@ -1,0 +1,74 @@
+Method: GET
+URL
+https://taximeter.yandex.rostaxi.org/surge/map_meta?hash=ucgj0&device_id=74b9a764b3e69aae8717ca507651b498&park_id=188d620a9be74ef18f156718fe56721d&mobcf=russia%25yandex_pro_ru_0%25default&mobpr=yandex_pro_ru_0_Y_BASE_API_0
+Headers
+accept:
+application/json
+accept-encoding:
+gzip
+accept-language:
+ru
+authorization:
+Bearer 2.301538469.476576.1803056709.1771520709868.1.0.11732517.akFgGNUdHhg30DRb.Npj_Cg4GjR8zNreU3DxH1lcv8AHzmKCqHfwqWHcMIZ-hexY75S1xEADFgkqC9cpm1l7Ijjq329Soz_mqIInFojO2byUuKCZCsZpvwtEB8ecSLKHEcfK-qab-.K-qsly0Vu4Aq4N1_4-0wUA
+host:
+taximeter.yandex.rostaxi.org
+user-agent:
+app:pro brand:yandex version:13.38 build:24299 platform:android platform_version:15
+version:
+13.38 (5024299)
+x-driver-session:
+916779ec7e8c463b9cfdfe0cdc7108a4
+x-mob-id:
+4700afa3b6094e9ca1a863b79e8b8447
+x-version-split:
+13.38 (5024299)
+x-yandex-jws:
+eyJhbGciOiJIUzI1NiIsImtpZCI6Im5hcndoYWwiLCJ0eXAiOiJKV1QifQ.eyJhbmRyb2lkX2NsYWltcyI6eyJhcHBfbGljZW5zaW5nX3ZlcmRpY3QiOiJMSUNFTlNFRCIsImNlcnRpZmljYXRlX3NoYTI1Nl9kaWdlc3QiOlsicktRRjN0aXlYTExveHRwcFFsMHJRd2ZRaDhFbmI4QnExWlFuTWN6RkhibyJdLCJkZXZpY2VfcmVjb2duaXRpb25fdmVyZGljdCI6WyJNRUVUU19CQVNJQ19JTlRFR1JJVFkiXSwicmVxdWVzdF9wYWNrYWdlX25hbWUiOiJydS55YW5kZXgudGF4aW1ldGVyIiwidGltZXN0YW1wX21pbGxpcyI6MTc3MjI3NTQwMTE1Mn0sImRldmljZV9pbnRlZ3JpdHkiOnRydWUsImV4cGlyZXNfYXRfbXMiOjE3NzIzNjE4MDE0MDMsImlwIjo...
+x-yataxi-has-ongoing-orders:
+false
+x-yataxi-last-zone-names:
+zheleznodorozhny
+x-yataxi-order-status:
+-1
+x-yataxi-retry-number:
+3
+
+Status: 200 OK
+Headers
+accept-encoding:
+gzip, zstd, identity
+access-control-allow-origin:
+*
+content-length:
+522
+content-type:
+application/json; charset=utf-8
+date:
+Sat, 28 Feb 2026 14:47:21 GMT
+set-cookie:
+_yasc=heKAcf2+SAc84snwspTg5pjgGodzbgCJ7o3TbyGdblF818ckCr50uCeNhGasUuY=; domain=.yandex.rostaxi.org; path=/; expires=Tue, 26 Feb 2036 14:47:21 GMT; secure
+strict-transport-security:
+max-age=31536000
+traceparent:
+00-3ef714290804333803713e701f0e66cf-817f8d5ea0599628-01
+x-polling-power-policy:
+full=80.000, powersaving=1200.000, background=1200.000, courier=300.000, idle=1800.000
+x-yarequestid:
+4e2f8ae756fc31efe6876b8806935e40
+x-yaspanid:
+817f8d5ea0599628
+x-yatraceid:
+3ef714290804333803713e701f0e66cf
+
+{
+  "grid_id": "pS9Z3fWyRjHqUtU1L_7Dto2mMihtpVPR69HCJX5htsFAFt8osxaRkTwq8fP5shdssvv0JxWj3ta_3h3B0NtXEntCkY-aXLZq60D70vs8-1-GKwfnCUlWB4nox1Hny8cP",
+  "distribution_id": "pS9Z3fWyRjHqUtU1L_7Dto2mMihtpVPR69HCJX5htsFAFt8osxaRkTwq8fP5shdssvv0JxWj3ta_3h3B0NtXEntCkY-aXLZq60D70vs8-1-GKwfnCUlWB4nox1Hny8cP",
+  "updated_epoch": 1772289983,
+  "updated_str": "2026-02-28T14:46:23+0000",
+  "category": "__default__",
+  "legend_min": 1.1800315380096436,
+  "legend_max": 3.5,
+  "legend": "1.2 - 3.5",
+  "legend_precision": 1,
+  "expires_at": "2026-02-28T14:51:23.923848+0000"
+}

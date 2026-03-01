@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>KefPulse — Карта коэффициентов</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
+</head>
+<body>
+  <div id="filters">
+    <button class="chip active" data-tariff="all">Все</button>
+    <button class="chip" data-tariff="econom">Эконом</button>
+    <button class="chip" data-tariff="comfort">Комфорт</button>
+    <button class="chip" data-tariff="business">Бизнес</button>
+  </div>
+  <div id="legend">
+    <span>x1.0</span>
+    <div class="gradient"></div>
+    <span>x2.0+</span>
+  </div>
+  <div id="map"></div>
+  <div id="top-panel">
+    <h3>🏆 Топ-5 зон</h3>
+    <ul id="top-list"></ul>
+  </div>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,325 @@
+{
+  "id": "a8c8b8add8e944f2ac0604b78f2e3269",
+  "zone_name": "zheleznodorozhny",
+  "selected_class": "business",
+  "route": [
+    [
+      37.9766649199787,
+      55.725384270562486
+    ],
+    [
+      37.95184,
+      55.72461
+    ]
+  ],
+  "tariff_requirements": [
+    {
+      "class": "business"
+    },
+    {
+      "class": "captive_auto"
+    },
+    {
+      "class": "cargo"
+    },
+    {
+      "class": "cargo_express"
+    },
+    {
+      "class": "cargo_hour"
+    },
+    {
+      "class": "cargo_hour_5"
+    },
+    {
+      "class": "cargo_hour_6"
+    },
+    {
+      "class": "cargo_intercity"
+    },
+    {
+      "class": "cargo_intercity_ltl"
+    },
+    {
+      "class": "cargo_long"
+    },
+    {
+      "class": "cargocorp"
+    },
+    {
+      "class": "child_tariff"
+    },
+    {
+      "class": "comfortplus"
+    },
+    {
+      "class": "courier"
+    },
+    {
+      "class": "drive"
+    },
+    {
+      "class": "econom"
+    },
+    {
+      "class": "eda"
+    },
+    {
+      "class": "envoy"
+    },
+    {
+      "class": "envoy_auto"
+    },
+    {
+      "class": "express"
+    },
+    {
+      "class": "express_d2d"
+    },
+    {
+      "class": "express_d2d_slow"
+    },
+    {
+      "class": "express_d2d_veryslow"
+    },
+    {
+      "class": "express_econ_d2d_slow"
+    },
+    {
+      "class": "express_econ_slow"
+    },
+    {
+      "class": "express_fast"
+    },
+    {
+      "class": "express_outdoor"
+    },
+    {
+      "class": "express_slow"
+    },
+    {
+      "class": "intercity"
+    },
+    {
+      "class": "intercity_preorder"
+    },
+    {
+      "class": "lavka"
+    },
+    {
+      "class": "lite_b2b"
+    },
+    {
+      "class": "minivan"
+    },
+    {
+      "class": "minivan_hh"
+    },
+    {
+      "class": "ndd"
+    },
+    {
+      "class": "ndd_external"
+    },
+    {
+      "class": "ndd_internal"
+    },
+    {
+      "class": "optimum_b2b"
+    },
+    {
+      "class": "personal_driver"
+    },
+    {
+      "class": "premium_suv"
+    },
+    {
+      "class": "sdd"
+    },
+    {
+      "class": "sdd_evening"
+    },
+    {
+      "class": "sdd_long"
+    },
+    {
+      "class": "sdd_short"
+    },
+    {
+      "class": "standart_b2b"
+    },
+    {
+      "class": "superexpress_d2d"
+    },
+    {
+      "class": "superexpress_outdoor"
+    },
+    {
+      "class": "suv"
+    },
+    {
+      "class": "vip"
+    }
+  ],
+  "force_soon_order": false,
+  "payment": {
+    "type": "card",
+    "payment_method_id": "card-x546bc6f101ba1295e2dbb8ba"
+  },
+  "skip_estimated_waiting": false,
+  "size_hint": 560,
+  "multiclass_options": {
+    "class": [
+      "business"
+    ],
+    "verticals": [
+      {
+        "vertical_id": "taxi",
+        "class": [
+          "business"
+        ],
+        "multiclasses": [
+          {
+            "multiclass_id": "multiclass",
+            "class": [
+              "business"
+            ]
+          }
+        ]
+      }
+    ],
+    "selected": false
+  },
+  "use_toll_roads": false,
+  "is_lightweight": false,
+  "supported_vertical_types": [
+    "group"
+  ],
+  "supported_verticals": [
+    "drive",
+    "transport",
+    "hub",
+    "taxi",
+    "child",
+    "delivery",
+    "rest_tariffs"
+  ],
+  "state": {
+    "fields": [
+      {
+        "log": "{\"uri\":\"ymapsbm1://geo?data=CgoyMDQyMDM5NTMwEmXQoNC-0YHRgdC40Y8sINCc0L7RgdC60L7QstGB0LrQsNGPINC-0LHQu9Cw0YHRgtGMLCDQkdCw0LvQsNGI0LjRhdCwLCDQmtC-0YHQuNC90YHQutC-0LUg0YjQvtGB0YHQtSwgMSIKDXzoF0IVMuZeQg,,\",\"trace_id\":\"2e76100ab49eda996ae5c1953e65833b\"}",
+        "type": "a",
+        "title": "Косинское ш. 1",
+        "entrance": "",
+        "position": [
+          37.9766649199787,
+          55.725384270562486
+        ]
+      },
+      {
+        "log": "{\"uri\":\"ymapsbm1://geo?data=CgoxNzgzNjc3MjI2EqIB0KDQvtGB0YHQuNGPLCDQnNC-0YHQutC-0LLRgdC60LDRjyDQvtCx0LvQsNGB0YLRjCwg0LPQvtGA0L7QtNGB0LrQvtC5INC-0LrRgNGD0LMg0JHQsNC70LDRiNC40YXQsCwg0LTQtdGA0LXQstC90Y8g0J_QsNCy0LvQuNC90L4sINCi0YDQvtC40YbQutCw0Y8g0YPQu9C40YbQsCwgMtCSIgoNsM4XQhUB5l5C\",\"trace_id\":\"31fcd95dad92a05d1ba4b66aa71378e5\"}",
+        "type": "b",
+        "title": "Троицкая 2В",
+        "entrance": "",
+        "position": [
+          37.95184,
+          55.72461
+        ]
+      }
+    ],
+    "location": [
+      37.99812284,
+      55.72548506
+    ],
+    "precise_location_available": true
+  },
+  "supported": [
+    {
+      "type": "verticals_multiclass"
+    },
+    {
+      "type": "order_flow_delivery",
+      "payload": {
+        "classes": [
+          "express",
+          "courier",
+          "cargo",
+          "sdd",
+          "ndd",
+          "express_d2d",
+          "express_outdoor",
+          "express_d2d_slow",
+          "sdd_short",
+          "sdd_evening",
+          "sdd_long",
+          "ndd_internal",
+          "ndd_external",
+          "express_d2d_veryslow",
+          "cargo_long",
+          "cargo_express",
+          "cargo_hour",
+          "envoy_auto",
+          "envoy",
+          "express_slow",
+          "cargo_intercity",
+          "express_fast"
+        ]
+      }
+    },
+    {
+      "type": "requirements_v2"
+    },
+    {
+      "type": "plus_promo_alternative"
+    },
+    {
+      "type": "multiclass_requirements"
+    },
+    {
+      "type": "multiclasses"
+    }
+  ],
+  "summary_context": {
+    "by_classes": []
+  },
+  "surge_fake_pin": false,
+  "supported_features": [
+    {
+      "type": "order_button_actions",
+      "values": [
+        "deeplink"
+      ]
+    },
+    {
+      "type": "swap_summary",
+      "values": [
+        "high_tariff_selector"
+      ]
+    }
+  ],
+  "enable_fallback_for_tariffs": false,
+  "delivery_extra": {
+    "is_delivery_business_account_enabled": false,
+    "includes_delivery_intervals": false,
+    "insurance": {
+      "selected": false
+    },
+    "door_to_door": false,
+    "pay_on_delivery": false
+  },
+  "suggest_alternatives": true,
+  "extended_description": true,
+  "with_title": true,
+  "supported_markup": "tml-0.1",
+  "selected_class_only": false,
+  "supports_hideable_tariffs": true,
+  "summary_version": 2,
+  "supports_unavailable_alternatives": true,
+  "supports_verticals_selector": true,
+  "supports_no_cars_available": true,
+  "supports_paid_options": true,
+  "format_currency": true,
+  "supports_explicit_antisurge": true,
+  "supports_multiclass": true,
+  "account_type": "yandex"
+}

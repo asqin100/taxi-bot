@@ -1,0 +1,33 @@
+{
+  "zones": [
+    {"id": "center", "name": "Центр", "lat": 55.7558, "lon": 37.6173, "radius_km": 4},
+    {"id": "kremlin", "name": "Кремль", "lat": 55.7520, "lon": 37.6175, "radius_km": 3},
+    {"id": "tverskaya", "name": "Тверская", "lat": 55.7650, "lon": 37.6050, "radius_km": 3},
+    {"id": "arbat", "name": "Арбат", "lat": 55.7520, "lon": 37.5900, "radius_km": 3},
+    {"id": "kitay_gorod", "name": "Китай-город", "lat": 55.7550, "lon": 37.6350, "radius_km": 3},
+
+    {"id": "north", "name": "Север", "lat": 55.8500, "lon": 37.6173, "radius_km": 5},
+    {"id": "south", "name": "Юг", "lat": 55.6500, "lon": 37.6173, "radius_km": 5},
+    {"id": "east", "name": "Восток", "lat": 55.7558, "lon": 37.8000, "radius_km": 5},
+    {"id": "west", "name": "Запад", "lat": 55.7558, "lon": 37.4500, "radius_km": 5},
+
+    {"id": "northwest", "name": "Северо-Запад", "lat": 55.8500, "lon": 37.4500, "radius_km": 5},
+    {"id": "northeast", "name": "Северо-Восток", "lat": 55.8500, "lon": 37.8000, "radius_km": 5},
+    {"id": "southwest", "name": "Юго-Запад", "lat": 55.6500, "lon": 37.4500, "radius_km": 5},
+    {"id": "southeast", "name": "Юго-Восток", "lat": 55.6500, "lon": 37.8000, "radius_km": 5},
+
+    {"id": "sheremetyevo", "name": "Шереметьево", "lat": 55.9726, "lon": 37.4146, "radius_km": 4},
+    {"id": "vnukovo", "name": "Внуково", "lat": 55.5914, "lon": 37.2615, "radius_km": 4},
+    {"id": "domodedovo", "name": "Домодедово", "lat": 55.4103, "lon": 37.9023, "radius_km": 4},
+
+    {"id": "khimki", "name": "Химки", "lat": 55.8900, "lon": 37.4300, "radius_km": 4},
+    {"id": "mytishchi", "name": "Мытищи", "lat": 55.9100, "lon": 37.7300, "radius_km": 4},
+    {"id": "balashikha", "name": "Балашиха", "lat": 55.8000, "lon": 37.9500, "radius_km": 4},
+    {"id": "zheleznodorozhny", "name": "Железнодорожный", "lat": 55.7454, "lon": 38.0104, "radius_km": 4},
+    {"id": "lyubertsy", "name": "Люберцы", "lat": 55.6770, "lon": 37.8940, "radius_km": 4},
+    {"id": "podolsk", "name": "Подольск", "lat": 55.4240, "lon": 37.5450, "radius_km": 4},
+    {"id": "krasnogorsk", "name": "Красногорск", "lat": 55.8200, "lon": 37.3300, "radius_km": 4},
+    {"id": "odintsovo", "name": "Одинцово", "lat": 55.6800, "lon": 37.2800, "radius_km": 4},
+    {"id": "korolev", "name": "Королёв", "lat": 55.9200, "lon": 37.8300, "radius_km": 4}
+  ]
+}

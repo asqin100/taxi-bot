@@ -1,0 +1,738 @@
+2026-03-01 06:26:31,296 [INFO] __main__: Database initialized
+2026-03-01 06:26:31,575 [INFO] __main__: Skipping initial coefficient fetch for faster startup
+2026-03-01 06:26:31,576 [INFO] __main__: Skipping initial event parsing for faster startup
+2026-03-01 06:26:31,579 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-01 06:26:31,579 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-01 06:26:31,579 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-01 06:26:31,580 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-01 06:26:31,581 [INFO] apscheduler.scheduler: Added job "fetch_all_coefficients" to job store "default"
+2026-03-01 06:26:31,581 [INFO] apscheduler.scheduler: Added job "check_and_notify" to job store "default"
+2026-03-01 06:26:31,581 [INFO] apscheduler.scheduler: Added job "check_and_notify_events" to job store "default"
+2026-03-01 06:26:31,581 [INFO] apscheduler.scheduler: Added job "fetch_and_store_events" to job store "default"
+2026-03-01 06:26:31,581 [INFO] apscheduler.scheduler: Scheduler started
+2026-03-01 06:26:31,581 [INFO] __main__: Scheduler started (interval=480s)
+2026-03-01 06:26:31,583 [INFO] __main__: Web server started on port 8080
+2026-03-01 06:26:31,583 [INFO] __main__: Bot starting polling...
+2026-03-01 06:26:31,583 [INFO] aiogram.dispatcher: Start polling
+2026-03-01 06:26:32,016 [INFO] aiogram.dispatcher: Run polling for bot @KefPulse_bot id=7845157915 - 'KefPulse'
+2026-03-01 06:26:55,017 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:06:26:55 +0300] "GET /api/hexgrid HTTP/1.1" 200 161 "-" "curl/8.18.0"
+2026-03-01 06:27:02,247 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:06:27:02 +0300] "HEAD / HTTP/1.1" 200 238 "-" "curl/8.18.0"
+2026-03-01 06:27:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:28:31 MSK)" (scheduled at 2026-03-01 06:27:31.579612+03:00)
+2026-03-01 06:27:31,657 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:28:31 MSK)" executed successfully
+2026-03-01 06:27:32,462 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:06:27:32 +0300] "GET /favicon.ico HTTP/1.1" 404 175 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 06:27:32,599 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:06:27:32 +0300] "GET /api/hexgrid HTTP/1.1" 200 161 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 06:27:32,600 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:06:27:32 +0300] "GET /api/top?n=5 HTTP/1.1" 200 161 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 06:28:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:29:31 MSK)" (scheduled at 2026-03-01 06:28:31.579612+03:00)
+2026-03-01 06:28:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:29:31 MSK)" executed successfully
+2026-03-01 06:29:31,604 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:30:31 MSK)" (scheduled at 2026-03-01 06:29:31.579612+03:00)
+2026-03-01 06:29:31,611 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:30:31 MSK)" executed successfully
+2026-03-01 06:30:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:31:31 MSK)" (scheduled at 2026-03-01 06:30:31.579612+03:00)
+2026-03-01 06:30:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:31:31 MSK)" executed successfully
+2026-03-01 06:31:31,598 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:32:31 MSK)" (scheduled at 2026-03-01 06:31:31.579612+03:00)
+2026-03-01 06:31:31,665 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:32:31 MSK)" executed successfully
+2026-03-01 06:32:31,580 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:33:31 MSK)" (scheduled at 2026-03-01 06:32:31.579612+03:00)
+2026-03-01 06:32:31,587 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:33:31 MSK)" executed successfully
+2026-03-01 06:33:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:34:31 MSK)" (scheduled at 2026-03-01 06:33:31.579612+03:00)
+2026-03-01 06:33:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:34:31 MSK)" executed successfully
+2026-03-01 06:34:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:35:31 MSK)" (scheduled at 2026-03-01 06:34:31.579612+03:00)
+2026-03-01 06:34:31,588 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 06:42:31 MSK)" (scheduled at 2026-03-01 06:34:31.579612+03:00)
+2026-03-01 06:34:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:35:31 MSK)" executed successfully
+2026-03-01 06:34:36,585 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 06:42:41 MSK)" (scheduled at 2026-03-01 06:34:36.579612+03:00)
+2026-03-01 06:34:36,590 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 06:42:41 MSK)" executed successfully
+2026-03-01 06:35:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:36:31 MSK)" (scheduled at 2026-03-01 06:35:31.579612+03:00)
+2026-03-01 06:35:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:36:31 MSK)" executed successfully
+2026-03-01 06:36:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:37:31 MSK)" (scheduled at 2026-03-01 06:36:31.579612+03:00)
+2026-03-01 06:36:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:37:31 MSK)" executed successfully
+2026-03-01 06:37:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:38:31 MSK)" (scheduled at 2026-03-01 06:37:31.579612+03:00)
+2026-03-01 06:37:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:38:31 MSK)" executed successfully
+2026-03-01 06:38:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:39:31 MSK)" (scheduled at 2026-03-01 06:38:31.579612+03:00)
+2026-03-01 06:38:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:39:31 MSK)" executed successfully
+2026-03-01 06:39:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:40:31 MSK)" (scheduled at 2026-03-01 06:39:31.579612+03:00)
+2026-03-01 06:39:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:40:31 MSK)" executed successfully
+2026-03-01 06:40:31,597 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:41:31 MSK)" (scheduled at 2026-03-01 06:40:31.579612+03:00)
+2026-03-01 06:40:31,603 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:41:31 MSK)" executed successfully
+2026-03-01 06:41:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:42:31 MSK)" (scheduled at 2026-03-01 06:41:31.579612+03:00)
+2026-03-01 06:41:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:42:31 MSK)" executed successfully
+2026-03-01 06:41:41,315 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 06:41:41,315 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 06:42:31 MSK)" executed successfully
+2026-03-01 06:42:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:43:31 MSK)" (scheduled at 2026-03-01 06:42:31.579612+03:00)
+2026-03-01 06:42:31,585 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 06:50:31 MSK)" (scheduled at 2026-03-01 06:42:31.579612+03:00)
+2026-03-01 06:42:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:43:31 MSK)" executed successfully
+2026-03-01 06:42:41,584 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 06:50:46 MSK)" (scheduled at 2026-03-01 06:42:41.579612+03:00)
+2026-03-01 06:42:41,587 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 06:50:46 MSK)" executed successfully
+2026-03-01 06:43:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:44:31 MSK)" (scheduled at 2026-03-01 06:43:31.579612+03:00)
+2026-03-01 06:43:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:44:31 MSK)" executed successfully
+2026-03-01 06:44:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:45:31 MSK)" (scheduled at 2026-03-01 06:44:31.579612+03:00)
+2026-03-01 06:44:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:45:31 MSK)" executed successfully
+2026-03-01 06:45:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:46:31 MSK)" (scheduled at 2026-03-01 06:45:31.579612+03:00)
+2026-03-01 06:45:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:46:31 MSK)" executed successfully
+2026-03-01 06:46:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:47:31 MSK)" (scheduled at 2026-03-01 06:46:31.579612+03:00)
+2026-03-01 06:46:31,591 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:47:31 MSK)" executed successfully
+2026-03-01 06:47:31,601 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:48:31 MSK)" (scheduled at 2026-03-01 06:47:31.579612+03:00)
+2026-03-01 06:47:31,607 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:48:31 MSK)" executed successfully
+2026-03-01 06:48:31,596 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:49:31 MSK)" (scheduled at 2026-03-01 06:48:31.579612+03:00)
+2026-03-01 06:48:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:49:31 MSK)" executed successfully
+2026-03-01 06:49:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:50:31 MSK)" (scheduled at 2026-03-01 06:49:31.579612+03:00)
+2026-03-01 06:49:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:50:31 MSK)" executed successfully
+2026-03-01 06:49:45,575 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 06:49:45,575 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 06:50:31 MSK)" executed successfully
+2026-03-01 06:50:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:51:31 MSK)" (scheduled at 2026-03-01 06:50:31.579612+03:00)
+2026-03-01 06:50:31,588 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 06:58:31 MSK)" (scheduled at 2026-03-01 06:50:31.579612+03:00)
+2026-03-01 06:50:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:51:31 MSK)" executed successfully
+2026-03-01 06:50:46,603 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 06:58:51 MSK)" (scheduled at 2026-03-01 06:50:46.579612+03:00)
+2026-03-01 06:50:46,606 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 06:58:51 MSK)" executed successfully
+2026-03-01 06:51:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:52:31 MSK)" (scheduled at 2026-03-01 06:51:31.579612+03:00)
+2026-03-01 06:51:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:52:31 MSK)" executed successfully
+2026-03-01 06:52:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:53:31 MSK)" (scheduled at 2026-03-01 06:52:31.579612+03:00)
+2026-03-01 06:52:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:53:31 MSK)" executed successfully
+2026-03-01 06:53:31,590 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:54:31 MSK)" (scheduled at 2026-03-01 06:53:31.579612+03:00)
+2026-03-01 06:53:31,595 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:54:31 MSK)" executed successfully
+2026-03-01 06:54:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:55:31 MSK)" (scheduled at 2026-03-01 06:54:31.579612+03:00)
+2026-03-01 06:54:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:55:31 MSK)" executed successfully
+2026-03-01 06:55:31,597 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:56:31 MSK)" (scheduled at 2026-03-01 06:55:31.579612+03:00)
+2026-03-01 06:55:31,603 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:56:31 MSK)" executed successfully
+2026-03-01 06:56:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:57:31 MSK)" (scheduled at 2026-03-01 06:56:31.579612+03:00)
+2026-03-01 06:56:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:57:31 MSK)" executed successfully
+2026-03-01 06:57:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:58:31 MSK)" (scheduled at 2026-03-01 06:57:31.579612+03:00)
+2026-03-01 06:57:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:58:31 MSK)" executed successfully
+2026-03-01 06:57:41,849 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 06:57:41,849 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 06:58:31 MSK)" executed successfully
+2026-03-01 06:58:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:59:31 MSK)" (scheduled at 2026-03-01 06:58:31.579612+03:00)
+2026-03-01 06:58:31,589 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:06:31 MSK)" (scheduled at 2026-03-01 06:58:31.579612+03:00)
+2026-03-01 06:58:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 06:59:31 MSK)" executed successfully
+2026-03-01 06:58:51,590 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:06:56 MSK)" (scheduled at 2026-03-01 06:58:51.579612+03:00)
+2026-03-01 06:58:51,593 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:06:56 MSK)" executed successfully
+2026-03-01 06:59:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:00:31 MSK)" (scheduled at 2026-03-01 06:59:31.579612+03:00)
+2026-03-01 06:59:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:00:31 MSK)" executed successfully
+2026-03-01 07:00:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:01:31 MSK)" (scheduled at 2026-03-01 07:00:31.579612+03:00)
+2026-03-01 07:00:31,591 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:01:31 MSK)" executed successfully
+2026-03-01 07:01:31,604 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:02:31 MSK)" (scheduled at 2026-03-01 07:01:31.579612+03:00)
+2026-03-01 07:01:31,610 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:02:31 MSK)" executed successfully
+2026-03-01 07:02:31,584 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:03:31 MSK)" (scheduled at 2026-03-01 07:02:31.579612+03:00)
+2026-03-01 07:02:31,590 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:03:31 MSK)" executed successfully
+2026-03-01 07:02:33,693 [WARNING] bot.services.yandex_api: Rate limited (429) for zone vnukovo, retrying in 10s (attempt 1/2)
+2026-03-01 07:03:31,601 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:04:31 MSK)" (scheduled at 2026-03-01 07:03:31.579612+03:00)
+2026-03-01 07:03:31,607 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:04:31 MSK)" executed successfully
+2026-03-01 07:04:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:05:31 MSK)" (scheduled at 2026-03-01 07:04:31.579612+03:00)
+2026-03-01 07:04:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:05:31 MSK)" executed successfully
+2026-03-01 07:05:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:06:31 MSK)" (scheduled at 2026-03-01 07:05:31.579612+03:00)
+2026-03-01 07:05:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:06:31 MSK)" executed successfully
+2026-03-01 07:05:53,322 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 07:05:53,322 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:06:31 MSK)" executed successfully
+2026-03-01 07:06:31,598 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:07:31 MSK)" (scheduled at 2026-03-01 07:06:31.579612+03:00)
+2026-03-01 07:06:31,599 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:14:31 MSK)" (scheduled at 2026-03-01 07:06:31.579612+03:00)
+2026-03-01 07:06:31,606 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:07:31 MSK)" executed successfully
+2026-03-01 07:06:56,591 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:15:01 MSK)" (scheduled at 2026-03-01 07:06:56.579612+03:00)
+2026-03-01 07:06:56,594 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:15:01 MSK)" executed successfully
+2026-03-01 07:07:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:08:31 MSK)" (scheduled at 2026-03-01 07:07:31.579612+03:00)
+2026-03-01 07:07:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:08:31 MSK)" executed successfully
+2026-03-01 07:08:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:09:31 MSK)" (scheduled at 2026-03-01 07:08:31.579612+03:00)
+2026-03-01 07:08:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:09:31 MSK)" executed successfully
+2026-03-01 07:09:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:10:31 MSK)" (scheduled at 2026-03-01 07:09:31.579612+03:00)
+2026-03-01 07:09:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:10:31 MSK)" executed successfully
+2026-03-01 07:10:31,596 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:11:31 MSK)" (scheduled at 2026-03-01 07:10:31.579612+03:00)
+2026-03-01 07:10:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:11:31 MSK)" executed successfully
+2026-03-01 07:11:31,582 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:12:31 MSK)" (scheduled at 2026-03-01 07:11:31.579612+03:00)
+2026-03-01 07:11:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:12:31 MSK)" executed successfully
+2026-03-01 07:12:31,580 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:13:31 MSK)" (scheduled at 2026-03-01 07:12:31.579612+03:00)
+2026-03-01 07:12:31,586 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:13:31 MSK)" executed successfully
+2026-03-01 07:13:31,581 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:14:31 MSK)" (scheduled at 2026-03-01 07:13:31.579612+03:00)
+2026-03-01 07:13:31,587 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:14:31 MSK)" executed successfully
+2026-03-01 07:13:41,377 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 07:13:41,377 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:14:31 MSK)" executed successfully
+2026-03-01 07:14:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:15:31 MSK)" (scheduled at 2026-03-01 07:14:31.579612+03:00)
+2026-03-01 07:14:31,595 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:22:31 MSK)" (scheduled at 2026-03-01 07:14:31.579612+03:00)
+2026-03-01 07:14:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:15:31 MSK)" executed successfully
+2026-03-01 07:14:49,488 [WARNING] bot.services.yandex_api: Rate limited (429) for zone kremlin, retrying in 10s (attempt 1/2)
+2026-03-01 07:15:01,583 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:23:06 MSK)" (scheduled at 2026-03-01 07:15:01.579612+03:00)
+2026-03-01 07:15:01,586 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:23:06 MSK)" executed successfully
+2026-03-01 07:15:31,590 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:16:31 MSK)" (scheduled at 2026-03-01 07:15:31.579612+03:00)
+2026-03-01 07:15:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:16:31 MSK)" executed successfully
+2026-03-01 07:16:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:17:31 MSK)" (scheduled at 2026-03-01 07:16:31.579612+03:00)
+2026-03-01 07:16:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:17:31 MSK)" executed successfully
+2026-03-01 07:17:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:18:31 MSK)" (scheduled at 2026-03-01 07:17:31.579612+03:00)
+2026-03-01 07:17:31,595 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:18:31 MSK)" executed successfully
+2026-03-01 07:18:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:19:31 MSK)" (scheduled at 2026-03-01 07:18:31.579612+03:00)
+2026-03-01 07:18:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:19:31 MSK)" executed successfully
+2026-03-01 07:19:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:20:31 MSK)" (scheduled at 2026-03-01 07:19:31.579612+03:00)
+2026-03-01 07:19:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:20:31 MSK)" executed successfully
+2026-03-01 07:20:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:21:31 MSK)" (scheduled at 2026-03-01 07:20:31.579612+03:00)
+2026-03-01 07:20:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:21:31 MSK)" executed successfully
+2026-03-01 07:21:31,596 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:22:31 MSK)" (scheduled at 2026-03-01 07:21:31.579612+03:00)
+2026-03-01 07:21:31,603 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:22:31 MSK)" executed successfully
+2026-03-01 07:21:52,424 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 07:21:52,424 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:22:31 MSK)" executed successfully
+2026-03-01 07:22:31,589 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:23:31 MSK)" (scheduled at 2026-03-01 07:22:31.579612+03:00)
+2026-03-01 07:22:31,590 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:30:31 MSK)" (scheduled at 2026-03-01 07:22:31.579612+03:00)
+2026-03-01 07:22:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:23:31 MSK)" executed successfully
+2026-03-01 07:23:06,599 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:31:11 MSK)" (scheduled at 2026-03-01 07:23:06.579612+03:00)
+2026-03-01 07:23:06,602 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:31:11 MSK)" executed successfully
+2026-03-01 07:23:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:24:31 MSK)" (scheduled at 2026-03-01 07:23:31.579612+03:00)
+2026-03-01 07:23:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:24:31 MSK)" executed successfully
+2026-03-01 07:24:03,918 [WARNING] bot.services.yandex_api: Rate limited (429) for zone north, retrying in 10s (attempt 1/2)
+2026-03-01 07:24:31,599 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:25:31 MSK)" (scheduled at 2026-03-01 07:24:31.579612+03:00)
+2026-03-01 07:24:31,606 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:25:31 MSK)" executed successfully
+2026-03-01 07:25:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:26:31 MSK)" (scheduled at 2026-03-01 07:25:31.579612+03:00)
+2026-03-01 07:25:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:26:31 MSK)" executed successfully
+2026-03-01 07:26:31,579 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:27:31 MSK)" (scheduled at 2026-03-01 07:26:31.579612+03:00)
+2026-03-01 07:26:31,588 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:27:31 MSK)" executed successfully
+2026-03-01 07:27:31,590 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:28:31 MSK)" (scheduled at 2026-03-01 07:27:31.579612+03:00)
+2026-03-01 07:27:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:28:31 MSK)" executed successfully
+2026-03-01 07:28:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:29:31 MSK)" (scheduled at 2026-03-01 07:28:31.579612+03:00)
+2026-03-01 07:28:31,595 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:29:31 MSK)" executed successfully
+2026-03-01 07:29:31,597 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:30:31 MSK)" (scheduled at 2026-03-01 07:29:31.579612+03:00)
+2026-03-01 07:29:31,603 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:30:31 MSK)" executed successfully
+2026-03-01 07:29:52,440 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 07:29:52,440 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:30:31 MSK)" executed successfully
+2026-03-01 07:30:31,580 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:31:31 MSK)" (scheduled at 2026-03-01 07:30:31.579612+03:00)
+2026-03-01 07:30:31,581 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:38:31 MSK)" (scheduled at 2026-03-01 07:30:31.579612+03:00)
+2026-03-01 07:30:31,588 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:31:31 MSK)" executed successfully
+2026-03-01 07:31:11,588 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:39:16 MSK)" (scheduled at 2026-03-01 07:31:11.579612+03:00)
+2026-03-01 07:31:11,591 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:39:16 MSK)" executed successfully
+2026-03-01 07:31:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:32:31 MSK)" (scheduled at 2026-03-01 07:31:31.579612+03:00)
+2026-03-01 07:31:31,601 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:32:31 MSK)" executed successfully
+2026-03-01 07:32:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:33:31 MSK)" (scheduled at 2026-03-01 07:32:31.579612+03:00)
+2026-03-01 07:32:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:33:31 MSK)" executed successfully
+2026-03-01 07:33:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:34:31 MSK)" (scheduled at 2026-03-01 07:33:31.579612+03:00)
+2026-03-01 07:33:31,601 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:34:31 MSK)" executed successfully
+2026-03-01 07:34:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:35:31 MSK)" (scheduled at 2026-03-01 07:34:31.579612+03:00)
+2026-03-01 07:34:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:35:31 MSK)" executed successfully
+2026-03-01 07:35:31,598 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:36:31 MSK)" (scheduled at 2026-03-01 07:35:31.579612+03:00)
+2026-03-01 07:35:31,604 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:36:31 MSK)" executed successfully
+2026-03-01 07:36:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:37:31 MSK)" (scheduled at 2026-03-01 07:36:31.579612+03:00)
+2026-03-01 07:36:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:37:31 MSK)" executed successfully
+2026-03-01 07:37:31,582 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:38:31 MSK)" (scheduled at 2026-03-01 07:37:31.579612+03:00)
+2026-03-01 07:37:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:38:31 MSK)" executed successfully
+2026-03-01 07:37:43,139 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 07:37:43,139 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:38:31 MSK)" executed successfully
+2026-03-01 07:38:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:39:31 MSK)" (scheduled at 2026-03-01 07:38:31.579612+03:00)
+2026-03-01 07:38:31,589 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:46:31 MSK)" (scheduled at 2026-03-01 07:38:31.579612+03:00)
+2026-03-01 07:38:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:39:31 MSK)" executed successfully
+2026-03-01 07:39:16,582 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:47:21 MSK)" (scheduled at 2026-03-01 07:39:16.579612+03:00)
+2026-03-01 07:39:16,586 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:47:21 MSK)" executed successfully
+2026-03-01 07:39:31,584 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:40:31 MSK)" (scheduled at 2026-03-01 07:39:31.579612+03:00)
+2026-03-01 07:39:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:40:31 MSK)" executed successfully
+2026-03-01 07:40:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:41:31 MSK)" (scheduled at 2026-03-01 07:40:31.579612+03:00)
+2026-03-01 07:40:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:41:31 MSK)" executed successfully
+2026-03-01 07:41:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:42:31 MSK)" (scheduled at 2026-03-01 07:41:31.579612+03:00)
+2026-03-01 07:41:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:42:31 MSK)" executed successfully
+2026-03-01 07:42:16,845 [WARNING] bot.services.yandex_api: Rate limited (429) for zone sheremetyevo, retrying in 10s (attempt 1/2)
+2026-03-01 07:42:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:43:31 MSK)" (scheduled at 2026-03-01 07:42:31.579612+03:00)
+2026-03-01 07:42:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:43:31 MSK)" executed successfully
+2026-03-01 07:43:31,601 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:44:31 MSK)" (scheduled at 2026-03-01 07:43:31.579612+03:00)
+2026-03-01 07:43:31,607 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:44:31 MSK)" executed successfully
+2026-03-01 07:44:07,462 [WARNING] bot.services.yandex_api: Rate limited (429) for zone balashikha, retrying in 10s (attempt 1/2)
+2026-03-01 07:44:29,595 [WARNING] bot.services.yandex_api: Rate limited (429) for zone zheleznodorozhny, retrying in 10s (attempt 1/2)
+2026-03-01 07:44:31,600 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:45:31 MSK)" (scheduled at 2026-03-01 07:44:31.579612+03:00)
+2026-03-01 07:44:31,607 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:45:31 MSK)" executed successfully
+2026-03-01 07:45:31,584 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:46:31 MSK)" (scheduled at 2026-03-01 07:45:31.579612+03:00)
+2026-03-01 07:45:31,591 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:46:31 MSK)" executed successfully
+2026-03-01 07:46:17,106 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 07:46:17,106 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:46:31 MSK)" executed successfully
+2026-03-01 07:46:31,597 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:47:31 MSK)" (scheduled at 2026-03-01 07:46:31.579612+03:00)
+2026-03-01 07:46:31,598 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:54:31 MSK)" (scheduled at 2026-03-01 07:46:31.579612+03:00)
+2026-03-01 07:46:31,607 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:47:31 MSK)" executed successfully
+2026-03-01 07:46:55,177 [WARNING] bot.services.yandex_api: Rate limited (429) for zone kremlin, retrying in 10s (attempt 1/2)
+2026-03-01 07:47:21,586 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:55:26 MSK)" (scheduled at 2026-03-01 07:47:21.579612+03:00)
+2026-03-01 07:47:21,589 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 07:55:26 MSK)" executed successfully
+2026-03-01 07:47:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:48:31 MSK)" (scheduled at 2026-03-01 07:47:31.579612+03:00)
+2026-03-01 07:47:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:48:31 MSK)" executed successfully
+2026-03-01 07:48:31,596 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:49:31 MSK)" (scheduled at 2026-03-01 07:48:31.579612+03:00)
+2026-03-01 07:48:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:49:31 MSK)" executed successfully
+2026-03-01 07:49:31,582 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:50:31 MSK)" (scheduled at 2026-03-01 07:49:31.579612+03:00)
+2026-03-01 07:49:31,587 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:50:31 MSK)" executed successfully
+2026-03-01 07:50:31,590 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:51:31 MSK)" (scheduled at 2026-03-01 07:50:31.579612+03:00)
+2026-03-01 07:50:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:51:31 MSK)" executed successfully
+2026-03-01 07:51:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:52:31 MSK)" (scheduled at 2026-03-01 07:51:31.579612+03:00)
+2026-03-01 07:51:31,601 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:52:31 MSK)" executed successfully
+2026-03-01 07:51:40,994 [WARNING] bot.services.yandex_api: Rate limited (429) for zone mytishchi, retrying in 10s (attempt 1/2)
+2026-03-01 07:52:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:53:31 MSK)" (scheduled at 2026-03-01 07:52:31.579612+03:00)
+2026-03-01 07:52:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:53:31 MSK)" executed successfully
+2026-03-01 07:53:31,597 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:54:31 MSK)" (scheduled at 2026-03-01 07:53:31.579612+03:00)
+2026-03-01 07:53:31,604 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:54:31 MSK)" executed successfully
+2026-03-01 07:54:08,064 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 07:54:08,064 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 07:54:31 MSK)" executed successfully
+2026-03-01 07:54:31,589 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:55:31 MSK)" (scheduled at 2026-03-01 07:54:31.579612+03:00)
+2026-03-01 07:54:31,590 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:02:31 MSK)" (scheduled at 2026-03-01 07:54:31.579612+03:00)
+2026-03-01 07:54:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:55:31 MSK)" executed successfully
+2026-03-01 07:55:26,586 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:03:31 MSK)" (scheduled at 2026-03-01 07:55:26.579612+03:00)
+2026-03-01 07:55:26,589 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:03:31 MSK)" executed successfully
+2026-03-01 07:55:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:56:31 MSK)" (scheduled at 2026-03-01 07:55:31.579612+03:00)
+2026-03-01 07:55:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:56:31 MSK)" executed successfully
+2026-03-01 07:56:09,844 [WARNING] bot.services.yandex_api: Rate limited (429) for zone north, retrying in 10s (attempt 1/2)
+2026-03-01 07:56:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:57:31 MSK)" (scheduled at 2026-03-01 07:56:31.579612+03:00)
+2026-03-01 07:56:31,591 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:57:31 MSK)" executed successfully
+2026-03-01 07:56:49,294 [WARNING] bot.services.yandex_api: Rate limited (429) for zone east, retrying in 10s (attempt 1/2)
+2026-03-01 07:57:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:58:31 MSK)" (scheduled at 2026-03-01 07:57:31.579612+03:00)
+2026-03-01 07:57:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:58:31 MSK)" executed successfully
+2026-03-01 07:58:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:59:31 MSK)" (scheduled at 2026-03-01 07:58:31.579612+03:00)
+2026-03-01 07:58:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 07:59:31 MSK)" executed successfully
+2026-03-01 07:59:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:00:31 MSK)" (scheduled at 2026-03-01 07:59:31.579612+03:00)
+2026-03-01 07:59:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:00:31 MSK)" executed successfully
+2026-03-01 08:00:09,713 [WARNING] bot.services.yandex_api: Rate limited (429) for zone balashikha, retrying in 10s (attempt 1/2)
+2026-03-01 08:00:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:01:31 MSK)" (scheduled at 2026-03-01 08:00:31.579612+03:00)
+2026-03-01 08:00:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:01:31 MSK)" executed successfully
+2026-03-01 08:01:31,581 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:02:31 MSK)" (scheduled at 2026-03-01 08:01:31.579612+03:00)
+2026-03-01 08:01:31,588 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:02:31 MSK)" executed successfully
+2026-03-01 08:02:14,585 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 08:02:14,585 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:02:31 MSK)" executed successfully
+2026-03-01 08:02:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:03:31 MSK)" (scheduled at 2026-03-01 08:02:31.579612+03:00)
+2026-03-01 08:02:31,596 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:10:31 MSK)" (scheduled at 2026-03-01 08:02:31.579612+03:00)
+2026-03-01 08:02:31,604 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:03:31 MSK)" executed successfully
+2026-03-01 08:03:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:04:31 MSK)" (scheduled at 2026-03-01 08:03:31.579612+03:00)
+2026-03-01 08:03:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:11:36 MSK)" (scheduled at 2026-03-01 08:03:31.579612+03:00)
+2026-03-01 08:03:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:11:36 MSK)" executed successfully
+2026-03-01 08:03:31,601 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:04:31 MSK)" executed successfully
+2026-03-01 08:04:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:05:31 MSK)" (scheduled at 2026-03-01 08:04:31.579612+03:00)
+2026-03-01 08:04:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:05:31 MSK)" executed successfully
+2026-03-01 08:05:31,590 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:06:31 MSK)" (scheduled at 2026-03-01 08:05:31.579612+03:00)
+2026-03-01 08:05:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:06:31 MSK)" executed successfully
+2026-03-01 08:06:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:07:31 MSK)" (scheduled at 2026-03-01 08:06:31.579612+03:00)
+2026-03-01 08:06:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:07:31 MSK)" executed successfully
+2026-03-01 08:07:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:08:31 MSK)" (scheduled at 2026-03-01 08:07:31.579612+03:00)
+2026-03-01 08:07:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:08:31 MSK)" executed successfully
+2026-03-01 08:08:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:09:31 MSK)" (scheduled at 2026-03-01 08:08:31.579612+03:00)
+2026-03-01 08:08:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:09:31 MSK)" executed successfully
+2026-03-01 08:09:31,584 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:10:31 MSK)" (scheduled at 2026-03-01 08:09:31.579612+03:00)
+2026-03-01 08:09:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:10:31 MSK)" executed successfully
+2026-03-01 08:10:27,957 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 08:10:27,957 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:10:31 MSK)" executed successfully
+2026-03-01 08:10:31,590 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:11:31 MSK)" (scheduled at 2026-03-01 08:10:31.579612+03:00)
+2026-03-01 08:10:31,591 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:18:31 MSK)" (scheduled at 2026-03-01 08:10:31.579612+03:00)
+2026-03-01 08:10:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:11:31 MSK)" executed successfully
+2026-03-01 08:11:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:12:31 MSK)" (scheduled at 2026-03-01 08:11:31.579612+03:00)
+2026-03-01 08:11:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:12:31 MSK)" executed successfully
+2026-03-01 08:11:36,586 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:19:41 MSK)" (scheduled at 2026-03-01 08:11:36.579612+03:00)
+2026-03-01 08:11:36,589 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:19:41 MSK)" executed successfully
+2026-03-01 08:12:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:13:31 MSK)" (scheduled at 2026-03-01 08:12:31.579612+03:00)
+2026-03-01 08:12:31,601 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:13:31 MSK)" executed successfully
+2026-03-01 08:13:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:14:31 MSK)" (scheduled at 2026-03-01 08:13:31.579612+03:00)
+2026-03-01 08:13:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:14:31 MSK)" executed successfully
+2026-03-01 08:14:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:15:31 MSK)" (scheduled at 2026-03-01 08:14:31.579612+03:00)
+2026-03-01 08:14:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:15:31 MSK)" executed successfully
+2026-03-01 08:15:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:16:31 MSK)" (scheduled at 2026-03-01 08:15:31.579612+03:00)
+2026-03-01 08:15:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:16:31 MSK)" executed successfully
+2026-03-01 08:16:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:17:31 MSK)" (scheduled at 2026-03-01 08:16:31.579612+03:00)
+2026-03-01 08:16:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:17:31 MSK)" executed successfully
+2026-03-01 08:17:31,603 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:18:31 MSK)" (scheduled at 2026-03-01 08:17:31.579612+03:00)
+2026-03-01 08:17:31,609 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:18:31 MSK)" executed successfully
+2026-03-01 08:17:41,441 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 08:17:41,441 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:18:31 MSK)" executed successfully
+2026-03-01 08:18:31,597 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:19:31 MSK)" (scheduled at 2026-03-01 08:18:31.579612+03:00)
+2026-03-01 08:18:31,598 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:26:31 MSK)" (scheduled at 2026-03-01 08:18:31.579612+03:00)
+2026-03-01 08:18:31,605 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:19:31 MSK)" executed successfully
+2026-03-01 08:19:31,584 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:20:31 MSK)" (scheduled at 2026-03-01 08:19:31.579612+03:00)
+2026-03-01 08:19:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:20:31 MSK)" executed successfully
+2026-03-01 08:19:41,588 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:27:46 MSK)" (scheduled at 2026-03-01 08:19:41.579612+03:00)
+2026-03-01 08:19:41,592 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:27:46 MSK)" executed successfully
+2026-03-01 08:20:31,579 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:21:31 MSK)" (scheduled at 2026-03-01 08:20:31.579612+03:00)
+2026-03-01 08:20:31,586 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:21:31 MSK)" executed successfully
+2026-03-01 08:21:29,913 [WARNING] bot.services.yandex_api: Rate limited (429) for zone northeast, retrying in 10s (attempt 1/2)
+2026-03-01 08:21:31,589 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:22:31 MSK)" (scheduled at 2026-03-01 08:21:31.579612+03:00)
+2026-03-01 08:21:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:22:31 MSK)" executed successfully
+2026-03-01 08:21:40,615 [WARNING] bot.services.yandex_api: Rate limited (429) for zone northeast, retrying in 10s (attempt 2/2)
+2026-03-01 08:22:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:23:31 MSK)" (scheduled at 2026-03-01 08:22:31.579612+03:00)
+2026-03-01 08:22:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:23:31 MSK)" executed successfully
+2026-03-01 08:23:31,580 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:24:31 MSK)" (scheduled at 2026-03-01 08:23:31.579612+03:00)
+2026-03-01 08:23:31,586 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:24:31 MSK)" executed successfully
+2026-03-01 08:24:31,590 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:25:31 MSK)" (scheduled at 2026-03-01 08:24:31.579612+03:00)
+2026-03-01 08:24:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:25:31 MSK)" executed successfully
+2026-03-01 08:25:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:26:31 MSK)" (scheduled at 2026-03-01 08:25:31.579612+03:00)
+2026-03-01 08:25:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:26:31 MSK)" executed successfully
+2026-03-01 08:25:40,899 [WARNING] bot.services.yandex_api: Rate limited (429) for zone odintsovo, retrying in 10s (attempt 1/2)
+2026-03-01 08:26:13,834 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 08:26:13,834 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:26:31 MSK)" executed successfully
+2026-03-01 08:26:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:27:31 MSK)" (scheduled at 2026-03-01 08:26:31.579612+03:00)
+2026-03-01 08:26:31,587 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:34:31 MSK)" (scheduled at 2026-03-01 08:26:31.579612+03:00)
+2026-03-01 08:26:31,595 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:27:31 MSK)" executed successfully
+2026-03-01 08:27:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:28:31 MSK)" (scheduled at 2026-03-01 08:27:31.579612+03:00)
+2026-03-01 08:27:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:28:31 MSK)" executed successfully
+2026-03-01 08:27:46,584 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:35:51 MSK)" (scheduled at 2026-03-01 08:27:46.579612+03:00)
+2026-03-01 08:27:46,587 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:35:51 MSK)" executed successfully
+2026-03-01 08:28:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:29:31 MSK)" (scheduled at 2026-03-01 08:28:31.579612+03:00)
+2026-03-01 08:28:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:29:31 MSK)" executed successfully
+2026-03-01 08:29:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:30:31 MSK)" (scheduled at 2026-03-01 08:29:31.579612+03:00)
+2026-03-01 08:29:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:30:31 MSK)" executed successfully
+2026-03-01 08:29:59,900 [WARNING] bot.services.yandex_api: Rate limited (429) for zone southeast, retrying in 10s (attempt 1/2)
+2026-03-01 08:30:31,599 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:31:31 MSK)" (scheduled at 2026-03-01 08:30:31.579612+03:00)
+2026-03-01 08:30:31,606 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:31:31 MSK)" executed successfully
+2026-03-01 08:31:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:32:31 MSK)" (scheduled at 2026-03-01 08:31:31.579612+03:00)
+2026-03-01 08:31:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:32:31 MSK)" executed successfully
+2026-03-01 08:32:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:33:31 MSK)" (scheduled at 2026-03-01 08:32:31.579612+03:00)
+2026-03-01 08:32:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:33:31 MSK)" executed successfully
+2026-03-01 08:33:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:34:31 MSK)" (scheduled at 2026-03-01 08:33:31.579612+03:00)
+2026-03-01 08:33:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:34:31 MSK)" executed successfully
+2026-03-01 08:33:53,815 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 08:33:53,815 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:34:31 MSK)" executed successfully
+2026-03-01 08:34:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:35:31 MSK)" (scheduled at 2026-03-01 08:34:31.579612+03:00)
+2026-03-01 08:34:31,592 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:42:31 MSK)" (scheduled at 2026-03-01 08:34:31.579612+03:00)
+2026-03-01 08:34:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:35:31 MSK)" executed successfully
+2026-03-01 08:35:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:36:31 MSK)" (scheduled at 2026-03-01 08:35:31.579612+03:00)
+2026-03-01 08:35:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:36:31 MSK)" executed successfully
+2026-03-01 08:35:35,400 [WARNING] bot.services.yandex_api: Rate limited (429) for zone arbat, retrying in 10s (attempt 1/2)
+2026-03-01 08:35:51,580 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:43:56 MSK)" (scheduled at 2026-03-01 08:35:51.579612+03:00)
+2026-03-01 08:35:51,583 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:43:56 MSK)" executed successfully
+2026-03-01 08:36:31,584 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:37:31 MSK)" (scheduled at 2026-03-01 08:36:31.579612+03:00)
+2026-03-01 08:36:31,591 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:37:31 MSK)" executed successfully
+2026-03-01 08:37:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:38:31 MSK)" (scheduled at 2026-03-01 08:37:31.579612+03:00)
+2026-03-01 08:37:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:38:31 MSK)" executed successfully
+2026-03-01 08:38:31,590 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:39:31 MSK)" (scheduled at 2026-03-01 08:38:31.579612+03:00)
+2026-03-01 08:38:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:39:31 MSK)" executed successfully
+2026-03-01 08:39:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:40:31 MSK)" (scheduled at 2026-03-01 08:39:31.579612+03:00)
+2026-03-01 08:39:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:40:31 MSK)" executed successfully
+2026-03-01 08:39:39,640 [WARNING] bot.services.yandex_api: Rate limited (429) for zone mytishchi, retrying in 10s (attempt 1/2)
+2026-03-01 08:40:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:41:31 MSK)" (scheduled at 2026-03-01 08:40:31.579612+03:00)
+2026-03-01 08:40:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:41:31 MSK)" executed successfully
+2026-03-01 08:41:13,801 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientOSError: [Errno 1] [SSL: DECRYPTION_FAILED_OR_BAD_RECORD_MAC] decryption failed or bad record mac (_ssl.c:2559)
+2026-03-01 08:41:13,802 [WARNING] aiogram.dispatcher: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7845157915)
+2026-03-01 08:41:25,231 [INFO] aiogram.dispatcher: Connection established (tryings = 1, bot id = 7845157915)
+2026-03-01 08:41:31,589 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:42:31 MSK)" (scheduled at 2026-03-01 08:41:31.579612+03:00)
+2026-03-01 08:41:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:42:31 MSK)" executed successfully
+2026-03-01 08:42:07,327 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 08:42:07,327 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:42:31 MSK)" executed successfully
+2026-03-01 08:42:31,596 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:43:31 MSK)" (scheduled at 2026-03-01 08:42:31.579612+03:00)
+2026-03-01 08:42:31,597 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:50:31 MSK)" (scheduled at 2026-03-01 08:42:31.579612+03:00)
+2026-03-01 08:42:31,605 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:43:31 MSK)" executed successfully
+2026-03-01 08:43:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:44:31 MSK)" (scheduled at 2026-03-01 08:43:31.579612+03:00)
+2026-03-01 08:43:31,591 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:44:31 MSK)" executed successfully
+2026-03-01 08:43:56,588 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:52:01 MSK)" (scheduled at 2026-03-01 08:43:56.579612+03:00)
+2026-03-01 08:43:56,591 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 08:52:01 MSK)" executed successfully
+2026-03-01 08:44:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:45:31 MSK)" (scheduled at 2026-03-01 08:44:31.579612+03:00)
+2026-03-01 08:44:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:45:31 MSK)" executed successfully
+2026-03-01 08:45:31,584 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:46:31 MSK)" (scheduled at 2026-03-01 08:45:31.579612+03:00)
+2026-03-01 08:45:31,591 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:46:31 MSK)" executed successfully
+2026-03-01 08:45:47,327 [WARNING] bot.services.yandex_api: Rate limited (429) for zone southwest, retrying in 10s (attempt 1/2)
+2026-03-01 08:46:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:47:31 MSK)" (scheduled at 2026-03-01 08:46:31.579612+03:00)
+2026-03-01 08:46:31,601 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:47:31 MSK)" executed successfully
+2026-03-01 08:47:31,580 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:48:31 MSK)" (scheduled at 2026-03-01 08:47:31.579612+03:00)
+2026-03-01 08:47:31,587 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:48:31 MSK)" executed successfully
+2026-03-01 08:48:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:49:31 MSK)" (scheduled at 2026-03-01 08:48:31.579612+03:00)
+2026-03-01 08:48:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:49:31 MSK)" executed successfully
+2026-03-01 08:49:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:50:31 MSK)" (scheduled at 2026-03-01 08:49:31.579612+03:00)
+2026-03-01 08:49:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:50:31 MSK)" executed successfully
+2026-03-01 08:49:52,691 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 08:49:52,691 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:50:31 MSK)" executed successfully
+2026-03-01 08:50:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:51:31 MSK)" (scheduled at 2026-03-01 08:50:31.579612+03:00)
+2026-03-01 08:50:31,596 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:58:31 MSK)" (scheduled at 2026-03-01 08:50:31.579612+03:00)
+2026-03-01 08:50:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:51:31 MSK)" executed successfully
+2026-03-01 08:51:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:52:31 MSK)" (scheduled at 2026-03-01 08:51:31.579612+03:00)
+2026-03-01 08:51:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:52:31 MSK)" executed successfully
+2026-03-01 08:52:01,589 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:00:06 MSK)" (scheduled at 2026-03-01 08:52:01.579612+03:00)
+2026-03-01 08:52:01,592 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:00:06 MSK)" executed successfully
+2026-03-01 08:52:31,581 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:53:31 MSK)" (scheduled at 2026-03-01 08:52:31.579612+03:00)
+2026-03-01 08:52:31,587 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:53:31 MSK)" executed successfully
+2026-03-01 08:53:31,582 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:54:31 MSK)" (scheduled at 2026-03-01 08:53:31.579612+03:00)
+2026-03-01 08:53:31,588 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:54:31 MSK)" executed successfully
+2026-03-01 08:54:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:55:31 MSK)" (scheduled at 2026-03-01 08:54:31.579612+03:00)
+2026-03-01 08:54:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:55:31 MSK)" executed successfully
+2026-03-01 08:55:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:56:31 MSK)" (scheduled at 2026-03-01 08:55:31.579612+03:00)
+2026-03-01 08:55:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:56:31 MSK)" executed successfully
+2026-03-01 08:56:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:57:31 MSK)" (scheduled at 2026-03-01 08:56:31.579612+03:00)
+2026-03-01 08:56:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:57:31 MSK)" executed successfully
+2026-03-01 08:57:31,582 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:58:31 MSK)" (scheduled at 2026-03-01 08:57:31.579612+03:00)
+2026-03-01 08:57:31,588 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:58:31 MSK)" executed successfully
+2026-03-01 08:57:41,780 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 08:57:41,780 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 08:58:31 MSK)" executed successfully
+2026-03-01 08:58:31,580 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:59:31 MSK)" (scheduled at 2026-03-01 08:58:31.579612+03:00)
+2026-03-01 08:58:31,580 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:06:31 MSK)" (scheduled at 2026-03-01 08:58:31.579612+03:00)
+2026-03-01 08:58:31,587 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 08:59:31 MSK)" executed successfully
+2026-03-01 08:59:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:00:31 MSK)" (scheduled at 2026-03-01 08:59:31.579612+03:00)
+2026-03-01 08:59:31,595 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:00:31 MSK)" executed successfully
+2026-03-01 09:00:06,587 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:08:11 MSK)" (scheduled at 2026-03-01 09:00:06.579612+03:00)
+2026-03-01 09:00:06,590 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:08:11 MSK)" executed successfully
+2026-03-01 09:00:09,996 [WARNING] bot.services.yandex_api: Rate limited (429) for zone north, retrying in 10s (attempt 1/2)
+2026-03-01 09:00:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:01:31 MSK)" (scheduled at 2026-03-01 09:00:31.579612+03:00)
+2026-03-01 09:00:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:01:31 MSK)" executed successfully
+2026-03-01 09:01:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:02:31 MSK)" (scheduled at 2026-03-01 09:01:31.579612+03:00)
+2026-03-01 09:01:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:02:31 MSK)" executed successfully
+2026-03-01 09:02:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:03:31 MSK)" (scheduled at 2026-03-01 09:02:31.579612+03:00)
+2026-03-01 09:02:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:03:31 MSK)" executed successfully
+2026-03-01 09:03:31,599 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:04:31 MSK)" (scheduled at 2026-03-01 09:03:31.579612+03:00)
+2026-03-01 09:03:31,605 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:04:31 MSK)" executed successfully
+2026-03-01 09:04:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:05:31 MSK)" (scheduled at 2026-03-01 09:04:31.579612+03:00)
+2026-03-01 09:04:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:05:31 MSK)" executed successfully
+2026-03-01 09:04:50,539 [WARNING] bot.services.yandex_api: Rate limited (429) for zone podolsk, retrying in 10s (attempt 1/2)
+2026-03-01 09:05:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:06:31 MSK)" (scheduled at 2026-03-01 09:05:31.579612+03:00)
+2026-03-01 09:05:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:06:31 MSK)" executed successfully
+2026-03-01 09:06:03,804 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 09:06:03,804 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:06:31 MSK)" executed successfully
+2026-03-01 09:06:31,581 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:07:31 MSK)" (scheduled at 2026-03-01 09:06:31.579612+03:00)
+2026-03-01 09:06:31,582 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:14:31 MSK)" (scheduled at 2026-03-01 09:06:31.579612+03:00)
+2026-03-01 09:06:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:07:31 MSK)" executed successfully
+2026-03-01 09:07:31,589 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:08:31 MSK)" (scheduled at 2026-03-01 09:07:31.579612+03:00)
+2026-03-01 09:07:31,595 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:08:31 MSK)" executed successfully
+2026-03-01 09:08:11,596 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:16:16 MSK)" (scheduled at 2026-03-01 09:08:11.579612+03:00)
+2026-03-01 09:08:11,599 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:16:16 MSK)" executed successfully
+2026-03-01 09:08:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:09:31 MSK)" (scheduled at 2026-03-01 09:08:31.579612+03:00)
+2026-03-01 09:08:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:09:31 MSK)" executed successfully
+2026-03-01 09:09:31,582 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:10:31 MSK)" (scheduled at 2026-03-01 09:09:31.579612+03:00)
+2026-03-01 09:09:31,588 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:10:31 MSK)" executed successfully
+2026-03-01 09:10:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:11:31 MSK)" (scheduled at 2026-03-01 09:10:31.579612+03:00)
+2026-03-01 09:10:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:11:31 MSK)" executed successfully
+2026-03-01 09:11:31,581 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:12:31 MSK)" (scheduled at 2026-03-01 09:11:31.579612+03:00)
+2026-03-01 09:11:31,587 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:12:31 MSK)" executed successfully
+2026-03-01 09:12:00,541 [WARNING] bot.services.yandex_api: Rate limited (429) for zone zheleznodorozhny, retrying in 10s (attempt 1/2)
+2026-03-01 09:12:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:13:31 MSK)" (scheduled at 2026-03-01 09:12:31.579612+03:00)
+2026-03-01 09:12:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:13:31 MSK)" executed successfully
+2026-03-01 09:13:31,600 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:14:31 MSK)" (scheduled at 2026-03-01 09:13:31.579612+03:00)
+2026-03-01 09:13:31,609 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:14:31 MSK)" executed successfully
+2026-03-01 09:13:53,839 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 09:13:53,839 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:14:31 MSK)" executed successfully
+2026-03-01 09:14:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:15:31 MSK)" (scheduled at 2026-03-01 09:14:31.579612+03:00)
+2026-03-01 09:14:31,589 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:22:31 MSK)" (scheduled at 2026-03-01 09:14:31.579612+03:00)
+2026-03-01 09:14:31,595 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:15:31 MSK)" executed successfully
+2026-03-01 09:15:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:16:31 MSK)" (scheduled at 2026-03-01 09:15:31.579612+03:00)
+2026-03-01 09:15:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:16:31 MSK)" executed successfully
+2026-03-01 09:15:35,414 [WARNING] bot.services.yandex_api: Rate limited (429) for zone arbat, retrying in 10s (attempt 1/2)
+2026-03-01 09:16:16,584 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:24:21 MSK)" (scheduled at 2026-03-01 09:16:16.579612+03:00)
+2026-03-01 09:16:16,587 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:24:21 MSK)" executed successfully
+2026-03-01 09:16:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:17:31 MSK)" (scheduled at 2026-03-01 09:16:31.579612+03:00)
+2026-03-01 09:16:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:17:31 MSK)" executed successfully
+2026-03-01 09:17:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:18:31 MSK)" (scheduled at 2026-03-01 09:17:31.579612+03:00)
+2026-03-01 09:17:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:18:31 MSK)" executed successfully
+2026-03-01 09:18:31,596 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:19:31 MSK)" (scheduled at 2026-03-01 09:18:31.579612+03:00)
+2026-03-01 09:18:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:19:31 MSK)" executed successfully
+2026-03-01 09:19:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:20:31 MSK)" (scheduled at 2026-03-01 09:19:31.579612+03:00)
+2026-03-01 09:19:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:20:31 MSK)" executed successfully
+2026-03-01 09:20:31,597 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:21:31 MSK)" (scheduled at 2026-03-01 09:20:31.579612+03:00)
+2026-03-01 09:20:31,603 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:21:31 MSK)" executed successfully
+2026-03-01 09:21:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:22:31 MSK)" (scheduled at 2026-03-01 09:21:31.579612+03:00)
+2026-03-01 09:21:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:22:31 MSK)" executed successfully
+2026-03-01 09:21:55,112 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 09:21:55,112 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:22:31 MSK)" executed successfully
+2026-03-01 09:22:31,582 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:23:31 MSK)" (scheduled at 2026-03-01 09:22:31.579612+03:00)
+2026-03-01 09:22:31,583 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:30:31 MSK)" (scheduled at 2026-03-01 09:22:31.579612+03:00)
+2026-03-01 09:22:31,590 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:23:31 MSK)" executed successfully
+2026-03-01 09:22:43,761 [WARNING] bot.services.yandex_api: Rate limited (429) for zone center, retrying in 10s (attempt 1/2)
+2026-03-01 09:23:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:24:31 MSK)" (scheduled at 2026-03-01 09:23:31.579612+03:00)
+2026-03-01 09:23:31,601 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:24:31 MSK)" executed successfully
+2026-03-01 09:24:21,589 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:32:26 MSK)" (scheduled at 2026-03-01 09:24:21.579612+03:00)
+2026-03-01 09:24:21,593 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:32:26 MSK)" executed successfully
+2026-03-01 09:24:31,598 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:25:31 MSK)" (scheduled at 2026-03-01 09:24:31.579612+03:00)
+2026-03-01 09:24:31,604 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:25:31 MSK)" executed successfully
+2026-03-01 09:25:13,066 [WARNING] bot.services.yandex_api: Rate limited (429) for zone west, retrying in 10s (attempt 1/2)
+2026-03-01 09:25:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:26:31 MSK)" (scheduled at 2026-03-01 09:25:31.579612+03:00)
+2026-03-01 09:25:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:26:31 MSK)" executed successfully
+2026-03-01 09:26:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:27:31 MSK)" (scheduled at 2026-03-01 09:26:31.579612+03:00)
+2026-03-01 09:26:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:27:31 MSK)" executed successfully
+2026-03-01 09:27:06,995 [WARNING] bot.services.yandex_api: Rate limited (429) for zone vnukovo, retrying in 10s (attempt 1/2)
+2026-03-01 09:27:31,584 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:28:31 MSK)" (scheduled at 2026-03-01 09:27:31.579612+03:00)
+2026-03-01 09:27:31,590 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:28:31 MSK)" executed successfully
+2026-03-01 09:27:46,337 [WARNING] bot.services.yandex_api: Rate limited (429) for zone khimki, retrying in 10s (attempt 1/2)
+2026-03-01 09:28:31,599 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:29:31 MSK)" (scheduled at 2026-03-01 09:28:31.579612+03:00)
+2026-03-01 09:28:31,606 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:29:31 MSK)" executed successfully
+2026-03-01 09:29:28,858 [WARNING] bot.services.yandex_api: Rate limited (429) for zone podolsk, retrying in 10s (attempt 1/2)
+2026-03-01 09:29:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:30:31 MSK)" (scheduled at 2026-03-01 09:29:31.579612+03:00)
+2026-03-01 09:29:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:30:31 MSK)" executed successfully
+2026-03-01 09:29:50,998 [WARNING] bot.services.yandex_api: Rate limited (429) for zone krasnogorsk, retrying in 10s (attempt 1/2)
+2026-03-01 09:30:18,944 [WARNING] bot.services.yandex_api: Rate limited (429) for zone odintsovo, retrying in 10s (attempt 1/2)
+2026-03-01 09:30:31,600 [WARNING] apscheduler.scheduler: Execution of job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:30:31 MSK)" skipped: maximum number of running instances reached (1)
+2026-03-01 09:30:31,600 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:31:31 MSK)" (scheduled at 2026-03-01 09:30:31.579612+03:00)
+2026-03-01 09:30:31,607 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:31:31 MSK)" executed successfully
+2026-03-01 09:30:35,413 [WARNING] bot.services.yandex_api: Rate limited (429) for zone odintsovo, retrying in 10s (attempt 1/2)
+2026-03-01 09:31:08,368 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 09:31:08,368 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:38:31 MSK)" executed successfully
+2026-03-01 09:31:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:32:31 MSK)" (scheduled at 2026-03-01 09:31:31.579612+03:00)
+2026-03-01 09:31:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:32:31 MSK)" executed successfully
+2026-03-01 09:31:47,136 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientOSError: [Errno 1] [SSL: DECRYPTION_FAILED_OR_BAD_RECORD_MAC] decryption failed or bad record mac (_ssl.c:2559)
+2026-03-01 09:31:47,136 [WARNING] aiogram.dispatcher: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7845157915)
+2026-03-01 09:31:58,579 [INFO] aiogram.dispatcher: Connection established (tryings = 1, bot id = 7845157915)
+2026-03-01 09:32:26,592 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:40:31 MSK)" (scheduled at 2026-03-01 09:32:26.579612+03:00)
+2026-03-01 09:32:26,595 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:40:31 MSK)" executed successfully
+2026-03-01 09:32:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:33:31 MSK)" (scheduled at 2026-03-01 09:32:31.579612+03:00)
+2026-03-01 09:32:31,590 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:33:31 MSK)" executed successfully
+2026-03-01 09:33:31,589 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:34:31 MSK)" (scheduled at 2026-03-01 09:33:31.579612+03:00)
+2026-03-01 09:33:31,595 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:34:31 MSK)" executed successfully
+2026-03-01 09:34:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:35:31 MSK)" (scheduled at 2026-03-01 09:34:31.579612+03:00)
+2026-03-01 09:34:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:35:31 MSK)" executed successfully
+2026-03-01 09:35:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:36:31 MSK)" (scheduled at 2026-03-01 09:35:31.579612+03:00)
+2026-03-01 09:35:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:36:31 MSK)" executed successfully
+2026-03-01 09:36:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:37:31 MSK)" (scheduled at 2026-03-01 09:36:31.579612+03:00)
+2026-03-01 09:36:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:37:31 MSK)" executed successfully
+2026-03-01 09:37:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:38:31 MSK)" (scheduled at 2026-03-01 09:37:31.579612+03:00)
+2026-03-01 09:37:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:38:31 MSK)" executed successfully
+2026-03-01 09:38:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:39:31 MSK)" (scheduled at 2026-03-01 09:38:31.579612+03:00)
+2026-03-01 09:38:31,587 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:46:31 MSK)" (scheduled at 2026-03-01 09:38:31.579612+03:00)
+2026-03-01 09:38:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:39:31 MSK)" executed successfully
+2026-03-01 09:38:38,061 [WARNING] bot.services.yandex_api: Rate limited (429) for zone center, retrying in 10s (attempt 1/2)
+2026-03-01 09:39:31,598 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:40:31 MSK)" (scheduled at 2026-03-01 09:39:31.579612+03:00)
+2026-03-01 09:39:31,606 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:40:31 MSK)" executed successfully
+2026-03-01 09:40:21,170 [WARNING] bot.services.yandex_api: Rate limited (429) for zone north, retrying in 10s (attempt 1/2)
+2026-03-01 09:40:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:41:31 MSK)" (scheduled at 2026-03-01 09:40:31.579612+03:00)
+2026-03-01 09:40:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:48:36 MSK)" (scheduled at 2026-03-01 09:40:31.579612+03:00)
+2026-03-01 09:40:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:41:31 MSK)" executed successfully
+2026-03-01 09:40:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:48:36 MSK)" executed successfully
+2026-03-01 09:41:06,389 [WARNING] bot.services.yandex_api: Rate limited (429) for zone east, retrying in 10s (attempt 1/2)
+2026-03-01 09:41:17,089 [WARNING] bot.services.yandex_api: Rate limited (429) for zone east, retrying in 10s (attempt 2/2)
+2026-03-01 09:41:31,597 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:42:31 MSK)" (scheduled at 2026-03-01 09:41:31.579612+03:00)
+2026-03-01 09:41:31,603 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:42:31 MSK)" executed successfully
+2026-03-01 09:42:31,584 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:43:31 MSK)" (scheduled at 2026-03-01 09:42:31.579612+03:00)
+2026-03-01 09:42:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:43:31 MSK)" executed successfully
+2026-03-01 09:43:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:44:31 MSK)" (scheduled at 2026-03-01 09:43:31.579612+03:00)
+2026-03-01 09:43:31,591 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:44:31 MSK)" executed successfully
+2026-03-01 09:44:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:45:31 MSK)" (scheduled at 2026-03-01 09:44:31.579612+03:00)
+2026-03-01 09:44:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:45:31 MSK)" executed successfully
+2026-03-01 09:45:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:46:31 MSK)" (scheduled at 2026-03-01 09:45:31.579612+03:00)
+2026-03-01 09:45:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:46:31 MSK)" executed successfully
+2026-03-01 09:46:16,239 [WARNING] bot.services.yandex_api: Rate limited (429) for zone korolev, retrying in 10s (attempt 1/2)
+2026-03-01 09:46:31,585 [WARNING] apscheduler.scheduler: Execution of job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:46:31 MSK)" skipped: maximum number of running instances reached (1)
+2026-03-01 09:46:31,585 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:47:31 MSK)" (scheduled at 2026-03-01 09:46:31.579612+03:00)
+2026-03-01 09:46:31,591 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:47:31 MSK)" executed successfully
+2026-03-01 09:46:37,735 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 09:46:37,735 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 09:54:31 MSK)" executed successfully
+2026-03-01 09:47:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:48:31 MSK)" (scheduled at 2026-03-01 09:47:31.579612+03:00)
+2026-03-01 09:47:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:48:31 MSK)" executed successfully
+2026-03-01 09:48:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:49:31 MSK)" (scheduled at 2026-03-01 09:48:31.579612+03:00)
+2026-03-01 09:48:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:49:31 MSK)" executed successfully
+2026-03-01 09:48:36,579 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:56:41 MSK)" (scheduled at 2026-03-01 09:48:36.579612+03:00)
+2026-03-01 09:48:36,582 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 09:56:41 MSK)" executed successfully
+2026-03-01 09:49:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:50:31 MSK)" (scheduled at 2026-03-01 09:49:31.579612+03:00)
+2026-03-01 09:49:31,601 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:50:31 MSK)" executed successfully
+2026-03-01 09:50:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:51:31 MSK)" (scheduled at 2026-03-01 09:50:31.579612+03:00)
+2026-03-01 09:50:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:51:31 MSK)" executed successfully
+2026-03-01 09:51:31,589 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:52:31 MSK)" (scheduled at 2026-03-01 09:51:31.579612+03:00)
+2026-03-01 09:51:31,595 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:52:31 MSK)" executed successfully
+2026-03-01 09:52:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:53:31 MSK)" (scheduled at 2026-03-01 09:52:31.579612+03:00)
+2026-03-01 09:52:31,601 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:53:31 MSK)" executed successfully
+2026-03-01 09:53:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:54:31 MSK)" (scheduled at 2026-03-01 09:53:31.579612+03:00)
+2026-03-01 09:53:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:54:31 MSK)" executed successfully
+2026-03-01 09:54:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:55:31 MSK)" (scheduled at 2026-03-01 09:54:31.579612+03:00)
+2026-03-01 09:54:31,595 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 10:02:31 MSK)" (scheduled at 2026-03-01 09:54:31.579612+03:00)
+2026-03-01 09:54:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:55:31 MSK)" executed successfully
+2026-03-01 09:55:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:56:31 MSK)" (scheduled at 2026-03-01 09:55:31.579612+03:00)
+2026-03-01 09:55:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:56:31 MSK)" executed successfully
+2026-03-01 09:56:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:57:31 MSK)" (scheduled at 2026-03-01 09:56:31.579612+03:00)
+2026-03-01 09:56:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:57:31 MSK)" executed successfully
+2026-03-01 09:56:41,591 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:04:46 MSK)" (scheduled at 2026-03-01 09:56:41.579612+03:00)
+2026-03-01 09:56:41,594 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:04:46 MSK)" executed successfully
+2026-03-01 09:57:31,599 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:58:31 MSK)" (scheduled at 2026-03-01 09:57:31.579612+03:00)
+2026-03-01 09:57:31,605 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:58:31 MSK)" executed successfully
+2026-03-01 09:58:08,119 [WARNING] bot.services.yandex_api: Rate limited (429) for zone southeast, retrying in 10s (attempt 1/2)
+2026-03-01 09:58:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:59:31 MSK)" (scheduled at 2026-03-01 09:58:31.579612+03:00)
+2026-03-01 09:58:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 09:59:31 MSK)" executed successfully
+2026-03-01 09:59:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:00:31 MSK)" (scheduled at 2026-03-01 09:59:31.579612+03:00)
+2026-03-01 09:59:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:00:31 MSK)" executed successfully
+2026-03-01 09:59:40,182 [WARNING] bot.services.yandex_api: Rate limited (429) for zone mytishchi, retrying in 10s (attempt 1/2)
+2026-03-01 10:00:25,318 [WARNING] bot.services.yandex_api: Rate limited (429) for zone zheleznodorozhny, retrying in 10s (attempt 1/2)
+2026-03-01 10:00:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:01:31 MSK)" (scheduled at 2026-03-01 10:00:31.579612+03:00)
+2026-03-01 10:00:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:01:31 MSK)" executed successfully
+2026-03-01 10:01:31,596 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:02:31 MSK)" (scheduled at 2026-03-01 10:01:31.579612+03:00)
+2026-03-01 10:01:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:02:31 MSK)" executed successfully
+2026-03-01 10:02:02,176 [WARNING] bot.services.yandex_api: Rate limited (429) for zone korolev, retrying in 10s (attempt 1/2)
+2026-03-01 10:02:12,917 [WARNING] bot.services.yandex_api: Rate limited (429) for zone korolev, retrying in 10s (attempt 2/2)
+2026-03-01 10:02:31,581 [WARNING] apscheduler.scheduler: Execution of job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 10:02:31 MSK)" skipped: maximum number of running instances reached (1)
+2026-03-01 10:02:31,581 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:03:31 MSK)" (scheduled at 2026-03-01 10:02:31.579612+03:00)
+2026-03-01 10:02:31,588 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:03:31 MSK)" executed successfully
+2026-03-01 10:02:35,060 [WARNING] bot.services.yandex_api: Rate limited (429) for zone korolev, retrying in 10s (attempt 1/2)
+2026-03-01 10:02:50,815 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 10:02:50,815 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 10:10:31 MSK)" executed successfully
+2026-03-01 10:03:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:04:31 MSK)" (scheduled at 2026-03-01 10:03:31.579612+03:00)
+2026-03-01 10:03:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:04:31 MSK)" executed successfully
+2026-03-01 10:04:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:05:31 MSK)" (scheduled at 2026-03-01 10:04:31.579612+03:00)
+2026-03-01 10:04:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:05:31 MSK)" executed successfully
+2026-03-01 10:04:46,588 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:12:51 MSK)" (scheduled at 2026-03-01 10:04:46.579612+03:00)
+2026-03-01 10:04:46,591 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:12:51 MSK)" executed successfully
+2026-03-01 10:05:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:06:31 MSK)" (scheduled at 2026-03-01 10:05:31.579612+03:00)
+2026-03-01 10:05:31,595 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:06:31 MSK)" executed successfully
+2026-03-01 10:06:31,599 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:07:31 MSK)" (scheduled at 2026-03-01 10:06:31.579612+03:00)
+2026-03-01 10:06:31,605 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:07:31 MSK)" executed successfully
+2026-03-01 10:07:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:08:31 MSK)" (scheduled at 2026-03-01 10:07:31.579612+03:00)
+2026-03-01 10:07:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:08:31 MSK)" executed successfully
+2026-03-01 10:08:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:09:31 MSK)" (scheduled at 2026-03-01 10:08:31.579612+03:00)
+2026-03-01 10:08:31,666 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:09:31 MSK)" executed successfully
+2026-03-01 10:09:31,580 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:10:31 MSK)" (scheduled at 2026-03-01 10:09:31.579612+03:00)
+2026-03-01 10:09:31,586 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:10:31 MSK)" executed successfully
+2026-03-01 10:10:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:11:31 MSK)" (scheduled at 2026-03-01 10:10:31.579612+03:00)
+2026-03-01 10:10:31,593 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 10:18:31 MSK)" (scheduled at 2026-03-01 10:10:31.579612+03:00)
+2026-03-01 10:10:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:11:31 MSK)" executed successfully
+2026-03-01 10:11:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:12:31 MSK)" (scheduled at 2026-03-01 10:11:31.579612+03:00)
+2026-03-01 10:11:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:12:31 MSK)" executed successfully
+2026-03-01 10:12:31,589 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:13:31 MSK)" (scheduled at 2026-03-01 10:12:31.579612+03:00)
+2026-03-01 10:12:31,595 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:13:31 MSK)" executed successfully
+2026-03-01 10:12:51,597 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:20:56 MSK)" (scheduled at 2026-03-01 10:12:51.579612+03:00)
+2026-03-01 10:12:51,602 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:20:56 MSK)" executed successfully
+2026-03-01 10:13:21,067 [WARNING] bot.services.yandex_api: Rate limited (429) for zone northwest, retrying in 10s (attempt 1/2)
+2026-03-01 10:13:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:14:31 MSK)" (scheduled at 2026-03-01 10:13:31.579612+03:00)
+2026-03-01 10:13:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:14:31 MSK)" executed successfully
+2026-03-01 10:14:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:15:31 MSK)" (scheduled at 2026-03-01 10:14:31.579612+03:00)
+2026-03-01 10:14:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:15:31 MSK)" executed successfully
+2026-03-01 10:15:31,593 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:16:31 MSK)" (scheduled at 2026-03-01 10:15:31.579612+03:00)
+2026-03-01 10:15:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:16:31 MSK)" executed successfully
+2026-03-01 10:16:12,480 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:10:16:12 +0300] "GET /api/hexgrid HTTP/1.1" 200 59530 "-" "curl/8.18.0"
+2026-03-01 10:16:14,710 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:10:16:14 +0300] "GET /api/top?n=5 HTTP/1.1" 200 852 "-" "curl/8.18.0"
+2026-03-01 10:16:31,580 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:17:31 MSK)" (scheduled at 2026-03-01 10:16:31.579612+03:00)
+2026-03-01 10:16:31,586 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:17:31 MSK)" executed successfully
+2026-03-01 10:16:33,862 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:10:16:33 +0300] "GET /api/hexgrid HTTP/1.1" 200 61253 "-" "curl/8.18.0"
+2026-03-01 10:16:38,343 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:10:16:38 +0300] "GET / HTTP/1.1" 304 179 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 10:16:38,558 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:10:16:38 +0300] "GET /style.css HTTP/1.1" 304 179 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 10:16:38,561 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:10:16:38 +0300] "GET /app.js HTTP/1.1" 304 179 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 10:16:40,126 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:10:16:40 +0300] "GET /favicon.ico HTTP/1.1" 404 175 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 10:17:08,875 [INFO] aiogram.event: Update id=678515514 is handled. Duration 610 ms by bot id=7845157915
+2026-03-01 10:17:11,329 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:10:17:11 +0300] "GET /favicon.ico HTTP/1.1" 404 175 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 10:17:11,476 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:10:17:11 +0300] "GET /api/hexgrid HTTP/1.1" 200 66982 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 10:17:11,477 [INFO] aiohttp.access: 127.0.0.1 [01/Mar/2026:10:17:11 +0300] "GET /api/top?n=5 HTTP/1.1" 200 878 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 10:17:31,588 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:18:31 MSK)" (scheduled at 2026-03-01 10:17:31.579612+03:00)
+2026-03-01 10:17:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:18:31 MSK)" executed successfully
+2026-03-01 10:17:55,099 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 10:17:55,099 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 10:18:31 MSK)" executed successfully
+2026-03-01 10:18:31,601 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:19:31 MSK)" (scheduled at 2026-03-01 10:18:31.579612+03:00)
+2026-03-01 10:18:31,602 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 10:26:31 MSK)" (scheduled at 2026-03-01 10:18:31.579612+03:00)
+2026-03-01 10:18:31,610 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:19:31 MSK)" executed successfully
+2026-03-01 10:18:32,299 [WARNING] bot.services.yandex_api: Rate limited (429) for zone center, retrying in 10s (attempt 1/2)
+2026-03-01 10:19:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:20:31 MSK)" (scheduled at 2026-03-01 10:19:31.579612+03:00)
+2026-03-01 10:19:31,601 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:20:31 MSK)" executed successfully
+2026-03-01 10:20:31,594 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:21:31 MSK)" (scheduled at 2026-03-01 10:20:31.579612+03:00)
+2026-03-01 10:20:31,601 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:21:31 MSK)" executed successfully
+2026-03-01 10:20:38,720 [WARNING] bot.services.yandex_api: Rate limited (429) for zone south, retrying in 10s (attempt 1/2)
+2026-03-01 10:20:56,579 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:29:01 MSK)" (scheduled at 2026-03-01 10:20:56.579612+03:00)
+2026-03-01 10:20:56,582 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:29:01 MSK)" executed successfully
+2026-03-01 10:21:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:22:31 MSK)" (scheduled at 2026-03-01 10:21:31.579612+03:00)
+2026-03-01 10:21:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:22:31 MSK)" executed successfully
+2026-03-01 10:22:04,073 [WARNING] bot.services.yandex_api: Rate limited (429) for zone southwest, retrying in 10s (attempt 1/2)
+2026-03-01 10:22:21,452 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientOSError: [Errno 1] [SSL: DECRYPTION_FAILED_OR_BAD_RECORD_MAC] decryption failed or bad record mac (_ssl.c:2559)
+2026-03-01 10:22:21,452 [WARNING] aiogram.dispatcher: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7845157915)
+2026-03-01 10:22:31,584 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:23:31 MSK)" (scheduled at 2026-03-01 10:22:31.579612+03:00)
+2026-03-01 10:22:31,590 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:23:31 MSK)" executed successfully
+2026-03-01 10:22:32,863 [INFO] aiogram.dispatcher: Connection established (tryings = 1, bot id = 7845157915)
+2026-03-01 10:23:18,920 [WARNING] bot.services.yandex_api: Rate limited (429) for zone vnukovo, retrying in 10s (attempt 1/2)
+2026-03-01 10:23:31,590 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:24:31 MSK)" (scheduled at 2026-03-01 10:23:31.579612+03:00)
+2026-03-01 10:23:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:24:31 MSK)" executed successfully
+2026-03-01 10:23:52,566 [WARNING] bot.services.yandex_api: Rate limited (429) for zone khimki, retrying in 10s (attempt 1/2)
+2026-03-01 10:24:31,584 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:25:31 MSK)" (scheduled at 2026-03-01 10:24:31.579612+03:00)
+2026-03-01 10:24:31,590 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:25:31 MSK)" executed successfully
+2026-03-01 10:25:31,590 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:26:31 MSK)" (scheduled at 2026-03-01 10:25:31.579612+03:00)
+2026-03-01 10:25:31,596 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:26:31 MSK)" executed successfully
+2026-03-01 10:26:31,591 [WARNING] apscheduler.scheduler: Execution of job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 10:26:31 MSK)" skipped: maximum number of running instances reached (1)
+2026-03-01 10:26:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:27:31 MSK)" (scheduled at 2026-03-01 10:26:31.579612+03:00)
+2026-03-01 10:26:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:27:31 MSK)" executed successfully
+2026-03-01 10:26:37,854 [INFO] bot.services.yandex_api: Fetched 75 surge data points
+2026-03-01 10:26:37,854 [INFO] apscheduler.executors.default: Job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 10:34:31 MSK)" executed successfully
+2026-03-01 10:27:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:28:31 MSK)" (scheduled at 2026-03-01 10:27:31.579612+03:00)
+2026-03-01 10:27:31,602 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:28:31 MSK)" executed successfully
+2026-03-01 10:28:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:29:31 MSK)" (scheduled at 2026-03-01 10:28:31.579612+03:00)
+2026-03-01 10:28:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:29:31 MSK)" executed successfully
+2026-03-01 10:29:01,580 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:37:06 MSK)" (scheduled at 2026-03-01 10:29:01.579612+03:00)
+2026-03-01 10:29:01,583 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:37:06 MSK)" executed successfully
+2026-03-01 10:29:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:30:31 MSK)" (scheduled at 2026-03-01 10:29:31.579612+03:00)
+2026-03-01 10:29:31,593 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:30:31 MSK)" executed successfully
+2026-03-01 10:30:31,583 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:31:31 MSK)" (scheduled at 2026-03-01 10:30:31.579612+03:00)
+2026-03-01 10:30:31,589 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:31:31 MSK)" executed successfully
+2026-03-01 10:31:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:32:31 MSK)" (scheduled at 2026-03-01 10:31:31.579612+03:00)
+2026-03-01 10:31:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:32:31 MSK)" executed successfully
+2026-03-01 10:32:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:33:31 MSK)" (scheduled at 2026-03-01 10:32:31.579612+03:00)
+2026-03-01 10:32:31,598 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:33:31 MSK)" executed successfully
+2026-03-01 10:33:31,591 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:34:31 MSK)" (scheduled at 2026-03-01 10:33:31.579612+03:00)
+2026-03-01 10:33:31,597 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:34:31 MSK)" executed successfully
+2026-03-01 10:34:31,592 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:35:31 MSK)" (scheduled at 2026-03-01 10:34:31.579612+03:00)
+2026-03-01 10:34:31,593 [INFO] apscheduler.executors.default: Running job "fetch_all_coefficients (trigger: interval[0:08:00], next run at: 2026-03-01 10:42:31 MSK)" (scheduled at 2026-03-01 10:34:31.579612+03:00)
+2026-03-01 10:34:31,599 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:35:31 MSK)" executed successfully
+2026-03-01 10:35:29,648 [WARNING] bot.services.yandex_api: Rate limited (429) for zone arbat, retrying in 10s (attempt 1/2)
+2026-03-01 10:35:31,586 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:36:31 MSK)" (scheduled at 2026-03-01 10:35:31.579612+03:00)
+2026-03-01 10:35:31,592 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:36:31 MSK)" executed successfully
+2026-03-01 10:36:14,797 [WARNING] bot.services.yandex_api: Rate limited (429) for zone north, retrying in 10s (attempt 1/2)
+2026-03-01 10:36:31,595 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:37:31 MSK)" (scheduled at 2026-03-01 10:36:31.579612+03:00)
+2026-03-01 10:36:31,600 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:37:31 MSK)" executed successfully
+2026-03-01 10:37:06,595 [INFO] apscheduler.executors.default: Running job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:45:11 MSK)" (scheduled at 2026-03-01 10:37:06.579612+03:00)
+2026-03-01 10:37:06,598 [INFO] apscheduler.executors.default: Job "check_and_notify (trigger: interval[0:08:05], next run at: 2026-03-01 10:45:11 MSK)" executed successfully
+2026-03-01 10:37:31,587 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:38:31 MSK)" (scheduled at 2026-03-01 10:37:31.579612+03:00)
+2026-03-01 10:37:31,594 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-01 10:38:31 MSK)" executed successfully

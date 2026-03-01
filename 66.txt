@@ -1,0 +1,5044 @@
+{
+  "center_tab": true,
+  "distance": "2,3 км",
+  "jams": true,
+  "notify": null,
+  "typed_experiments": {
+    "items": [
+      {
+        "name": "plugin_offer_coupon",
+        "value": {}
+      },
+      {
+        "name": "combo_modal_slider",
+        "value": {
+          "alternative_types": [
+            "combo_inner",
+            "combo_outer"
+          ],
+          "auto_animated": true,
+          "tariff_classes": [
+            "combo",
+            "uberpool",
+            "fastenpool"
+          ]
+        }
+      },
+      {
+        "name": "routestats_cashback",
+        "value": {}
+      },
+      {
+        "name": "marketplace_alt_deeplink",
+        "value": {
+          "deeplink": "yandexyango://marketplace?screen=shop_in_shop_flex&show_root=false&orders_state_f=%7B%22summary_toggle%22%3A%20true%2C%22change_summary_toggle_to%22%3A%20true%7D&cmp_name=business_mode&source_att=delivery_product&campaign_name=alt_option"
+        }
+      },
+      {
+        "name": "can_notify_about_paid_cancel",
+        "value": {}
+      },
+      {
+        "name": "plugin_intercity",
+        "value": {}
+      },
+      {
+        "name": "plugin_preorder",
+        "value": {
+          "available": "true"
+        }
+      },
+      {
+        "name": "new_alt_pin_design",
+        "value": {
+          "color": "5BC660",
+          "enabled": true,
+          "l10n": {
+            "title": "отсюда дешевле на {{}}"
+          }
+        }
+      }
+    ],
+    "version": 23348978
+  },
+  "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+  "service_levels": [
+    {
+      "cars": [
+        ""
+      ],
+      "description": "Поездка 0 $SIGN$$CURRENCY$, ~8 мин",
+      "details": [
+        {
+          "description": "всего",
+          "price": "0 $SIGN$$CURRENCY$"
+        }
+      ],
+      "max_price_as_decimal": "0.00",
+      "pin_description": "Отсюда 0 $SIGN$$CURRENCY$",
+      "class": "drive",
+      "name": "Драйв",
+      "service_level": 205,
+      "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+      "is_fixed_price": true,
+      "is_hidden": false,
+      "details_tariff": [
+        {
+          "type": "price",
+          "value": "от 0 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "icon",
+          "value": "от 0 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "comment",
+          "value": "подача,"
+        }
+      ],
+      "description_parts": {
+        "prefix": "",
+        "suffix": "",
+        "value": "0 $SIGN$$CURRENCY$"
+      },
+      "tariff_unavailable": {
+        "code": "drive_not_registered",
+        "message": "Сначала нужно зарегистрироваться",
+        "show_price": false
+      },
+      "title": "Дальше",
+      "selector": {
+        "is_hidden": true,
+        "hidden_percent": 0
+      },
+      "price": "0 $SIGN$$CURRENCY$",
+      "tariff_requirements": {}
+    },
+    {
+      "cars": [
+        "Hyundai Solaris",
+        "Kia Rio"
+      ],
+      "description": "Поездка 411 $SIGN$$CURRENCY$, ~8 мин",
+      "details": [
+        {
+          "description": "всего",
+          "price": "411 $SIGN$$CURRENCY$"
+        }
+      ],
+      "max_price_as_decimal": "411.00",
+      "pin_description": "Отсюда 411 $SIGN$$CURRENCY$",
+      "class": "intercity_preorder",
+      "name": "Предзаказ",
+      "service_level": 56,
+      "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+      "is_fixed_price": true,
+      "is_hidden": true,
+      "details_tariff": [
+        {
+          "type": "price",
+          "value": "от 289 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "icon",
+          "value": "от 289 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "comment",
+          "value": "подача,"
+        },
+        {
+          "type": "comment",
+          "value": "далее 12 $SIGN$$CURRENCY$/км и 12 $SIGN$$CURRENCY$/мин."
+        }
+      ],
+      "description_parts": {
+        "prefix": "",
+        "suffix": "",
+        "value": "411 $SIGN$$CURRENCY$"
+      },
+      "price": "410 $SIGN$$CURRENCY$",
+      "paid_options": {
+        "value": 1.6,
+        "display_card_icon": true,
+        "show_order_popup": false,
+        "color_button": true,
+        "alert_properties": {
+          "label": "Высокий спрос",
+          "title": "Тариф временно увеличен",
+          "description": "Из-за высокого спроса на такси рядом с вами не хватает свободных машин. Стоимость поездок временно увеличилась — это позволит привлечь больше водителей в ваш район. Как только их будет достаточно, цена сразу же станет прежней. ",
+          "button_text": "Понятно"
+        }
+      },
+      "summary_style": {
+        "surge_icon": {
+          "type": "default",
+          "color": "#21201F",
+          "text_color": "#FFFFFF"
+        },
+        "order_button": {
+          "text_color": "#000000",
+          "fill": {
+            "color": "#fce004",
+            "type": "solid"
+          }
+        }
+      },
+      "requirements": {
+        "destination": true
+      },
+      "tariff_requirements": {},
+      "prices": {
+        "args": {
+          "final_price": "411"
+        },
+        "raw": {
+          "final_price": "411"
+        },
+        "used_formats": {
+          "full_screen_tariff_card": "full_card",
+          "tariff_card": "card",
+          "intercity_tariff_selector_on_select": "intercity_selector_final_selected",
+          "vertical_selector_on_select": "vertical_selector_on_select_selector",
+          "intercity_tariff_selector": "intercity_selector_final",
+          "selector_on_select": "selector_on_select",
+          "vertical_selector": "vertical_selector_selector",
+          "selector": "selector",
+          "default": "default"
+        }
+      }
+    },
+    {
+      "cars": [
+        "Hyundai Solaris",
+        "Kia Rio"
+      ],
+      "description": "Поездка 411 $SIGN$$CURRENCY$, ~8 мин",
+      "details": [
+        {
+          "description": "всего",
+          "price": "411 $SIGN$$CURRENCY$"
+        }
+      ],
+      "max_price_as_decimal": "411.00",
+      "pin_description": "Отсюда 411 $SIGN$$CURRENCY$",
+      "class": "intercity",
+      "name": "Межгород",
+      "service_level": 51,
+      "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+      "is_fixed_price": true,
+      "is_hidden": true,
+      "searching_pulsar": {
+        "type": "two_circles",
+        "priority": 0
+      },
+      "details_tariff": [
+        {
+          "type": "price",
+          "value": "от 289 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "icon",
+          "value": "от 289 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "comment",
+          "value": "подача,"
+        },
+        {
+          "type": "comment",
+          "value": "далее 12 $SIGN$$CURRENCY$/км и 12 $SIGN$$CURRENCY$/мин."
+        }
+      ],
+      "description_parts": {
+        "prefix": "",
+        "suffix": "",
+        "value": "411 $SIGN$$CURRENCY$"
+      },
+      "estimated_waiting": {
+        "seconds": 120,
+        "message": "2 мин"
+      },
+      "price": "410 $SIGN$$CURRENCY$",
+      "paid_options": {
+        "value": 1.6,
+        "display_card_icon": true,
+        "show_order_popup": false,
+        "color_button": true,
+        "alert_properties": {
+          "label": "Высокий спрос",
+          "title": "Тариф временно увеличен",
+          "description": "Из-за высокого спроса на такси рядом с вами не хватает свободных машин. Стоимость поездок временно увеличилась — это позволит привлечь больше водителей в ваш район. Как только их будет достаточно, цена сразу же станет прежней. ",
+          "button_text": "Понятно"
+        }
+      },
+      "summary_style": {
+        "surge_icon": {
+          "type": "default",
+          "color": "#21201F",
+          "text_color": "#FFFFFF"
+        },
+        "order_button": {
+          "text_color": "#000000",
+          "fill": {
+            "color": "#fce004",
+            "type": "solid"
+          }
+        }
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_surge_widget_ruble_lightning",
+            "color": "#FCB900",
+            "balance": 72
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "выше среднего",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#FCB900",
+          "balance": 72,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "little_higher_price",
+          "is_fixed_price": true,
+          "is_interval_prices": false,
+          "final_price": "411",
+          "currency": "RUB",
+          "free_cars": 1,
+          "all_cars": 31,
+          "orders_count": 82
+        },
+        "type": "surge_balance"
+      },
+      "requirements": {
+        "destination": true
+      },
+      "tariff_requirements": {},
+      "prices": {
+        "args": {
+          "final_price": "411"
+        },
+        "raw": {
+          "final_price": "411"
+        },
+        "used_formats": {
+          "full_screen_tariff_card": "full_card_surge_#21201F",
+          "tariff_card": "card_surge_#21201F",
+          "intercity_tariff_selector_on_select": "intercity_selector_final_selected",
+          "vertical_selector_on_select": "vertical_selector_on_select_selector_#21201F",
+          "intercity_tariff_selector": "intercity_selector_final",
+          "selector_on_select": "on_select_surge_#21201F",
+          "vertical_selector": "vertical_selector_selector_#21201F",
+          "selector": "selector",
+          "default": "default"
+        }
+      }
+    },
+    {
+      "cars": [
+        "Hyundai Solaris",
+        "Kia Rio",
+        "Volkswagen Polo"
+      ],
+      "description": "Поездка 413 $SIGN$$CURRENCY$, ~8 мин",
+      "details": [
+        {
+          "description": "всего",
+          "price": "413 $SIGN$$CURRENCY$"
+        }
+      ],
+      "max_price_as_decimal": "413.00",
+      "pin_description": "Отсюда 413 $SIGN$$CURRENCY$",
+      "class": "econom",
+      "name": "Эконом",
+      "service_level": 50,
+      "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+      "is_fixed_price": true,
+      "is_hidden": false,
+      "searching_pulsar": {
+        "type": "two_circles",
+        "priority": 0
+      },
+      "details_tariff": [
+        {
+          "type": "price",
+          "value": "от 339 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "icon",
+          "value": "от 339 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "comment",
+          "value": "включено 3 мин., далее 12 $SIGN$$CURRENCY$/мин."
+        },
+        {
+          "type": "comment",
+          "value": "включено 1 км, далее 12 $SIGN$$CURRENCY$/км"
+        }
+      ],
+      "description_parts": {
+        "prefix": "",
+        "suffix": "",
+        "value": "413 $SIGN$$CURRENCY$"
+      },
+      "estimated_waiting": {
+        "seconds": 120,
+        "message": "2 мин"
+      },
+      "price": "410 $SIGN$$CURRENCY$",
+      "paid_options": {
+        "value": 1.6,
+        "display_card_icon": true,
+        "show_order_popup": false,
+        "color_button": true,
+        "alert_properties": {
+          "label": "Высокий спрос",
+          "title": "Тариф временно увеличен",
+          "description": "Из-за высокого спроса на такси рядом с вами не хватает свободных машин. Стоимость поездок временно увеличилась — это позволит привлечь больше водителей в ваш район. Как только их будет достаточно, цена сразу же станет прежней. ",
+          "button_text": "Понятно"
+        }
+      },
+      "summary_style": {
+        "surge_icon": {
+          "type": "default",
+          "color": "#21201F",
+          "text_color": "#FFFFFF"
+        },
+        "order_button": {
+          "text_color": "#000000",
+          "fill": {
+            "color": "#fce004",
+            "type": "solid"
+          }
+        }
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_surge_widget_ruble_lightning",
+            "color": "#FCB900",
+            "balance": 72
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "выше среднего",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#FCB900",
+          "balance": 72,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "little_higher_price",
+          "is_fixed_price": true,
+          "is_interval_prices": false,
+          "final_price": "413",
+          "currency": "RUB",
+          "free_cars": 1,
+          "all_cars": 31,
+          "orders_count": 82
+        },
+        "type": "surge_balance"
+      },
+      "requirements": {
+        "destination": true
+      },
+      "tariff_requirements": {},
+      "highlighted_tariffs": {
+        "eta": [
+          "multiclass"
+        ]
+      },
+      "prices": {
+        "args": {
+          "final_price": "413"
+        },
+        "raw": {
+          "final_price": "413"
+        },
+        "used_formats": {
+          "full_screen_tariff_card": "full_card_surge_#21201F",
+          "tariff_card": "card_surge_#21201F",
+          "intercity_tariff_selector_on_select": "intercity_selector_final_selected",
+          "vertical_selector_on_select": "vertical_selector_on_select_selector_#21201F",
+          "intercity_tariff_selector": "intercity_selector_final",
+          "selector_on_select": "on_select_surge_#21201F",
+          "vertical_selector": "vertical_selector_selector_#21201F",
+          "selector": "selector",
+          "default": "default"
+        }
+      }
+    },
+    {
+      "class": "lite_b2b",
+      "name": "Лайт",
+      "service_level": 52,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "cars": [
+        "Только новые просторные автомобили. \n\nSkoda Octavia",
+        "Ford Galaxy",
+        "Hyundai i40 и другие."
+      ],
+      "description": "Поездка 585 $SIGN$$CURRENCY$, ~8 мин",
+      "details": [
+        {
+          "description": "всего",
+          "price": "585 $SIGN$$CURRENCY$"
+        }
+      ],
+      "max_price_as_decimal": "585.00",
+      "pin_description": "Отсюда 585 $SIGN$$CURRENCY$",
+      "class": "business",
+      "name": "Комфорт",
+      "service_level": 70,
+      "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+      "is_fixed_price": true,
+      "is_hidden": false,
+      "searching_pulsar": {
+        "type": "two_circles",
+        "priority": 0
+      },
+      "details_tariff": [
+        {
+          "type": "price",
+          "value": "от 499 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "icon",
+          "value": "от 499 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "comment",
+          "value": "включено 3 мин., далее 14 $SIGN$$CURRENCY$/мин."
+        },
+        {
+          "type": "comment",
+          "value": "включено 1 км, далее 14 $SIGN$$CURRENCY$/км"
+        }
+      ],
+      "description_parts": {
+        "prefix": "",
+        "suffix": "",
+        "value": "585 $SIGN$$CURRENCY$"
+      },
+      "estimated_waiting": {
+        "seconds": 120,
+        "message": "2 мин"
+      },
+      "price": "580 $SIGN$$CURRENCY$",
+      "paid_options": {
+        "value": 1.8,
+        "display_card_icon": true,
+        "show_order_popup": false,
+        "color_button": true,
+        "alert_properties": {
+          "label": "Высокий спрос",
+          "title": "Тариф временно увеличен",
+          "description": "Из-за высокого спроса на такси рядом с вами не хватает свободных машин. Стоимость поездок временно увеличилась — это позволит привлечь больше водителей в ваш район. Как только их будет достаточно, цена сразу же станет прежней. ",
+          "button_text": "Понятно"
+        }
+      },
+      "summary_style": {
+        "surge_icon": {
+          "type": "default",
+          "color": "#FC9000",
+          "text_color": "#FFFFFF"
+        },
+        "order_button": {
+          "text_color": "#000000",
+          "fill": {
+            "color": "#fce004",
+            "type": "solid"
+          }
+        }
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_surge_widget_ruble_lightning",
+            "color": "#FC9000",
+            "balance": 76
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "высокий",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#FC9000",
+          "balance": 76,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "higher_price",
+          "is_fixed_price": true,
+          "is_interval_prices": false,
+          "final_price": "585",
+          "currency": "RUB",
+          "free_cars": 5,
+          "all_cars": 28,
+          "orders_count": 17
+        },
+        "type": "surge_balance"
+      },
+      "requirements": {
+        "destination": true
+      },
+      "tariff_requirements": {},
+      "highlighted_tariffs": {
+        "eta": [
+          "multiclass"
+        ]
+      },
+      "prices": {
+        "args": {
+          "final_price": "585"
+        },
+        "raw": {
+          "final_price": "585"
+        },
+        "used_formats": {
+          "full_screen_tariff_card": "full_card_surge_#FC9000",
+          "tariff_card": "card_surge_#FC9000",
+          "intercity_tariff_selector_on_select": "intercity_selector_final_selected",
+          "vertical_selector_on_select": "vertical_selector_on_select_selector_#FC9000",
+          "intercity_tariff_selector": "intercity_selector_final",
+          "selector_on_select": "on_select_surge_#FC9000",
+          "vertical_selector": "vertical_selector_selector_#FC9000",
+          "selector": "selector",
+          "default": "default"
+        }
+      }
+    },
+    {
+      "class": "standart_b2b",
+      "name": "Стандарт",
+      "service_level": 53,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "cars": [
+        "Toyota Camry",
+        "Kia Optima",
+        "Hyundai Sonata"
+      ],
+      "description": "Поездка 624 $SIGN$$CURRENCY$, ~8 мин",
+      "details": [
+        {
+          "description": "всего",
+          "price": "624 $SIGN$$CURRENCY$"
+        }
+      ],
+      "max_price_as_decimal": "624.00",
+      "pin_description": "Отсюда 624 $SIGN$$CURRENCY$",
+      "class": "comfortplus",
+      "name": "Комфорт+",
+      "service_level": 80,
+      "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+      "is_fixed_price": true,
+      "is_hidden": false,
+      "searching_pulsar": {
+        "type": "two_circles",
+        "priority": 0
+      },
+      "details_tariff": [
+        {
+          "type": "price",
+          "value": "от 519 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "icon",
+          "value": "от 519 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "comment",
+          "value": "включено 3 мин., далее 17 $SIGN$$CURRENCY$/мин."
+        },
+        {
+          "type": "comment",
+          "value": "включено 1 км, далее 17 $SIGN$$CURRENCY$/км"
+        }
+      ],
+      "description_parts": {
+        "prefix": "",
+        "suffix": "",
+        "value": "624 $SIGN$$CURRENCY$"
+      },
+      "estimated_waiting": {
+        "seconds": 120,
+        "message": "2 мин"
+      },
+      "price": "620 $SIGN$$CURRENCY$",
+      "paid_options": {
+        "value": 1,
+        "display_card_icon": false,
+        "show_order_popup": false,
+        "color_button": true,
+        "alert_properties": {
+          "label": "Высокий спрос",
+          "title": "Тариф временно увеличен",
+          "description": "Из-за высокого спроса на такси рядом с вами не хватает свободных машин. Стоимость поездок временно увеличилась — это позволит привлечь больше водителей в ваш район. Как только их будет достаточно, цена сразу же станет прежней. ",
+          "button_text": "Понятно"
+        }
+      },
+      "summary_style": {
+        "order_button": {
+          "text_color": "#000000",
+          "fill": {
+            "color": "#fce004",
+            "type": "solid"
+          }
+        }
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_surge_widget_ruble_lightning",
+            "color": "#FCB900",
+            "balance": 60
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "выше среднего",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#FCB900",
+          "balance": 60,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "little_higher_price",
+          "is_fixed_price": true,
+          "is_interval_prices": false,
+          "final_price": "624",
+          "currency": "RUB",
+          "free_cars": 6,
+          "all_cars": 25,
+          "orders_count": 10
+        },
+        "type": "surge_balance"
+      },
+      "requirements": {
+        "destination": true
+      },
+      "tariff_requirements": {},
+      "highlighted_tariffs": {
+        "eta": [
+          "multiclass"
+        ]
+      },
+      "prices": {
+        "args": {
+          "final_price": "624"
+        },
+        "raw": {
+          "final_price": "624"
+        },
+        "used_formats": {
+          "full_screen_tariff_card": "full_card",
+          "tariff_card": "card",
+          "intercity_tariff_selector_on_select": "intercity_selector_final_selected",
+          "vertical_selector_on_select": "vertical_selector_on_select_selector",
+          "intercity_tariff_selector": "intercity_selector_final",
+          "selector_on_select": "selector_on_select",
+          "vertical_selector": "vertical_selector_selector",
+          "selector": "selector",
+          "default": "default"
+        }
+      }
+    },
+    {
+      "class": "optimum_b2b",
+      "name": "Оптимум",
+      "service_level": 54,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "cars": [
+        "Mercedes-Benz E-Класс",
+        "BMW 5 серии",
+        "Audi A6",
+        "Hongqi H5"
+      ],
+      "description": "Поездка 903 $SIGN$$CURRENCY$, ~8 мин",
+      "details": [
+        {
+          "description": "всего",
+          "price": "903 $SIGN$$CURRENCY$"
+        }
+      ],
+      "max_price_as_decimal": "903.00",
+      "pin_description": "Отсюда 903 $SIGN$$CURRENCY$",
+      "class": "vip",
+      "name": "Business",
+      "service_level": 90,
+      "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+      "is_fixed_price": true,
+      "is_hidden": false,
+      "searching_pulsar": {
+        "type": "two_circles",
+        "priority": 0
+      },
+      "details_tariff": [
+        {
+          "type": "price",
+          "value": "от 509 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "icon",
+          "value": "от 509 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "comment",
+          "value": "включено 3 мин., далее 25 $SIGN$$CURRENCY$/мин."
+        },
+        {
+          "type": "comment",
+          "value": "включено 1 км, далее 25 $SIGN$$CURRENCY$/км"
+        }
+      ],
+      "description_parts": {
+        "prefix": "",
+        "suffix": "",
+        "value": "903 $SIGN$$CURRENCY$"
+      },
+      "estimated_waiting": {
+        "seconds": 1080,
+        "message": "18 мин"
+      },
+      "price": "900 $SIGN$$CURRENCY$",
+      "paid_options": {
+        "value": 1,
+        "display_card_icon": false,
+        "show_order_popup": true,
+        "color_button": false,
+        "order_popup_properties": {
+          "title": "",
+          "comment": "",
+          "description": "В стоимость заказа входит подача машины издалека",
+          "reason": "Отмена заказа в течение 3 мин бесплатная. Если отменить позже, спишется 240 $SIGN$$CURRENCY$.",
+          "button_text": "Вызвать такси",
+          "type": "default"
+        }
+      },
+      "paid_supply": {
+        "free_cancel_timeout_sec": 180,
+        "paid_cancel_price_raw": 240,
+        "paid_cancel_price": "240 $SIGN$$CURRENCY$",
+        "paid_supply_price_raw": 240,
+        "paid_supply_price": "240 $SIGN$$CURRENCY$"
+      },
+      "requirements": {
+        "destination": true
+      },
+      "tariff_requirements": {},
+      "highlighted_tariffs": {
+        "eta": [
+          "multiclass"
+        ]
+      },
+      "prices": {
+        "args": {
+          "final_price": "903"
+        },
+        "raw": {
+          "final_price": "903"
+        },
+        "used_formats": {
+          "full_screen_tariff_card": "full_card",
+          "tariff_card": "card",
+          "intercity_tariff_selector_on_select": "intercity_selector_final_selected",
+          "vertical_selector_on_select": "vertical_selector_on_select_selector",
+          "intercity_tariff_selector": "intercity_selector_final",
+          "selector_on_select": "selector_on_select",
+          "vertical_selector": "vertical_selector_selector",
+          "selector": "selector",
+          "default": "default"
+        }
+      }
+    },
+    {
+      "cars": [
+        "Skoda Octavia",
+        "Hyundai Solaris",
+        "Kia Rio"
+      ],
+      "description": "Поездка 413 $SIGN$$CURRENCY$, ~8 мин",
+      "details": [
+        {
+          "description": "всего",
+          "price": "413 $SIGN$$CURRENCY$"
+        }
+      ],
+      "max_price_as_decimal": "413.00",
+      "pin_description": "Отсюда 413 $SIGN$$CURRENCY$",
+      "class": "child_tariff",
+      "name": "Детский",
+      "service_level": 60,
+      "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+      "is_fixed_price": true,
+      "is_hidden": false,
+      "searching_pulsar": {
+        "type": "two_circles",
+        "priority": 0
+      },
+      "details_tariff": [
+        {
+          "type": "price",
+          "value": "от 339 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "icon",
+          "value": "от 339 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "comment",
+          "value": "включено 3 мин., далее 12 $SIGN$$CURRENCY$/мин."
+        },
+        {
+          "type": "comment",
+          "value": "включено 1 км, далее 12 $SIGN$$CURRENCY$/км"
+        }
+      ],
+      "description_parts": {
+        "prefix": "",
+        "suffix": "",
+        "value": "413 $SIGN$$CURRENCY$"
+      },
+      "title": "Выбрать кресло",
+      "estimated_waiting": {
+        "seconds": 120,
+        "message": "2 мин"
+      },
+      "price": "410 $SIGN$$CURRENCY$",
+      "paid_options": {
+        "value": 1.6,
+        "display_card_icon": true,
+        "show_order_popup": false,
+        "color_button": true,
+        "alert_properties": {
+          "label": "Высокий спрос",
+          "title": "Тариф временно увеличен",
+          "description": "Из-за высокого спроса на такси рядом с вами не хватает свободных машин. Стоимость поездок временно увеличилась — это позволит привлечь больше водителей в ваш район. Как только их будет достаточно, цена сразу же станет прежней. ",
+          "button_text": "Понятно"
+        }
+      },
+      "summary_style": {
+        "surge_icon": {
+          "type": "default",
+          "color": "#21201F",
+          "text_color": "#FFFFFF"
+        },
+        "order_button": {
+          "text_color": "#000000",
+          "fill": {
+            "color": "#fce004",
+            "type": "solid"
+          }
+        }
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_surge_widget_ruble_lightning",
+            "color": "#FCB900",
+            "balance": 72
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "выше среднего",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#FCB900",
+          "balance": 72,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "little_higher_price",
+          "is_fixed_price": true,
+          "is_interval_prices": false,
+          "final_price": "413",
+          "currency": "RUB",
+          "free_cars": 1,
+          "all_cars": 31,
+          "orders_count": 82
+        },
+        "type": "surge_balance"
+      },
+      "requirements": {
+        "destination": true
+      },
+      "tariff_requirements": {},
+      "prices": {
+        "args": {
+          "final_price": "413"
+        },
+        "raw": {
+          "final_price": "413"
+        },
+        "used_formats": {
+          "full_screen_tariff_card": "full_card_surge_#21201F",
+          "tariff_card": "card_surge_#21201F",
+          "intercity_tariff_selector_on_select": "intercity_selector_final_selected",
+          "vertical_selector_on_select": "vertical_selector_on_select_selector_#21201F",
+          "intercity_tariff_selector": "intercity_selector_final",
+          "selector_on_select": "on_select_surge_#21201F",
+          "vertical_selector": "vertical_selector_selector_#21201F",
+          "selector": "selector",
+          "default": "default"
+        }
+      }
+    },
+    {
+      "cars": [
+        "Ford Galaxy",
+        "Volkswagen Caddy"
+      ],
+      "description": "Поездка 1079 $SIGN$$CURRENCY$, ~8 мин",
+      "details": [
+        {
+          "description": "всего",
+          "price": "1079 $SIGN$$CURRENCY$"
+        }
+      ],
+      "max_price_as_decimal": "1079.00",
+      "pin_description": "Отсюда 1079 $SIGN$$CURRENCY$",
+      "class": "minivan",
+      "name": "Минивэн",
+      "service_level": 95,
+      "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+      "is_fixed_price": true,
+      "is_hidden": false,
+      "details_tariff": [
+        {
+          "type": "price",
+          "value": "от 999 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "icon",
+          "value": "от 999 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "comment",
+          "value": "включено 3 мин., далее 13 $SIGN$$CURRENCY$/мин."
+        },
+        {
+          "type": "comment",
+          "value": "включено 1 км, далее 13 $SIGN$$CURRENCY$/км"
+        }
+      ],
+      "description_parts": {
+        "prefix": "",
+        "suffix": "",
+        "value": "1079 $SIGN$$CURRENCY$"
+      },
+      "tariff_unavailable": {
+        "code": "no_free_cars_nearby",
+        "message": "Нет свободных машин"
+      },
+      "price": "1070 $SIGN$$CURRENCY$",
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_fixed_price": true,
+          "is_interval_prices": false,
+          "final_price": "1079",
+          "currency": "RUB",
+          "free_cars": 5,
+          "all_cars": 28,
+          "orders_count": 17
+        },
+        "type": "surge_balance"
+      },
+      "requirements": {
+        "destination": true
+      },
+      "tariff_requirements": {},
+      "prices": {
+        "args": {
+          "final_price": "1079"
+        },
+        "raw": {
+          "final_price": "1079"
+        },
+        "used_formats": {
+          "full_screen_tariff_card": "full_card",
+          "tariff_card": "card",
+          "intercity_tariff_selector_on_select": "intercity_selector_final_selected",
+          "vertical_selector_on_select": "vertical_selector_on_select_selector",
+          "intercity_tariff_selector": "intercity_selector_final",
+          "selector_on_select": "selector_on_select",
+          "vertical_selector": "vertical_selector_selector",
+          "selector": "selector",
+          "default": "default"
+        }
+      }
+    },
+    {
+      "class": "suv",
+      "name": "Помощь детям",
+      "service_level": 140,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "premium_suv",
+      "name": "Помощь взрослым",
+      "service_level": 158,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "eda",
+      "name": "Еда",
+      "service_level": 175,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "lavka",
+      "name": "Лавка",
+      "service_level": 185,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "cars": [
+        "И не садиться за руль"
+      ],
+      "description": "Поездка 2179 $SIGN$$CURRENCY$, ~8 мин",
+      "details": [
+        {
+          "description": "всего",
+          "price": "2179 $SIGN$$CURRENCY$"
+        }
+      ],
+      "max_price_as_decimal": "2179.00",
+      "pin_description": "Отсюда 2179 $SIGN$$CURRENCY$",
+      "class": "personal_driver",
+      "name": "Водитель",
+      "service_level": 123,
+      "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+      "is_fixed_price": true,
+      "is_hidden": false,
+      "searching_pulsar": {
+        "type": "two_circles",
+        "priority": 0
+      },
+      "details_tariff": [
+        {
+          "type": "price",
+          "value": "от 1799 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "icon",
+          "value": "от 1799 $SIGN$$CURRENCY$"
+        },
+        {
+          "type": "comment",
+          "value": "включено 25 мин., далее 44 $SIGN$$CURRENCY$/мин."
+        },
+        {
+          "type": "comment",
+          "value": "включено 15 км, далее 40 $SIGN$$CURRENCY$/км"
+        }
+      ],
+      "description_parts": {
+        "prefix": "",
+        "suffix": "",
+        "value": "2179 $SIGN$$CURRENCY$"
+      },
+      "title": "Вызвать",
+      "estimated_waiting": {
+        "seconds": 1080,
+        "message": "18 мин"
+      },
+      "price": "2170 $SIGN$$CURRENCY$",
+      "paid_options": {
+        "value": 1,
+        "display_card_icon": false,
+        "show_order_popup": false,
+        "color_button": false
+      },
+      "search_screen": {
+        "title": "Поиск водителя"
+      },
+      "tariff_requirements": {},
+      "prices": {
+        "args": {
+          "final_price": "2179"
+        },
+        "raw": {
+          "final_price": "2179"
+        },
+        "used_formats": {
+          "full_screen_tariff_card": "full_card",
+          "tariff_card": "card",
+          "intercity_tariff_selector_on_select": "intercity_selector_final_selected",
+          "vertical_selector_on_select": "vertical_selector_on_select_selector",
+          "intercity_tariff_selector": "intercity_selector_final",
+          "selector_on_select": "selector_on_select",
+          "vertical_selector": "vertical_selector_selector",
+          "selector": "selector",
+          "default": "default"
+        }
+      }
+    },
+    {
+      "class": "minivan_hh",
+      "name": "Минивэн",
+      "service_level": 163,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "cargo_hour_6",
+      "name": "Короткий заказ",
+      "service_level": 245,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "cargo_hour",
+      "name": "Грузовой по часам",
+      "service_level": 246,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "cargo_hour_5",
+      "name": "Короткий заказ b2b",
+      "service_level": 244,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "captive_auto",
+      "name": "Авто",
+      "service_level": 200,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "envoy_auto",
+      "name": "Помощник",
+      "service_level": 214,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "express_econ_slow",
+      "name": "Экспресс",
+      "service_level": 343,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "express_slow",
+      "name": "Экспресс +30 мин",
+      "service_level": 334,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_delivery_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "cargo_intercity",
+      "name": "Грузовой Межгород",
+      "service_level": 300,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "superexpress_d2d",
+      "name": "Экспресс",
+      "service_level": 349,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "superexpress_outdoor",
+      "name": "Экспресс",
+      "service_level": 350,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "express_econ_d2d_slow",
+      "name": "Экспресс",
+      "service_level": 308,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "cargo_intercity_ltl",
+      "name": "Грузовой Межгород • Мультизаказ",
+      "service_level": 305,
+      "is_hidden": true,
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_white_ruble",
+            "color": "#E0DEDA",
+            "balance": 0
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 0,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "express_fast",
+      "name": "Экспресс",
+      "service_level": 299,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "cargo",
+      "name": "Грузовой",
+      "service_level": 119,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "ndd",
+      "name": "Пункты выдачи",
+      "service_level": 139,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "sdd",
+      "name": "В течение дня",
+      "service_level": 141,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "ndd_internal",
+      "name": "От 1 дня",
+      "service_level": 142,
+      "offer": ".",
+      "is_hidden": false,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "ndd_external",
+      "name": "По России",
+      "service_level": 143,
+      "offer": ".",
+      "is_hidden": false,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "express",
+      "name": "Экспресс",
+      "service_level": 154,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "title": "",
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "courier",
+      "name": "Курьер",
+      "service_level": 155,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "cargo_long",
+      "name": "Грузовой",
+      "service_level": 171,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "cargo_express",
+      "name": "Грузовой",
+      "service_level": 172,
+      "offer": ".",
+      "is_hidden": false,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "envoy",
+      "name": "Помощник",
+      "service_level": 209,
+      "offer": ".",
+      "is_hidden": false,
+      "searching_pulsar": {
+        "type": "two_circles",
+        "priority": 0
+      },
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "express_d2d",
+      "name": "Экспресс",
+      "service_level": 230,
+      "offer": ".",
+      "is_hidden": false,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "express_outdoor",
+      "name": "Экспресс",
+      "service_level": 231,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "express_d2d_slow",
+      "name": "Экспресс",
+      "service_level": 232,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "sdd_short",
+      "name": "В течение дня",
+      "service_level": 233,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "sdd_evening",
+      "name": "В течение дня",
+      "service_level": 234,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "sdd_long",
+      "name": "2–4 часа",
+      "service_level": 235,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    },
+    {
+      "class": "express_d2d_veryslow",
+      "name": "Экспресс",
+      "service_level": 236,
+      "offer": ".",
+      "is_hidden": true,
+      "tariff_unavailable": {
+        "code": "no_delivery_offer",
+        "message": "Выбрать способ доставки",
+        "order_button_action": {
+          "disable_when_expanded": true,
+          "type": "open_tariff_card"
+        },
+        "show_price": true
+      },
+      "widget": {
+        "content": {
+          "additional_icons": [],
+          "balance": {
+            "leading_icon": "badge_surge_widget_car_v2",
+            "trail_icon": "badge_surge_widget_human_v3",
+            "value_icon": "badge_little_black_ruble",
+            "color": "#E0DEDA",
+            "balance": 50
+          }
+        },
+        "accessibility_info": {
+          "label": "индекс спроса",
+          "value": "недоступен",
+          "hint": "узнать детали"
+        },
+        "payload": {
+          "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+          "actual_offer_id": ".",
+          "has_tolls": false,
+          "surge_color": "#E0DEDA",
+          "balance": 50,
+          "traffic": {
+            "icon": "",
+            "traffic_score": 6
+          },
+          "trend_type": "not_available",
+          "is_interval_prices": false,
+          "currency": "RUB"
+        },
+        "type": "surge_balance"
+      },
+      "tariff_requirements": {}
+    }
+  ],
+  "alternatives": {
+    "options": [
+      {
+        "distance": "2,3 км",
+        "multiclass_popup": {
+          "show_conditions": [
+            {
+              "count": 10,
+              "metric": "tariff_switch",
+              "period_seconds": 8
+            }
+          ],
+          "show_count": 1,
+          "text": "Самый\nбыстрый"
+        },
+        "name": "Самый быстрый",
+        "selection_rules": {
+          "min_selected_count": {
+            "text": "Выберите минимум два тарифа",
+            "value": 2
+          }
+        },
+        "type": "multiclass",
+        "display_group": "multiclass",
+        "details": {
+          "description": "Будем искать машину в нескольких тарифах сразу. Приедет ближайшая.",
+          "estimated_waiting": {
+            "message": "2 мин",
+            "seconds": 120
+          },
+          "order_button": {
+            "enabled": false,
+            "text": "Выберите минимум два тарифа"
+          },
+          "price": "до 585 $SIGN$$CURRENCY$",
+          "search_screen": {
+            "subtitle": "в нескольких тарифах",
+            "title": "Поиск"
+          }
+        },
+        "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+        "service_levels": [
+          {
+            "selected": true,
+            "class": "business",
+            "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+            "widget": {
+              "content": {
+                "additional_icons": [],
+                "balance": {
+                  "value_icon": "badge_surge_widget_ruble_lightning",
+                  "color": "#FC9000",
+                  "balance": 0
+                }
+              },
+              "accessibility_info": {
+                "label": "индекс спроса",
+                "value": "высокий",
+                "hint": "узнать детали"
+              },
+              "payload": {
+                "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+                "actual_offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+                "has_tolls": false,
+                "surge_color": "#FC9000",
+                "balance": 0,
+                "traffic": {
+                  "icon": "",
+                  "traffic_score": 6
+                },
+                "trend_type": "higher_price",
+                "is_fixed_price": true,
+                "is_interval_prices": false,
+                "currency": "RUB"
+              },
+              "type": "surge_balance"
+            },
+            "description_parts": {
+              "prefix": "",
+              "suffix": "",
+              "value": "585 $SIGN$$CURRENCY$"
+            }
+          },
+          {
+            "selected": false,
+            "class": "child_tariff",
+            "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+            "widget": {
+              "content": {
+                "additional_icons": [],
+                "balance": {
+                  "value_icon": "badge_surge_widget_ruble_lightning",
+                  "color": "#FCB900",
+                  "balance": 0
+                }
+              },
+              "accessibility_info": {
+                "label": "индекс спроса",
+                "value": "выше среднего",
+                "hint": "узнать детали"
+              },
+              "payload": {
+                "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+                "actual_offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+                "has_tolls": false,
+                "surge_color": "#FCB900",
+                "balance": 0,
+                "traffic": {
+                  "icon": "",
+                  "traffic_score": 6
+                },
+                "trend_type": "little_higher_price",
+                "is_fixed_price": true,
+                "is_interval_prices": false,
+                "currency": "RUB"
+              },
+              "type": "surge_balance"
+            },
+            "description_parts": {
+              "prefix": "",
+              "suffix": "",
+              "value": "413 $SIGN$$CURRENCY$"
+            }
+          },
+          {
+            "selected": false,
+            "class": "comfortplus",
+            "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+            "widget": {
+              "content": {
+                "additional_icons": [],
+                "balance": {
+                  "value_icon": "badge_surge_widget_ruble_lightning",
+                  "color": "#FCB900",
+                  "balance": 0
+                }
+              },
+              "accessibility_info": {
+                "label": "индекс спроса",
+                "value": "выше среднего",
+                "hint": "узнать детали"
+              },
+              "payload": {
+                "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+                "actual_offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+                "has_tolls": false,
+                "surge_color": "#FCB900",
+                "balance": 0,
+                "traffic": {
+                  "icon": "",
+                  "traffic_score": 6
+                },
+                "trend_type": "little_higher_price",
+                "is_fixed_price": true,
+                "is_interval_prices": false,
+                "currency": "RUB"
+              },
+              "type": "surge_balance"
+            },
+            "description_parts": {
+              "prefix": "",
+              "suffix": "",
+              "value": "624 $SIGN$$CURRENCY$"
+            }
+          },
+          {
+            "selected": false,
+            "class": "econom",
+            "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+            "widget": {
+              "content": {
+                "additional_icons": [],
+                "balance": {
+                  "value_icon": "badge_surge_widget_ruble_lightning",
+                  "color": "#FCB900",
+                  "balance": 0
+                }
+              },
+              "accessibility_info": {
+                "label": "индекс спроса",
+                "value": "выше среднего",
+                "hint": "узнать детали"
+              },
+              "payload": {
+                "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+                "actual_offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+                "has_tolls": false,
+                "surge_color": "#FCB900",
+                "balance": 0,
+                "traffic": {
+                  "icon": "",
+                  "traffic_score": 6
+                },
+                "trend_type": "little_higher_price",
+                "is_fixed_price": true,
+                "is_interval_prices": false,
+                "currency": "RUB"
+              },
+              "type": "surge_balance"
+            },
+            "description_parts": {
+              "prefix": "",
+              "suffix": "",
+              "value": "413 $SIGN$$CURRENCY$"
+            }
+          },
+          {
+            "selected": false,
+            "class": "minivan",
+            "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+            "widget": {
+              "content": {
+                "additional_icons": [],
+                "balance": {
+                  "value_icon": "badge_little_black_ruble",
+                  "color": "#E0DEDA",
+                  "balance": 50
+                }
+              },
+              "accessibility_info": {
+                "label": "индекс спроса",
+                "value": "недоступен",
+                "hint": "узнать детали"
+              },
+              "payload": {
+                "offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+                "actual_offer_id": "a3e27754d036b7519e378bde3a1ecfb0",
+                "has_tolls": false,
+                "surge_color": "#E0DEDA",
+                "balance": 50,
+                "traffic": {
+                  "icon": "",
+                  "traffic_score": 6
+                },
+                "trend_type": "not_available",
+                "is_fixed_price": true,
+                "is_interval_prices": false,
+                "currency": "RUB"
+              },
+              "type": "surge_balance"
+            },
+            "description_parts": {
+              "prefix": "",
+              "suffix": "",
+              "value": "1079 $SIGN$$CURRENCY$"
+            }
+          },
+          {
+            "selected": false,
+            "class": "vip",
+            "offer": "a3e27754d036b7519e378bde3a1ecfb0",
+            "description_parts": {
+              "prefix": "",
+              "suffix": "",
+              "value": "903 $SIGN$$CURRENCY$"
+            }
+          }
+        ],
+        "selector": {
+          "icon": {
+            "size_hint": 640,
+            "url": "https://tc.mobile.yandex.net/static/images/38292/b22dc12d96df4abda5dff5a72e6fbfbf",
+            "image_tag": "other_multiclass_selector",
+            "url_parts": {
+              "key": "TC",
+              "path": "/static/images/38292/b22dc12d96df4abda5dff5a72e6fbfbf"
+            }
+          }
+        },
+        "time_seconds": 480,
+        "time": "8 мин",
+        "multiclass": {
+          "requirements_supported": true
+        },
+        "widget": {
+          "payload": {
+            "flow": "multiclass",
+            "is_fixed_price": false,
+            "trip_price": "585",
+            "application_service_fee_list": [
+              {
+                "tariff_name": "Комфорт",
+                "fee": "0"
+              }
+            ],
+            "multiclass_from_price": false,
+            "currency": "RUB"
+          },
+          "type": "hidden"
+        }
+      },
+      {
+        "type": "alt_create_yandex_card",
+        "display_group": "alt_create_yandex_card",
+        "offer": "",
+        "service_levels": [
+          {
+            "class": "comfortplus",
+            "service_level": 80,
+            "name": "По карте Пэй",
+            "offer": "",
+            "estimated_waiting": {
+              "seconds": 120,
+              "message": "2 мин"
+            },
+            "prices": {
+              "args": {
+                "pay_discount": "30"
+              },
+              "raw": {
+                "pay_discount": "30"
+              },
+              "used_formats": {
+                "selector": "selector_green",
+                "vertical_selector": "vertical_selector_selector_green",
+                "selector_on_select": "selector_green",
+                "vertical_selector_on_select": "vertical_selector_on_select_selector_green",
+                "default": "default_range"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "alt_create_yandex_card",
+        "display_group": "alt_create_yandex_card",
+        "offer": "",
+        "service_levels": [
+          {
+            "class": "econom",
+            "service_level": 50,
+            "name": "По карте Пэй",
+            "offer": "",
+            "estimated_waiting": {
+              "seconds": 120,
+              "message": "2 мин"
+            },
+            "prices": {
+              "args": {
+                "pay_discount": "30"
+              },
+              "raw": {
+                "pay_discount": "30"
+              },
+              "used_formats": {
+                "selector": "selector_green",
+                "vertical_selector": "vertical_selector_selector_green",
+                "selector_on_select": "selector_green",
+                "vertical_selector_on_select": "vertical_selector_on_select_selector_green",
+                "default": "default_range"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "alt_create_yandex_card",
+        "display_group": "alt_create_yandex_card",
+        "offer": "",
+        "service_levels": [
+          {
+            "class": "child_tariff",
+            "service_level": 60,
+            "name": "По карте Пэй",
+            "offer": "",
+            "estimated_waiting": {
+              "seconds": 120,
+              "message": "2 мин"
+            },
+            "prices": {
+              "args": {
+                "pay_discount": "30"
+              },
+              "raw": {
+                "pay_discount": "30"
+              },
+              "used_formats": {
+                "selector": "selector_green",
+                "vertical_selector": "vertical_selector_selector_green",
+                "selector_on_select": "selector_green",
+                "vertical_selector_on_select": "vertical_selector_on_select_selector_green",
+                "default": "default_range"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "alt_create_yandex_card",
+        "display_group": "alt_create_yandex_card",
+        "offer": "",
+        "service_levels": [
+          {
+            "class": "minivan",
+            "service_level": 95,
+            "name": "По карте Пэй",
+            "offer": "",
+            "prices": {
+              "args": {
+                "pay_discount": "30"
+              },
+              "raw": {
+                "pay_discount": "30"
+              },
+              "used_formats": {
+                "selector": "selector_green",
+                "vertical_selector": "vertical_selector_selector_green",
+                "selector_on_select": "selector_green",
+                "vertical_selector_on_select": "vertical_selector_on_select_selector_green",
+                "default": "default_range"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "alt_create_yandex_card",
+        "display_group": "alt_create_yandex_card",
+        "offer": "",
+        "service_levels": [
+          {
+            "class": "business",
+            "service_level": 70,
+            "name": "По карте Пэй",
+            "offer": "",
+            "estimated_waiting": {
+              "seconds": 120,
+              "message": "2 мин"
+            },
+            "prices": {
+              "args": {
+                "pay_discount": "30"
+              },
+              "raw": {
+                "pay_discount": "30"
+              },
+              "used_formats": {
+                "selector": "selector_green",
+                "vertical_selector": "vertical_selector_selector_green",
+                "selector_on_select": "selector_green",
+                "vertical_selector_on_select": "vertical_selector_on_select_selector_green",
+                "default": "default_range"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "alt_create_yandex_card",
+        "display_group": "alt_create_yandex_card",
+        "offer": "",
+        "service_levels": [
+          {
+            "class": "intercity",
+            "service_level": 51,
+            "name": "По карте Пэй",
+            "offer": "",
+            "estimated_waiting": {
+              "seconds": 120,
+              "message": "2 мин"
+            },
+            "prices": {
+              "args": {
+                "pay_discount": "30"
+              },
+              "raw": {
+                "pay_discount": "30"
+              },
+              "used_formats": {
+                "selector": "selector_green",
+                "vertical_selector": "vertical_selector_selector_green",
+                "selector_on_select": "selector_green",
+                "vertical_selector_on_select": "vertical_selector_on_select_selector_green",
+                "default": "default_range"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "verticals": [
+    {
+      "id": "drive",
+      "price": "от 0 $SIGN$$CURRENCY$",
+      "tariffs": [
+        {
+          "class": "drive"
+        }
+      ],
+      "default_tariff": "drive",
+      "title": "Драйв",
+      "header_title": "Драйв",
+      "type": "group"
+    },
+    {
+      "id": "transport",
+      "type": "transport"
+    },
+    {
+      "id": "hub",
+      "tariffs": [
+        {
+          "class": "combo"
+        },
+        {
+          "class": "econom"
+        },
+        {
+          "class": "business"
+        },
+        {
+          "class": "comfortplus"
+        },
+        {
+          "class": "vip"
+        },
+        {
+          "class": "drive"
+        }
+      ],
+      "type": "mixed"
+    },
+    {
+      "id": "taxi",
+      "price": "от 413 $SIGN$$CURRENCY$",
+      "tariffs": [
+        {
+          "class": "econom"
+        },
+        {
+          "class": "business"
+        },
+        {
+          "class": "comfortplus"
+        },
+        {
+          "class": "vip",
+          "use_tariff_title_on_vertical_name": true
+        },
+        {
+          "class": "child_tariff"
+        },
+        {
+          "class": "minivan"
+        }
+      ],
+      "default_tariff": "econom",
+      "multiclass": {
+        "tariffs": [
+          {
+            "tariff": "econom",
+            "selected": false
+          },
+          {
+            "tariff": "business",
+            "selected": true
+          },
+          {
+            "tariff": "comfortplus",
+            "selected": false
+          },
+          {
+            "tariff": "vip",
+            "selected": false
+          },
+          {
+            "tariff": "minivan",
+            "selected": false
+          }
+        ],
+        "position": 7,
+        "name": "Самый быстрый",
+        "details": {
+          "description": {
+            "title": "Несколько тарифов",
+            "subtitle": "Выберите тарифы — назначим ближайшую к вам машину"
+          },
+          "price": "585 $SIGN$$CURRENCY$",
+          "order_button": {
+            "text": "Выберите минимум два тарифа",
+            "enabled": false
+          },
+          "search_screen": {
+            "title": "Поиск",
+            "subtitle": "в нескольких тарифах"
+          },
+          "prices": {
+            "args": {
+              "lower": "585",
+              "upper": "585"
+            },
+            "raw": {
+              "lower": "585",
+              "upper": "585"
+            },
+            "used_formats": {
+              "full_screen_tariff_card": "full_card_multiclass_single_fixed_price",
+              "selector_on_select": "selector_on_select_multiclass_single_fixed_price",
+              "selector": "selector_multiclass_single_fixed_price",
+              "default": "default_multiclass_single_fixed_price"
+            }
+          }
+        },
+        "selection_rules": {
+          "min_selected_count": {
+            "text": "Выберите минимум два тарифа",
+            "value": 2
+          }
+        },
+        "estimated_waiting": {
+          "message": "2 мин",
+          "seconds": 120
+        },
+        "widget": {
+          "payload": {
+            "flow": "multiclass",
+            "is_fixed_price": false,
+            "trip_price": "585",
+            "application_service_fee_list": [
+              {
+                "tariff_name": "Комфорт",
+                "fee": "0"
+              }
+            ],
+            "multiclass_from_price": false,
+            "currency": "RUB"
+          },
+          "type": "hidden"
+        }
+      },
+      "title": "Такси ",
+      "header_title": "Такси",
+      "type": "group"
+    },
+    {
+      "id": "child",
+      "price": "от 413 $SIGN$$CURRENCY$",
+      "tariffs": [
+        {
+          "class": "child_tariff"
+        },
+        {
+          "class": "business"
+        },
+        {
+          "class": "comfortplus"
+        },
+        {
+          "class": "vip"
+        },
+        {
+          "class": "minivan"
+        }
+      ],
+      "default_tariff": "child_tariff",
+      "title": "С детьми",
+      "header_title": "С детьми",
+      "type": "group"
+    },
+    {
+      "id": "delivery",
+      "tariffs": [
+        {
+          "class": "ndd_internal"
+        },
+        {
+          "class": "envoy"
+        },
+        {
+          "class": "express_d2d"
+        },
+        {
+          "class": "cargo_express"
+        },
+        {
+          "class": "ndd_external"
+        }
+      ],
+      "default_tariff": "express_d2d",
+      "title": "Доставка",
+      "header_title": "Доставка",
+      "type": "group"
+    },
+    {
+      "id": "rest_tariffs",
+      "price": "от 2179 $SIGN$$CURRENCY$",
+      "tariffs": [
+        {
+          "class": "personal_driver"
+        }
+      ],
+      "default_tariff": "personal_driver",
+      "title": "Другие",
+      "header_title": "Другие",
+      "type": "group"
+    }
+  ],
+  "verticals_modes": [
+    "verticals_selector"
+  ],
+  "promo_context": {
+    "toll_road_params": {
+      "auto_payment": false
+    },
+    "offer_id": "a3e27754d036b7519e378bde3a1ecfb0"
+  },
+  "currency_rules": {
+    "code": "RUB",
+    "text": "руб.",
+    "template": "$VALUE$ $SIGN$$CURRENCY$",
+    "sign": "₽"
+  },
+  "time": "8 мин",
+  "time_seconds": 473,
+  "toll_roads": {
+    "has_tolls": false,
+    "auto_payment": false
+  },
+  "price_formats": {
+    "vertical_selector_on_select_selector_green": {
+      "args": [
+        "pay_discount"
+      ],
+      "accessibility_text": "Дешевле на $pay_discount$%",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "alternative_green_prices_discount",
+            "width": 14
+          },
+          {
+            "type": "text",
+            "text": "−$pay_discount$ ",
+            "font_size": 16,
+            "color": "l:#1CC052;d:#029154"
+          },
+          {
+            "type": "text",
+            "text": "%",
+            "font_size": 11,
+            "font_weight": "medium",
+            "color": "l:#1CC052;d:#029154"
+          }
+        ]
+      }
+    },
+    "selector_green": {
+      "args": [
+        "pay_discount"
+      ],
+      "accessibility_text": "Дешевле на $pay_discount$%",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_alternative_green_prices_discount",
+            "width": 14
+          },
+          {
+            "type": "text",
+            "text": "−$pay_discount$ ",
+            "font_size": 16,
+            "color": "l:#1CC052;d:#029154"
+          },
+          {
+            "type": "text",
+            "text": "%",
+            "font_size": 11,
+            "font_weight": "medium",
+            "color": "l:#1CC052;d:#029154"
+          }
+        ]
+      }
+    },
+    "default_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$–$upper$ $SIGN$$CURRENCY$'"
+          }
+        ]
+      }
+    },
+    "full_card_surge_#21201F": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_big_surge_icon",
+            "vertical_alignment": "center",
+            "color": "#21201F"
+          },
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "vertical_selector_on_select_selector_#21201F": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "Высокий спрос, $final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_small_surge_icon",
+            "vertical_alignment": "center",
+            "color": "#21201F"
+          },
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "on_select_surge_#21201F": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "Высокий спрос, $final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_small_surge_icon",
+            "vertical_alignment": "center",
+            "color": "#21201F"
+          },
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "vertical_selector_selector_#21201F": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_small_surge_icon",
+            "vertical_alignment": "center",
+            "color": "#21201F"
+          },
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "vertical_selector_selector_#FC9000": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_small_surge_icon",
+            "vertical_alignment": "center",
+            "color": "#FC9000"
+          },
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "intercity_selector_final_selected": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 20,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "full_card": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "card_multiclass_to": {
+      "args": [
+        "to_price"
+      ],
+      "accessibility_text": "До $to_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "до ",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": "$to_price$",
+            "font_size": 32,
+            "font_weight": "regular"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 24,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "intercity_selector_final": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 20
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "selector_on_select": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "vertical_selector_selector_green": {
+      "args": [
+        "pay_discount"
+      ],
+      "accessibility_text": "Дешевле на $pay_discount$%",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_alternative_green_prices_discount",
+            "width": 14
+          },
+          {
+            "type": "text",
+            "text": "−$pay_discount$ ",
+            "font_size": 16,
+            "color": "l:#1CC052;d:#029154"
+          },
+          {
+            "type": "text",
+            "text": "%",
+            "font_size": 11,
+            "font_weight": "medium",
+            "color": "l:#1CC052;d:#029154"
+          }
+        ]
+      }
+    },
+    "vertical_selector_selector": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "default": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$final_price$ $SIGN$$CURRENCY$"
+          }
+        ]
+      }
+    },
+    "default_multiclass_to_upper": {
+      "args": [
+        "upper"
+      ],
+      "accessibility_text": "До $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "до ",
+            "font_size": 11,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": "$upper$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "full_card_multiclass_to": {
+      "args": [
+        "to_price"
+      ],
+      "accessibility_text": "До $to_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "до ",
+            "font_size": 13,
+            "font_weight": "bold"
+          },
+          {
+            "type": "text",
+            "text": "$to_price$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "card_multiclass_from": {
+      "args": [
+        "from_price"
+      ],
+      "accessibility_text": "От $from_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "от ",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": "$from_price$",
+            "font_size": 32,
+            "font_weight": "regular"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 24,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "selector_multiclass_fixed_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$–$upper$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_on_select_multiclass_fixed_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$–$upper$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_multiclass_from": {
+      "args": [
+        "from_price"
+      ],
+      "accessibility_text": "От $from_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "от ",
+            "font_size": 11,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": "$from_price$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "default_multiclass_from": {
+      "args": [
+        "from_price"
+      ],
+      "accessibility_text": "От $from_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "от $from_price$ $SIGN$$CURRENCY$"
+          }
+        ]
+      }
+    },
+    "full_card_single_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "full_card_multiclass_to_upper": {
+      "args": [
+        "upper"
+      ],
+      "accessibility_text": "До $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "до ",
+            "font_size": 13,
+            "font_weight": "bold"
+          },
+          {
+            "type": "text",
+            "text": "$upper$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_on_select_multiclass_to_upper": {
+      "args": [
+        "upper"
+      ],
+      "accessibility_text": "До $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "до ",
+            "font_size": 11,
+            "font_weight": "bold"
+          },
+          {
+            "type": "text",
+            "text": "$upper$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "card_surge_#21201F": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_very_big_surge_icon",
+            "vertical_alignment": "center",
+            "color": "#21201F"
+          },
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 32,
+            "font_weight": "regular"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 24,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "selector_on_select_single_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_on_select_multiclass_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$–$upper$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "default_multiclass_single_approximately_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "Предварительная цена от $lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "~$lower$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "full_card_surge_#FC9000": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_big_surge_icon",
+            "vertical_alignment": "center",
+            "color": "#FC9000"
+          },
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "full_card_multiclass_approximately_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "Предварительная цена от $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "~$lower$–$upper$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "default_multiclass_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$–$upper$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_multiclass_from_lower": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "От $lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "от ",
+            "font_size": 11,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "default_multiclass_single_fixed_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "$lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "default_single_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "full_card_multiclass_from": {
+      "args": [
+        "from_price"
+      ],
+      "accessibility_text": "От $from_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "от ",
+            "font_size": 13,
+            "font_weight": "bold"
+          },
+          {
+            "type": "text",
+            "text": "$from_price$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_multiclass_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$–$upper$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_multiclass_to": {
+      "args": [
+        "to_price"
+      ],
+      "accessibility_text": "До $to_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "до ",
+            "font_size": 11,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": "$to_price$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "default_multiclass_from_lower": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "От $lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "от ",
+            "font_size": 11,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "selector_multiclass_single_fixed_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "$lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "vertical_selector_on_select_selector": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_on_select_multiclass_single_fixed_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "$lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "full_card_multiclass_single_approximately_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "Предварительная цена от $lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "~$lower$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "full_card_multiclass_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$–$upper$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_on_select_multiclass_single_approximately_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "Предварительная цена от $lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "~$lower$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "full_card_multiclass_single_fixed_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "$lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "card_surge_#FC9000": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_very_big_surge_icon",
+            "vertical_alignment": "center",
+            "color": "#FC9000"
+          },
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 32,
+            "font_weight": "regular"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 24,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "default_multiclass_to": {
+      "args": [
+        "to_price"
+      ],
+      "accessibility_text": "До $to_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "до $to_price$ $SIGN$$CURRENCY$"
+          }
+        ]
+      }
+    },
+    "vertical_selector_on_select_selector_#FC9000": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "Высокий спрос, $final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_small_surge_icon",
+            "vertical_alignment": "center",
+            "color": "#FC9000"
+          },
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_multiclass_single_approximately_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "Предварительная цена от $lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "~$lower$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "selector_on_select_multiclass_from": {
+      "args": [
+        "from_price"
+      ],
+      "accessibility_text": "От $from_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "от ",
+            "font_size": 11,
+            "font_weight": "bold"
+          },
+          {
+            "type": "text",
+            "text": "$from_price$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_multiclass_approximately_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "Предварительная цена от $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "~$lower$–$upper$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "on_select_surge_#FC9000": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "Высокий спрос, $final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "image",
+            "image_tag": "price_small_surge_icon",
+            "vertical_alignment": "center",
+            "color": "#FC9000"
+          },
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "selector_on_select_multiclass_approximately_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "Предварительная цена от $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "~$lower$–$upper$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_on_select_multiclass_to": {
+      "args": [
+        "to_price"
+      ],
+      "accessibility_text": "До $to_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "до ",
+            "font_size": 11,
+            "font_weight": "bold"
+          },
+          {
+            "type": "text",
+            "text": "$to_price$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "full_card_multiclass_from_lower": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "От $lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "от ",
+            "font_size": 13,
+            "font_weight": "bold"
+          },
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_on_select_multiclass_from_lower": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "От $lower$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "от ",
+            "font_size": 11,
+            "font_weight": "bold"
+          },
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "default_multiclass_approximately_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "Предварительная цена от $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "~$lower$–$upper$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_multiclass_to_upper": {
+      "args": [
+        "upper"
+      ],
+      "accessibility_text": "До $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "до ",
+            "font_size": 11,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": "$upper$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "full_card_multiclass_fixed_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$–$upper$",
+            "font_size": 24,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 13,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "card": {
+      "args": [
+        "final_price"
+      ],
+      "accessibility_text": "$final_price$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$final_price$",
+            "font_size": 32,
+            "font_weight": "regular"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 24,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    },
+    "default_multiclass_fixed_range": {
+      "args": [
+        "lower",
+        "upper"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$–$upper$",
+            "font_size": 16,
+            "font_weight": "medium"
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "bold"
+          }
+        ]
+      }
+    },
+    "selector_single_price": {
+      "args": [
+        "lower"
+      ],
+      "accessibility_text": "От $lower$ до $upper$ $SIGN$$CURRENCY$",
+      "text": {
+        "items": [
+          {
+            "type": "text",
+            "text": "$lower$",
+            "font_size": 16
+          },
+          {
+            "type": "text",
+            "text": " $SIGN$$CURRENCY$",
+            "font_size": 11,
+            "font_weight": "medium"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,104 @@
+import asyncio
+import logging
+
+from aiogram import Bot, Dispatcher
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+from bot.config import settings
+from bot.database.db import init_db
+from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor
+from bot.middlewares.auth import ThrottleMiddleware
+from bot.services.yandex_api import fetch_all_coefficients
+from bot.services.notifier import check_and_notify
+from bot.services.event_notifier import check_and_notify_events
+from bot.services.event_parser import fetch_and_store_events
+from bot.web.api import create_app
+
+# Import models to ensure they're registered with SQLAlchemy
+from bot.models.user import User
+from bot.models.shift import Shift
+from bot.models.subscription import Subscription
+from bot.models.financial_settings import UserFinancialSettings
+
+from aiohttp import web
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
+logger = logging.getLogger(__name__)
+
+
+async def _initial_fetch():
+    """Fetch initial data in background without blocking bot startup."""
+    try:
+        logger.info("Starting initial coefficient fetch...")
+        await fetch_all_coefficients()
+        logger.info("Initial coefficient fetch complete")
+    except Exception as e:
+        logger.error("Initial coefficient fetch failed: %s", e)
+
+    try:
+        logger.info("Starting initial event parsing...")
+        await fetch_and_store_events()
+        logger.info("Initial event parsing complete")
+    except Exception as e:
+        logger.warning("Initial event parsing failed: %s", e)
+
+
+async def main():
+    await init_db()
+    logger.info("Database initialized")
+
+    bot = Bot(token=settings.bot_token)
+    dp = Dispatcher()
+
+    # Middleware
+    dp.message.middleware(ThrottleMiddleware(rate_limit=0.5))
+
+    # Routers
+    dp.include_router(start.router)
+    dp.include_router(menu.router)
+    dp.include_router(coefficients.router)
+    dp.include_router(settings_handler.router)
+    dp.include_router(notifications.router)
+    dp.include_router(events.router)
+    dp.include_router(search.router)
+    dp.include_router(financial.router)
+    dp.include_router(traffic.router)
+    dp.include_router(hotspots.router)
+    dp.include_router(subscription.router)
+    dp.include_router(ai_advisor.router)
+
+    # Initial fetch in background (non-blocking)
+    asyncio.create_task(_initial_fetch())
+    logger.info("Initial data fetch scheduled in background")
+
+    # Scheduler
+    scheduler = AsyncIOScheduler()
+    scheduler.add_job(fetch_all_coefficients, "interval", seconds=settings.parse_interval_seconds)
+    scheduler.add_job(check_and_notify, "interval", seconds=settings.parse_interval_seconds + 5, args=[bot])
+    scheduler.add_job(check_and_notify_events, "interval", seconds=60, args=[bot])  # Check events every minute
+    scheduler.add_job(fetch_and_store_events, "interval", hours=6)  # Parse events every 6 hours
+    scheduler.start()
+    logger.info("Scheduler started (interval=%ds)", settings.parse_interval_seconds)
+
+    # Web server
+    webapp = create_app()
+    runner = web.AppRunner(webapp)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", settings.web_port)
+    await site.start()
+    logger.info("Web server started on port %d", settings.web_port)
+
+    try:
+        logger.info("Bot starting polling...")
+        await dp.start_polling(bot)
+    finally:
+        await runner.cleanup()
+        scheduler.shutdown()
+        await bot.session.close()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

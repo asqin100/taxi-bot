@@ -1,0 +1,178 @@
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+
+from bot.config import settings
+from bot.services.zones import get_zones
+
+TARIFF_OPTIONS = [
+    ("econom", "Эконом"),
+    ("comfort", "Комфорт"),
+    ("business", "Бизнес"),
+]
+
+EVENT_TYPE_OPTIONS = [
+    ("concert", "🎵 Концерты"),
+    ("sport", "⚽ Спорт"),
+    ("theater", "🎭 Театр"),
+    ("conference", "🎤 Конференции"),
+    ("other", "📍 Другое"),
+]
+
+
+BACK_BUTTON = [InlineKeyboardButton(text="◀️ Назад", callback_data="cmd:menu")]
+
+
+def tariff_keyboard(selected: set[str] | None = None) -> InlineKeyboardMarkup:
+    selected = selected or set()
+    buttons = []
+    for tid, name in TARIFF_OPTIONS:
+        check = "✅ " if tid in selected else ""
+        buttons.append([InlineKeyboardButton(text=f"{check}{name}", callback_data=f"tariff:{tid}")])
+    buttons.append([InlineKeyboardButton(text="Готово ✔", callback_data="tariff:done")])
+    buttons.append(BACK_BUTTON)
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def zones_keyboard(selected: set[str] | None = None) -> InlineKeyboardMarkup:
+    selected = selected or set()
+    zones = get_zones()
+    buttons = []
+    for z in zones:
+        check = "✅ " if z.id in selected else ""
+        buttons.append([InlineKeyboardButton(text=f"{check}{z.name}", callback_data=f"zone:{z.id}")])
+    buttons.append([InlineKeyboardButton(text="Все зоны", callback_data="zone:all")])
+    buttons.append([InlineKeyboardButton(text="Готово ✔", callback_data="zone:done")])
+    buttons.append(BACK_BUTTON)
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def event_types_keyboard(selected: set[str] | None = None) -> InlineKeyboardMarkup:
+    selected = selected or set()
+    buttons = []
+    for tid, name in EVENT_TYPE_OPTIONS:
+        check = "✅ " if tid in selected else ""
+        buttons.append([InlineKeyboardButton(text=f"{check}{name}", callback_data=f"event_type:{tid}")])
+    buttons.append([InlineKeyboardButton(text="Готово ✔", callback_data="event_type:done")])
+    buttons.append(BACK_BUTTON)
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def notify_keyboard(enabled: bool, event_notify_enabled: bool = True, quiet_hours_enabled: bool = False) -> InlineKeyboardMarkup:
+    status = "🔔 Вкл" if enabled else "🔕 Выкл"
+    event_status = "🔔 Вкл" if event_notify_enabled else "🔕 Выкл"
+    quiet_status = "🔔 Вкл" if quiet_hours_enabled else "🔕 Выкл"
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=f"Уведомления о коэффициентах: {status}", callback_data="notify:toggle")],
+        [InlineKeyboardButton(text="Порог коэффициента", callback_data="notify:threshold")],
+        [InlineKeyboardButton(text=f"Уведомления о мероприятиях: {event_status}", callback_data="notify:event_toggle")],
+        [InlineKeyboardButton(text="Типы мероприятий", callback_data="notify:event_types")],
+        [InlineKeyboardButton(text=f"Тихие часы: {quiet_status}", callback_data="notify:quiet_toggle")],
+        [InlineKeyboardButton(text="⏰ Настроить время", callback_data="notify:quiet_hours")],
+        BACK_BUTTON,
+    ])
+
+
+def threshold_keyboard() -> InlineKeyboardMarkup:
+    values = ["1.2", "1.5", "1.8", "2.0", "2.5"]
+    buttons = [[InlineKeyboardButton(text=f"x{v}", callback_data=f"threshold:{v}")] for v in values]
+    buttons.append(BACK_BUTTON)
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def quiet_hours_keyboard() -> InlineKeyboardMarkup:
+    """Keyboard for setting quiet hours start/end time."""
+    hours = list(range(24))
+    buttons = []
+
+    # Create rows of 6 hours each
+    for i in range(0, 24, 6):
+        row = [InlineKeyboardButton(text=f"{h:02d}:00", callback_data=f"quiet_hour:{h}") for h in hours[i:i+6]]
+        buttons.append(row)
+
+    buttons.append(BACK_BUTTON)
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def main_menu_keyboard() -> InlineKeyboardMarkup:
+    buttons = []
+    if settings.webapp_url:
+        buttons.append([InlineKeyboardButton(
+            text="🗺 Открыть карту",
+            web_app=WebAppInfo(url=settings.webapp_url),
+        )])
+    buttons.extend([
+        [InlineKeyboardButton(text="📊 Коэффициенты", callback_data="cmd:kef")],
+        [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
+        [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
+        [InlineKeyboardButton(text="🗺 Горячие точки", callback_data="menu:hotspots")],
+        [
+            InlineKeyboardButton(text="💰 Финансы", callback_data="menu:financial"),
+            InlineKeyboardButton(text="🚦 Пробки", callback_data="menu:traffic"),
+        ],
+        [
+            InlineKeyboardButton(text="🔍 Поиск", callback_data="menu:search"),
+            InlineKeyboardButton(text="🔔 Уведомления", callback_data="cmd:notify"),
+        ],
+        [
+            InlineKeyboardButton(text="⚙️ Настройки", callback_data="cmd:settings"),
+            InlineKeyboardButton(text="⭐ Подписка", callback_data="menu:subscription"),
+        ],
+    ])
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def financial_menu_keyboard(has_active_shift: bool = False) -> InlineKeyboardMarkup:
+    """Financial tracker menu."""
+    buttons = []
+
+    if has_active_shift:
+        buttons.append([InlineKeyboardButton(text="⏹ Завершить смену", callback_data="financial:shift_end")])
+    else:
+        buttons.append([InlineKeyboardButton(text="▶️ Начать смену", callback_data="financial:shift_start")])
+
+    buttons.extend([
+        [InlineKeyboardButton(text="📊 Статистика", callback_data="financial:stats")],
+        [
+            InlineKeyboardButton(text="💸 Расходы", callback_data="financial:expenses"),
+            InlineKeyboardButton(text="🎯 Цели", callback_data="financial:goals"),
+        ],
+        [InlineKeyboardButton(text="🚗 Мой тариф", callback_data="financial:tariff")],
+        BACK_BUTTON,
+    ])
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def tariff_selection_keyboard(current_tariff: str = "econom") -> InlineKeyboardMarkup:
+    """Keyboard for selecting driver's tariff."""
+    from bot.models.financial_settings import TARIFF_NAMES, TARIFF_COMMISSIONS
+
+    buttons = []
+    for tariff_id, tariff_name in TARIFF_NAMES.items():
+        commission = TARIFF_COMMISSIONS[tariff_id]
+        check = "✅ " if tariff_id == current_tariff else ""
+        buttons.append([
+            InlineKeyboardButton(
+                text=f"{check}{tariff_name} (комиссия {commission}%)",
+                callback_data=f"tariff_select:{tariff_id}"
+            )
+        ])
+
+    buttons.append([InlineKeyboardButton(text="◀️ Назад к финансам", callback_data="menu:financial")])
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def traffic_menu_keyboard() -> InlineKeyboardMarkup:
+    """Traffic conditions menu."""
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🚦 Общая обстановка", callback_data="traffic:general")],
+        [InlineKeyboardButton(text="🛣 МКАД", callback_data="traffic:mkad")],
+        [InlineKeyboardButton(text="🔄 ТТК", callback_data="traffic:ttk")],
+        BACK_BUTTON,
+    ])
+
+
+def search_menu_keyboard() -> InlineKeyboardMarkup:
+    """Search menu with instructions."""
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="ℹ️ Как использовать", callback_data="search:help")],
+        BACK_BUTTON,
+    ])

@@ -1,0 +1,42 @@
+{
+  "venues": [
+    {"name": "Лужники", "aliases": ["luzhniki", "лужники", "олимпийский комплекс лужники"], "zone_id": "south", "lat": 55.7153, "lon": 37.5531},
+    {"name": "ВТБ Арена", "aliases": ["vtb arena", "втб арена", "динамо"], "zone_id": "north", "lat": 55.7917, "lon": 37.5594},
+    {"name": "Крокус Сити Холл", "aliases": ["crocus", "крокус", "крокус сити"], "zone_id": "krasnogorsk", "lat": 55.8233, "lon": 37.4108},
+    {"name": "Олимпийский", "aliases": ["olympic", "олимпийский", "сск олимпийский"], "zone_id": "center", "lat": 55.7797, "lon": 37.6197},
+    {"name": "ЦСКА Арена", "aliases": ["cska arena", "цска арена"], "zone_id": "northwest", "lat": 55.8178, "lon": 37.5194},
+    {"name": "Мегаспорт", "aliases": ["megasport", "мегаспорт"], "zone_id": "west", "lat": 55.7897, "lon": 37.4856},
+    {"name": "Экспоцентр", "aliases": ["expocentre", "экспоцентр"], "zone_id": "west", "lat": 55.7531, "lon": 37.5428},
+    {"name": "Москва Холл", "aliases": ["moscow hall", "москва холл"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Adrenaline Stadium", "aliases": ["adrenaline", "адреналин стадиум"], "zone_id": "south", "lat": 55.6833, "lon": 37.5667},
+    {"name": "Известия Холл", "aliases": ["izvestia hall", "известия холл"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Зарядье", "aliases": ["zaryadye", "зарядье", "концертный зал зарядье"], "zone_id": "center", "lat": 55.7514, "lon": 37.6289},
+    {"name": "Театр Эстрады", "aliases": ["estrada", "эстрада"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Кремлевский Дворец", "aliases": ["kremlin palace", "кремлевский дворец", "гкд"], "zone_id": "kremlin", "lat": 55.7520, "lon": 37.6175},
+
+    {"name": "Спартак Стадион", "aliases": ["spartak stadium", "спартак", "открытие арена", "otkrytie arena"], "zone_id": "northwest", "lat": 55.8181, "lon": 37.4403},
+    {"name": "Локомотив Стадион", "aliases": ["lokomotiv stadium", "локомотив", "ржд арена"], "zone_id": "northeast", "lat": 55.8208, "lon": 37.7403},
+    {"name": "Yotaspace", "aliases": ["йотаспейс", "yota space"], "zone_id": "northeast", "lat": 55.8086, "lon": 37.6358},
+    {"name": "Stadium Live", "aliases": ["стадиум лайв"], "zone_id": "south", "lat": 55.6833, "lon": 37.5667},
+    {"name": "A2 Green Concert", "aliases": ["а2", "a2", "green concert"], "zone_id": "southeast", "lat": 55.6833, "lon": 37.7167},
+    {"name": "Главклуб", "aliases": ["glavclub", "главклуб грин концерт", "glavclub green concert"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+
+    {"name": "Большой Театр", "aliases": ["bolshoi", "большой", "bolshoi theatre"], "zone_id": "kremlin", "lat": 55.7603, "lon": 37.6186},
+    {"name": "МХАТ", "aliases": ["mhat", "мхат", "moscow art theatre", "художественный театр"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Геликон-Опера", "aliases": ["helikon", "геликон", "helikon opera"], "zone_id": "arbat", "lat": 55.7500, "lon": 37.5833},
+    {"name": "Театр на Таганке", "aliases": ["taganka", "таганка"], "zone_id": "east", "lat": 55.7403, "lon": 37.6539},
+
+    {"name": "Сокольники", "aliases": ["sokolniki", "сокольники", "парк сокольники"], "zone_id": "northeast", "lat": 55.7903, "lon": 37.6739},
+    {"name": "ВДНХ", "aliases": ["vdnh", "вднх", "вднх экспо"], "zone_id": "northeast", "lat": 55.8297, "lon": 37.6278},
+    {"name": "Манеж", "aliases": ["manezh", "манеж", "центральный манеж"], "zone_id": "kremlin", "lat": 55.7539, "lon": 37.6117},
+
+    {"name": "16 Тонн", "aliases": ["16 tons", "16 тонн", "sixteen tons"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Арбат Холл", "aliases": ["arbat hall", "арбат холл"], "zone_id": "arbat", "lat": 55.7500, "lon": 37.5833},
+    {"name": "Клуб Алексея Козлова", "aliases": ["kozlov club", "клуб козлова"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Театр Мюзикла", "aliases": ["musical theatre", "театр мюзикла", "россия"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+
+    {"name": "Парк Горького", "aliases": ["gorky park", "горький", "парк горького"], "zone_id": "south", "lat": 55.7308, "lon": 37.6014},
+    {"name": "Музеон", "aliases": ["muzeon", "музеон"], "zone_id": "south", "lat": 55.7353, "lon": 37.6069},
+    {"name": "Аптекарский Огород", "aliases": ["aptekarsky ogorod", "аптекарский огород", "ботанический сад"], "zone_id": "center", "lat": 55.7697, "lon": 37.6322}
+  ]
+}
