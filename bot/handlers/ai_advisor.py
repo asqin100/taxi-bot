@@ -50,8 +50,8 @@ async def _send_advisor(message: Message):
         await send_and_cleanup(message, text, reply_markup=keyboard, parse_mode="HTML")
         return
 
-    # Get recommendation
-    recommendation = await get_smart_recommendation()
+    # Get recommendation with personal insights
+    recommendation = await get_smart_recommendation(user_id=user_id)
     text = format_recommendation(recommendation)
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[

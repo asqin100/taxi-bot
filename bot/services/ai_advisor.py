@@ -1,24 +1,133 @@
 """AI Advisor service - intelligent recommendations for drivers."""
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
+from collections import Counter
 
 from bot.services.yandex_api import get_cached_coefficients, get_top_zones
 from bot.services.traffic import get_moscow_traffic
 from bot.services.zones import get_zone_by_id
+from bot.database.db import get_session
+from bot.models.shift import Shift
+from sqlalchemy import select, func
 
 logger = logging.getLogger(__name__)
 
 
 class Recommendation:
     """AI recommendation with reasoning."""
-    def __init__(self, text: str, confidence: str, reasoning: list[str]):
+    def __init__(self, text: str, confidence: str, reasoning: list[str], personal_insights: list[str] = None):
         self.text = text
         self.confidence = confidence  # high, medium, low
         self.reasoning = reasoning
+        self.personal_insights = personal_insights or []
 
 
-async def get_smart_recommendation() -> Recommendation:
+async def _get_user_shift_stats(user_id: int, days: int = 30) -> dict:
+    """
+    Analyze user's shift history for personalized insights.
+
+    Returns:
+        Dict with statistics: best_hours, best_days, avg_hourly_rate, total_shifts
+    """
+    async with get_session() as session:
+        # Get shifts from last N days
+        cutoff_date = datetime.now() - timedelta(days=days)
+
+        result = await session.execute(
+            select(Shift).where(
+                Shift.user_id == user_id,
+                Shift.end_time.isnot(None),
+                Shift.start_time >= cutoff_date
+            )
+        )
+        shifts = result.scalars().all()
+
+        if not shifts:
+            return {
+                "total_shifts": 0,
+                "best_hours": [],
+                "best_days": [],
+                "avg_hourly_rate": 0,
+                "has_history": False
+            }
+
+        # Analyze best hours (by hourly rate)
+        hour_rates = {}
+        for shift in shifts:
+            hour = shift.start_time.hour
+            if hour not in hour_rates:
+                hour_rates[hour] = []
+            hour_rates[hour].append(shift.hourly_rate)
+
+        # Calculate average rate per hour
+        hour_avg = {h: sum(rates) / len(rates) for h, rates in hour_rates.items()}
+        best_hours = sorted(hour_avg.items(), key=lambda x: x[1], reverse=True)[:3]
+
+        # Analyze best days of week
+        day_rates = {}
+        for shift in shifts:
+            day = shift.start_time.weekday()  # 0=Monday, 6=Sunday
+            if day not in day_rates:
+                day_rates[day] = []
+            day_rates[day].append(shift.hourly_rate)
+
+        day_avg = {d: sum(rates) / len(rates) for d, rates in day_rates.items()}
+        best_days = sorted(day_avg.items(), key=lambda x: x[1], reverse=True)[:2]
+
+        # Overall average
+        avg_rate = sum(s.hourly_rate for s in shifts) / len(shifts)
+
+        return {
+            "total_shifts": len(shifts),
+            "best_hours": [h for h, _ in best_hours],
+            "best_days": [d for d, _ in best_days],
+            "avg_hourly_rate": avg_rate,
+            "has_history": True,
+            "hour_rates": hour_avg,
+            "day_rates": day_avg
+        }
+
+
+def _get_day_name(day: int) -> str:
+    """Get Russian day name from weekday number."""
+    days = ["понедельник", "вторник", "среда", "четверг", "пятница", "суббота", "воскресенье"]
+    return days[day]
+
+
+async def _generate_personal_insights(user_id: int, current_hour: int, current_day: int) -> list[str]:
+    """Generate personalized insights based on user's history."""
+    stats = await _get_user_shift_stats(user_id, days=30)
+
+    if not stats["has_history"]:
+        return []
+
+    insights = []
+
+    # Check if current hour is in user's best hours
+    if current_hour in stats["best_hours"]:
+        rank = stats["best_hours"].index(current_hour) + 1
+        insights.append(f"⭐ Это ваш #{rank} лучший час по заработку!")
+
+    # Check if current day is in user's best days
+    if current_day in stats["best_days"]:
+        day_name = _get_day_name(current_day)
+        insights.append(f"📅 {day_name.capitalize()} — один из ваших лучших дней")
+
+    # Compare with average
+    if stats["hour_rates"].get(current_hour):
+        hour_rate = stats["hour_rates"][current_hour]
+        if hour_rate > stats["avg_hourly_rate"] * 1.2:
+            insights.append(f"💰 В этот час вы обычно зарабатываете {hour_rate:.0f} руб/ч")
+
+    # Shift count insight
+    if stats["total_shifts"] >= 10:
+        insights.append(f"📊 Анализ основан на {stats['total_shifts']} сменах за месяц")
+
+    return insights
+
+
+async def get_smart_recommendation(user_id: Optional[int] = None) -> Recommendation:
     """
     Analyze current conditions and provide intelligent recommendation.
 
@@ -27,10 +136,12 @@ async def get_smart_recommendation() -> Recommendation:
     - Traffic conditions
     - Time of day
     - Day of week
+    - User's personal shift history (if user_id provided)
     """
     now = datetime.now()
     hour = now.hour
     is_weekend = now.weekday() >= 5
+    current_day = now.weekday()
 
     # Get current data
     coefficients = get_cached_coefficients()
@@ -38,6 +149,11 @@ async def get_smart_recommendation() -> Recommendation:
     top_zones = get_top_zones(3)
 
     reasoning = []
+    personal_insights = []
+
+    # Get personal insights if user_id provided
+    if user_id:
+        personal_insights = await _generate_personal_insights(user_id, hour, current_day)
 
     # Analyze time of day
     if 6 <= hour < 10:
@@ -102,7 +218,8 @@ async def get_smart_recommendation() -> Recommendation:
     return Recommendation(
         text=recommendation_text,
         confidence=confidence,
-        reasoning=reasoning
+        reasoning=reasoning,
+        personal_insights=personal_insights
     )
 
 
@@ -213,6 +330,12 @@ def format_recommendation(rec: Recommendation) -> str:
 
     for reason in rec.reasoning:
         lines.append(f"  {reason}")
+
+    # Personal insights
+    if rec.personal_insights:
+        lines.append("\n<b>Персональная статистика:</b>")
+        for insight in rec.personal_insights:
+            lines.append(f"  {insight}")
 
     # Confidence indicator
     if rec.confidence == "high":
