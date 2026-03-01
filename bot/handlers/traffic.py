@@ -42,6 +42,11 @@ async def cmd_traffic(message: Message):
     if ttk_traffic:
         text += f"{ttk_traffic.emoji} <b>ТТК:</b> {ttk_traffic.status_text} ({ttk_traffic.level}/10)\n"
 
+    # Add forecast
+    forecast = await traffic_service.get_traffic_forecast("moscow")
+    if forecast:
+        text += f"\n📊 <b>Прогноз на час:</b> {forecast.trend_emoji} {forecast.trend_text} ({forecast.forecast_level}/10)\n"
+
     # Add recommendation based on coefficients
     coeffs = get_cached_coefficients()
     if coeffs:
@@ -78,8 +83,15 @@ async def cmd_traffic_mkad(message: Message):
     text = (
         f"🚦 <b>МКАД</b>\n\n"
         f"{mkad_traffic.emoji} Загруженность: <b>{mkad_traffic.level}/10</b>\n"
-        f"Статус: {mkad_traffic.status_text}\n\n"
+        f"Статус: {mkad_traffic.status_text}\n"
     )
+
+    # Add forecast
+    forecast = await traffic_service.get_traffic_forecast("mkad")
+    if forecast:
+        text += f"📊 Прогноз на час: {forecast.trend_emoji} {forecast.trend_text} ({forecast.forecast_level}/10)\n"
+
+    text += "\n"
 
     # Add tips based on traffic level
     if mkad_traffic.level <= 3:
@@ -120,8 +132,15 @@ async def cmd_traffic_ttk(message: Message):
     text = (
         f"🚦 <b>Третье транспортное кольцо (ТТК)</b>\n\n"
         f"{ttk_traffic.emoji} Загруженность: <b>{ttk_traffic.level}/10</b>\n"
-        f"Статус: {ttk_traffic.status_text}\n\n"
+        f"Статус: {ttk_traffic.status_text}\n"
     )
+
+    # Add forecast
+    forecast = await traffic_service.get_traffic_forecast("ttk")
+    if forecast:
+        text += f"📊 Прогноз на час: {forecast.trend_emoji} {forecast.trend_text} ({forecast.forecast_level}/10)\n"
+
+    text += "\n"
 
     # Add tips based on traffic level
     if ttk_traffic.level <= 3:

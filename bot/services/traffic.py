@@ -230,3 +230,114 @@ def get_traffic_recommendation(traffic_level: int, coefficient: float) -> str:
         return "🟢 Дороги свободны, хорошее время для работы"
     else:
         return "🟡 Средние условия"
+
+
+class TrafficForecast:
+    """Traffic forecast for the next hour."""
+    def __init__(self, current_level: int, forecast_level: int, trend: str, confidence: str):
+        self.current_level = current_level
+        self.forecast_level = forecast_level
+        self.trend = trend  # "increasing", "decreasing", "stable"
+        self.confidence = confidence  # "high", "medium", "low"
+
+    @property
+    def trend_emoji(self) -> str:
+        """Get emoji for trend."""
+        if self.trend == "increasing":
+            return "📈"
+        elif self.trend == "decreasing":
+            return "📉"
+        else:
+            return "➡️"
+
+    @property
+    def trend_text(self) -> str:
+        """Get human-readable trend."""
+        if self.trend == "increasing":
+            return "Ухудшение"
+        elif self.trend == "decreasing":
+            return "Улучшение"
+        else:
+            return "Стабильно"
+
+
+def _predict_traffic_change(current_hour: int, current_level: int) -> tuple[int, str, str]:
+    """
+    Predict traffic change for the next hour.
+
+    Args:
+        current_hour: Current hour (0-23)
+        current_level: Current traffic level (1-10)
+
+    Returns:
+        Tuple of (forecast_level, trend, confidence)
+    """
+    next_hour = (current_hour + 1) % 24
+
+    # Morning rush building up (6-9)
+    if 6 <= current_hour < 9:
+        forecast_level = min(10, current_level + 2)
+        trend = "increasing"
+        confidence = "high"
+    # Morning rush peak (9-10)
+    elif 9 <= current_hour < 10:
+        forecast_level = max(1, current_level - 1)
+        trend = "decreasing"
+        confidence = "high"
+    # Midday stable (10-16)
+    elif 10 <= current_hour < 16:
+        forecast_level = current_level
+        trend = "stable"
+        confidence = "medium"
+    # Evening rush building up (16-19)
+    elif 16 <= current_hour < 19:
+        forecast_level = min(10, current_level + 2)
+        trend = "increasing"
+        confidence = "high"
+    # Evening rush declining (19-21)
+    elif 19 <= current_hour < 21:
+        forecast_level = max(1, current_level - 2)
+        trend = "decreasing"
+        confidence = "high"
+    # Night stable (21-6)
+    else:
+        forecast_level = max(1, min(3, current_level))
+        trend = "decreasing" if current_level > 3 else "stable"
+        confidence = "medium"
+
+    return forecast_level, trend, confidence
+
+
+async def get_traffic_forecast(region: str = "moscow") -> Optional[TrafficForecast]:
+    """
+    Get traffic forecast for the next hour.
+
+    Args:
+        region: Region name ("moscow", "mkad", "ttk")
+
+    Returns:
+        TrafficForecast object or None if failed
+    """
+    # Get current traffic
+    if region == "moscow":
+        current_traffic = await get_moscow_traffic()
+    elif region == "mkad":
+        current_traffic = await get_mkad_traffic()
+    elif region == "ttk":
+        current_traffic = await get_ttk_traffic()
+    else:
+        return None
+
+    if not current_traffic:
+        return None
+
+    # Predict change
+    current_hour = datetime.now().hour
+    forecast_level, trend, confidence = _predict_traffic_change(current_hour, current_traffic.level)
+
+    return TrafficForecast(
+        current_level=current_traffic.level,
+        forecast_level=forecast_level,
+        trend=trend,
+        confidence=confidence
+    )
