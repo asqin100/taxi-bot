@@ -111,10 +111,98 @@ TRAIN_STATIONS = [
 ]
 
 
+# Shopping mall definitions
+SHOPPING_MALLS = [
+    Hotspot(
+        id="aviapark",
+        name="Авиапарк",
+        type="mall",
+        zone_id="north",
+        description="Крупнейший ТЦ в Европе. Метро Ходынское поле.",
+        tips=[
+            "🅿️ Парковка: 4 уровня, первые 2 часа бесплатно",
+            "⏰ Пик: выходные 12:00-20:00",
+            "💡 Много семей с детьми и покупками",
+            "🎬 Кинотеатр = спрос после сеансов",
+        ]
+    ),
+    Hotspot(
+        id="mega_belaya_dacha",
+        name="МЕГА Белая Дача",
+        type="mall",
+        zone_id="southeast",
+        description="Крупный ТЦ на юго-востоке. IKEA, Ашан.",
+        tips=[
+            "🅿️ Огромная парковка",
+            "⏰ Пик: выходные весь день",
+            "💡 Покупатели с крупными покупками",
+            "🛒 IKEA = много заказов с мебелью",
+        ]
+    ),
+    Hotspot(
+        id="afimall",
+        name="Афимолл Сити",
+        type="mall",
+        zone_id="center",
+        description="Премиум ТЦ в Москва-Сити.",
+        tips=[
+            "🅿️ Подземная парковка",
+            "⏰ Пик: будни 18:00-21:00, выходные",
+            "💡 Платёжеспособная аудитория",
+            "🏢 Офисные работники в обед",
+        ]
+    ),
+]
+
+
+# Stadium definitions
+STADIUMS = [
+    Hotspot(
+        id="luzhniki",
+        name="Лужники",
+        type="stadium",
+        zone_id="southwest",
+        description="Главный стадион страны. Концерты и матчи.",
+        tips=[
+            "⚽ Вместимость: 81 000 человек",
+            "⏰ Пик: за 2 часа до и после мероприятий",
+            "💡 Огромный спрос после концертов/матчей",
+            "🚇 Метро Воробьёвы горы переполнено",
+        ]
+    ),
+    Hotspot(
+        id="otkritie_arena",
+        name="Открытие Арена",
+        type="stadium",
+        zone_id="northwest",
+        description="Домашний стадион Спартака.",
+        tips=[
+            "⚽ Вместимость: 45 000 человек",
+            "⏰ Пик: матчи Спартака",
+            "💡 Болельщики часто едут группами",
+            "🍺 После матча = высокий спрос",
+        ]
+    ),
+    Hotspot(
+        id="veb_arena",
+        name="ВЭБ Арена",
+        type="stadium",
+        zone_id="east",
+        description="Домашний стадион ЦСКА.",
+        tips=[
+            "⚽ Вместимость: 30 000 человек",
+            "⏰ Пик: матчи ЦСКА",
+            "💡 Хорошая транспортная доступность",
+            "🚇 Метро ЦСКА рядом",
+        ]
+    ),
+]
+
+
 async def get_hotspot_info(hotspot_id: str) -> Optional[Hotspot]:
     """Get detailed information about a specific hotspot."""
     # Find hotspot
-    all_hotspots = AIRPORTS + TRAIN_STATIONS
+    all_hotspots = AIRPORTS + TRAIN_STATIONS + SHOPPING_MALLS + STADIUMS
     hotspot = next((h for h in all_hotspots if h.id == hotspot_id), None)
 
     if not hotspot:
@@ -156,12 +244,28 @@ def get_all_train_stations() -> list[Hotspot]:
     return TRAIN_STATIONS.copy()
 
 
+def get_all_malls() -> list[Hotspot]:
+    """Get list of all shopping malls."""
+    return SHOPPING_MALLS.copy()
+
+
+def get_all_stadiums() -> list[Hotspot]:
+    """Get list of all stadiums."""
+    return STADIUMS.copy()
+
+
 def format_hotspot_info(hotspot: Hotspot) -> str:
     """Format hotspot information as text."""
     lines = []
 
     # Header with emoji
-    emoji = "✈️" if hotspot.type == "airport" else "🚂"
+    emoji_map = {
+        "airport": "✈️",
+        "train_station": "🚂",
+        "mall": "🛍",
+        "stadium": "⚽"
+    }
+    emoji = emoji_map.get(hotspot.type, "📍")
     lines.append(f"{emoji} <b>{hotspot.name}</b>\n")
 
     # Description

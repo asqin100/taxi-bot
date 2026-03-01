@@ -5,6 +5,8 @@ from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardBut
 from bot.services.hotspots import (
     get_all_airports,
     get_all_train_stations,
+    get_all_malls,
+    get_all_stadiums,
     get_hotspot_info,
     format_hotspot_info,
 )
@@ -24,6 +26,8 @@ async def cb_hotspots_menu(callback: CallbackQuery):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="✈️ Аэропорты", callback_data="hotspots:airports")],
         [InlineKeyboardButton(text="🚂 Вокзалы", callback_data="hotspots:stations")],
+        [InlineKeyboardButton(text="🛍 ТЦ", callback_data="hotspots:malls")],
+        [InlineKeyboardButton(text="⚽ Стадионы", callback_data="hotspots:stadiums")],
         [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
     ])
 
@@ -79,6 +83,54 @@ async def cb_stations_list(callback: CallbackQuery):
     await callback.answer()
 
 
+@router.callback_query(F.data == "hotspots:malls")
+async def cb_malls_list(callback: CallbackQuery):
+    """Show list of shopping malls."""
+    malls = get_all_malls()
+
+    text = "🛍 <b>ТОРГОВЫЕ ЦЕНТРЫ</b>\n\nВыберите ТЦ для подробной информации:"
+
+    buttons = []
+    for mall in malls:
+        buttons.append([
+            InlineKeyboardButton(
+                text=f"🛍 {mall.name}",
+                callback_data=f"hotspot:view:{mall.id}"
+            )
+        ])
+
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="menu:hotspots")])
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+
+    await send_and_cleanup(callback.message, text, reply_markup=keyboard, parse_mode="HTML")
+    await callback.answer()
+
+
+@router.callback_query(F.data == "hotspots:stadiums")
+async def cb_stadiums_list(callback: CallbackQuery):
+    """Show list of stadiums."""
+    stadiums = get_all_stadiums()
+
+    text = "⚽ <b>СТАДИОНЫ МОСКВЫ</b>\n\nВыберите стадион для подробной информации:"
+
+    buttons = []
+    for stadium in stadiums:
+        buttons.append([
+            InlineKeyboardButton(
+                text=f"⚽ {stadium.name}",
+                callback_data=f"hotspot:view:{stadium.id}"
+            )
+        ])
+
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="menu:hotspots")])
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+
+    await send_and_cleanup(callback.message, text, reply_markup=keyboard, parse_mode="HTML")
+    await callback.answer()
+
+
 @router.callback_query(F.data.startswith("hotspot:view:"))
 async def cb_hotspot_view(callback: CallbackQuery):
     """Show detailed information about a specific hotspot."""
@@ -93,7 +145,13 @@ async def cb_hotspot_view(callback: CallbackQuery):
     text = format_hotspot_info(hotspot)
 
     # Determine back button based on hotspot type
-    back_data = "hotspots:airports" if hotspot.type == "airport" else "hotspots:stations"
+    back_data_map = {
+        "airport": "hotspots:airports",
+        "train_station": "hotspots:stations",
+        "mall": "hotspots:malls",
+        "stadium": "hotspots:stadiums"
+    }
+    back_data = back_data_map.get(hotspot.type, "menu:hotspots")
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
