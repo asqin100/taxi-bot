@@ -14,6 +14,7 @@ from bot.services.notifier import check_and_notify
 from bot.services.event_notifier import check_and_notify_events
 from bot.services.event_parser import fetch_and_store_events
 from bot.services.payment import init_yookassa
+from bot.services.subscription_renewal import process_subscription_renewals
 from bot.web.api import create_app
 
 # Import models to ensure they're registered with SQLAlchemy
@@ -93,6 +94,7 @@ async def main():
     scheduler.add_job(check_and_notify, "interval", seconds=settings.parse_interval_seconds + 5, args=[bot])
     scheduler.add_job(check_and_notify_events, "interval", seconds=60, args=[bot])  # Check events every minute
     scheduler.add_job(fetch_and_store_events, "interval", hours=6)  # Parse events every 6 hours
+    scheduler.add_job(process_subscription_renewals, "interval", hours=24)  # Check renewals daily
     scheduler.start()
     logger.info("Scheduler started (interval=%ds)", settings.parse_interval_seconds)
 

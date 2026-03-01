@@ -33,6 +33,7 @@ class Subscription(Base):
     # Payment tracking
     last_payment_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     payment_method: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    auto_renew: Mapped[bool] = mapped_column(Boolean, default=False)
 
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
