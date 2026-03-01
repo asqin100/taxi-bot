@@ -14,7 +14,7 @@ async def should_show_onboarding(user_id: int) -> bool:
     """Check if user should see onboarding."""
     async with get_session() as session:
         result = await session.execute(
-            select(User).where(User.user_id == user_id)
+            select(User).where(User.telegram_id == user_id)
         )
         user = result.scalar_one_or_none()
 
@@ -29,7 +29,7 @@ async def mark_onboarding_completed(user_id: int):
     """Mark onboarding as completed for user."""
     async with get_session() as session:
         result = await session.execute(
-            select(User).where(User.user_id == user_id)
+            select(User).where(User.telegram_id == user_id)
         )
         user = result.scalar_one_or_none()
 
