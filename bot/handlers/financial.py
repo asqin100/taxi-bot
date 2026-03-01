@@ -6,6 +6,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from bot.services import financial as fin_service
+from bot.services.achievements import check_shift_achievements, format_achievement_unlock
 from bot.services.message_manager import send_and_cleanup
 
 router = Router()
@@ -208,6 +209,9 @@ async def process_notes(message: Message, state: FSMContext):
         await state.clear()
         return
 
+    # Check achievements
+    unlocked_achievements = await check_shift_achievements(user_id, shift)
+
     # Format result
     result_text = (
         f"✅ <b>Смена завершена!</b>\n\n"
@@ -234,6 +238,17 @@ async def process_notes(message: Message, state: FSMContext):
     ])
 
     await message.answer(result_text, parse_mode="HTML", reply_markup=keyboard)
+
+    # Send achievement notifications
+    if unlocked_achievements:
+        for achievement in unlocked_achievements:
+            achievement_text = format_achievement_unlock(achievement)
+            achievement_keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="🏆 Все достижения", callback_data="menu:achievements")],
+                [InlineKeyboardButton(text="📊 Главное меню", callback_data="cmd:menu")]
+            ])
+            await message.answer(achievement_text, parse_mode="HTML", reply_markup=achievement_keyboard)
+
     await state.clear()
 
 
