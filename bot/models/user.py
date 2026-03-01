@@ -26,4 +26,7 @@ class User(Base):
     quiet_hours_start: Mapped[int] = mapped_column(Integer, default=22)  # Hour (0-23)
     quiet_hours_end: Mapped[int] = mapped_column(Integer, default=7)  # Hour (0-23)
 
+    # Onboarding
+    onboarding_completed: Mapped[bool] = mapped_column(Boolean, default=False)
+
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
