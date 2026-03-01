@@ -113,9 +113,10 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="🔔 Уведомления", callback_data="cmd:notify"),
         ],
         [
-            InlineKeyboardButton(text="⚙️ Настройки", callback_data="cmd:settings"),
+            InlineKeyboardButton(text="🏅 Достижения", callback_data="menu:achievements"),
             InlineKeyboardButton(text="⭐ Подписка", callback_data="menu:subscription"),
         ],
+        [InlineKeyboardButton(text="⚙️ Настройки", callback_data="cmd:settings")],
     ])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
