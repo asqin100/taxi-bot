@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.database.db import AsyncSessionLocal
+from bot.database.db import session_factory
 from bot.models.coefficient_history import CoefficientHistory
 from bot.services.yandex_api import fetch_all_coefficients
 
@@ -28,7 +28,7 @@ async def collect_and_store_coefficients() -> int:
             return 0
 
         # Store in database
-        async with AsyncSessionLocal() as session:
+        async with session_factory() as session:
             stored_count = 0
             timestamp = datetime.utcnow()
 
