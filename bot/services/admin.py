@@ -317,10 +317,32 @@ async def reset_user_data(telegram_id: int) -> bool:
                 AIUsage.__table__.delete().where(AIUsage.user_id == telegram_id)
             )
 
-            # Delete referral earnings
+            # Delete referral earnings (where user earned)
             await session.execute(
                 ReferralEarning.__table__.delete().where(ReferralEarning.user_id == telegram_id)
             )
+
+            # Delete referral earnings (where others earned from this user)
+            await session.execute(
+                ReferralEarning.__table__.delete().where(ReferralEarning.from_user_id == user.id)
+            )
+
+            # Clear referrer_id for users who have this user as referrer
+            await session.execute(
+                User.__table__.update()
+                .where(User.referrer_id == user.id)
+                .values(referrer_id=None)
+            )
+
+            # Generate new referral code
+            from bot.services.referral import generate_referral_code
+            while True:
+                new_code = generate_referral_code()
+                existing = await session.execute(
+                    select(User).where(User.referral_code == new_code)
+                )
+                if not existing.scalar_one_or_none():
+                    break
 
             # Reset user settings to defaults
             user.tariffs = "econom"
@@ -339,6 +361,8 @@ async def reset_user_data(telegram_id: int) -> bool:
             user.live_location_expires_at = None
             user.onboarding_completed = False
             user.referral_balance = 0.0
+            user.referrer_id = None
+            user.referral_code = new_code
 
             await session.commit()
 
@@ -347,6 +371,87 @@ async def reset_user_data(telegram_id: int) -> bool:
 
     except Exception as e:
         logger.error(f"Error resetting user data: {e}")
+        return False
+
+
+async def delete_user_permanently(telegram_id: int) -> bool:
+    """Permanently delete user and all related data from database."""
+    from bot.models.financial_settings import UserFinancialSettings
+    from bot.models.ai_usage import AIUsage
+    from bot.models.referral import ReferralEarning
+
+    try:
+        async with get_session() as session:
+            # Get user
+            user_result = await session.execute(
+                select(User).where(User.telegram_id == telegram_id)
+            )
+            user = user_result.scalar_one_or_none()
+
+            if not user:
+                logger.warning(f"User {telegram_id} not found for deletion")
+                return False
+
+            # Clear referrer_id for users who have this user as referrer
+            await session.execute(
+                User.__table__.update()
+                .where(User.referrer_id == user.id)
+                .values(referrer_id=None)
+            )
+
+            # Delete all related records
+            # Delete shifts
+            await session.execute(
+                Shift.__table__.delete().where(Shift.user_id == telegram_id)
+            )
+
+            # Delete subscriptions
+            await session.execute(
+                Subscription.__table__.delete().where(Subscription.user_id == telegram_id)
+            )
+
+            # Delete achievements
+            await session.execute(
+                UserAchievement.__table__.delete().where(UserAchievement.user_id == telegram_id)
+            )
+
+            # Delete challenges
+            await session.execute(
+                UserChallenge.__table__.delete().where(UserChallenge.user_id == telegram_id)
+            )
+
+            # Delete financial settings
+            await session.execute(
+                UserFinancialSettings.__table__.delete().where(UserFinancialSettings.user_id == telegram_id)
+            )
+
+            # Delete AI usage records
+            await session.execute(
+                AIUsage.__table__.delete().where(AIUsage.user_id == telegram_id)
+            )
+
+            # Delete referral earnings (where user earned)
+            await session.execute(
+                ReferralEarning.__table__.delete().where(ReferralEarning.user_id == user.id)
+            )
+
+            # Delete referral earnings (where others earned from this user)
+            await session.execute(
+                ReferralEarning.__table__.delete().where(ReferralEarning.from_user_id == user.id)
+            )
+
+            # Finally, delete the user
+            await session.execute(
+                User.__table__.delete().where(User.telegram_id == telegram_id)
+            )
+
+            await session.commit()
+
+            logger.info(f"Admin permanently deleted user {telegram_id}")
+            return True
+
+    except Exception as e:
+        logger.error(f"Error deleting user permanently: {e}")
         return False
 
 

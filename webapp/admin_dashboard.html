@@ -544,11 +544,17 @@
 
                 <h3 style="margin-bottom: 15px; color: #d32f2f;">⚠️ Опасная зона</h3>
                 <p style="margin-bottom: 15px; font-size: 14px; color: #666;">
-                    Сброс удалит все данные пользователя: смены, подписки, достижения, челленджи, настройки.
-                    Пользователь вернется к начальному состоянию, как при первом входе в бот.
+                    <strong>Сброс:</strong> Удалит все данные пользователя (смены, подписки, достижения), но пользователь останется в базе с новым реферальным кодом.
                 </p>
-                <button class="btn-action" style="width: 100%; padding: 12px; background: #d32f2f;" onclick="confirmResetUser()">
-                    🗑️ Сбросить пользователя
+                <button class="btn-action" style="width: 100%; padding: 12px; background: #d32f2f; margin-bottom: 15px;" onclick="confirmResetUser()">
+                    🔄 Сбросить пользователя
+                </button>
+
+                <p style="margin-bottom: 15px; font-size: 14px; color: #666;">
+                    <strong>Удаление:</strong> ПОЛНОСТЬЮ удалит пользователя из базы данных. Это действие необратимо!
+                </p>
+                <button class="btn-action" style="width: 100%; padding: 12px; background: #b71c1c;" onclick="confirmDeleteUser()">
+                    ❌ Удалить пользователя навсегда
                 </button>
             `;
 
@@ -624,6 +630,51 @@
                 }, 2000);
             } else {
                 messageDiv.innerHTML = '<p class="error-msg">❌ Ошибка при сбросе пользователя</p>';
+            }
+        }
+
+        function confirmDeleteUser() {
+            const username = currentUser.user.username;
+            const telegramId = currentUser.user.telegram_id;
+
+            if (confirm(`🚨 КРИТИЧЕСКОЕ ПРЕДУПРЕЖДЕНИЕ!\n\nВы собираетесь ПОЛНОСТЬЮ УДАЛИТЬ пользователя @${username} (ID: ${telegramId}) из базы данных!\n\nБудут БЕЗВОЗВРАТНО удалены:\n• Сам пользователь\n• Все смены и заработок\n• Подписки\n• Достижения и челленджи\n• Настройки\n• Реферальные связи\n• История платежей\n\nПользователь исчезнет из базы данных!\n\nЭТО ДЕЙСТВИЕ НЕОБРАТИМО!\n\nВы АБСОЛЮТНО УВЕРЕНЫ?`)) {
+                if (confirm(`Последнее подтверждение!\n\nВы действительно хотите удалить @${username}?\n\nВведите "ДА" в следующем окне для подтверждения.`)) {
+                    const finalConfirm = prompt('Введите "ДА" (заглавными буквами) для подтверждения удаления:');
+                    if (finalConfirm === 'ДА') {
+                        deleteUser();
+                    } else {
+                        alert('Удаление отменено.');
+                    }
+                }
+            }
+        }
+
+        async function deleteUser() {
+            const messageDiv = document.getElementById('grantMessage');
+            messageDiv.innerHTML = '<p class="loading">Удаление пользователя из базы данных...</p>';
+
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch('/admin/api/delete-user', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    telegram_id: currentUser.user.telegram_id
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                messageDiv.innerHTML = '<p class="success-msg">✅ Пользователь полностью удален из базы данных!</p>';
+                setTimeout(() => {
+                    closeModal();
+                    searchUsers(); // Refresh search results
+                }, 2000);
+            } else {
+                messageDiv.innerHTML = '<p class="error-msg">❌ Ошибка при удалении пользователя</p>';
             }
         }
 

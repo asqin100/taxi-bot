@@ -10,7 +10,7 @@ from bot.services.yandex_api import get_cached_coefficients, get_top_zones
 from bot.services.zones import get_zones
 from bot.services.hex_grid import hex_grid_json
 from bot.services.payment import process_payment_webhook
-from bot.services.admin import get_dashboard_stats, get_recent_users, get_top_earners, search_users, get_user_details, grant_subscription, reset_user_data, get_all_user_ids
+from bot.services.admin import get_dashboard_stats, get_recent_users, get_top_earners, search_users, get_user_details, grant_subscription, reset_user_data, delete_user_permanently, get_all_user_ids
 from bot.services.game import submit_game_score
 
 logger = logging.getLogger(__name__)
@@ -357,6 +357,28 @@ async def admin_reset_user(request: web.Request) -> web.Response:
         return web.json_response({"error": "Server error"}, status=500)
 
 
+async def admin_delete_user(request: web.Request) -> web.Response:
+    """Permanently delete user from database."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        data = await request.json()
+        telegram_id = int(data.get("telegram_id"))
+
+        success = await delete_user_permanently(telegram_id)
+
+        if success:
+            logger.info(f"Admin permanently deleted user {telegram_id}")
+            return web.json_response({"success": True})
+        else:
+            return web.json_response({"error": "Failed to delete user"}, status=500)
+
+    except Exception as e:
+        logger.error(f"Error deleting user: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
 async def admin_broadcast(request: web.Request) -> web.Response:
     """Send broadcast message to all users."""
     if not check_admin_token(request):
@@ -457,6 +479,7 @@ def create_app() -> web.Application:
     app.router.add_get("/admin/api/user/{telegram_id}", admin_user_details)
     app.router.add_post("/admin/api/grant-subscription", admin_grant_subscription)
     app.router.add_post("/admin/api/reset-user", admin_reset_user)
+    app.router.add_post("/admin/api/delete-user", admin_delete_user)
     app.router.add_post("/admin/api/broadcast", admin_broadcast)
 
     app.router.add_get("/{name}", static_file)
