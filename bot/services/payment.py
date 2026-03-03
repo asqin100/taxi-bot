@@ -141,6 +141,11 @@ async def process_payment_webhook(webhook_data: dict) -> bool:
             payment_method="yookassa"
         )
 
+        # Process referral earnings
+        from bot.services.referral import process_subscription_payment
+        price = SUBSCRIPTION_PRICES.get(tier, 0)
+        await process_subscription_payment(user_id, tier, price)
+
         logger.info(f"Successfully processed payment {payment.id} for user {user_id}")
         return True
 

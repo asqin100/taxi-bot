@@ -7,7 +7,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bot.config import settings
 from bot.database.db import init_db
-from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding
+from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding, referral, location
 from bot.middlewares.auth import ThrottleMiddleware
 from bot.services.yandex_api import fetch_all_coefficients
 from bot.services.notifier import check_and_notify
@@ -15,6 +15,8 @@ from bot.services.event_notifier import check_and_notify_events
 from bot.services.event_parser import fetch_and_store_events
 from bot.services.payment import init_yookassa
 from bot.services.subscription_renewal import process_subscription_renewals
+from bot.services.geo_alerts import check_geo_alerts
+from bot.services.live_location_reminder import check_live_location_expiration
 from bot.web.api import create_app
 
 # Import models to ensure they're registered with SQLAlchemy
@@ -24,12 +26,19 @@ from bot.models.subscription import Subscription
 from bot.models.financial_settings import UserFinancialSettings
 from bot.models.achievement import UserAchievement
 from bot.models.challenge import UserChallenge
+from bot.models.ai_usage import AIUsage
+from bot.models.referral import ReferralEarning
 
 from aiohttp import web
 
+# Configure logging with both console and file handlers
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler("bot.log", encoding="utf-8")
+    ]
 )
 logger = logging.getLogger(__name__)
 
@@ -72,12 +81,14 @@ async def main():
     dp.include_router(coefficients.router)
     dp.include_router(settings_handler.router)
     dp.include_router(notifications.router)
+    dp.include_router(location.router)
     dp.include_router(events.router)
     dp.include_router(search.router)
     dp.include_router(financial.router)
     dp.include_router(traffic.router)
     dp.include_router(hotspots.router)
     dp.include_router(subscription.router)
+    dp.include_router(referral.router)
     dp.include_router(ai_advisor.router)
     dp.include_router(achievements.router)
     dp.include_router(challenges.router)
@@ -92,6 +103,8 @@ async def main():
     scheduler = AsyncIOScheduler()
     scheduler.add_job(fetch_all_coefficients, "interval", seconds=settings.parse_interval_seconds)
     scheduler.add_job(check_and_notify, "interval", seconds=settings.parse_interval_seconds + 5, args=[bot])
+    scheduler.add_job(check_geo_alerts, "interval", seconds=120, args=[bot])  # Check geo alerts every 2 minutes
+    scheduler.add_job(check_live_location_expiration, "interval", seconds=300, args=[bot])  # Check expiration every 5 minutes
     scheduler.add_job(check_and_notify_events, "interval", seconds=60, args=[bot])  # Check events every minute
     scheduler.add_job(fetch_and_store_events, "interval", hours=6)  # Parse events every 6 hours
     scheduler.add_job(process_subscription_renewals, "interval", hours=24)  # Check renewals daily
@@ -100,6 +113,7 @@ async def main():
 
     # Web server
     webapp = create_app()
+    webapp["bot"] = bot  # Store bot instance for admin broadcast
     runner = web.AppRunner(webapp)
     await runner.setup()
     site = web.TCPSite(runner, "0.0.0.0", settings.web_port)

@@ -16,6 +16,11 @@ router = Router()
 async def cmd_start(message: Message):
     user_id = message.from_user.id
     is_new_user = False
+    referral_code = None
+
+    # Extract referral code from deep link
+    if message.text and len(message.text.split()) > 1:
+        referral_code = message.text.split()[1]
 
     async with session_factory() as session:
         result = await session.execute(
@@ -30,6 +35,16 @@ async def cmd_start(message: Message):
             )
             session.add(user)
             await session.commit()
+
+    # Process referral code for new users
+    if is_new_user and referral_code:
+        from bot.services.referral import register_referral
+        success = await register_referral(user_id, referral_code)
+        if success:
+            await message.answer(
+                "🎉 Вы зарегистрированы по реферальной ссылке!\n"
+                "Ваш реферер получит бонусы за ваши покупки."
+            )
 
     # Check if user should see onboarding
     if await should_show_onboarding(user_id):
@@ -59,8 +74,7 @@ async def cmd_start(message: Message):
 
 @router.callback_query(F.data == "cmd:menu")
 async def cb_menu(callback: CallbackQuery):
-    await send_and_cleanup(
-        callback.message,
+    await callback.message.edit_text(
         "📋 Главное меню",
         reply_markup=main_menu_keyboard(),
     )

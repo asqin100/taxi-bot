@@ -43,19 +43,28 @@ async def cb_traffic_menu(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "menu:search")
-async def cb_search_menu(callback: CallbackQuery):
-    """Show search menu."""
-    await callback.message.edit_text(
-        "🔍 <b>Поиск по адресу</b>\n\n"
-        "Узнайте коэффициенты для любого адреса в Москве.\n\n"
-        "<b>Как использовать:</b>\n"
-        "Отправьте команду:\n"
-        "<code>/search Красная площадь</code>\n"
-        "<code>/search м. Тверская</code>\n"
-        "<code>/search Шереметьево</code>",
-        parse_mode="HTML",
-        reply_markup=search_menu_keyboard()
+async def cb_search_menu(callback: CallbackQuery, state: FSMContext):
+    """Show search menu and enter FSM mode."""
+    text = (
+        "🔍 <b>ПОИСК ПО АДРЕСУ</b>\n\n"
+        "Введите адрес, метро или название места:\n\n"
+        "Примеры:\n"
+        "  • Красная площадь\n"
+        "  • м. Тверская\n"
+        "  • Шереметьево\n"
+        "  • Ленинский проспект 15"
     )
+
+    from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="❌ Отмена", callback_data="cmd:menu")]
+    ])
+
+    await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
+
+    # Enter FSM state for address input
+    from bot.handlers.search import SearchAddress
+    await state.set_state(SearchAddress.waiting_for_address)
     await callback.answer()
 
 
@@ -468,4 +477,40 @@ async def cb_traffic_ttk(callback: CallbackQuery):
         parse_mode="HTML",
         reply_markup=traffic_menu_keyboard()
     )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "menu:leaderboard")
+async def cb_leaderboard_menu(callback: CallbackQuery):
+    """Show game leaderboard."""
+    from bot.services.leaderboard import get_game_leaderboard, get_user_game_stats, format_game_leaderboard
+    from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
+
+    user_id = callback.from_user.id
+
+    # Get leaderboard
+    leaderboard = await get_game_leaderboard(period="all", limit=10)
+
+    # Get user stats
+    user_stats = await get_user_game_stats(user_id)
+
+    # Format leaderboard
+    text = format_game_leaderboard(leaderboard, period="all", current_user_id=user_id)
+
+    # Add user stats
+    if user_stats["games_played"] > 0:
+        text += f"\n\n📊 <b>Ваша статистика:</b>\n"
+        text += f"💰 Заработано: {user_stats['total_earned']}₽\n"
+        text += f"🎮 Игр сыграно: {user_stats['games_played']}\n"
+        text += f"🏆 Лучший результат: {user_stats['best_earning']}₽\n"
+        if user_stats['rank']:
+            text += f"📍 Место в рейтинге: #{user_stats['rank']}"
+    else:
+        text += f"\n\n💡 Сыграйте в игру, чтобы попасть в рейтинг!"
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")]
+    ])
+
+    await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
     await callback.answer()

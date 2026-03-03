@@ -30,6 +30,115 @@ class BasePriceProvider(ABC):
         """Return surge coefficient for a given zone and tariff."""
 
 
+class YandexGoPassengerProvider(BasePriceProvider):
+    """Yandex.Go passenger app API provider - more reliable than Pro API."""
+
+    ROUTESTATS_URL = "https://tc.mobile.yandex.net/3.0/routestats"
+
+    def _build_headers(self) -> dict:
+        headers = {
+            "accept-encoding": "gzip",
+            "accept-language": "ru-RU",
+            "content-type": "application/json; charset=utf-8",
+            "user-agent": "yandex-taxi/5.63.1.127773 Android/15 (Xiaomi; 23013PC75G)",
+        }
+        if settings.yandex_bearer_token:
+            headers["authorization"] = f"Bearer {settings.yandex_bearer_token}"
+            headers["x-oauth-token"] = settings.yandex_bearer_token
+        if settings.yandex_device_id:
+            headers["x-appmetrica-deviceid"] = settings.yandex_device_id
+        if settings.yandex_uuid:
+            headers["x-appmetrica-uuid"] = settings.yandex_uuid
+        if settings.yandex_mob_id:
+            headers["x-mob-id"] = settings.yandex_mob_id
+        return headers
+
+    def _build_url(self) -> str:
+        return (
+            self.ROUTESTATS_URL
+            + "?mobcf=russia%25go_ru_by_geo_hosts_3%25default"
+            + "&mobpr=go_ru_by_geo_hosts_3_TAXI_0"
+        )
+
+    async def fetch_surge(self, zone: Zone, tariff: str) -> float:
+        """Fetch surge coefficient using Yandex.Go passenger API."""
+        # Create a short route within the zone
+        dest_lat = zone.lat + 0.01
+        dest_lon = zone.lon + 0.01
+
+        body = {
+            "id": uuid.uuid4().hex,
+            "zone_name": "moscow",
+            "selected_class": tariff,
+            "route": [
+                [zone.lon, zone.lat],
+                [dest_lon, dest_lat],
+            ],
+            "tariff_requirements": [{"class": t} for t in TARIFFS],
+            "force_soon_order": False,
+            "payment": {"type": "card"},
+            "skip_estimated_waiting": False,
+            "use_toll_roads": False,
+            "is_lightweight": False,
+            "supports_paid_options": True,
+            "format_currency": True,
+            "supports_explicit_antisurge": True,
+            "supports_multiclass": True,
+            "summary_version": 2,
+            "extended_description": True,
+            "with_title": True,
+            "account_type": "yandex",
+        }
+
+        try:
+            async with aiohttp.ClientSession(headers=self._build_headers()) as session:
+                async with session.post(
+                    self._build_url(),
+                    json=body,
+                    timeout=aiohttp.ClientTimeout(total=10),
+                ) as resp:
+                    if resp.status == 200:
+                        data = await resp.json()
+                        return self._extract_surge_coefficient(data, tariff)
+                    else:
+                        error_body = await resp.text()
+                        logger.warning(
+                            "Yandex.Go API returned %s for zone %s: %s",
+                            resp.status, zone.id, error_body[:500]
+                        )
+        except Exception as e:
+            logger.error("Yandex.Go API error for zone %s: %s", zone.id, e)
+
+        return 1.0
+
+    @staticmethod
+    def _extract_surge_coefficient(data: dict, tariff: str) -> float:
+        """Extract surge coefficient from routestats response."""
+        try:
+            # Look for service_levels with paid_options.value
+            for level in data.get("service_levels", []):
+                if level.get("class") == tariff:
+                    paid = level.get("paid_options", {})
+                    if paid and "value" in paid:
+                        coeff = float(paid["value"])
+                        logger.info(
+                            "Found surge %.2f for tariff %s",
+                            coeff, tariff
+                        )
+                        return coeff
+
+            # Fallback: try any tariff
+            for level in data.get("service_levels", []):
+                paid = level.get("paid_options", {})
+                if paid and "value" in paid:
+                    return float(paid["value"])
+
+        except Exception as e:
+            logger.warning("Failed to parse surge coefficient: %s", e)
+
+        return 1.0
+
+
 class YandexGoProvider(BasePriceProvider):
     """Real Yandex Pro API provider based on intercepted mobile API requests."""
 
@@ -198,7 +307,7 @@ class SurgeCache:
 
 
 # Global instances
-_provider: BasePriceProvider = YandexGoProvider() if settings.yandex_api_key else MockProvider()
+_provider: BasePriceProvider = YandexGoPassengerProvider() if settings.yandex_bearer_token else MockProvider()
 cache = SurgeCache(ttl=settings.parse_interval_seconds + 30)
 
 
@@ -221,7 +330,7 @@ async def fetch_all_coefficients() -> list[SurgeData]:
             sd = await _fetch_one(zone, tariff)
             results.append(sd)
             cache.set(sd)
-            await asyncio.sleep(1)  # 1 second delay to avoid rate limiting
+            await asyncio.sleep(8)  # 8 second delay to avoid rate limiting
 
     logger.info("Fetched %d surge data points", len(results))
     return results

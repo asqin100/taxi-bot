@@ -1,20 +1,32 @@
 import logging
+import secrets
 from pathlib import Path
+from datetime import datetime, timedelta
 
 from aiohttp import web
 
+from bot.config import settings
 from bot.services.yandex_api import get_cached_coefficients, get_top_zones
 from bot.services.zones import get_zones
 from bot.services.hex_grid import hex_grid_json
 from bot.services.payment import process_payment_webhook
+from bot.services.admin import get_dashboard_stats, get_recent_users, get_top_earners, search_users, get_user_details, grant_subscription, reset_user_data, get_all_user_ids
+from bot.services.game import submit_game_score
 
 logger = logging.getLogger(__name__)
+
+# Simple token storage (in production use Redis or database)
+admin_tokens = {}
 
 WEBAPP_DIR = Path(__file__).resolve().parent.parent.parent / "webapp"
 
 
 async def index(_request: web.Request) -> web.FileResponse:
-    return web.FileResponse(WEBAPP_DIR / "index.html")
+    response = web.FileResponse(WEBAPP_DIR / "index.html")
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 
 async def static_file(request: web.Request) -> web.FileResponse:
@@ -22,7 +34,13 @@ async def static_file(request: web.Request) -> web.FileResponse:
     path = WEBAPP_DIR / name
     if not path.is_file() or not path.resolve().is_relative_to(WEBAPP_DIR):
         raise web.HTTPNotFound()
-    return web.FileResponse(path)
+    response = web.FileResponse(path)
+    # Don't cache for HTML/JS/CSS, but allow caching for documents
+    if not name.endswith('.docx'):
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+    return response
 
 
 async def api_coefficients(_request: web.Request) -> web.Response:
@@ -38,15 +56,21 @@ async def api_coefficients(_request: web.Request) -> web.Response:
             "timestamp": d.timestamp,
             **zone_info,
         })
-    return web.json_response(result)
+    response = web.json_response(result)
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 
 async def api_zones(_request: web.Request) -> web.Response:
     zones = get_zones()
-    return web.json_response([
+    response = web.json_response([
         {"id": z.id, "name": z.name, "lat": z.lat, "lon": z.lon, "radius_km": z.radius_km}
         for z in zones
     ])
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    return response
 
 
 async def api_top(request: web.Request) -> web.Response:
@@ -54,17 +78,25 @@ async def api_top(request: web.Request) -> web.Response:
     tariff = request.query.get("tariff")
     top = get_top_zones(n=n, tariff=tariff or None)
     zones_map = {z.id: z.name for z in get_zones()}
-    return web.json_response([
+    response = web.json_response([
         {"zone_id": d.zone_id, "zone_name": zones_map.get(d.zone_id, d.zone_id),
          "tariff": d.tariff, "coefficient": d.coefficient}
         for d in top
     ])
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 
 async def api_hexgrid(request: web.Request) -> web.Response:
     tariff = request.query.get("tariff")
     data = hex_grid_json(tariff=tariff or None)
-    return web.json_response(data)
+    response = web.json_response(data)
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 
 async def webhook_yookassa(request: web.Request) -> web.Response:
@@ -85,6 +117,258 @@ async def webhook_yookassa(request: web.Request) -> web.Response:
         return web.json_response({"status": "error", "message": str(e)}, status=500)
 
 
+# Admin panel endpoints
+async def admin_login_page(request: web.Request) -> web.FileResponse:
+    """Serve admin login page."""
+    return web.FileResponse(WEBAPP_DIR / "admin_login.html")
+
+
+async def admin_dashboard_page(request: web.Request) -> web.FileResponse:
+    """Serve admin dashboard page."""
+    return web.FileResponse(WEBAPP_DIR / "admin_dashboard.html")
+
+
+async def admin_login(request: web.Request) -> web.Response:
+    """Handle admin login."""
+    try:
+        data = await request.json()
+        password = data.get("password")
+
+        if password == settings.admin_password:
+            # Generate token
+            token = secrets.token_urlsafe(32)
+            admin_tokens[token] = datetime.now() + timedelta(hours=24)
+
+            logger.info("Admin login successful")
+            return web.json_response({"success": True, "token": token})
+        else:
+            logger.warning("Admin login failed: incorrect password")
+            return web.json_response({"success": False, "error": "Неверный пароль"})
+
+    except Exception as e:
+        logger.error(f"Admin login error: {e}")
+        return web.json_response({"success": False, "error": "Ошибка сервера"}, status=500)
+
+
+def check_admin_token(request: web.Request) -> bool:
+    """Check if request has valid admin token."""
+    auth_header = request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        return False
+
+    token = auth_header[7:]
+    expiry = admin_tokens.get(token)
+
+    if not expiry:
+        return False
+
+    if datetime.now() > expiry:
+        del admin_tokens[token]
+        return False
+
+    return True
+
+
+async def admin_stats(request: web.Request) -> web.Response:
+    """Get admin dashboard statistics."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        stats = await get_dashboard_stats()
+        return web.json_response(stats)
+    except Exception as e:
+        logger.error(f"Error getting admin stats: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_recent_users(request: web.Request) -> web.Response:
+    """Get recent users."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        users = await get_recent_users(limit=10)
+        return web.json_response(users)
+    except Exception as e:
+        logger.error(f"Error getting recent users: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_top_earners(request: web.Request) -> web.Response:
+    """Get top earning users."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        earners = await get_top_earners(limit=10)
+        return web.json_response(earners)
+    except Exception as e:
+        logger.error(f"Error getting top earners: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_search_users(request: web.Request) -> web.Response:
+    """Search users by username or telegram_id."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        query = request.query.get("q", "")
+        if not query:
+            return web.json_response({"error": "Query parameter required"}, status=400)
+
+        users = await search_users(query)
+        return web.json_response(users)
+    except Exception as e:
+        logger.error(f"Error searching users: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_user_details(request: web.Request) -> web.Response:
+    """Get detailed user information."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        telegram_id = int(request.match_info["telegram_id"])
+        details = await get_user_details(telegram_id)
+
+        if not details:
+            return web.json_response({"error": "User not found"}, status=404)
+
+        return web.json_response(details)
+    except ValueError:
+        return web.json_response({"error": "Invalid telegram_id"}, status=400)
+    except Exception as e:
+        logger.error(f"Error getting user details: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_grant_subscription(request: web.Request) -> web.Response:
+    """Grant subscription to user."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        data = await request.json()
+        telegram_id = int(data.get("telegram_id"))
+        tier = data.get("tier")
+        duration_days = int(data.get("duration_days", 30))
+
+        if tier not in ["pro", "premium"]:
+            return web.json_response({"error": "Invalid tier"}, status=400)
+
+        success = await grant_subscription(telegram_id, tier, duration_days)
+
+        if success:
+            logger.info(f"Admin granted {tier} subscription to user {telegram_id}")
+            return web.json_response({"success": True})
+        else:
+            return web.json_response({"error": "Failed to grant subscription"}, status=500)
+
+    except Exception as e:
+        logger.error(f"Error granting subscription: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_reset_user(request: web.Request) -> web.Response:
+    """Reset user data to initial state."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        data = await request.json()
+        telegram_id = int(data.get("telegram_id"))
+
+        success = await reset_user_data(telegram_id)
+
+        if success:
+            logger.info(f"Admin reset user data for {telegram_id}")
+            return web.json_response({"success": True})
+        else:
+            return web.json_response({"error": "Failed to reset user"}, status=500)
+
+    except Exception as e:
+        logger.error(f"Error resetting user: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_broadcast(request: web.Request) -> web.Response:
+    """Send broadcast message to all users."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        data = await request.json()
+        message = data.get("message", "").strip()
+
+        if not message:
+            return web.json_response({"error": "Message is required"}, status=400)
+
+        # Get bot instance from app state
+        bot = request.app.get("bot")
+        if not bot:
+            return web.json_response({"error": "Bot not available"}, status=500)
+
+        # Get all user IDs
+        user_ids = await get_all_user_ids()
+
+        success_count = 0
+        failed_count = 0
+
+        # Send message to all users
+        for user_id in user_ids:
+            try:
+                await bot.send_message(user_id, message, parse_mode="HTML")
+                success_count += 1
+            except Exception as e:
+                logger.warning(f"Failed to send broadcast to {user_id}: {e}")
+                failed_count += 1
+
+        logger.info(f"Admin broadcast completed: {success_count} success, {failed_count} failed")
+
+        return web.json_response({
+            "success": True,
+            "total": len(user_ids),
+            "sent": success_count,
+            "failed": failed_count
+        })
+
+    except Exception as e:
+        logger.error(f"Error sending broadcast: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def game_index(_request: web.Request) -> web.FileResponse:
+    """Serve game page."""
+    response = web.FileResponse(WEBAPP_DIR / "game" / "index.html")
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
+
+async def api_game_submit_score(request: web.Request) -> web.Response:
+    """Handle game score submission."""
+    try:
+        data = await request.json()
+        score = int(data.get("score", 0))
+        init_data = data.get("initData", "")
+
+        if not init_data:
+            return web.json_response({"success": False, "error": "Отсутствуют данные авторизации"}, status=400)
+
+        result = await submit_game_score(score, init_data)
+        return web.json_response(result)
+
+    except ValueError:
+        return web.json_response({"success": False, "error": "Неверный формат данных"}, status=400)
+    except Exception as e:
+        logger.error(f"Error submitting game score: {e}")
+        return web.json_response({"success": False, "error": "Ошибка сервера"}, status=500)
+
+
 def create_app() -> web.Application:
     app = web.Application()
     app.router.add_get("/", index)
@@ -93,5 +377,23 @@ def create_app() -> web.Application:
     app.router.add_get("/api/top", api_top)
     app.router.add_get("/api/hexgrid", api_hexgrid)
     app.router.add_post("/webhook/yookassa", webhook_yookassa)
+
+    # Game routes
+    app.router.add_get("/game", game_index)
+    app.router.add_post("/api/game/submit-score", api_game_submit_score)
+
+    # Admin panel routes
+    app.router.add_get("/admin/login", admin_login_page)
+    app.router.add_get("/admin/dashboard", admin_dashboard_page)
+    app.router.add_post("/admin/login", admin_login)
+    app.router.add_get("/admin/api/stats", admin_stats)
+    app.router.add_get("/admin/api/recent-users", admin_recent_users)
+    app.router.add_get("/admin/api/top-earners", admin_top_earners)
+    app.router.add_get("/admin/api/search-users", admin_search_users)
+    app.router.add_get("/admin/api/user/{telegram_id}", admin_user_details)
+    app.router.add_post("/admin/api/grant-subscription", admin_grant_subscription)
+    app.router.add_post("/admin/api/reset-user", admin_reset_user)
+    app.router.add_post("/admin/api/broadcast", admin_broadcast)
+
     app.router.add_get("/{name}", static_file)
     return app

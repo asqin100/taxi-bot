@@ -1,4 +1,4 @@
-"""Claude API integration for advanced AI recommendations."""
+"""AI API integration for advanced AI recommendations (using Google Gemini)."""
 import asyncio
 import logging
 from typing import Optional
@@ -14,7 +14,7 @@ TAXI_KNOWLEDGE_BASE = """
 КОНТЕКСТ:
 - Работа в Яндекс.Такси в Москве и МО
 - Коэффициенты спроса (surge pricing) от 1.0 до 5.0+
-- Тарифы: Эконом, Комфорт, Комфорт+, Бизнес
+- Тарифы: Эконом, Комфорт, Бизнес
 - Основные зоны: аэропорты, вокзалы, ТЦ, стадионы
 - Пиковые часы: утро (7-10), вечер (17-20), ночь (пт-сб 23-03)
 
@@ -41,16 +41,16 @@ TAXI_KNOWLEDGE_BASE = """
 
 async def ask_claude(question: str, context: Optional[str] = None) -> str:
     """
-    Ask Claude API a question with optional context.
+    Ask Gemini API a question with optional context.
 
     Args:
         question: User's question
         context: Additional context (current coefficients, traffic, etc.)
 
     Returns:
-        Claude's response
+        Gemini's response
     """
-    if not settings.anthropic_api_key:
+    if not settings.gemini_api_key:
         return (
             "⚠️ AI-советник временно недоступен.\n\n"
             "Используйте базовые рекомендации через кнопку "
@@ -62,44 +62,58 @@ async def ask_claude(question: str, context: Optional[str] = None) -> str:
         if context:
             system_prompt += f"\n\nТЕКУЩАЯ СИТУАЦИЯ:\n{context}"
 
-        messages = [
-            {
-                "role": "user",
-                "content": question
-            }
-        ]
+        # Combine system prompt and question for Gemini
+        full_prompt = f"{system_prompt}\n\n{question}"
+
+        logger.info(f"Sending request to Gemini API (prompt length: {len(full_prompt)} chars)")
 
         async with aiohttp.ClientSession() as session:
             async with session.post(
-                "https://api.anthropic.com/v1/messages",
+                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={settings.gemini_api_key}",
                 headers={
-                    "x-api-key": settings.anthropic_api_key,
-                    "anthropic-version": "2023-06-01",
                     "content-type": "application/json",
                 },
                 json={
-                    "model": "claude-3-5-sonnet-20241022",
-                    "max_tokens": 1024,
-                    "system": system_prompt,
-                    "messages": messages,
+                    "contents": [{
+                        "parts": [{
+                            "text": full_prompt
+                        }]
+                    }],
+                    "generationConfig": {
+                        "temperature": 0.7,
+                        "maxOutputTokens": 4096,
+                    }
                 },
                 timeout=aiohttp.ClientTimeout(total=30),
             ) as response:
                 if response.status != 200:
                     error_text = await response.text()
-                    logger.error(f"Claude API error: {response.status} - {error_text}")
+                    logger.error(f"Gemini API error: {response.status} - {error_text}")
                     return "❌ Ошибка при обращении к AI-советнику. Попробуйте позже."
 
                 data = await response.json()
-                answer = data["content"][0]["text"]
+                logger.info(f"Full Gemini response: {data}")
 
-                return answer
+                # Extract text from Gemini response
+                if "candidates" in data and len(data["candidates"]) > 0:
+                    candidate = data["candidates"][0]
+
+                    # Check finish reason
+                    finish_reason = candidate.get("finishReason", "UNKNOWN")
+                    logger.info(f"Finish reason: {finish_reason}")
+
+                    answer = candidate["content"]["parts"][0]["text"]
+                    logger.info(f"Extracted answer length: {len(answer)} chars")
+                    return answer
+                else:
+                    logger.error(f"Unexpected Gemini response format: {data}")
+                    return "❌ Ошибка при обработке ответа. Попробуйте позже."
 
     except asyncio.TimeoutError:
-        logger.error("Claude API timeout")
+        logger.error("Gemini API timeout")
         return "⏱ Превышено время ожидания ответа. Попробуйте позже."
     except Exception as e:
-        logger.error(f"Claude API error: {e}")
+        logger.error(f"Gemini API error: {e}")
         return "❌ Произошла ошибка. Попробуйте позже."
 
 

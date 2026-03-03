@@ -24,7 +24,7 @@ function renderHexagons(data) {
         fillColor: h.color,
         fillOpacity: 1,
         strokeColor: 'rgba(100,50,180,0.25)',
-        strokeWidth: 0.5,
+        strokeWidth: 0,  // Remove borders between hexagons
       }
     );
     myMap.geoObjects.add(polygon);

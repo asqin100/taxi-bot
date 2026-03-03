@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>КИБЕР-ТАКСИ: МОСКВА 2087</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #0a0a0a 100%);
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            touch-action: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        #gameContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        #gameCanvas {
+            border: 3px solid #00ff41;
+            box-shadow: 0 0 20px #00ff41, inset 0 0 20px rgba(0, 255, 65, 0.1);
+            background: #0a0a0a;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            max-width: 100%;
+            max-height: 80vh;
+        }
+
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            color: #00ff41;
+            font-size: 18px;
+            text-shadow: 0 0 10px #00ff41;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        #score, #fuel, #lives {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 15px;
+            border: 2px solid #00ff41;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #00ff41;
+        }
+
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            border: 3px solid #ff0066;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            color: #00ff41;
+            box-shadow: 0 0 30px #ff0066;
+            display: none;
+            z-index: 100;
+            max-width: 90%;
+        }
+
+        #gameOver h1 {
+            color: #ff0066;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px #ff0066;
+        }
+
+        #gameOver p {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        #gameOver button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 18px;
+            background: linear-gradient(45deg, #ff0066, #00ff41);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 0 20px #ff0066;
+            transition: all 0.3s;
+        }
+
+        #gameOver button:active {
+            transform: scale(0.95);
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .control-btn {
+            width: 70px;
+            height: 70px;
+            background: rgba(0, 255, 65, 0.2);
+            border: 3px solid #00ff41;
+            border-radius: 50%;
+            color: #00ff41;
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 0 15px #00ff41;
+            transition: all 0.1s;
+        }
+
+        .control-btn:active {
+            background: rgba(0, 255, 65, 0.4);
+            transform: scale(0.9);
+        }
+
+        #startScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            color: #00ff41;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #startScreen h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px #ff0066;
+            color: #ff0066;
+        }
+
+        #startScreen h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        #startScreen p {
+            font-size: 16px;
+            margin: 10px 0;
+            max-width: 400px;
+        }
+
+        #startScreen button {
+            margin-top: 30px;
+            padding: 20px 40px;
+            font-size: 24px;
+            background: linear-gradient(45deg, #ff0066, #00ff41);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 0 30px #ff0066;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        #submitting {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            border: 3px solid #00ff41;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            color: #00ff41;
+            box-shadow: 0 0 30px #00ff41;
+            display: none;
+            z-index: 150;
+        }
+
+        #submitting p {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 255, 65, 0.1);
+            border-top: 4px solid #00ff41;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="startScreen">
+            <h1>🚕 КИБЕР-ТАКСИ 🚕</h1>
+            <h2>МОСКВА 2087</h2>
+            <p>🎯 Собирай пассажиров</p>
+            <p>⛽ Не забывай про топливо</p>
+            <p>🚗 Уворачивайся от машин</p>
+            <p style="margin-top: 20px; color: #ff0066;">💰 1000 очков = 5₽ на баланс!</p>
+            <button onclick="startGame()">НАЧАТЬ ИГРУ</button>
+        </div>
+
+        <div id="submitting">
+            <p>⏳ Отправка результата...</p>
+            <div class="spinner"></div>
+        </div>
+
+        <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+        <div id="ui">
+            <div id="score">ОЧКИ: 0</div>
+            <div id="fuel">⛽ 100%</div>
+            <div id="lives">❤️ 3</div>
+        </div>
+
+        <div id="gameOver">
+            <h1>GAME OVER</h1>
+            <p id="finalScore">Очки: 0</p>
+            <p id="earnedMoney" style="color: #ff0066; font-size: 24px;"></p>
+            <p id="submitStatus"></p>
+            <button onclick="restartGame()">ИГРАТЬ СНОВА</button>
+        </div>
+
+        <div id="controls">
+            <div class="control-btn" id="leftBtn">◀</div>
+            <div class="control-btn" id="rightBtn">▶</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const tg = window.Telegram.WebApp;
+
+        // Expand to full height
+        tg.expand();
+        tg.ready();
+
+        let gameRunning = false;
+        let score = 0;
+        let fuel = 100;
+        let lives = 3;
+        let gameSpeed = 2;
+        let lastFuelTime = Date.now();
+
+        // Player
+        const player = {
+            x: canvas.width / 2 - 15,
+            y: canvas.height - 80,
+            width: 30,
+            height: 50,
+            speed: 5,
+            color: '#ffff00'
+        };
+
+        // Game objects
+        let passengers = [];
+        let obstacles = [];
+        let fuelItems = [];
+
+        // Controls
+        let keys = {};
+        let touchLeft = false;
+        let touchRight = false;
+
+        // Event listeners
+        document.addEventListener('keydown', (e) => keys[e.key] = true);
+        document.addEventListener('keyup', (e) => keys[e.key] = false);
+
+        document.getElementById('leftBtn').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            touchLeft = true;
+        });
+        document.getElementById('leftBtn').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            touchLeft = false;
+        });
+
+        document.getElementById('rightBtn').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            touchRight = true;
+        });
+        document.getElementById('rightBtn').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            touchRight = false;
+        });
+
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            gameRunning = true;
+            score = 0;
+            fuel = 100;
+            lives = 3;
+            gameSpeed = 2;
+            lastFuelTime = Date.now();
+            passengers = [];
+            obstacles = [];
+            fuelItems = [];
+            player.x = canvas.width / 2 - 15;
+            updateUI();
+            gameLoop();
+        }
+
+        function restartGame() {
+            document.getElementById('gameOver').style.display = 'none';
+            startGame();
+        }
+
+        function updateUI() {
+            document.getElementById('score').textContent = `ОЧКИ: ${score}`;
+            document.getElementById('fuel').textContent = `⛽ ${Math.max(0, Math.floor(fuel))}%`;
+            document.getElementById('lives').textContent = `❤️ ${lives}`;
+        }
+
+        function spawnPassenger() {
+            if (Math.random() < 0.02) {
+                passengers.push({
+                    x: Math.random() * (canvas.width - 20),
+                    y: -20,
+                    width: 20,
+                    height: 20,
+                    color: '#00ff41'
+                });
+            }
+        }
+
+        function spawnObstacle() {
+            if (Math.random() < 0.015) {
+                obstacles.push({
+                    x: Math.random() * (canvas.width - 30),
+                    y: -30,
+                    width: 30,
+                    height: 50,
+                    color: '#ff0066'
+                });
+            }
+        }
+
+        function spawnFuel() {
+            if (Math.random() < 0.008) {
+                fuelItems.push({
+                    x: Math.random() * (canvas.width - 20),
+                    y: -20,
+                    width: 20,
+                    height: 20,
+                    color: '#00ffff'
+                });
+            }
+        }
+
+        function checkCollision(obj1, obj2) {
+            return obj1.x < obj2.x + obj2.width &&
+                   obj1.x + obj1.width > obj2.x &&
+                   obj1.y < obj2.y + obj2.height &&
+                   obj1.y + obj1.height > obj2.y;
+        }
+
+        function gameLoop() {
+            if (!gameRunning) return;
+
+            // Clear canvas
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw road lines
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < canvas.height; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2, i + (Date.now() / 20) % 40);
+                ctx.lineTo(canvas.width / 2, i + 20 + (Date.now() / 20) % 40);
+                ctx.stroke();
+            }
+
+            // Player movement
+            if ((keys['ArrowLeft'] || keys['a'] || touchLeft) && player.x > 0) {
+                player.x -= player.speed;
+            }
+            if ((keys['ArrowRight'] || keys['d'] || touchRight) && player.x < canvas.width - player.width) {
+                player.x += player.speed;
+            }
+
+            // Draw player
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(player.x + 5, player.y + 10, 8, 8);
+            ctx.fillRect(player.x + 17, player.y + 10, 8, 8);
+
+            // Spawn and update passengers
+            spawnPassenger();
+            passengers.forEach((p, index) => {
+                p.y += gameSpeed;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.width, p.height);
+                ctx.fillStyle = '#000';
+                ctx.fillRect(p.x + 5, p.y + 5, 4, 4);
+                ctx.fillRect(p.x + 11, p.y + 5, 4, 4);
+
+                if (checkCollision(player, p)) {
+                    score += 100;
+                    passengers.splice(index, 1);
+                    playSound(440, 0.1);
+                }
+
+                if (p.y > canvas.height) {
+                    passengers.splice(index, 1);
+                }
+            });
+
+            // Spawn and update obstacles
+            spawnObstacle();
+            obstacles.forEach((o, index) => {
+                o.y += gameSpeed;
+                ctx.fillStyle = o.color;
+                ctx.fillRect(o.x, o.y, o.width, o.height);
+                ctx.fillStyle = '#000';
+                ctx.fillRect(o.x + 5, o.y + 10, 8, 8);
+                ctx.fillRect(o.x + 17, o.y + 10, 8, 8);
+
+                if (checkCollision(player, o)) {
+                    lives--;
+                    obstacles.splice(index, 1);
+                    playSound(200, 0.2);
+                    if (lives <= 0) {
+                        endGame();
+                    }
+                }
+
+                if (o.y > canvas.height) {
+                    obstacles.splice(index, 1);
+                }
+            });
+
+            // Spawn and update fuel
+            spawnFuel();
+            fuelItems.forEach((f, index) => {
+                f.y += gameSpeed;
+                ctx.fillStyle = f.color;
+                ctx.fillRect(f.x, f.y, f.width, f.height);
+                ctx.fillStyle = '#000';
+                ctx.font = '16px Courier New';
+                ctx.fillText('⛽', f.x + 2, f.y + 16);
+
+                if (checkCollision(player, f)) {
+                    fuel = Math.min(100, fuel + 30);
+                    fuelItems.splice(index, 1);
+                    playSound(660, 0.1);
+                }
+
+                if (f.y > canvas.height) {
+                    fuelItems.splice(index, 1);
+                }
+            });
+
+            // Fuel consumption
+            if (Date.now() - lastFuelTime > 1000) {
+                fuel -= 1;
+                lastFuelTime = Date.now();
+                if (fuel <= 0) {
+                    endGame();
+                }
+            }
+
+            // Increase difficulty
+            if (score > 0 && score % 500 === 0) {
+                gameSpeed += 0.1;
+            }
+
+            updateUI();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function playSound(frequency, duration) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'square';
+
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+            } catch (e) {
+                // Ignore audio errors
+            }
+        }
+
+        async function endGame() {
+            gameRunning = false;
+
+            const earnedRubles = Math.floor(score / 1000) * 5;
+
+            document.getElementById('finalScore').textContent = `Очки: ${score}`;
+            document.getElementById('earnedMoney').textContent = earnedRubles > 0 ? `💰 Заработано: ${earnedRubles}₽` : '';
+            document.getElementById('submitStatus').textContent = '';
+
+            // Submit score to backend
+            if (score > 0) {
+                document.getElementById('submitting').style.display = 'block';
+
+                try {
+                    const response = await fetch('/api/game/submit-score', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            score: score,
+                            initData: tg.initData
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    document.getElementById('submitting').style.display = 'none';
+
+                    if (result.success) {
+                        document.getElementById('submitStatus').innerHTML =
+                            `<span style="color: #00ff41;">✅ Результат сохранен!<br>Баланс: ${result.balance}₽</span>`;
+                    } else {
+                        document.getElementById('submitStatus').innerHTML =
+                            `<span style="color: #ff0066;">❌ ${result.error || 'Ошибка сохранения'}</span>`;
+                    }
+                } catch (error) {
+                    document.getElementById('submitting').style.display = 'none';
+                    document.getElementById('submitStatus').innerHTML =
+                        `<span style="color: #ff0066;">❌ Ошибка соединения</span>`;
+                }
+            }
+
+            document.getElementById('gameOver').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

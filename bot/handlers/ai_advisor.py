@@ -8,7 +8,8 @@ from aiogram.fsm.state import State, StatesGroup
 from bot.services.ai_advisor import get_smart_recommendation, format_recommendation
 from bot.services.claude_api import ask_claude, get_advanced_recommendation
 from bot.services.subscription import check_feature_access, get_user_subscription
-from bot.services.message_manager import send_and_cleanup
+from bot.services.message_manager import send_and_cleanup, split_long_message
+from bot.services.ai_usage import check_can_ask, increment_usage, get_usage_stats
 
 router = Router()
 
@@ -97,6 +98,19 @@ async def cb_ask_question(callback: CallbackQuery, state: FSMContext):
         await callback.answer("⚠️ Эта функция доступна только на Premium", show_alert=True)
         return
 
+    # Check AI usage limits
+    can_ask, current_usage, daily_limit = await check_can_ask(user_id)
+
+    if not can_ask:
+        await callback.answer(
+            f"⚠️ Вы исчерпали дневной лимит вопросов ({daily_limit}/день)\n"
+            f"Попробуйте завтра!",
+            show_alert=True
+        )
+        return
+
+    remaining = daily_limit - current_usage
+
     text = (
         "💬 <b>ЗАДАТЬ ВОПРОС AI-СОВЕТНИКУ</b>\n\n"
         "Вы можете спросить о:\n"
@@ -105,11 +119,13 @@ async def cb_ask_question(callback: CallbackQuery, state: FSMContext):
         "  • Лицензиях и документах\n"
         "  • ПДД и безопасности\n"
         "  • Расходах и налогах\n\n"
+        f"📊 Осталось вопросов сегодня: <b>{remaining}/{daily_limit}</b>\n\n"
         "Напишите ваш вопрос:"
     )
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="❌ Отмена", callback_data="menu:advisor")]
+        [InlineKeyboardButton(text="❌ Отмена", callback_data="menu:advisor")],
+        [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
     ])
 
     await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
@@ -123,25 +139,58 @@ async def process_question(message: Message, state: FSMContext):
     user_id = message.from_user.id
     question = message.text
 
+    # Check limits again (in case user waited too long)
+    can_ask, current_usage, daily_limit = await check_can_ask(user_id)
+
+    if not can_ask:
+        await message.answer(
+            f"⚠️ Вы исчерпали дневной лимит вопросов ({daily_limit}/день)\n"
+            f"Попробуйте завтра!",
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="◀️ Назад", callback_data="menu:advisor")]
+            ])
+        )
+        await state.clear()
+        return
+
     # Send "thinking" message
     thinking_msg = await message.answer("🤔 Анализирую ваш вопрос...")
 
     try:
-        # Get answer from Claude
+        # Get answer from Gemini
         answer = await ask_claude(question)
+
+        # Increment usage counter
+        await increment_usage(user_id)
+
+        # Get updated stats
+        stats = await get_usage_stats(user_id)
 
         # Delete thinking message
         await thinking_msg.delete()
 
-        # Send answer
-        text = f"💬 <b>ОТВЕТ AI-СОВЕТНИКА</b>\n\n{answer}"
+        # Prepare full text
+        full_text = f"💬 <b>ОТВЕТ AI-СОВЕТНИКА</b>\n\n{answer}"
+
+        # Split if too long
+        chunks = split_long_message(full_text, max_length=4000)
+
+        # Add usage info to keyboard
+        remaining_text = f"📊 {stats['remaining']}/{stats['limit']}"
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="💬 Ещё вопрос", callback_data="advisor:ask")],
+            [InlineKeyboardButton(text=f"💬 Ещё вопрос ({remaining_text})", callback_data="advisor:ask")],
             [InlineKeyboardButton(text="◀️ К рекомендациям", callback_data="menu:advisor")],
+            [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
         ])
 
-        await send_and_cleanup(message, text, reply_markup=keyboard, parse_mode="HTML")
+        # Send all chunks
+        for i, chunk in enumerate(chunks):
+            # Only add keyboard to the last message
+            if i == len(chunks) - 1:
+                await send_and_cleanup(message, chunk, reply_markup=keyboard, parse_mode="HTML")
+            else:
+                await message.answer(chunk, parse_mode="HTML")
 
     except Exception as e:
         await thinking_msg.delete()

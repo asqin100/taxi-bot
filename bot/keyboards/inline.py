@@ -56,15 +56,18 @@ def event_types_keyboard(selected: set[str] | None = None) -> InlineKeyboardMark
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def notify_keyboard(enabled: bool, event_notify_enabled: bool = True, quiet_hours_enabled: bool = False) -> InlineKeyboardMarkup:
+def notify_keyboard(enabled: bool, event_notify_enabled: bool = True, quiet_hours_enabled: bool = False, geo_alerts_enabled: bool = False) -> InlineKeyboardMarkup:
     status = "🔔 Вкл" if enabled else "🔕 Выкл"
     event_status = "🔔 Вкл" if event_notify_enabled else "🔕 Выкл"
     quiet_status = "🔔 Вкл" if quiet_hours_enabled else "🔕 Выкл"
+    geo_status = "🔔 Вкл" if geo_alerts_enabled else "🔕 Выкл"
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=f"Уведомления о коэффициентах: {status}", callback_data="notify:toggle")],
         [InlineKeyboardButton(text="Порог коэффициента", callback_data="notify:threshold")],
         [InlineKeyboardButton(text=f"Уведомления о мероприятиях: {event_status}", callback_data="notify:event_toggle")],
         [InlineKeyboardButton(text="Типы мероприятий", callback_data="notify:event_types")],
+        [InlineKeyboardButton(text=f"📍 Геоалерты: {geo_status}", callback_data="geo_alerts:toggle")],
+        [InlineKeyboardButton(text="📍 Обновить геолокацию", callback_data="geo_alerts:update_location")],
         [InlineKeyboardButton(text=f"Тихие часы: {quiet_status}", callback_data="notify:quiet_toggle")],
         [InlineKeyboardButton(text="⏰ Настроить время", callback_data="notify:quiet_hours")],
         BACK_BUTTON,
@@ -99,6 +102,11 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
             text="🗺 Открыть карту",
             web_app=WebAppInfo(url=settings.webapp_url),
         )])
+        # Game button temporarily disabled - will be enabled later
+        # buttons.append([InlineKeyboardButton(
+        #     text="🎮 Игра (зарабатывай баланс!)",
+        #     web_app=WebAppInfo(url=f"{settings.webapp_url}/game"),
+        # )])
     buttons.extend([
         [InlineKeyboardButton(text="📊 Коэффициенты", callback_data="cmd:kef")],
         [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
@@ -110,15 +118,19 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
         ],
         [
             InlineKeyboardButton(text="🔍 Поиск", callback_data="menu:search"),
+            InlineKeyboardButton(text="📍 Геоалерты", callback_data="menu:geo_alerts"),
+        ],
+        [
             InlineKeyboardButton(text="🔔 Уведомления", callback_data="cmd:notify"),
-        ],
-        [
             InlineKeyboardButton(text="🏅 Достижения", callback_data="menu:achievements"),
-            InlineKeyboardButton(text="🏆 Челлендж", callback_data="menu:challenge"),
         ],
         [
+            InlineKeyboardButton(text="🏆 Челлендж", callback_data="menu:challenge"),
             InlineKeyboardButton(text="📊 Рейтинг", callback_data="menu:leaderboard"),
+        ],
+        [
             InlineKeyboardButton(text="⭐ Подписка", callback_data="menu:subscription"),
+            InlineKeyboardButton(text="🎁 Реферальная программа", callback_data="menu:referral"),
         ],
         [
             InlineKeyboardButton(text="⚙️ Настройки", callback_data="cmd:settings"),
@@ -165,6 +177,7 @@ def tariff_selection_keyboard(current_tariff: str = "econom") -> InlineKeyboardM
         ])
 
     buttons.append([InlineKeyboardButton(text="◀️ Назад к финансам", callback_data="menu:financial")])
+    buttons.append([InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 

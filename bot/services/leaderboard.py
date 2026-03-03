@@ -1,4 +1,4 @@
-"""Leaderboard service - anonymous driver rankings."""
+"""Leaderboard service - anonymous driver rankings and game leaderboard."""
 import logging
 from datetime import datetime, timedelta
 from typing import Optional
@@ -8,6 +8,7 @@ from sqlalchemy import select, func, and_
 from bot.database.db import get_session
 from bot.models.shift import Shift
 from bot.models.user import User
+from bot.models.referral import ReferralEarning, EarningType
 
 logger = logging.getLogger(__name__)
 
@@ -292,5 +293,160 @@ def format_leaderboard(entries: list[LeaderboardEntry], metric: str, period: str
         lines.append(f"\n...\n👉 {user_entry.rank}. <b>{user_entry.anonymous_name}</b>: {user_entry.value:.0f}{unit}")
 
     lines.append("\n🔒 Все имена анонимны")
+
+    return "\n".join(lines)
+
+
+# Game leaderboard functions
+
+async def get_game_leaderboard(period: str = "all", limit: int = 10) -> list[dict]:
+    """
+    Get game leaderboard.
+
+    Args:
+        period: "day", "week", "month", or "all"
+        limit: number of top players to return
+
+    Returns:
+        List of dicts with user info and total earnings
+    """
+    async with get_session() as session:
+        # Build time filter
+        time_filter = None
+        if period == "day":
+            time_filter = ReferralEarning.created_at >= datetime.now() - timedelta(days=1)
+        elif period == "week":
+            time_filter = ReferralEarning.created_at >= datetime.now() - timedelta(weeks=1)
+        elif period == "month":
+            time_filter = ReferralEarning.created_at >= datetime.now() - timedelta(days=30)
+
+        # Query for top earners from game
+        query = (
+            select(
+                User.telegram_id,
+                User.username,
+                func.sum(ReferralEarning.amount).label("total_earned"),
+                func.count(ReferralEarning.id).label("games_played")
+            )
+            .join(ReferralEarning, User.id == ReferralEarning.user_id)
+            .where(ReferralEarning.earning_type == EarningType.GAME_EARNING)
+        )
+
+        if time_filter is not None:
+            query = query.where(time_filter)
+
+        query = (
+            query
+            .group_by(User.telegram_id, User.username)
+            .order_by(func.sum(ReferralEarning.amount).desc())
+            .limit(limit)
+        )
+
+        result = await session.execute(query)
+        rows = result.all()
+
+        leaderboard = []
+        for idx, row in enumerate(rows, 1):
+            leaderboard.append({
+                "rank": idx,
+                "telegram_id": row.telegram_id,
+                "username": row.username or "Аноним",
+                "total_earned": round(row.total_earned, 2),
+                "games_played": row.games_played
+            })
+
+        return leaderboard
+
+
+async def get_user_game_stats(telegram_id: int) -> dict:
+    """Get user's game statistics."""
+    async with get_session() as session:
+        # Get user
+        result = await session.execute(
+            select(User).where(User.telegram_id == telegram_id)
+        )
+        user = result.scalar_one_or_none()
+
+        if not user:
+            return {
+                "total_earned": 0,
+                "games_played": 0,
+                "best_earning": 0,
+                "rank": None
+            }
+
+        # Get total earnings and games played
+        result = await session.execute(
+            select(
+                func.sum(ReferralEarning.amount).label("total_earned"),
+                func.count(ReferralEarning.id).label("games_played"),
+                func.max(ReferralEarning.amount).label("best_earning")
+            )
+            .where(
+                and_(
+                    ReferralEarning.user_id == user.id,
+                    ReferralEarning.earning_type == EarningType.GAME_EARNING
+                )
+            )
+        )
+        row = result.one()
+
+        total_earned = row.total_earned or 0
+        games_played = row.games_played or 0
+        best_earning = row.best_earning or 0
+
+        # Get user's rank (count users with more earnings)
+        if total_earned > 0:
+            rank_query = (
+                select(func.count(func.distinct(ReferralEarning.user_id)))
+                .where(ReferralEarning.earning_type == EarningType.GAME_EARNING)
+                .group_by(ReferralEarning.user_id)
+                .having(func.sum(ReferralEarning.amount) > total_earned)
+            )
+            result = await session.execute(rank_query)
+            rank = len(result.all()) + 1
+        else:
+            rank = None
+
+        return {
+            "total_earned": round(total_earned, 2),
+            "games_played": games_played,
+            "best_earning": round(best_earning, 2),
+            "rank": rank
+        }
+
+
+def format_game_leaderboard(leaderboard: list[dict], period: str = "all", current_user_id: int = None) -> str:
+    """Format game leaderboard as text."""
+    period_names = {
+        "day": "за сегодня",
+        "week": "за неделю",
+        "month": "за месяц",
+        "all": "за всё время"
+    }
+
+    lines = [f"🏆 <b>ТАБЛИЦА ЛИДЕРОВ ИГРЫ</b> {period_names.get(period, '')}\n"]
+
+    if not leaderboard:
+        lines.append("Пока никто не играл 😢\n\nБудь первым! 🎮")
+        return "\n".join(lines)
+
+    medals = ["🥇", "🥈", "🥉"]
+
+    for player in leaderboard:
+        rank = player["rank"]
+        medal = medals[rank - 1] if rank <= 3 else f"{rank}."
+        username = player["username"]
+        earned = player["total_earned"]
+        games = player["games_played"]
+
+        is_current = player["telegram_id"] == current_user_id
+        highlight = "👉 " if is_current else ""
+        name_style = f"<b>{username}</b>" if is_current else username
+
+        lines.append(
+            f"{highlight}{medal} {name_style}\n"
+            f"    💰 {earned}₽ • 🎮 {games} игр"
+        )
 
     return "\n".join(lines)

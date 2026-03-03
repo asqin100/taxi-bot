@@ -77,8 +77,9 @@ async def parse_kudago_events() -> list[dict]:
 
         params = {
             "location": "msk",
-            "categories": "concert,sport",
+            "categories": "concert,theater,festival,party",
             "fields": "id,title,place,dates",
+            "expand": "place",
             "actual_since": actual_since,
             "actual_until": actual_until,
             "page_size": 100,

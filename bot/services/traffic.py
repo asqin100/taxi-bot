@@ -74,7 +74,7 @@ def _get_simulated_traffic_level() -> int:
 
 async def get_moscow_traffic() -> Optional[TrafficData]:
     """
-    Get current traffic level for Moscow using TomTom API.
+    Get current traffic level for Moscow using TomTom API with multiple points.
 
     Returns:
         TrafficData object or None if failed
@@ -85,23 +85,20 @@ async def get_moscow_traffic() -> Optional[TrafficData]:
     if _cache_timestamp and (datetime.now() - _cache_timestamp).total_seconds() < CACHE_TTL_SECONDS:
         return _traffic_cache.get("moscow")
 
-    # Try TomTom Traffic API
+    # Try TomTom Traffic API with multiple points across Moscow
     if settings.tomtom_api_key:
         try:
-            # TomTom Traffic Flow API
-            # Moscow center coordinates
-            lat, lon = 55.7558, 37.6173
+            # Multiple points across Moscow for better coverage
+            moscow_points = [
+                (55.7558, 37.6173),  # Center
+                (55.7522, 37.6156),  # Kremlin area
+                (55.7558, 37.5173),  # West
+                (55.7558, 37.7173),  # East
+                (55.8058, 37.6173),  # North
+                (55.7058, 37.6173),  # South
+            ]
 
-            url = f"https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json"
-
-            params = {
-                "key": settings.tomtom_api_key,
-                "point": f"{lat},{lon}",
-            }
-
-            headers = {
-                "User-Agent": "TaxiBot/1.0",
-            }
+            traffic_levels = []
 
             # Disable SSL verification to avoid certificate issues on Windows
             import ssl
@@ -111,41 +108,78 @@ async def get_moscow_traffic() -> Optional[TrafficData]:
 
             connector = aiohttp.TCPConnector(ssl=ssl_context)
             async with aiohttp.ClientSession(connector=connector) as session:
-                async with session.get(url, params=params, headers=headers, timeout=aiohttp.ClientTimeout(total=10)) as resp:
-                    if resp.status == 200:
-                        data = await resp.json()
+                for lat, lon in moscow_points:
+                    try:
+                        url = f"https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json"
 
-                        # Parse traffic data
-                        # TomTom returns currentSpeed and freeFlowSpeed
-                        flow_data = data.get("flowSegmentData", {})
-                        current_speed = flow_data.get("currentSpeed", 50)
-                        free_flow_speed = flow_data.get("freeFlowSpeed", 60)
+                        params = {
+                            "key": settings.tomtom_api_key,
+                            "point": f"{lat},{lon}",
+                        }
 
-                        # Calculate traffic level (1-10) based on speed ratio
-                        # 100% speed = level 1 (free), 0% speed = level 10 (jammed)
-                        if free_flow_speed > 0:
-                            speed_ratio = current_speed / free_flow_speed
-                            # Convert to 1-10 scale (inverted)
-                            traffic_level = max(1, min(10, int(10 - (speed_ratio * 9))))
-                        else:
-                            traffic_level = 5
+                        headers = {
+                            "User-Agent": "TaxiBot/1.0",
+                        }
 
-                        traffic_data = TrafficData(
-                            region="moscow",
-                            level=traffic_level,
-                            description=f"Пробки {traffic_level} баллов",
-                            timestamp=datetime.now()
-                        )
+                        async with session.get(url, params=params, headers=headers, timeout=aiohttp.ClientTimeout(total=5)) as resp:
+                            if resp.status == 200:
+                                data = await resp.json()
 
-                        # Update cache
-                        _traffic_cache["moscow"] = traffic_data
-                        _cache_timestamp = datetime.now()
+                                flow_data = data.get("flowSegmentData", {})
+                                current_speed = flow_data.get("currentSpeed", 50)
+                                free_flow_speed = flow_data.get("freeFlowSpeed", 60)
 
-                        logger.info("Got real traffic data from TomTom: level=%d (speed: %d/%d km/h)",
-                                   traffic_level, current_speed, free_flow_speed)
-                        return traffic_data
-                    else:
-                        logger.warning("TomTom API returned status %d, falling back to simulation", resp.status)
+                                if free_flow_speed > 0:
+                                    speed_ratio = current_speed / free_flow_speed
+
+                                    # More realistic traffic level calculation
+                                    # 90-100% speed = 1-2 (free)
+                                    # 70-90% speed = 3-4 (light)
+                                    # 50-70% speed = 5-6 (medium)
+                                    # 30-50% speed = 7-8 (heavy)
+                                    # 0-30% speed = 9-10 (jammed)
+                                    if speed_ratio >= 0.9:
+                                        traffic_level = 1
+                                    elif speed_ratio >= 0.7:
+                                        traffic_level = int(3 + (0.9 - speed_ratio) * 10)
+                                    elif speed_ratio >= 0.5:
+                                        traffic_level = int(5 + (0.7 - speed_ratio) * 10)
+                                    elif speed_ratio >= 0.3:
+                                        traffic_level = int(7 + (0.5 - speed_ratio) * 10)
+                                    else:
+                                        traffic_level = min(10, int(9 + (0.3 - speed_ratio) * 10))
+
+                                    traffic_level = max(1, min(10, traffic_level))
+                                    traffic_levels.append(traffic_level)
+
+                                    logger.debug("Point (%s, %s): speed=%d/%d (%.1f%%) -> level=%d",
+                                               lat, lon, current_speed, free_flow_speed,
+                                               speed_ratio * 100, traffic_level)
+                    except Exception as e:
+                        logger.debug("Failed to get traffic for point (%s, %s): %s", lat, lon, e)
+                        continue
+
+            if traffic_levels:
+                # Average traffic level across all points
+                avg_traffic_level = int(sum(traffic_levels) / len(traffic_levels))
+
+                traffic_data = TrafficData(
+                    region="moscow",
+                    level=avg_traffic_level,
+                    description=f"Пробки {avg_traffic_level} баллов",
+                    timestamp=datetime.now()
+                )
+
+                # Update cache
+                _traffic_cache["moscow"] = traffic_data
+                _cache_timestamp = datetime.now()
+
+                logger.info("Got real traffic data from TomTom (avg of %d points): level=%d",
+                           len(traffic_levels), avg_traffic_level)
+                return traffic_data
+            else:
+                logger.warning("TomTom API: no valid data points, falling back to simulation")
+
         except Exception as e:
             logger.warning("TomTom API failed: %s, falling back to simulation", e)
 

@@ -44,14 +44,14 @@ def _flat_top_hex_vertices(cx: float, cy: float, size: float) -> list[list[float
 
 
 def _purple_color(coeff: float) -> str:
-    """Map coefficient to purple palette rgba string with wider gradient."""
-    # 1.0 -> light lavender, 3.5+ -> deep purple (wider range for smoother transitions)
-    t = min(max((coeff - 1.0) / 2.5, 0.0), 1.0)  # 0..1 for range 1.0..3.5
-    # Interpolate from very light lavender to deep purple
-    r = int(220 - 140 * t)  # 220 -> 80 (lighter start)
-    g = int(200 - 180 * t)  # 200 -> 20 (lighter start)
+    """Map coefficient to purple palette rgba string with better visibility."""
+    # 1.0 -> light lavender, 2.5+ -> deep purple
+    t = min(max((coeff - 1.0) / 1.5, 0.0), 1.0)  # 0..1 for range 1.0..2.5 (narrower for better visibility)
+    # Interpolate from light lavender to deep purple
+    r = int(220 - 140 * t)  # 220 -> 80
+    g = int(200 - 180 * t)  # 200 -> 20
     b = int(255 - 55 * t)   # 255 -> 200
-    a = round(0.15 + 0.70 * t, 2)  # 0.15 -> 0.85 (wider opacity range)
+    a = round(0.35 + 0.55 * t, 2)  # 0.35 -> 0.90 (much more visible even at low coefficients)
     return f"rgba({r},{g},{b},{a})"
 
 

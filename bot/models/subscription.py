@@ -63,6 +63,7 @@ SUBSCRIPTION_FEATURES = {
         "price": 0,
         "max_alerts": 3,
         "ai_advisor": False,
+        "geo_alerts": False,
         "priority_notifications": False,
         "detailed_analytics": False,
         "features": [
@@ -77,12 +78,14 @@ SUBSCRIPTION_FEATURES = {
         "price": 299,
         "max_alerts": 999,  # unlimited
         "ai_advisor": True,
+        "geo_alerts": True,
         "priority_notifications": False,
         "detailed_analytics": True,
         "features": [
             "✅ Все функции бесплатного",
             "✅ Неограниченные уведомления",
             "✅ AI-советник",
+            "✅ Геоалерты (уведомления рядом с вами)",
             "✅ Детальная аналитика",
             "✅ Горячие точки (аэропорты, вокзалы)",
         ]
@@ -92,6 +95,7 @@ SUBSCRIPTION_FEATURES = {
         "price": 499,
         "max_alerts": 999,
         "ai_advisor": True,
+        "geo_alerts": True,
         "priority_notifications": True,
         "detailed_analytics": True,
         "features": [

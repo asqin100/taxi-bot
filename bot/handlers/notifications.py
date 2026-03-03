@@ -6,6 +6,7 @@ from sqlalchemy import select
 from bot.database.db import session_factory
 from bot.models.user import User
 from bot.keyboards.inline import notify_keyboard, threshold_keyboard, event_types_keyboard, quiet_hours_keyboard
+from bot.services.message_manager import send_and_cleanup
 
 router = Router()
 
@@ -20,14 +21,21 @@ async def cmd_notify(message: Message):
     if user.quiet_hours_enabled:
         quiet_hours_str = f"с {user.quiet_hours_start:02d}:00 до {user.quiet_hours_end:02d}:00"
 
-    await message.answer(
+    location_str = "не установлена"
+    if user.last_latitude and user.last_longitude:
+        location_str = f"{user.last_latitude:.4f}, {user.last_longitude:.4f}"
+
+    await send_and_cleanup(
+        message,
         f"🔔 <b>Настройки уведомлений</b>\n\n"
         f"📊 Коэффициенты: {'включены' if user.notify_enabled else 'выключены'}\n"
         f"   Порог: x{user.surge_threshold}\n\n"
         f"🎭 Мероприятия: {'включены' if user.event_notify_enabled else 'выключены'}\n"
         f"   Типы: {event_types_str}\n\n"
+        f"📍 Геоалерты: {'включены' if user.geo_alerts_enabled else 'выключены'}\n"
+        f"   Локация: {location_str}\n\n"
         f"🌙 Тихие часы: {quiet_hours_str}",
-        reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled),
+        reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled, user.geo_alerts_enabled),
         parse_mode="HTML",
     )
 
@@ -42,14 +50,20 @@ async def cb_notify(callback: CallbackQuery):
     if user.quiet_hours_enabled:
         quiet_hours_str = f"с {user.quiet_hours_start:02d}:00 до {user.quiet_hours_end:02d}:00"
 
-    await callback.message.answer(
+    location_str = "не установлена"
+    if user.last_latitude and user.last_longitude:
+        location_str = f"{user.last_latitude:.4f}, {user.last_longitude:.4f}"
+
+    await callback.message.edit_text(
         f"🔔 <b>Настройки уведомлений</b>\n\n"
         f"📊 Коэффициенты: {'включены' if user.notify_enabled else 'выключены'}\n"
         f"   Порог: x{user.surge_threshold}\n\n"
         f"🎭 Мероприятия: {'включены' if user.event_notify_enabled else 'выключены'}\n"
         f"   Типы: {event_types_str}\n\n"
+        f"📍 Геоалерты: {'включены' if user.geo_alerts_enabled else 'выключены'}\n"
+        f"   Локация: {location_str}\n\n"
         f"🌙 Тихие часы: {quiet_hours_str}",
-        reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled),
+        reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled, user.geo_alerts_enabled),
         parse_mode="HTML",
     )
     await callback.answer()

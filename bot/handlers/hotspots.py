@@ -52,6 +52,7 @@ async def cb_airports_list(callback: CallbackQuery):
         ])
 
     buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="menu:hotspots")])
+    buttons.append([InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")])
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
 
@@ -76,6 +77,7 @@ async def cb_stations_list(callback: CallbackQuery):
         ])
 
     buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="menu:hotspots")])
+    buttons.append([InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")])
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
 
@@ -100,6 +102,7 @@ async def cb_malls_list(callback: CallbackQuery):
         ])
 
     buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="menu:hotspots")])
+    buttons.append([InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")])
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
 
@@ -124,6 +127,7 @@ async def cb_stadiums_list(callback: CallbackQuery):
         ])
 
     buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="menu:hotspots")])
+    buttons.append([InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")])
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
 
@@ -159,6 +163,7 @@ async def cb_hotspot_view(callback: CallbackQuery):
             InlineKeyboardButton(text="🗺 На карте", callback_data="cmd:kef"),
         ],
         [InlineKeyboardButton(text="◀️ Назад", callback_data=back_data)],
+        [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
     ])
 
     await send_and_cleanup(callback.message, text, reply_markup=keyboard, parse_mode="HTML")

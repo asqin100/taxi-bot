@@ -7,6 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 class Settings(BaseSettings):
     bot_token: str
+    bot_username: str = "KefPulse_bot"  # Bot username for referral links
     yandex_api_key: str = ""
     yandex_traffic_api_key: str = ""  # Yandex Traffic/Jams API key
     yandex_bearer_token: str = ""
@@ -15,11 +16,12 @@ class Settings(BaseSettings):
     yandex_mob_id: str = ""
     yandex_geocoder_key: str = ""  # Yandex Geocoder API key
     tomtom_api_key: str = ""  # TomTom Traffic API key
-    anthropic_api_key: str = ""  # Claude API key for AI advisor
+    gemini_api_key: str = ""  # Google Gemini API key for AI advisor
     yookassa_shop_id: str = ""  # YooKassa shop ID
     yookassa_secret_key: str = ""  # YooKassa secret key
+    admin_password: str = "admin123!@#"  # Admin panel password
     db_url: str = f"sqlite+aiosqlite:///{BASE_DIR / 'data' / 'bot.db'}"
-    parse_interval_seconds: int = 120
+    parse_interval_seconds: int = 1200  # 20 minutes - enough time for 43 zones × 3 tariffs with 8s delay
     default_surge_threshold: float = 1.5
     webapp_url: str = ""
     web_port: int = 8080
