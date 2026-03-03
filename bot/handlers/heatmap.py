@@ -6,6 +6,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from bot.services.financial import get_shifts_by_period
 from bot.services.visualization import generate_heatmap
+from bot.services.subscription import check_feature_access
 
 router = Router()
 
@@ -13,6 +14,26 @@ router = Router()
 @router.message(Command("heatmap"))
 async def cmd_heatmap(message: Message) -> None:
     """Handle /heatmap command to generate earnings heatmap."""
+    # Check Elite subscription
+    has_access = await check_feature_access(message.from_user.id, "heatmap")
+    if not has_access:
+        builder = InlineKeyboardBuilder()
+        builder.button(text="⭐ Улучшить до Elite", callback_data="sub:upgrade")
+        builder.adjust(1)
+
+        await message.answer(
+            "🔒 <b>Карта заработка доступна только в Elite подписке</b>\n\n"
+            "С Elite подпиской вы получите:\n"
+            "✅ Тепловую карту заработка по часам и дням\n"
+            "✅ Визуализацию лучших времён для работы\n"
+            "✅ Анализ 90 дней истории\n"
+            "✅ Экспорт данных и калькулятор налогов\n\n"
+            "💎 Elite — 999₽/месяц",
+            reply_markup=builder.as_markup(),
+            parse_mode="HTML"
+        )
+        return
+
     # Get all completed shifts for the user (last 90 days)
     shifts = await get_shifts_by_period(message.from_user.id, days=90)
 
@@ -44,6 +65,28 @@ async def cmd_heatmap(message: Message) -> None:
 @router.callback_query(F.data == "menu_heatmap")
 async def cb_heatmap(callback: CallbackQuery) -> None:
     """Handle heatmap callback from menu."""
+    # Check Elite subscription
+    has_access = await check_feature_access(callback.from_user.id, "heatmap")
+    if not has_access:
+        builder = InlineKeyboardBuilder()
+        builder.button(text="⭐ Улучшить до Elite", callback_data="sub:upgrade")
+        builder.button(text="🔙 Назад", callback_data="menu_main")
+        builder.adjust(1)
+
+        await callback.message.edit_text(
+            "🔒 <b>Карта заработка доступна только в Elite подписке</b>\n\n"
+            "С Elite подпиской вы получите:\n"
+            "✅ Тепловую карту заработка по часам и дням\n"
+            "✅ Визуализацию лучших времён для работы\n"
+            "✅ Анализ 90 дней истории\n"
+            "✅ Экспорт данных и калькулятор налогов\n\n"
+            "💎 Elite — 999₽/месяц",
+            reply_markup=builder.as_markup(),
+            parse_mode="HTML"
+        )
+        await callback.answer()
+        return
+
     # Get all completed shifts for the user (last 90 days)
     shifts = await get_shifts_by_period(callback.from_user.id, days=90)
 

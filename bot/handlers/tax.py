@@ -6,6 +6,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from bot.services.tax_calculator import TaxCalculator
 from bot.services.financial import get_shifts_by_period
+from bot.services.subscription import check_feature_access
 
 router = Router()
 
@@ -24,6 +25,33 @@ async def cb_tax_menu(callback: CallbackQuery) -> None:
 
 async def show_tax_menu(message: Message, callback: CallbackQuery = None) -> None:
     """Display tax calculator main menu"""
+    user_id = callback.from_user.id if callback else message.from_user.id
+
+    # Check Elite subscription
+    has_access = await check_feature_access(user_id, "tax_calculator")
+    if not has_access:
+        builder = InlineKeyboardBuilder()
+        builder.button(text="⭐ Улучшить до Elite", callback_data="sub:upgrade")
+        builder.button(text="🔙 Главное меню", callback_data="menu_main")
+        builder.adjust(1)
+
+        text = (
+            "🔒 <b>Калькулятор налогов доступен только в Elite подписке</b>\n\n"
+            "С Elite подпиской вы получите:\n"
+            "✅ Автоматический расчёт налогов для самозанятых\n"
+            "✅ Расчёт по периодам (месяц, квартал, год)\n"
+            "✅ Учёт налогового вычета НПД\n"
+            "✅ Экспорт данных и карту заработка\n\n"
+            "💎 Elite — 999₽/месяц"
+        )
+
+        if callback:
+            await callback.message.edit_text(text, reply_markup=builder.as_markup(), parse_mode="HTML")
+            await callback.answer()
+        else:
+            await message.answer(text, reply_markup=builder.as_markup(), parse_mode="HTML")
+        return
+
     builder = InlineKeyboardBuilder()
     builder.button(text="📅 За месяц", callback_data="tax_calc_month")
     builder.button(text="📊 За квартал", callback_data="tax_calc_quarter")

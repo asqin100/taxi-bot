@@ -7,6 +7,7 @@ from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from bot.services.export import export_shifts_csv, check_export_limit, log_export
+from bot.services.subscription import check_feature_access
 
 router = Router()
 
@@ -32,6 +33,32 @@ async def handle_export(telegram_id: int, event) -> None:
         event: Either Message or CallbackQuery
     """
     is_callback = isinstance(event, CallbackQuery)
+
+    # Check Elite subscription
+    has_access = await check_feature_access(telegram_id, "csv_export")
+    if not has_access:
+        builder = InlineKeyboardBuilder()
+        builder.button(text="⭐ Улучшить до Elite", callback_data="sub:upgrade")
+        builder.button(text="🔙 Назад", callback_data="menu_main")
+        builder.adjust(1)
+
+        text = (
+            "🔒 <b>Экспорт данных доступен только в Elite подписке</b>\n\n"
+            "С Elite подпиской вы получите:\n"
+            "✅ Безлимитный экспорт смен в CSV\n"
+            "✅ Данные для налоговой отчётности\n"
+            "✅ История за 30+ дней\n"
+            "✅ Карту заработка по часам\n"
+            "✅ Калькулятор налогов для самозанятых\n\n"
+            "💎 Elite — 999₽/месяц"
+        )
+
+        if is_callback:
+            await event.message.edit_text(text, reply_markup=builder.as_markup(), parse_mode="HTML")
+            await event.answer()
+        else:
+            await event.answer(text, reply_markup=builder.as_markup(), parse_mode="HTML")
+        return
 
     # Check rate limits
     can_export, limit_message = await check_export_limit(telegram_id)
