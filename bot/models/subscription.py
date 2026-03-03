@@ -133,6 +133,8 @@ SUBSCRIPTION_FEATURES = {
         "detailed_analytics": True,
         "business_tariff": True,
         "csv_export": True,
+        "heatmap": True,
+        "tax_calculator": True,
         "api_access": True,
         "extended_stats": True,
         "features": [

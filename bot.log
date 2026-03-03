@@ -14402,3 +14402,126 @@ aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: messa
 2026-03-04 01:05:20,267 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:05:20 +0300] "GET /api/hexgrid HTTP/1.1" 200 6214 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
 2026-03-04 01:05:20,268 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:05:20 +0300] "GET /api/top?n=5 HTTP/1.1" 200 355 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
 2026-03-04 01:05:36,396 [INFO] bot.services.yandex_api: Found surge 1.10 for tariff business
+2026-03-04 01:05:44,972 [INFO] bot.services.yandex_api: Found surge 1.33 for tariff econom
+2026-03-04 01:06:02,936 [INFO] bot.services.yandex_api: Found surge 1.09 for tariff business
+2026-03-04 01:06:11,551 [INFO] bot.services.yandex_api: Found surge 1.28 for tariff econom
+2026-03-04 01:06:18,559 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-04 01:07:18 MSK)" (scheduled at 2026-03-04 01:06:18.543242+03:00)
+2026-03-04 01:06:18,583 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-04 01:07:18 MSK)" executed successfully
+2026-03-04 01:06:20,256 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:20 +0300] "GET /api/hexgrid HTTP/1.1" 200 6214 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:20,256 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:20 +0300] "GET /api/top?n=5 HTTP/1.1" 200 844 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:26,459 [INFO] aiogram.event: Update id=678516986 is handled. Duration 461 ms by bot id=7845157915
+2026-03-04 01:06:28,748 [INFO] bot.services.yandex_api: Found surge 1.34 for tariff business
+2026-03-04 01:06:31,222 [INFO] aiogram.event: Update id=678516987 is handled. Duration 176 ms by bot id=7845157915
+2026-03-04 01:06:32,898 [INFO] aiogram.event: Update id=678516988 is handled. Duration 176 ms by bot id=7845157915
+2026-03-04 01:06:35,914 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:35 +0300] "GET /admin/dashboard HTTP/1.1" 304 179 "http://localhost:8080/admin/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:36,496 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:36 +0300] "GET /admin/api/stats HTTP/1.1" 401 194 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:36,550 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:36 +0300] "GET /admin/login HTTP/1.1" 200 238 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:37,219 [INFO] bot.web.api: Admin login successful
+2026-03-04 01:06:37,219 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:37 +0300] "POST /admin/login HTTP/1.1" 200 232 "http://localhost:8080/admin/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:37,275 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:37 +0300] "GET /api/top?n=5 HTTP/1.1" 200 846 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:37,298 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:37 +0300] "GET /api/hexgrid HTTP/1.1" 200 6215 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:37,409 [INFO] bot.services.yandex_api: Found surge 1.24 for tariff econom
+2026-03-04 01:06:37,534 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:37 +0300] "GET /admin/api/stats HTTP/1.1" 200 386 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:37,548 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:37 +0300] "GET /admin/api/top-earners HTTP/1.1" 200 160 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:37,551 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:37 +0300] "GET /admin/api/recent-users HTTP/1.1" 200 564 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:41,843 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:41 +0300] "GET /admin/api/search-users?q=abubakarone HTTP/1.1" 200 261 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:42,806 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:06:42 +0300] "GET /admin/api/user/244638301 HTTP/1.1" 200 438 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:06:46,962 [INFO] aiogram.event: Update id=678516989 is handled. Duration 177 ms by bot id=7845157915
+2026-03-04 01:06:49,604 [INFO] aiogram.event: Update id=678516990 is handled. Duration 191 ms by bot id=7845157915
+2026-03-04 01:06:54,420 [INFO] aiogram.event: Update id=678516991 is handled. Duration 168 ms by bot id=7845157915
+2026-03-04 01:06:54,677 [INFO] bot.services.yandex_api: Found surge 1.12 for tariff business
+2026-03-04 01:06:55,506 [INFO] aiogram.event: Update id=678516992 is handled. Duration 208 ms by bot id=7845157915
+2026-03-04 01:07:02,717 [INFO] aiogram.event: Update id=678516993 is handled. Duration 98 ms by bot id=7845157915
+2026-03-04 01:07:03,281 [INFO] bot.services.yandex_api: Found surge 1.37 for tariff econom
+2026-03-04 01:07:07,236 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:07:07 +0300] "GET /api/top?n=5 HTTP/1.1" 200 881 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:07:07,257 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:07:07 +0300] "GET /api/hexgrid HTTP/1.1" 200 6215 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:07:08,932 [INFO] aiogram.event: Update id=678516994 is handled. Duration 103 ms by bot id=7845157915
+2026-03-04 01:07:13,058 [INFO] aiogram.event: Update id=678516995 is not handled. Duration 13 ms by bot id=7845157915
+2026-03-04 01:07:14,544 [INFO] aiogram.event: Update id=678516996 is not handled. Duration 12 ms by bot id=7845157915
+2026-03-04 01:07:18,547 [INFO] apscheduler.executors.default: Running job "check_geo_alerts (trigger: interval[0:02:00], next run at: 2026-03-04 01:09:18 MSK)" (scheduled at 2026-03-04 01:07:18.542910+03:00)
+2026-03-04 01:07:18,549 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-04 01:08:18 MSK)" (scheduled at 2026-03-04 01:07:18.543242+03:00)
+2026-03-04 01:07:18,553 [INFO] apscheduler.executors.default: Job "check_geo_alerts (trigger: interval[0:02:00], next run at: 2026-03-04 01:09:18 MSK)" executed successfully
+2026-03-04 01:07:18,554 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-04 01:08:18 MSK)" executed successfully
+2026-03-04 01:07:20,528 [INFO] bot.services.yandex_api: Found surge 1.16 for tariff business
+2026-03-04 01:07:29,116 [INFO] bot.services.yandex_api: Found surge 1.35 for tariff econom
+2026-03-04 01:07:46,367 [INFO] bot.services.yandex_api: Found surge 1.02 for tariff business
+2026-03-04 01:07:54,999 [INFO] bot.services.yandex_api: Found surge 1.04 for tariff econom
+2026-03-04 01:08:08,266 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:08:08 +0300] "GET /api/hexgrid HTTP/1.1" 200 20441 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:08:08,266 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:08:08 +0300] "GET /api/top?n=5 HTTP/1.1" 200 902 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:08:18,554 [INFO] apscheduler.executors.default: Running job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-04 01:09:18 MSK)" (scheduled at 2026-03-04 01:08:18.543242+03:00)
+2026-03-04 01:08:18,559 [INFO] apscheduler.executors.default: Job "check_and_notify_events (trigger: interval[0:01:00], next run at: 2026-03-04 01:09:18 MSK)" executed successfully
+2026-03-04 01:08:20,846 [INFO] bot.services.yandex_api: Found surge 1.11 for tariff econom
+2026-03-04 01:08:38,841 [INFO] __main__: Database initialized
+2026-03-04 01:08:38,841 [WARNING] bot.services.payment: YooKassa credentials not configured
+2026-03-04 01:08:39,105 [INFO] __main__: Initial data fetch scheduled in background
+2026-03-04 01:08:39,108 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:08:39,109 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:08:39,109 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:08:39,109 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:08:39,110 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:08:39,110 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:08:39,111 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:08:39,111 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:08:39,112 [INFO] apscheduler.scheduler: Added job "fetch_all_coefficients" to job store "default"
+2026-03-04 01:08:39,112 [INFO] apscheduler.scheduler: Added job "collect_and_store_coefficients" to job store "default"
+2026-03-04 01:08:39,112 [INFO] apscheduler.scheduler: Added job "check_and_notify" to job store "default"
+2026-03-04 01:08:39,112 [INFO] apscheduler.scheduler: Added job "check_geo_alerts" to job store "default"
+2026-03-04 01:08:39,112 [INFO] apscheduler.scheduler: Added job "check_live_location_expiration" to job store "default"
+2026-03-04 01:08:39,112 [INFO] apscheduler.scheduler: Added job "check_and_notify_events" to job store "default"
+2026-03-04 01:08:39,112 [INFO] apscheduler.scheduler: Added job "fetch_and_store_events" to job store "default"
+2026-03-04 01:08:39,112 [INFO] apscheduler.scheduler: Added job "process_subscription_renewals" to job store "default"
+2026-03-04 01:08:39,112 [INFO] apscheduler.scheduler: Scheduler started
+2026-03-04 01:08:39,113 [INFO] __main__: Scheduler started (interval=480s)
+2026-03-04 01:08:39,114 [INFO] __main__: Starting initial coefficient fetch...
+2026-03-04 01:08:46,698 [INFO] bot.services.yandex_api: Found surge 1.16 for tariff econom
+2026-03-04 01:09:17,353 [INFO] __main__: Database initialized
+2026-03-04 01:09:17,354 [WARNING] bot.services.payment: YooKassa credentials not configured
+2026-03-04 01:09:17,646 [INFO] __main__: Initial data fetch scheduled in background
+2026-03-04 01:09:17,650 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:09:17,650 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:09:17,651 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:09:17,651 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:09:17,651 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:09:17,651 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:09:17,651 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:09:17,651 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-04 01:09:17,652 [INFO] apscheduler.scheduler: Added job "fetch_all_coefficients" to job store "default"
+2026-03-04 01:09:17,652 [INFO] apscheduler.scheduler: Added job "collect_and_store_coefficients" to job store "default"
+2026-03-04 01:09:17,652 [INFO] apscheduler.scheduler: Added job "check_and_notify" to job store "default"
+2026-03-04 01:09:17,652 [INFO] apscheduler.scheduler: Added job "check_geo_alerts" to job store "default"
+2026-03-04 01:09:17,652 [INFO] apscheduler.scheduler: Added job "check_live_location_expiration" to job store "default"
+2026-03-04 01:09:17,653 [INFO] apscheduler.scheduler: Added job "check_and_notify_events" to job store "default"
+2026-03-04 01:09:17,653 [INFO] apscheduler.scheduler: Added job "fetch_and_store_events" to job store "default"
+2026-03-04 01:09:17,653 [INFO] apscheduler.scheduler: Added job "process_subscription_renewals" to job store "default"
+2026-03-04 01:09:17,653 [INFO] apscheduler.scheduler: Scheduler started
+2026-03-04 01:09:17,653 [INFO] __main__: Scheduler started (interval=480s)
+2026-03-04 01:09:17,654 [INFO] __main__: Starting initial coefficient fetch...
+2026-03-04 01:09:17,657 [INFO] __main__: Web server started on port 8080
+2026-03-04 01:09:17,657 [INFO] __main__: Bot starting polling...
+2026-03-04 01:09:17,657 [INFO] aiogram.dispatcher: Start polling
+2026-03-04 01:09:19,101 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:19 +0300] "GET /admin/dashboard HTTP/1.1" 304 179 "http://localhost:8080/admin/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:19,713 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:19 +0300] "GET /admin/api/stats HTTP/1.1" 401 194 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:19,775 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:19 +0300] "GET /admin/login HTTP/1.1" 200 238 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:21,226 [INFO] bot.web.api: Admin login successful
+2026-03-04 01:09:21,226 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:21 +0300] "POST /admin/login HTTP/1.1" 200 232 "http://localhost:8080/admin/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:21,653 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:21 +0300] "GET /admin/api/stats HTTP/1.1" 200 386 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:21,763 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:21 +0300] "GET /admin/api/top-earners HTTP/1.1" 200 160 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:21,781 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:21 +0300] "GET /admin/api/recent-users HTTP/1.1" 200 564 "http://localhost:8080/admin/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:24,143 [INFO] aiogram.dispatcher: Run polling for bot @KefPulse_bot id=7845157915 - 'KefPulse'
+2026-03-04 01:09:24,382 [INFO] bot.services.yandex_api: Found surge 1.36 for tariff econom
+2026-03-04 01:09:27,892 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:27 +0300] "GET / HTTP/1.1" 200 1261 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:28,045 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:28 +0300] "GET /style.css HTTP/1.1" 200 318 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:28,048 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:28 +0300] "GET /app.js?v=1772575767 HTTP/1.1" 200 326 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:28,912 [INFO] bot.web.api: Received initData: empty
+2026-03-04 01:09:28,912 [WARNING] bot.web.api: No telegram_id found, returning free access
+2026-03-04 01:09:28,913 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:28 +0300] "GET /api/user/subscription HTTP/1.1" 200 205 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:29,024 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:29 +0300] "GET /api/top?n=5 HTTP/1.1" 200 355 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:29,050 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:29 +0300] "GET /api/hexgrid HTTP/1.1" 200 6217 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:49,866 [INFO] bot.services.yandex_api: Found surge 1.09 for tariff business
+2026-03-04 01:09:50,073 [INFO] aiogram.event: Update id=678516997 is handled. Duration 3980 ms by bot id=7845157915
+2026-03-04 01:09:56,840 [INFO] aiogram.event: Update id=678516998 is handled. Duration 176 ms by bot id=7845157915
+2026-03-04 01:09:58,520 [INFO] bot.services.yandex_api: Found surge 1.36 for tariff econom
+2026-03-04 01:09:59,256 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:59 +0300] "GET /api/hexgrid HTTP/1.1" 200 6217 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:59,256 [INFO] aiohttp.access: 127.0.0.1 [04/Mar/2026:01:09:59 +0300] "GET /api/top?n=5 HTTP/1.1" 200 704 "https://turgently-renunciatory-kellye.ngrok-free.dev/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+2026-03-04 01:09:59,344 [INFO] aiogram.event: Update id=678516999 is handled. Duration 167 ms by bot id=7845157915
+2026-03-04 01:10:04,043 [INFO] aiogram.event: Update id=678517000 is handled. Duration 107 ms by bot id=7845157915
