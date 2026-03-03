@@ -1,8 +1,13 @@
-const tg = window.Telegram && Telegram.WebApp;
+const tg = window.Telegram && window.Telegram.WebApp;
 if (tg) {
   tg.expand();
   tg.BackButton.show();
   tg.BackButton.onClick(() => tg.close());
+  console.log('Telegram WebApp initialized:', tg);
+  console.log('initData:', tg.initData);
+  console.log('initDataUnsafe:', tg.initDataUnsafe);
+} else {
+  console.warn('Telegram WebApp not available - opened in regular browser');
 }
 
 let myMap;
@@ -13,9 +18,29 @@ let hasBusinessAccess = false;
 // Check user subscription on load
 async function checkSubscription() {
   try {
-    const initData = tg ? tg.initData : '';
-    const response = await fetch(`/api/user/subscription?initData=${encodeURIComponent(initData)}`);
+    let initData = '';
+    let userId = null;
+
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      // Get user ID from initDataUnsafe (parsed data)
+      userId = tg.initDataUnsafe.user.id;
+      initData = tg.initData; // Raw initData string for validation
+      console.log('Got user ID from Telegram:', userId);
+    }
+
+    // Build API URL
+    let apiUrl = '/api/user/subscription?';
+    if (userId) {
+      apiUrl += `telegram_id=${userId}`;
+    } else if (initData) {
+      apiUrl += `initData=${encodeURIComponent(initData)}`;
+    }
+
+    console.log('Fetching subscription from:', apiUrl);
+    const response = await fetch(apiUrl);
     const data = await response.json();
+    console.log('Subscription data:', data);
+
     hasBusinessAccess = data.has_business_access;
 
     // Update business button visibility
@@ -24,6 +49,9 @@ async function checkSubscription() {
       businessBtn.classList.add('locked');
       businessBtn.innerHTML = 'Бизнес 🔒';
       businessBtn.title = 'Доступно в Pro и Premium';
+      console.log('Business tariff locked for free user');
+    } else {
+      console.log('Business tariff available');
     }
   } catch (e) {
     console.error('Failed to check subscription:', e);

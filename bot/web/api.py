@@ -22,8 +22,14 @@ WEBAPP_DIR = Path(__file__).resolve().parent.parent.parent / "webapp"
 
 
 async def index(_request: web.Request) -> web.FileResponse:
-    response = web.FileResponse(WEBAPP_DIR / "index.html")
-    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    import time
+    # Add timestamp to force cache refresh
+    html_content = (WEBAPP_DIR / "index.html").read_text(encoding='utf-8')
+    timestamp = int(time.time())
+    html_content = html_content.replace('app.js?v=3', f'app.js?v={timestamp}')
+
+    response = web.Response(text=html_content, content_type='text/html', charset='utf-8')
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
     return response
@@ -108,18 +114,24 @@ async def api_user_subscription(request: web.Request) -> web.Response:
         if not telegram_id:
             # Try to parse from Telegram WebApp initData
             init_data = request.query.get("initData", "")
+            logger.info(f"Received initData: {init_data[:100] if init_data else 'empty'}")
+
             if init_data:
                 # Parse initData to extract user info
                 # Format: query_id=...&user={"id":123,...}&...
                 import urllib.parse
+                import json
                 params = urllib.parse.parse_qs(init_data)
                 user_json = params.get("user", [None])[0]
+                logger.info(f"Parsed user JSON: {user_json[:100] if user_json else 'none'}")
+
                 if user_json:
-                    import json
                     user_data = json.loads(user_json)
                     telegram_id = user_data.get("id")
+                    logger.info(f"Extracted telegram_id: {telegram_id}")
 
         if not telegram_id:
+            logger.warning("No telegram_id found, returning free access")
             # Return default free access if no user ID
             return web.json_response({
                 "has_business_access": False,
@@ -132,6 +144,8 @@ async def api_user_subscription(request: web.Request) -> web.Response:
         has_business = await check_feature_access(telegram_id, "business_tariff")
         subscription = await get_subscription(telegram_id)
 
+        logger.info(f"User {telegram_id} subscription: tier={subscription.tier}, has_business={has_business}")
+
         response = web.json_response({
             "has_business_access": has_business,
             "tier": subscription.tier
@@ -140,7 +154,7 @@ async def api_user_subscription(request: web.Request) -> web.Response:
         return response
 
     except Exception as e:
-        logger.error(f"Error checking user subscription: {e}")
+        logger.error(f"Error checking user subscription: {e}", exc_info=True)
         # Return free access on error
         return web.json_response({
             "has_business_access": False,
