@@ -41,6 +41,9 @@ class User(Base):
     referrer_id: Mapped[int | None] = mapped_column(Integer, ForeignKey("users.id"), nullable=True)
     referral_balance: Mapped[float] = mapped_column(Float, default=0.0)
 
+    # Export tracking
+    last_export_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
     # Relationships

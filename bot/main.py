@@ -7,9 +7,10 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bot.config import settings
 from bot.database.db import init_db
-from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding, referral, location
+from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding, referral, location, export, statistics, tax, heatmap
 from bot.middlewares.auth import ThrottleMiddleware
 from bot.services.yandex_api import fetch_all_coefficients
+from bot.services.coefficient_collector import collect_and_store_coefficients
 from bot.services.notifier import check_and_notify
 from bot.services.event_notifier import check_and_notify_events
 from bot.services.event_parser import fetch_and_store_events
@@ -94,6 +95,10 @@ async def main():
     dp.include_router(challenges.router)
     dp.include_router(leaderboard.router)
     dp.include_router(help_handler.router)
+    dp.include_router(export.router)
+    dp.include_router(statistics.router)
+    dp.include_router(tax.router)
+    dp.include_router(heatmap.router)
 
     # Initial fetch in background (non-blocking)
     asyncio.create_task(_initial_fetch())
@@ -102,6 +107,7 @@ async def main():
     # Scheduler
     scheduler = AsyncIOScheduler()
     scheduler.add_job(fetch_all_coefficients, "interval", seconds=settings.parse_interval_seconds)
+    scheduler.add_job(collect_and_store_coefficients, "interval", seconds=settings.parse_interval_seconds + 10)  # Store coefficients 10s after fetch
     scheduler.add_job(check_and_notify, "interval", seconds=settings.parse_interval_seconds + 5, args=[bot])
     scheduler.add_job(check_geo_alerts, "interval", seconds=120, args=[bot])  # Check geo alerts every 2 minutes
     scheduler.add_job(check_live_location_expiration, "interval", seconds=300, args=[bot])  # Check expiration every 5 minutes

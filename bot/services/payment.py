@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 SUBSCRIPTION_PRICES = {
     SubscriptionTier.PRO: 299,
     SubscriptionTier.PREMIUM: 499,
+    SubscriptionTier.ELITE: 999,
 }
 
 

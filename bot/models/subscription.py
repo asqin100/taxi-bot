@@ -13,6 +13,7 @@ class SubscriptionTier(str, Enum):
     FREE = "free"
     PRO = "pro"
     PREMIUM = "premium"
+    ELITE = "elite"
 
 
 class Subscription(Base):
@@ -54,6 +55,17 @@ class Subscription(Base):
     def is_premium(self) -> bool:
         """Check if user has Premium subscription."""
         return self.tier == SubscriptionTier.PREMIUM.value
+
+    @property
+    def is_elite(self) -> bool:
+        """Check if user has Elite subscription."""
+        return self.tier == SubscriptionTier.ELITE.value
+
+    @property
+    def features(self) -> list[str]:
+        """Get list of features for current tier."""
+        from bot.models.subscription import SUBSCRIPTION_FEATURES
+        return SUBSCRIPTION_FEATURES.get(self.tier, {}).get("features", [])
 
 
 # Subscription limits and features
@@ -109,6 +121,28 @@ SUBSCRIPTION_FEATURES = {
             "✅ Расширенная аналитика",
             "✅ Персональные рекомендации",
             "✅ Поддержка 24/7",
+        ]
+    },
+    SubscriptionTier.ELITE: {
+        "name": "Elite",
+        "price": 999,
+        "max_alerts": 999,
+        "ai_advisor": True,
+        "geo_alerts": True,
+        "priority_notifications": True,
+        "detailed_analytics": True,
+        "business_tariff": True,
+        "csv_export": True,
+        "api_access": True,
+        "extended_stats": True,
+        "features": [
+            "✅ Все функции Premium",
+            "✅ CSV экспорт смен (безлимит)",
+            "✅ REST API доступ",
+            "✅ Расширенная статистика (30 дней)",
+            "✅ Тепловая карта заработка",
+            "✅ Приоритетная поддержка",
+            "✅ Ранний доступ к новым функциям",
         ]
     }
 }
