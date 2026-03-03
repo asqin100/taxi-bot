@@ -113,7 +113,6 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
         #     web_app=WebAppInfo(url=f"{settings.webapp_url}/game"),
         # )])
     buttons.extend([
-        [InlineKeyboardButton(text="📊 Коэффициенты", callback_data="cmd:kef")],
         [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
         [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
         [InlineKeyboardButton(text="🗺 Горячие точки", callback_data="menu:hotspots")],

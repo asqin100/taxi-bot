@@ -19,12 +19,22 @@ def format_surge_table(data: list[SurgeData], tariff: str | None = None) -> str:
         return "Нет данных о коэффициентах. Попробуйте позже."
 
     lines = ["📊 Коэффициенты Яндекс Такси\n"]
-    for zone_id, tariffs in sorted(by_zone.items(), key=lambda x: max(x[1].values()), reverse=True):
+
+    # Sort by max coefficient and limit to top 15 zones to avoid caption length limit
+    sorted_zones = sorted(by_zone.items(), key=lambda x: max(x[1].values()), reverse=True)[:15]
+
+    for zone_id, tariffs in sorted_zones:
         zone_name = zone_names.get(zone_id, zone_id)
         parts = [f"{TARIFF_LABELS.get(t, t)}: x{c}" for t, c in sorted(tariffs.items())]
         lines.append(f"📍 {zone_name}\n   {' | '.join(parts)}")
 
-    return "\n".join(lines)
+    result = "\n".join(lines)
+
+    # Telegram caption limit is 1024 chars - truncate if needed
+    if len(result) > 1000:
+        result = result[:997] + "..."
+
+    return result
 
 
 def format_top_zones(data: list[SurgeData]) -> str:
