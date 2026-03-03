@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+bot_output.log
+bot_console.log
+
+# Database
+*.db
+*.db-journal
+data/bot.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+nul
+
+# Test files
+test_*.py
+check_*.py
+send_test_*.py
+*_test.py
+
+# Migration scripts
+migrate_*.py
+add_*.py
+
+# Images and media
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+
+# Documents
+*.docx
+*.pdf
+*.txt
+
+# Batch files
+*.bat
+
+# JSON test data
+test_*.json
+*_payload.json
