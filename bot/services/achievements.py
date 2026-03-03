@@ -107,8 +107,10 @@ async def check_shift_achievements(user_id: int, shift: Shift):
     """Check and update achievements based on completed shift."""
     unlocked = []
 
-    # First shift
-    if shift.id == 1:
+    # First shift - check total shift count instead of shift ID
+    from bot.services.financial import get_statistics
+    stats = await get_statistics(user_id, "all")
+    if stats["shifts_count"] == 1:
         achievement = await update_achievement_progress(user_id, AchievementType.FIRST_SHIFT)
         if achievement:
             unlocked.append(achievement)

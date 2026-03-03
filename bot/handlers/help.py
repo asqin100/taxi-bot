@@ -32,6 +32,7 @@ HELP_SECTIONS = {
                 InlineKeyboardButton(text="⭐ Подписки", callback_data="help:subscription"),
                 InlineKeyboardButton(text="📝 Команды", callback_data="help:commands"),
             ],
+            [InlineKeyboardButton(text="⚖️ Юридическая информация", callback_data="help:legal")],
             [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
         ]
     },
@@ -199,6 +200,23 @@ HELP_SECTIONS = {
             "/subscription - подписка\n"
             "/help - эта справка"
         )
+    },
+    "legal": {
+        "title": "⚖️ Юридическая информация",
+        "text": (
+            "<b>Документы и реквизиты</b>\n\n"
+            "📄 <b>Юридические документы:</b>\n"
+            "• Публичная оферта\n"
+            "• Политика конфиденциальности\n"
+            "• Политика возврата средств\n\n"
+            "👤 <b>Реквизиты продавца:</b>\n"
+            "СМЗ Манченко Александр Александрович\n"
+            "ИНН: 301508489913\n\n"
+            "📧 <b>Контакты:</b>\n"
+            "Email: yotabro15@yandex.ru\n"
+            "Телефон: 89822203464\n\n"
+            "Нажмите на кнопки ниже, чтобы открыть документы:"
+        )
     }
 }
 
@@ -213,11 +231,11 @@ async def cmd_help(message: Message):
 async def cb_help(callback: CallbackQuery):
     """Handle help section navigation."""
     section = callback.data.split(":")[1]
-    await _send_help(callback.message, section)
+    await _send_help(callback.message, section, edit=True)
     await callback.answer()
 
 
-async def _send_help(message: Message, section: str = "main"):
+async def _send_help(message: Message, section: str = "main", edit: bool = False):
     """Send help section."""
     help_data = HELP_SECTIONS.get(section, HELP_SECTIONS["main"])
 
@@ -226,13 +244,29 @@ async def _send_help(message: Message, section: str = "main"):
     # Build keyboard
     if section == "main":
         keyboard = InlineKeyboardMarkup(inline_keyboard=help_data["buttons"])
+    elif section == "legal":
+        # Special keyboard for legal section with document links
+        from bot.config import settings
+        from aiogram.types import WebAppInfo
+
+        oferta_url = f"{settings.webapp_url}/oferta.html" if settings.webapp_url else "#"
+        privacy_url = f"{settings.webapp_url}/privacy_policy.html" if settings.webapp_url else "#"
+        refund_url = f"{settings.webapp_url}/refund_policy.html" if settings.webapp_url else "#"
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="📄 Публичная оферта", web_app=WebAppInfo(url=oferta_url))],
+            [InlineKeyboardButton(text="🔒 Политика конфиденциальности", web_app=WebAppInfo(url=privacy_url))],
+            [InlineKeyboardButton(text="↩️ Политика возврата", web_app=WebAppInfo(url=refund_url))],
+            [InlineKeyboardButton(text="◀️ Назад к разделам", callback_data="help:main")],
+            [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")],
+        ])
     else:
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="◀️ Назад к разделам", callback_data="help:main")],
             [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")],
         ])
 
-    if hasattr(message, 'edit_text'):
+    if edit:
         await message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
     else:
         await send_and_cleanup(message, text, reply_markup=keyboard, parse_mode="HTML")

@@ -62,6 +62,11 @@ async def cb_subscription_upgrade(callback: CallbackQuery):
         "  • Персональные рекомендации\n"
         "  • Поддержка 24/7\n\n"
         "━━━━━━━━━━━━━━━━━━━━\n"
+        "📋 <b>Условия подписки:</b>\n"
+        "  • Срок: 30 дней\n"
+        "  • Автопродление: нет\n"
+        "  • Отмена: в любой момент\n"
+        "  • Возврат: в течение 7 дней при неиспользовании\n\n"
         "📄 <b>Реквизиты продавца:</b>\n"
         "СМЗ Манченко Александр Александрович\n"
         "ИНН: 301508489913\n"
@@ -69,7 +74,15 @@ async def cb_subscription_upgrade(callback: CallbackQuery):
         "📞 89822203464"
     )
 
+    # Build document URLs
+    oferta_url = f"{settings.webapp_url}/oferta.html" if settings.webapp_url else "#"
+    privacy_url = f"{settings.webapp_url}/privacy_policy.html" if settings.webapp_url else "#"
+    refund_url = f"{settings.webapp_url}/refund_policy.html" if settings.webapp_url else "#"
+
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="📄 Публичная оферта", web_app=WebAppInfo(url=oferta_url))],
+        [InlineKeyboardButton(text="🔒 Политика конфиденциальности", web_app=WebAppInfo(url=privacy_url))],
+        [InlineKeyboardButton(text="↩️ Политика возврата", web_app=WebAppInfo(url=refund_url))],
         [InlineKeyboardButton(text="⭐ Pro — 299₽/мес", callback_data="subscription:buy:pro")],
         [InlineKeyboardButton(text="💎 Premium — 499₽/мес", callback_data="subscription:buy:premium")],
         [InlineKeyboardButton(text="◀️ Назад", callback_data="menu:subscription")],

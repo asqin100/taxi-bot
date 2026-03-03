@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 # Subscription prices in rubles
 SUBSCRIPTION_PRICES = {
     SubscriptionTier.PRO: 299,
-    SubscriptionTier.PREMIUM: 599,
+    SubscriptionTier.PREMIUM: 499,
 }
 
 

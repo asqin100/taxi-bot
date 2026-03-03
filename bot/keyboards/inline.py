@@ -130,7 +130,7 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
         ],
         [
             InlineKeyboardButton(text="🏆 Челлендж", callback_data="menu:challenge"),
-            InlineKeyboardButton(text="📊 Рейтинг", callback_data="menu:leaderboard"),
+            # InlineKeyboardButton(text="📊 Рейтинг", callback_data="menu:leaderboard"),  # Временно отключено
         ],
         [
             InlineKeyboardButton(text="⭐ Подписка", callback_data="menu:subscription"),

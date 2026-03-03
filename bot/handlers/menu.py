@@ -303,8 +303,6 @@ async def cb_tariff_menu(callback: CallbackQuery):
 @router.callback_query(F.data.startswith("tariff_select:"))
 async def cb_tariff_select(callback: CallbackQuery):
     """Handle tariff selection."""
-    from bot.keyboards.inline import tariff_selection_keyboard
-
     tariff = callback.data.split(":")[1]
     user_id = callback.from_user.id
 
@@ -314,15 +312,24 @@ async def cb_tariff_select(callback: CallbackQuery):
     # Get updated settings
     settings = await fin_service.get_or_create_settings(user_id)
 
-    await callback.message.edit_text(
+    # Show updated expenses view
+    text = (
         f"✅ <b>Тариф обновлён!</b>\n\n"
-        f"Тариф: {settings.tariff_name}\n"
-        f"Комиссия: {settings.commission_percent:.1f}%\n\n"
-        f"Комиссия будет автоматически учитываться при расчёте смен.\n\n"
-        f"💡 Если у вас особые условия, вы можете изменить комиссию вручную:\n"
-        f"/set_commission <процент>",
+        f"🚗 Тариф: {settings.tariff_name}\n"
+        f"💳 Комиссия: {settings.commission_percent:.1f}%\n\n"
+        f"⛽ Цена топлива: {settings.fuel_price_per_liter:.2f} руб/л\n"
+        f"📊 Расход: {settings.fuel_consumption_per_100km:.1f} л/100км\n"
+        f"🚗 Аренда: {settings.rent_per_day:.2f} руб/день\n\n"
+        f"💡 Комиссия будет автоматически учитываться при расчёте смен."
+    )
+
+    # Check for active shift
+    active_shift = await fin_service.get_active_shift(user_id)
+
+    await callback.message.edit_text(
+        text,
         parse_mode="HTML",
-        reply_markup=tariff_selection_keyboard(settings.tariff)
+        reply_markup=financial_menu_keyboard(has_active_shift=active_shift is not None)
     )
     await callback.answer("Тариф обновлён!")
 
