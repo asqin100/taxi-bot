@@ -39,7 +39,7 @@ async def handle_export(telegram_id: int, event) -> None:
     if not has_access:
         builder = InlineKeyboardBuilder()
         builder.button(text="⭐ Улучшить до Elite", callback_data="sub:upgrade")
-        builder.button(text="🔙 Назад", callback_data="menu_main")
+        builder.button(text="🔙 Назад", callback_data="cmd:menu")
         builder.adjust(1)
 
         text = (
@@ -77,7 +77,7 @@ async def handle_export(telegram_id: int, event) -> None:
         msg = "📭 Нет данных для экспорта за последние 30 дней."
         if is_callback:
             builder = InlineKeyboardBuilder()
-            builder.button(text="🔙 Главное меню", callback_data="menu_main")
+            builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
             await event.message.edit_text(msg, reply_markup=builder.as_markup())
             await event.answer()
         else:

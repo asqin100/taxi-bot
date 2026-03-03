@@ -15,7 +15,7 @@ async def cb_statistics_menu(callback: CallbackQuery) -> None:
     builder.button(text="📊 7 дней", callback_data="stats_7")
     builder.button(text="📈 14 дней", callback_data="stats_14")
     builder.button(text="💎 30 дней", callback_data="stats_30")
-    builder.button(text="🔙 Главное меню", callback_data="menu_main")
+    builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
     builder.adjust(3, 1)
 
     text = (
@@ -74,7 +74,7 @@ async def cb_show_statistics(callback: CallbackQuery) -> None:
 
     builder = InlineKeyboardBuilder()
     builder.button(text="🔄 Другой период", callback_data="menu_statistics")
-    builder.button(text="🔙 Главное меню", callback_data="menu_main")
+    builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
     builder.adjust(1)
 
     await callback.message.edit_text(text, reply_markup=builder.as_markup())

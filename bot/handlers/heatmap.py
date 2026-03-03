@@ -70,7 +70,7 @@ async def cb_heatmap(callback: CallbackQuery) -> None:
     if not has_access:
         builder = InlineKeyboardBuilder()
         builder.button(text="⭐ Улучшить до Elite", callback_data="sub:upgrade")
-        builder.button(text="🔙 Назад", callback_data="menu_main")
+        builder.button(text="🔙 Назад", callback_data="cmd:menu")
         builder.adjust(1)
 
         await callback.message.edit_text(
@@ -92,7 +92,7 @@ async def cb_heatmap(callback: CallbackQuery) -> None:
 
     if not shifts:
         builder = InlineKeyboardBuilder()
-        builder.button(text="🔙 Главное меню", callback_data="menu_main")
+        builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
         await callback.message.edit_text(
             "📊 Нет завершенных смен для построения тепловой карты.",
             reply_markup=builder.as_markup()
@@ -113,7 +113,7 @@ async def cb_heatmap(callback: CallbackQuery) -> None:
         )
 
         builder = InlineKeyboardBuilder()
-        builder.button(text="🔙 Главное меню", callback_data="menu_main")
+        builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
 
         await callback.message.answer_photo(
             photo=photo,
@@ -126,7 +126,7 @@ async def cb_heatmap(callback: CallbackQuery) -> None:
         await callback.message.delete()
     except Exception as e:
         builder = InlineKeyboardBuilder()
-        builder.button(text="🔙 Главное меню", callback_data="menu_main")
+        builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
         await callback.message.edit_text(
             f"❌ Ошибка при генерации тепловой карты: {str(e)}",
             reply_markup=builder.as_markup()

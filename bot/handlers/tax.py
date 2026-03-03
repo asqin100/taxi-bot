@@ -32,7 +32,7 @@ async def show_tax_menu(message: Message, callback: CallbackQuery = None) -> Non
     if not has_access:
         builder = InlineKeyboardBuilder()
         builder.button(text="⭐ Улучшить до Elite", callback_data="sub:upgrade")
-        builder.button(text="🔙 Главное меню", callback_data="menu_main")
+        builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
         builder.adjust(1)
 
         text = (
@@ -57,7 +57,7 @@ async def show_tax_menu(message: Message, callback: CallbackQuery = None) -> Non
     builder.button(text="📊 За квартал", callback_data="tax_calc_quarter")
     builder.button(text="📈 За год", callback_data="tax_calc_year")
     builder.button(text="ℹ️ О налоге НПД", callback_data="tax_info")
-    builder.button(text="🔙 Главное меню", callback_data="menu_main")
+    builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
     builder.adjust(2, 1, 1, 1)
 
     text = (
@@ -138,7 +138,7 @@ async def cb_tax_result(callback: CallbackQuery) -> None:
     builder = InlineKeyboardBuilder()
     builder.button(text="🔄 Другой период", callback_data="menu_tax")
     builder.button(text="ℹ️ О налоге НПД", callback_data="tax_info")
-    builder.button(text="🔙 Главное меню", callback_data="menu_main")
+    builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
     builder.adjust(2, 1)
 
     await callback.message.edit_text(text, reply_markup=builder.as_markup())
@@ -170,7 +170,7 @@ async def cb_tax_info(callback: CallbackQuery) -> None:
 
     builder = InlineKeyboardBuilder()
     builder.button(text="💰 Рассчитать налог", callback_data="menu_tax")
-    builder.button(text="🔙 Главное меню", callback_data="menu_main")
+    builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
     builder.adjust(1)
 
     await callback.message.edit_text(text, reply_markup=builder.as_markup())
