@@ -107,6 +107,10 @@ async def register_referral(user_id: int, referral_code: str) -> bool:
         user.referrer_id = referrer.id
         await session.commit()
 
+        # Check and award milestone bonuses
+        await check_milestone_bonuses(session, referrer)
+        await session.commit()
+
         logger.info(f"User {user_id} registered as referral of {referrer.telegram_id}")
         return True
 
