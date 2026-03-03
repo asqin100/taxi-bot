@@ -181,7 +181,8 @@ async def cb_buy_with_balance(callback: CallbackQuery):
     # Map string to enum
     tier_map = {
         "pro": SubscriptionTier.PRO,
-        "premium": SubscriptionTier.PREMIUM
+        "premium": SubscriptionTier.PREMIUM,
+        "elite": SubscriptionTier.ELITE
     }
     tier = tier_map.get(tier_str)
 

@@ -61,6 +61,12 @@ async def cb_subscription_upgrade(callback: CallbackQuery):
         "  • Приоритетные уведомления\n"
         "  • Персональные рекомендации\n"
         "  • Поддержка 24/7\n\n"
+        "👑 <b>Elite</b> — 999₽/мес\n"
+        "  • Все функции Premium\n"
+        "  • CSV экспорт смен\n"
+        "  • REST API доступ\n"
+        "  • Тепловая карта заработка\n"
+        "  • Расширенная статистика 30 дней\n\n"
         "━━━━━━━━━━━━━━━━━━━━\n"
         "📋 <b>Условия подписки:</b>\n"
         "  • Срок: 30 дней\n"
@@ -85,6 +91,7 @@ async def cb_subscription_upgrade(callback: CallbackQuery):
         [InlineKeyboardButton(text="↩️ Политика возврата", web_app=WebAppInfo(url=refund_url))],
         [InlineKeyboardButton(text="⭐ Pro — 299₽/мес", callback_data="subscription:buy:pro")],
         [InlineKeyboardButton(text="💎 Premium — 499₽/мес", callback_data="subscription:buy:premium")],
+        [InlineKeyboardButton(text="👑 Elite — 999₽/мес", callback_data="subscription:buy:elite")],
         [InlineKeyboardButton(text="◀️ Назад", callback_data="menu:subscription")],
         [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
     ])
@@ -102,7 +109,8 @@ async def cb_subscription_buy(callback: CallbackQuery):
     # Map string to enum
     tier_map = {
         "pro": SubscriptionTier.PRO,
-        "premium": SubscriptionTier.PREMIUM
+        "premium": SubscriptionTier.PREMIUM,
+        "elite": SubscriptionTier.ELITE
     }
     tier = tier_map.get(tier_str)
 
@@ -172,7 +180,8 @@ async def cb_subscription_pay_balance(callback: CallbackQuery):
     # Map string to enum
     tier_map = {
         "pro": SubscriptionTier.PRO,
-        "premium": SubscriptionTier.PREMIUM
+        "premium": SubscriptionTier.PREMIUM,
+        "elite": SubscriptionTier.ELITE
     }
     tier = tier_map.get(tier_str)
 
