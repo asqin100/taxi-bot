@@ -11,7 +11,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_absolute_error
 
-from bot.database.db import AsyncSessionLocal
+from bot.database.db import session_factory
 from bot.services.coefficient_collector import get_historical_data
 
 logger = logging.getLogger(__name__)
@@ -66,7 +66,7 @@ class DemandPredictor:
             raise ValueError(f"Need at least {MIN_TRAINING_DAYS} days of data for training")
 
         # Fetch historical data
-        async with AsyncSessionLocal() as session:
+        async with session_factory() as session:
             records = await get_historical_data(session, zone_id, tariff, days)
 
         if len(records) < 100:
