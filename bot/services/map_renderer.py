@@ -82,7 +82,8 @@ def render_surge_map(data: list[SurgeData]) -> bytes | None:
         r = int(color_hex[1:3], 16)
         g = int(color_hex[3:5], 16)
         b = int(color_hex[5:7], 16)
-        draw.polygon(pixels, fill=(r, g, b, alpha), outline=None)
+        # Almost transparent white outline for subtle separation
+        draw.polygon(pixels, fill=(r, g, b, alpha), outline=(255, 255, 255, 15))
 
     # Composite
     result = Image.alpha_composite(base_image.convert("RGBA"), overlay)
