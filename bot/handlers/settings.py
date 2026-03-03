@@ -57,7 +57,7 @@ async def cb_tariff(callback: CallbackQuery):
         if not has_access:
             # Show upgrade prompt
             await callback.message.edit_text(
-                "🔒 <b>Тариф Бизнес доступен только в Pro и Premium</b>\n\n"
+                "🔒 <b>Тариф Бизнес доступен только в Pro, Premium и Elite</b>\n\n"
                 "Бизнес — самый дорогой класс такси с максимальными коэффициентами.\n\n"
                 "💰 <b>Почему это важно:</b>\n"
                 "• Коэффициенты на Бизнес обычно выше на 20-30%\n"
@@ -67,7 +67,7 @@ async def cb_tariff(callback: CallbackQuery):
                 reply_markup=subscription_keyboard(),
                 parse_mode="HTML"
             )
-            await callback.answer("🔒 Требуется Pro или Premium", show_alert=True)
+            await callback.answer("🔒 Требуется Pro, Premium или Elite", show_alert=True)
             return
 
     # Continue with normal selection

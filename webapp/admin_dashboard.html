@@ -354,6 +354,11 @@
                         <div class="label">Активных</div>
                     </div>
                     <div class="stat-card">
+                        <h3>Elite подписки</h3>
+                        <div class="value">${data.subscriptions.elite || 0}</div>
+                        <div class="label">Активных</div>
+                    </div>
+                    <div class="stat-card">
                         <h3>Всего смен</h3>
                         <div class="value">${data.shifts.total}</div>
                         <div class="label">Сегодня: ${data.shifts.today}</div>
@@ -530,6 +535,7 @@
                     <select id="tierSelect">
                         <option value="pro">⭐ Pro</option>
                         <option value="premium">💎 Premium</option>
+                        <option value="elite">👑 Elite</option>
                     </select>
                 </div>
                 <div class="form-group">

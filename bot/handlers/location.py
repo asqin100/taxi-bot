@@ -106,7 +106,7 @@ async def cb_geo_alerts_menu(callback: CallbackQuery):
     if not has_access:
         text = (
             "📍 <b>ГЕОАЛЕРТЫ</b>\n\n"
-            "⭐ Эта функция доступна только на тарифах <b>Pro</b> и <b>Premium</b>.\n\n"
+            "⭐ Эта функция доступна только на тарифах <b>Pro</b>, <b>Premium</b> и <b>Elite</b>.\n\n"
             "Геоалерты автоматически находят высокие коэффициенты рядом с вами:\n"
             "  • Отслеживание в радиусе 7 км\n"
             "  • Проверка каждые 2 минуты\n"
@@ -195,7 +195,7 @@ async def cb_enable_geo_alerts(callback: CallbackQuery):
             [InlineKeyboardButton(text="◀️ Назад", callback_data="menu:geo_alerts")],
         ])
         await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
-        await callback.answer("⚠️ Требуется Pro или Premium", show_alert=True)
+        await callback.answer("⚠️ Требуется Pro, Premium или Elite", show_alert=True)
         return
 
     instruction_text = (

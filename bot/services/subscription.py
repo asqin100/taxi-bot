@@ -107,8 +107,10 @@ def format_subscription_info(subscription: Subscription) -> str:
         lines.append("🆓 <b>БЕСПЛАТНЫЙ ТАРИФ</b>\n")
     elif tier == SubscriptionTier.PRO:
         lines.append("⭐ <b>PRO ТАРИФ</b>\n")
-    else:
+    elif tier == SubscriptionTier.PREMIUM:
         lines.append("💎 <b>PREMIUM ТАРИФ</b>\n")
+    else:
+        lines.append("👑 <b>ELITE ТАРИФ</b>\n")
 
     # Status
     if subscription.is_expired:
@@ -132,7 +134,7 @@ def format_tier_comparison() -> str:
     """Format comparison of all subscription tiers."""
     lines = ["<b>📊 СРАВНЕНИЕ ТАРИФОВ</b>\n"]
 
-    for tier in [SubscriptionTier.FREE, SubscriptionTier.PRO, SubscriptionTier.PREMIUM]:
+    for tier in [SubscriptionTier.FREE, SubscriptionTier.PRO, SubscriptionTier.PREMIUM, SubscriptionTier.ELITE]:
         features = SUBSCRIPTION_FEATURES[tier]
         price = features["price"]
 
@@ -140,8 +142,10 @@ def format_tier_comparison() -> str:
             lines.append("🆓 <b>Бесплатный</b> — 0₽/мес")
         elif tier == SubscriptionTier.PRO:
             lines.append(f"\n⭐ <b>Pro</b> — {price}₽/мес")
-        else:
+        elif tier == SubscriptionTier.PREMIUM:
             lines.append(f"\n💎 <b>Premium</b> — {price}₽/мес")
+        else:
+            lines.append(f"\n👑 <b>Elite</b> — {price}₽/мес")
 
         for feature in features["features"][:3]:  # Show first 3 features
             lines.append(f"  {feature}")

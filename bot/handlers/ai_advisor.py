@@ -41,7 +41,7 @@ async def _send_advisor(message: Message):
     if not has_access:
         text = (
             "🤖 <b>AI-СОВЕТНИК</b>\n\n"
-            "⭐ Эта функция доступна только на тарифах <b>Pro</b> и <b>Premium</b>.\n\n"
+            "⭐ Эта функция доступна только на тарифах <b>Pro</b>, <b>Premium</b> и <b>Elite</b>.\n\n"
             "AI-советник анализирует:\n"
             "  • Текущие коэффициенты\n"
             "  • Дорожную обстановку\n"

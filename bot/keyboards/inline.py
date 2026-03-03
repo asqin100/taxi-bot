@@ -155,6 +155,7 @@ def financial_menu_keyboard(has_active_shift: bool = False) -> InlineKeyboardMar
 
     buttons.extend([
         [InlineKeyboardButton(text="📊 Статистика", callback_data="financial:stats")],
+        [InlineKeyboardButton(text="📥 Экспорт в CSV", callback_data="menu_export")],
         [
             InlineKeyboardButton(text="💸 Расходы", callback_data="financial:expenses"),
             InlineKeyboardButton(text="🎯 Цели", callback_data="financial:goals"),
@@ -208,5 +209,6 @@ def subscription_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="⭐ Улучшить до Pro (299₽)", callback_data="menu:subscription")],
         [InlineKeyboardButton(text="💎 Улучшить до Premium (499₽)", callback_data="menu:subscription")],
+        [InlineKeyboardButton(text="👑 Улучшить до Elite (999₽)", callback_data="menu:subscription")],
         [InlineKeyboardButton(text="◀️ Назад к настройкам", callback_data="cmd:settings")],
     ])

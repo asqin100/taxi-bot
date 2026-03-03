@@ -63,7 +63,7 @@ async def cb_top_tariff(callback: CallbackQuery):
 
         if not has_access:
             await callback.answer(
-                "🔒 Тариф Бизнес доступен только в Pro и Premium подписках",
+                "🔒 Тариф Бизнес доступен только в Pro, Premium и Elite подписках",
                 show_alert=True
             )
             return

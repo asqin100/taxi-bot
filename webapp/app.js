@@ -48,7 +48,7 @@ async function checkSubscription() {
     if (businessBtn && !hasBusinessAccess) {
       businessBtn.classList.add('locked');
       businessBtn.innerHTML = 'Бизнес 🔒';
-      businessBtn.title = 'Доступно в Pro и Premium';
+      businessBtn.title = 'Доступно в Pro, Premium и Elite';
       console.log('Business tariff locked for free user');
     } else {
       console.log('Business tariff available');
@@ -124,9 +124,9 @@ document.querySelectorAll('.chip').forEach(btn => {
     // Check if trying to select business without access
     if (tariff === 'business' && !hasBusinessAccess) {
       if (tg) {
-        tg.showAlert('🔒 Тариф Бизнес доступен только в Pro и Premium подписках');
+        tg.showAlert('🔒 Тариф Бизнес доступен только в Pro, Premium и Elite подписках');
       } else {
-        alert('🔒 Тариф Бизнес доступен только в Pro и Premium подписках');
+        alert('🔒 Тариф Бизнес доступен только в Pro, Premium и Elite подписках');
       }
       return;
     }
