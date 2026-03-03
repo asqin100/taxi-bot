@@ -3,13 +3,72 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
-from bot.keyboards.inline import financial_menu_keyboard, traffic_menu_keyboard, search_menu_keyboard, main_menu_keyboard
+from bot.keyboards.inline import financial_menu_keyboard, traffic_menu_keyboard, search_menu_keyboard, main_menu_keyboard, features_menu_keyboard
 from bot.services import financial as fin_service
 from bot.services import traffic as traffic_service
 from bot.services.yandex_api import get_cached_coefficients
 from bot.services.message_manager import send_and_cleanup
+from bot.services.subscription import get_subscription
 
 router = Router()
+
+
+@router.callback_query(F.data == "menu:features")
+async def cb_features_menu(callback: CallbackQuery):
+    """Show features menu based on subscription tier."""
+    user_id = callback.from_user.id
+
+    # Get user subscription
+    subscription = await get_subscription(user_id)
+
+    text = (
+        "⚡ <b>Все функции</b>\n\n"
+        f"Ваша подписка: <b>{subscription.tier.upper()}</b>\n\n"
+        "Выберите функцию:"
+    )
+
+    await callback.message.edit_text(
+        text,
+        parse_mode="HTML",
+        reply_markup=features_menu_keyboard(subscription.tier)
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data.startswith("feature_locked:"))
+async def cb_feature_locked(callback: CallbackQuery):
+    """Handle clicks on locked features."""
+    feature = callback.data.split(":")[1]
+
+    feature_names = {
+        "ai_advisor": "AI-советник",
+        "traffic": "Прогноз пробок",
+        "csv_export": "Экспорт в CSV",
+        "heatmap": "Карта заработка",
+        "tax": "Калькулятор налогов"
+    }
+
+    feature_tiers = {
+        "ai_advisor": "Pro",
+        "traffic": "Pro",
+        "csv_export": "Elite",
+        "heatmap": "Elite",
+        "tax": "Elite"
+    }
+
+    feature_name = feature_names.get(feature, "Эта функция")
+    required_tier = feature_tiers.get(feature, "Pro")
+
+    from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=f"⭐ Улучшить до {required_tier}", callback_data="menu:subscription")],
+        [InlineKeyboardButton(text="◀️ Назад", callback_data="menu:features")],
+    ])
+
+    await callback.answer(
+        f"🔒 {feature_name} доступен только в подписке {required_tier}",
+        show_alert=True
+    )
 
 
 @router.callback_query(F.data == "menu:financial")

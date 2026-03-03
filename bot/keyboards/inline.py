@@ -113,6 +113,7 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
         #     web_app=WebAppInfo(url=f"{settings.webapp_url}/game"),
         # )])
     buttons.extend([
+        [InlineKeyboardButton(text="⚡ Все функции", callback_data="menu:features")],
         [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
         [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
         [InlineKeyboardButton(text="🗺 Горячие точки", callback_data="menu:hotspots")],
@@ -212,3 +213,46 @@ def subscription_keyboard() -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="👑 Улучшить до Elite (999₽)", callback_data="menu:subscription")],
         [InlineKeyboardButton(text="◀️ Назад к настройкам", callback_data="cmd:settings")],
     ])
+
+
+def features_menu_keyboard(tier: str) -> InlineKeyboardMarkup:
+    """Features menu based on subscription tier."""
+    from bot.models.subscription import SubscriptionTier
+
+    buttons = []
+
+    # Basic features (available to all)
+    buttons.extend([
+        [InlineKeyboardButton(text="📊 Коэффициенты", callback_data="cmd:kef")],
+        [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
+        [InlineKeyboardButton(text="🔍 Поиск по адресу", callback_data="menu:search")],
+    ])
+
+    # Pro+ features
+    if tier in [SubscriptionTier.PRO.value, SubscriptionTier.PREMIUM.value, SubscriptionTier.ELITE.value]:
+        buttons.extend([
+            [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
+            [InlineKeyboardButton(text="🚦 Прогноз пробок", callback_data="menu:traffic")],
+        ])
+    else:
+        buttons.extend([
+            [InlineKeyboardButton(text="🤖 AI-советник 🔒 Pro", callback_data="feature_locked:ai_advisor")],
+            [InlineKeyboardButton(text="🚦 Прогноз пробок 🔒 Pro", callback_data="feature_locked:traffic")],
+        ])
+
+    # Elite features
+    if tier == SubscriptionTier.ELITE.value:
+        buttons.extend([
+            [InlineKeyboardButton(text="📥 Экспорт в CSV", callback_data="menu_export")],
+            [InlineKeyboardButton(text="📊 Карта заработка", callback_data="menu_heatmap")],
+            [InlineKeyboardButton(text="💰 Калькулятор налогов", callback_data="menu_tax")],
+        ])
+    else:
+        buttons.extend([
+            [InlineKeyboardButton(text="📥 Экспорт в CSV 🔒 Elite", callback_data="feature_locked:csv_export")],
+            [InlineKeyboardButton(text="📊 Карта заработка 🔒 Elite", callback_data="feature_locked:heatmap")],
+            [InlineKeyboardButton(text="💰 Калькулятор налогов 🔒 Elite", callback_data="feature_locked:tax")],
+        ])
+
+    buttons.append(BACK_BUTTON)
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
