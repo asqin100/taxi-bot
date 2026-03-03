@@ -99,6 +99,55 @@ async def api_hexgrid(request: web.Request) -> web.Response:
     return response
 
 
+async def api_user_subscription(request: web.Request) -> web.Response:
+    """Get user subscription status for webapp."""
+    try:
+        # Get telegram user ID from query or initData
+        telegram_id = request.query.get("telegram_id")
+
+        if not telegram_id:
+            # Try to parse from Telegram WebApp initData
+            init_data = request.query.get("initData", "")
+            if init_data:
+                # Parse initData to extract user info
+                # Format: query_id=...&user={"id":123,...}&...
+                import urllib.parse
+                params = urllib.parse.parse_qs(init_data)
+                user_json = params.get("user", [None])[0]
+                if user_json:
+                    import json
+                    user_data = json.loads(user_json)
+                    telegram_id = user_data.get("id")
+
+        if not telegram_id:
+            # Return default free access if no user ID
+            return web.json_response({
+                "has_business_access": False,
+                "tier": "free"
+            })
+
+        # Check subscription
+        from bot.services.subscription import check_feature_access, get_subscription
+        telegram_id = int(telegram_id)
+        has_business = await check_feature_access(telegram_id, "business_tariff")
+        subscription = await get_subscription(telegram_id)
+
+        response = web.json_response({
+            "has_business_access": has_business,
+            "tier": subscription.tier
+        })
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        return response
+
+    except Exception as e:
+        logger.error(f"Error checking user subscription: {e}")
+        # Return free access on error
+        return web.json_response({
+            "has_business_access": False,
+            "tier": "free"
+        })
+
+
 async def webhook_yookassa(request: web.Request) -> web.Response:
     """Handle YooKassa payment webhook."""
     try:
@@ -376,6 +425,7 @@ def create_app() -> web.Application:
     app.router.add_get("/api/zones", api_zones)
     app.router.add_get("/api/top", api_top)
     app.router.add_get("/api/hexgrid", api_hexgrid)
+    app.router.add_get("/api/user/subscription", api_user_subscription)
     app.router.add_post("/webhook/yookassa", webhook_yookassa)
 
     # Game routes

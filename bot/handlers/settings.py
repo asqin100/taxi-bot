@@ -24,8 +24,15 @@ async def cb_settings(callback: CallbackQuery):
 async def _send_tariff_selector(message: Message, edit: bool = False):
     user = await _get_user(message)
     selected = set(user.tariffs.split(",")) if user.tariffs else set()
-    kb = tariff_keyboard(selected)
+
+    # Check subscription for Business access
+    from bot.services.subscription import check_feature_access
+    tg_id = message.chat.id
+    has_business = await check_feature_access(tg_id, "business_tariff")
+
+    kb = tariff_keyboard(selected, has_business)
     text = "⚙️ Выберите тарифы для отслеживания:"
+
     if edit:
         await message.edit_text(text, reply_markup=kb)
     else:
@@ -41,6 +48,29 @@ async def cb_tariff(callback: CallbackQuery):
         await callback.answer()
         return
 
+    # Check if trying to select Business tariff
+    if action == "business":
+        from bot.services.subscription import check_feature_access
+        from bot.keyboards.inline import subscription_keyboard
+        has_access = await check_feature_access(callback.from_user.id, "business_tariff")
+
+        if not has_access:
+            # Show upgrade prompt
+            await callback.message.edit_text(
+                "🔒 <b>Тариф Бизнес доступен только в Pro и Premium</b>\n\n"
+                "Бизнес — самый дорогой класс такси с максимальными коэффициентами.\n\n"
+                "💰 <b>Почему это важно:</b>\n"
+                "• Коэффициенты на Бизнес обычно выше на 20-30%\n"
+                "• Меньше конкуренции среди водителей\n"
+                "• Более выгодные заказы\n\n"
+                "Улучшите подписку, чтобы получить доступ:",
+                reply_markup=subscription_keyboard(),
+                parse_mode="HTML"
+            )
+            await callback.answer("🔒 Требуется Pro или Premium", show_alert=True)
+            return
+
+    # Continue with normal selection
     user = await _get_user(callback.message, tg_id=callback.from_user.id)
     selected = set(user.tariffs.split(",")) if user.tariffs else set()
     selected.discard("")
@@ -59,7 +89,11 @@ async def cb_tariff(callback: CallbackQuery):
         db_user.tariffs = ",".join(selected)
         await session.commit()
 
-    await callback.message.edit_reply_markup(reply_markup=tariff_keyboard(selected))
+    # Pass subscription status to keyboard
+    from bot.services.subscription import check_feature_access
+    has_business = await check_feature_access(callback.from_user.id, "business_tariff")
+
+    await callback.message.edit_reply_markup(reply_markup=tariff_keyboard(selected, has_business))
     await callback.answer("Обновлено")
 
 

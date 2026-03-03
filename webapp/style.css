@@ -40,6 +40,13 @@ body {
   color: var(--tg-theme-button-text-color, #fff);
 }
 
+.chip.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--tg-theme-bg-color, #fff);
+  color: var(--tg-theme-hint-color, #999);
+}
+
 #map {
   flex: 1;
   min-height: 0;

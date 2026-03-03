@@ -55,6 +55,19 @@ async def cb_top(callback: CallbackQuery):
 @router.callback_query(F.data.startswith("top:tariff:"))
 async def cb_top_tariff(callback: CallbackQuery):
     tariff = callback.data.split(":")[-1]
+
+    # Check access for business tariff
+    if tariff == "business":
+        from bot.services.subscription import check_feature_access
+        has_access = await check_feature_access(callback.from_user.id, "business_tariff")
+
+        if not has_access:
+            await callback.answer(
+                "🔒 Тариф Бизнес доступен только в Pro и Premium подписках",
+                show_alert=True
+            )
+            return
+
     await _send_top(callback.message, tariff=tariff if tariff != "all" else None)
     await callback.answer()
 

@@ -66,8 +66,10 @@ SUBSCRIPTION_FEATURES = {
         "geo_alerts": False,
         "priority_notifications": False,
         "detailed_analytics": False,
+        "business_tariff": False,
         "features": [
             "✅ Базовый радар коэффициентов",
+            "✅ Тарифы: Эконом, Комфорт",
             "✅ До 3 уведомлений",
             "✅ Топ-5 жирных точек",
             "✅ Информация о пробках",
@@ -81,8 +83,10 @@ SUBSCRIPTION_FEATURES = {
         "geo_alerts": True,
         "priority_notifications": False,
         "detailed_analytics": True,
+        "business_tariff": True,
         "features": [
             "✅ Все функции бесплатного",
+            "✅ Доступ к тарифу Бизнес 🚕",
             "✅ Неограниченные уведомления",
             "✅ AI-советник",
             "✅ Геоалерты (уведомления рядом с вами)",
@@ -98,6 +102,7 @@ SUBSCRIPTION_FEATURES = {
         "geo_alerts": True,
         "priority_notifications": True,
         "detailed_analytics": True,
+        "business_tariff": True,
         "features": [
             "✅ Все функции Pro",
             "✅ Приоритетные уведомления",

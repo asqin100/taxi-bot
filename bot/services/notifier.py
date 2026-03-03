@@ -37,6 +37,18 @@ async def check_and_notify(bot: Bot):
             continue
 
         user_tariffs = set(user.tariffs.split(",")) if user.tariffs else {"econom"}
+
+        # Filter out business tariff for free users
+        from bot.services.subscription import check_feature_access
+        has_business = await check_feature_access(user.telegram_id, "business_tariff")
+
+        if not has_business and "business" in user_tariffs:
+            user_tariffs = {t for t in user_tariffs if t != "business"}
+
+        # If no tariffs left after filtering, skip
+        if not user_tariffs:
+            continue
+
         user_zones = set(user.zones.split(",")) if user.zones else set()
 
         alerts: list[str] = []

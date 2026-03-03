@@ -21,11 +21,16 @@ EVENT_TYPE_OPTIONS = [
 BACK_BUTTON = [InlineKeyboardButton(text="◀️ Назад", callback_data="cmd:menu")]
 
 
-def tariff_keyboard(selected: set[str] | None = None) -> InlineKeyboardMarkup:
+def tariff_keyboard(selected: set[str] | None = None, has_business_access: bool = True) -> InlineKeyboardMarkup:
     selected = selected or set()
     buttons = []
     for tid, name in TARIFF_OPTIONS:
         check = "✅ " if tid in selected else ""
+
+        # Add lock icon for Business if no access
+        if tid == "business" and not has_business_access:
+            name = f"{name} 🔒 Pro"
+
         buttons.append([InlineKeyboardButton(text=f"{check}{name}", callback_data=f"tariff:{tid}")])
     buttons.append([InlineKeyboardButton(text="Готово ✔", callback_data="tariff:done")])
     buttons.append(BACK_BUTTON)
@@ -196,4 +201,13 @@ def search_menu_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="ℹ️ Как использовать", callback_data="search:help")],
         BACK_BUTTON,
+    ])
+
+
+def subscription_keyboard() -> InlineKeyboardMarkup:
+    """Subscription upgrade keyboard."""
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="⭐ Улучшить до Pro (299₽)", callback_data="menu:subscription")],
+        [InlineKeyboardButton(text="💎 Улучшить до Premium (499₽)", callback_data="menu:subscription")],
+        [InlineKeyboardButton(text="◀️ Назад к настройкам", callback_data="cmd:settings")],
     ])

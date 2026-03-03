@@ -8,6 +8,28 @@ if (tg) {
 let myMap;
 let hexagons = [];
 let activeTariff = 'all';
+let hasBusinessAccess = false;
+
+// Check user subscription on load
+async function checkSubscription() {
+  try {
+    const initData = tg ? tg.initData : '';
+    const response = await fetch(`/api/user/subscription?initData=${encodeURIComponent(initData)}`);
+    const data = await response.json();
+    hasBusinessAccess = data.has_business_access;
+
+    // Update business button visibility
+    const businessBtn = document.querySelector('[data-tariff="business"]');
+    if (businessBtn && !hasBusinessAccess) {
+      businessBtn.classList.add('locked');
+      businessBtn.innerHTML = 'Бизнес 🔒';
+      businessBtn.title = 'Доступно в Pro и Premium';
+    }
+  } catch (e) {
+    console.error('Failed to check subscription:', e);
+    hasBusinessAccess = false;
+  }
+}
 
 function clearHexagons() {
   hexagons.forEach(p => myMap.geoObjects.remove(p));
@@ -69,9 +91,21 @@ async function refresh() {
 // Filter chips
 document.querySelectorAll('.chip').forEach(btn => {
   btn.addEventListener('click', () => {
+    const tariff = btn.dataset.tariff;
+
+    // Check if trying to select business without access
+    if (tariff === 'business' && !hasBusinessAccess) {
+      if (tg) {
+        tg.showAlert('🔒 Тариф Бизнес доступен только в Pro и Premium подписках');
+      } else {
+        alert('🔒 Тариф Бизнес доступен только в Pro и Premium подписках');
+      }
+      return;
+    }
+
     document.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    activeTariff = btn.dataset.tariff;
+    activeTariff = tariff;
     refresh();
   });
 });
@@ -83,6 +117,10 @@ ymaps.ready(function () {
     zoom: 10,
     controls: ['zoomControl', 'geolocationControl'],
   });
-  refresh();
-  setInterval(refresh, 30000);
+
+  // Check subscription first, then load data
+  checkSubscription().then(() => {
+    refresh();
+    setInterval(refresh, 30000);
+  });
 });
