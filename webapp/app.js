@@ -23,8 +23,8 @@ function renderHexagons(data) {
       {
         fillColor: h.color,
         fillOpacity: 1,
-        strokeColor: 'rgba(100,50,180,0.25)',
-        strokeWidth: 0,  // Remove borders between hexagons
+        strokeColor: 'rgba(255,255,255,0.06)',  // Almost transparent white borders
+        strokeWidth: 1,
       }
     );
     myMap.geoObjects.add(polygon);
