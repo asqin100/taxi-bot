@@ -319,7 +319,7 @@ async def admin_grant_subscription(request: web.Request) -> web.Response:
         tier = data.get("tier")
         duration_days = int(data.get("duration_days", 30))
 
-        if tier not in ["pro", "premium"]:
+        if tier not in ["pro", "premium", "elite"]:
             return web.json_response({"error": "Invalid tier"}, status=400)
 
         success = await grant_subscription(telegram_id, tier, duration_days)
