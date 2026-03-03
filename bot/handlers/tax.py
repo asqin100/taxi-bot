@@ -68,10 +68,10 @@ async def show_tax_menu(message: Message, callback: CallbackQuery = None) -> Non
     )
 
     if callback:
-        await callback.message.edit_text(text, reply_markup=builder.as_markup())
+        await callback.message.edit_text(text, reply_markup=builder.as_markup(), parse_mode="HTML")
         await callback.answer()
     else:
-        await message.answer(text, reply_markup=builder.as_markup())
+        await message.answer(text, reply_markup=builder.as_markup(), parse_mode="HTML")
 
 
 @router.callback_query(F.data.startswith("tax_calc_"))
@@ -93,7 +93,7 @@ async def cb_tax_calculate(callback: CallbackQuery) -> None:
         text = f"📭 Нет данных о сменах {period_name}.\n\nДобавьте смены, чтобы рассчитать налог."
         builder = InlineKeyboardBuilder()
         builder.button(text="🔙 Назад", callback_data="menu_tax")
-        await callback.message.edit_text(text, reply_markup=builder.as_markup())
+        await callback.message.edit_text(text, reply_markup=builder.as_markup(), parse_mode="HTML")
         await callback.answer()
         return
 
@@ -114,7 +114,7 @@ async def cb_tax_calculate(callback: CallbackQuery) -> None:
         "Выберите тип клиентов:"
     )
 
-    await callback.message.edit_text(text, reply_markup=builder.as_markup())
+    await callback.message.edit_text(text, reply_markup=builder.as_markup(), parse_mode="HTML")
     await callback.answer()
 
 
@@ -141,7 +141,7 @@ async def cb_tax_result(callback: CallbackQuery) -> None:
     builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
     builder.adjust(2, 1)
 
-    await callback.message.edit_text(text, reply_markup=builder.as_markup())
+    await callback.message.edit_text(text, reply_markup=builder.as_markup(), parse_mode="HTML")
     await callback.answer()
 
 
@@ -177,5 +177,5 @@ async def cb_tax_info(callback: CallbackQuery) -> None:
     builder.button(text="🔙 Главное меню", callback_data="cmd:menu")
     builder.adjust(1)
 
-    await callback.message.edit_text(text, reply_markup=builder.as_markup())
+    await callback.message.edit_text(text, reply_markup=builder.as_markup(), parse_mode="HTML")
     await callback.answer()
