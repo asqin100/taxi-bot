@@ -9,14 +9,12 @@ from bot.database.db import Base
 TARIFF_COMMISSIONS = {
     "econom": 18.0,
     "comfort": 21.0,
-    "comfort_plus": 23.0,
     "business": 26.0,
 }
 
 TARIFF_NAMES = {
     "econom": "🚗 Эконом",
     "comfort": "🚙 Комфорт",
-    "comfort_plus": "🚙+ Комфорт+",
     "business": "🚕 Бизнес",
 }
 
@@ -29,7 +27,7 @@ class UserFinancialSettings(Base):
     user_id: Mapped[int] = mapped_column(BigInteger, unique=True, index=True)  # telegram_id
 
     # Tariff selection
-    tariff: Mapped[str] = mapped_column(String(32), default="econom")  # econom, comfort, comfort_plus, business
+    tariff: Mapped[str] = mapped_column(String(32), default="econom")  # econom, comfort, business
 
     # Expense settings
     fuel_price_per_liter: Mapped[float] = mapped_column(Float, default=55.0)  # руб/литр

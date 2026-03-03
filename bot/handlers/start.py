@@ -29,9 +29,22 @@ async def cmd_start(message: Message):
         user = result.scalar_one_or_none()
         if not user:
             is_new_user = True
+            # Generate referral code for new user
+            from bot.services.referral import generate_referral_code
+
+            # Ensure unique code
+            while True:
+                code = generate_referral_code()
+                existing = await session.execute(
+                    select(User).where(User.referral_code == code)
+                )
+                if not existing.scalar_one_or_none():
+                    break
+
             user = User(
                 telegram_id=user_id,
                 username=message.from_user.username,
+                referral_code=code,
             )
             session.add(user)
             await session.commit()
