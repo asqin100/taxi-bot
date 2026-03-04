@@ -224,6 +224,25 @@
             border-radius: 8px;
             margin-bottom: 20px;
         }
+        /* Radio button styles */
+        input[type="radio"] {
+            accent-color: #667eea;
+        }
+        input[type="radio"]:checked + span {
+            font-weight: 600;
+            color: #667eea;
+        }
+        label:has(input[type="radio"]:checked) {
+            border-color: #667eea !important;
+            background: #f0f4ff !important;
+        }
+        label:has(input[type="radio"]) {
+            transition: all 0.2s ease;
+        }
+        label:has(input[type="radio"]):hover {
+            border-color: #b8c5f2 !important;
+            background: #f8f9ff !important;
+        }
     </style>
 </head>
 <body>
@@ -349,15 +368,22 @@
                 <!-- Discount fields -->
                 <div id="discountFields" style="display: none;">
                     <div class="form-group">
-                        <label>Тип скидки *</label>
-                        <select id="discountType">
-                            <option value="percent">📊 Процент (%)</option>
-                            <option value="fixed">💵 Фиксированная сумма (₽)</option>
-                        </select>
+                        <label style="margin-bottom: 12px; display: block; font-weight: 600;">Тип скидки *</label>
+                        <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; flex: 1; transition: all 0.2s;">
+                                <input type="radio" name="discountTypeRadio" value="percent" checked onchange="updateDiscountPlaceholder()">
+                                <span style="font-weight: 500;">📊 Процент (%)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; flex: 1; transition: all 0.2s;">
+                                <input type="radio" name="discountTypeRadio" value="fixed" onchange="updateDiscountPlaceholder()">
+                                <span style="font-weight: 500;">💵 Фиксированная сумма (₽)</span>
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Размер скидки *</label>
-                        <input type="number" id="discountValue" min="1" step="0.01" placeholder="20 для 20% или 100 для 100₽">
+                        <label id="discountValueLabel">Размер скидки (%) *</label>
+                        <input type="number" id="discountValue" min="1" step="0.01" placeholder="Например: 20">
+                        <small id="discountHint" style="color: #666; font-size: 12px; margin-top: 5px; display: block;">Введите процент скидки (например, 20 для скидки 20%)</small>
                     </div>
                     <div class="form-group">
                         <label>Применяется к тарифам * (выберите один или несколько)</label>
@@ -1049,15 +1075,20 @@
             document.getElementById('promoType').value = 'activation';
             document.getElementById('promoTier').value = 'pro';
             document.getElementById('promoDuration').value = '30';
-            document.getElementById('discountType').value = 'percent';
+
+            // Reset radio buttons
+            document.querySelector('input[name="discountTypeRadio"][value="percent"]').checked = true;
             document.getElementById('discountValue').value = '';
+
             document.getElementById('tierPro').checked = true;
             document.getElementById('tierPremium').checked = true;
             document.getElementById('tierElite').checked = true;
             document.getElementById('promoMaxUses').value = '';
             document.getElementById('promoValidUntil').value = '';
             document.getElementById('promoDescription').value = '';
+
             togglePromoFields();
+            updateDiscountPlaceholder();
         }
 
         function togglePromoFields() {
@@ -1071,6 +1102,25 @@
             } else {
                 activationFields.style.display = 'none';
                 discountFields.style.display = 'block';
+            }
+        }
+
+        function updateDiscountPlaceholder() {
+            const discountType = document.querySelector('input[name="discountTypeRadio"]:checked').value;
+            const label = document.getElementById('discountValueLabel');
+            const input = document.getElementById('discountValue');
+            const hint = document.getElementById('discountHint');
+
+            if (discountType === 'percent') {
+                label.textContent = 'Размер скидки (%) *';
+                input.placeholder = 'Например: 20';
+                hint.textContent = 'Введите процент скидки (например, 20 для скидки 20%)';
+                input.max = '100';
+            } else {
+                label.textContent = 'Размер скидки (₽) *';
+                input.placeholder = 'Например: 100';
+                hint.textContent = 'Введите фиксированную сумму скидки в рублях (например, 100)';
+                input.removeAttribute('max');
             }
         }
 
@@ -1106,7 +1156,7 @@
                 requestBody.tier = tier;
                 requestBody.duration_days = duration_days;
             } else {
-                const discount_type = document.getElementById('discountType').value;
+                const discount_type = document.querySelector('input[name="discountTypeRadio"]:checked').value;
                 const discount_value = parseFloat(document.getElementById('discountValue').value);
 
                 // Get selected tiers
