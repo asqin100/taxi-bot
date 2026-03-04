@@ -462,3 +462,88 @@ async def get_all_user_ids() -> List[int]:
             select(User.telegram_id)
         )
         return [row[0] for row in result.all()]
+
+
+async def update_user_balance(telegram_id: int, amount: float) -> bool:
+    """Update user referral balance."""
+    try:
+        async with get_session() as session:
+            user_result = await session.execute(
+                select(User).where(User.telegram_id == telegram_id)
+            )
+            user = user_result.scalar_one_or_none()
+
+            if not user:
+                logger.warning(f"User {telegram_id} not found for balance update")
+                return False
+
+            user.referral_balance = amount
+            await session.commit()
+
+            logger.info(f"Admin updated balance for user {telegram_id}: {amount}")
+            return True
+
+    except Exception as e:
+        logger.error(f"Error updating user balance: {e}")
+        return False
+
+
+async def update_user_subscription(telegram_id: int, tier: str) -> bool:
+    """Update user subscription tier (including setting to FREE)."""
+    try:
+        async with get_session() as session:
+            # Get user
+            user_result = await session.execute(
+                select(User).where(User.telegram_id == telegram_id)
+            )
+            user = user_result.scalar_one_or_none()
+
+            if not user:
+                logger.warning(f"User {telegram_id} not found for subscription update")
+                return False
+
+            # Get or create subscription
+            sub_result = await session.execute(
+                select(Subscription).where(Subscription.user_id == telegram_id)
+            )
+            subscription = sub_result.scalar_one_or_none()
+
+            if tier == "free":
+                # Set to FREE tier
+                if subscription:
+                    subscription.tier = SubscriptionTier.FREE.value
+                    subscription.is_active = True
+                    subscription.expires_at = None
+                else:
+                    subscription = Subscription(
+                        user_id=telegram_id,
+                        tier=SubscriptionTier.FREE.value,
+                        is_active=True
+                    )
+                    session.add(subscription)
+            else:
+                # Set to paid tier with 30 days duration
+                tier_enum = SubscriptionTier(tier)
+                expires_at = datetime.now() + timedelta(days=30)
+
+                if subscription:
+                    subscription.tier = tier_enum.value
+                    subscription.is_active = True
+                    subscription.expires_at = expires_at
+                else:
+                    subscription = Subscription(
+                        user_id=telegram_id,
+                        tier=tier_enum.value,
+                        is_active=True,
+                        expires_at=expires_at
+                    )
+                    session.add(subscription)
+
+            await session.commit()
+
+            logger.info(f"Admin updated subscription for user {telegram_id}: {tier}")
+            return True
+
+    except Exception as e:
+        logger.error(f"Error updating user subscription: {e}")
+        return False

@@ -323,17 +323,61 @@
                     <input type="text" id="promoCode" required placeholder="SUMMER2026" style="text-transform: uppercase;">
                 </div>
                 <div class="form-group">
-                    <label>Тариф *</label>
-                    <select id="promoTier" required>
-                        <option value="pro">⭐ Pro (299₽/мес)</option>
-                        <option value="premium">💎 Premium (499₽/мес)</option>
-                        <option value="elite">👑 Elite (999₽/мес)</option>
+                    <label>Тип промокода *</label>
+                    <select id="promoType" required onchange="togglePromoFields()">
+                        <option value="activation">🎁 Активация подписки (бесплатно)</option>
+                        <option value="discount">💰 Скидка на покупку</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Длительность (дней) *</label>
-                    <input type="number" id="promoDuration" required value="30" min="1" max="365">
+
+                <!-- Activation fields -->
+                <div id="activationFields">
+                    <div class="form-group">
+                        <label>Тариф *</label>
+                        <select id="promoTier">
+                            <option value="pro">⭐ Pro (299₽/мес)</option>
+                            <option value="premium">💎 Premium (499₽/мес)</option>
+                            <option value="elite">👑 Elite (999₽/мес)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Длительность (дней) *</label>
+                        <input type="number" id="promoDuration" value="30" min="1" max="365">
+                    </div>
                 </div>
+
+                <!-- Discount fields -->
+                <div id="discountFields" style="display: none;">
+                    <div class="form-group">
+                        <label>Тип скидки *</label>
+                        <select id="discountType">
+                            <option value="percent">📊 Процент (%)</option>
+                            <option value="fixed">💵 Фиксированная сумма (₽)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Размер скидки *</label>
+                        <input type="number" id="discountValue" min="1" step="0.01" placeholder="20 для 20% или 100 для 100₽">
+                    </div>
+                    <div class="form-group">
+                        <label>Применяется к тарифам * (выберите один или несколько)</label>
+                        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="tierPro" value="pro" checked>
+                                <span>⭐ Pro (299₽/мес)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="tierPremium" value="premium" checked>
+                                <span>💎 Premium (499₽/мес)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="tierElite" value="elite" checked>
+                                <span>👑 Elite (999₽/мес)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>Максимум использований (оставьте пустым для безлимита)</label>
                     <input type="number" id="promoMaxUses" min="1" placeholder="Без ограничений">
@@ -611,6 +655,33 @@
 
                 <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
 
+                <h3 style="margin-bottom: 15px;">💰 Управление балансом</h3>
+                <div class="form-group">
+                    <label>Реферальный баланс (₽)</label>
+                    <input type="number" id="balanceInput" value="0" min="0" step="0.01">
+                </div>
+                <button class="btn-action" style="width: 100%; padding: 12px; background: #4caf50;" onclick="updateBalance()">
+                    💳 Обновить баланс
+                </button>
+
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
+
+                <h3 style="margin-bottom: 15px;">🔧 Изменить подписку</h3>
+                <div class="form-group">
+                    <label>Установить тариф</label>
+                    <select id="changeTierSelect">
+                        <option value="free">🆓 Free</option>
+                        <option value="pro">⭐ Pro (30 дней)</option>
+                        <option value="premium">💎 Premium (30 дней)</option>
+                        <option value="elite">👑 Elite (30 дней)</option>
+                    </select>
+                </div>
+                <button class="btn-action" style="width: 100%; padding: 12px; background: #2196f3;" onclick="changeSubscription()">
+                    ✏️ Изменить тариф
+                </button>
+
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
+
                 <h3 style="margin-bottom: 15px; color: #d32f2f;">⚠️ Опасная зона</h3>
                 <p style="margin-bottom: 15px; font-size: 14px; color: #666;">
                     <strong>Сброс:</strong> Удалит все данные пользователя (смены, подписки, достижения), но пользователь останется в базе с новым реферальным кодом.
@@ -628,6 +699,67 @@
             `;
 
             modal.classList.add('show');
+        }
+
+        async function updateBalance() {
+            const balance = parseFloat(document.getElementById('balanceInput').value);
+            const messageDiv = document.getElementById('grantMessage');
+
+            messageDiv.innerHTML = '<p class="loading">Обновление баланса...</p>';
+
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch('/admin/api/update-balance', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    telegram_id: currentUser.user.telegram_id,
+                    amount: balance
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                messageDiv.innerHTML = '<p class="success-msg">✅ Баланс успешно обновлён!</p>';
+                setTimeout(() => messageDiv.innerHTML = '', 3000);
+            } else {
+                messageDiv.innerHTML = '<p class="error-msg">❌ Ошибка при обновлении баланса</p>';
+            }
+        }
+
+        async function changeSubscription() {
+            const tier = document.getElementById('changeTierSelect').value;
+            const messageDiv = document.getElementById('grantMessage');
+
+            messageDiv.innerHTML = '<p class="loading">Изменение подписки...</p>';
+
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch('/admin/api/update-subscription', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    telegram_id: currentUser.user.telegram_id,
+                    tier: tier
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                messageDiv.innerHTML = '<p class="success-msg">✅ Подписка успешно изменена!</p>';
+                setTimeout(() => {
+                    closeModal();
+                    searchUsers();
+                }, 2000);
+            } else {
+                messageDiv.innerHTML = '<p class="error-msg">❌ Ошибка при изменении подписки</p>';
+            }
         }
 
         async function grantSubscription() {
@@ -854,8 +986,8 @@
                     <thead>
                         <tr>
                             <th>Код</th>
-                            <th>Тариф</th>
-                            <th>Дней</th>
+                            <th>Тип</th>
+                            <th>Детали</th>
                             <th>Использований</th>
                             <th>Статус</th>
                             <th>Действителен до</th>
@@ -864,29 +996,47 @@
                         </tr>
                     </thead>
                     <tbody>
-                        ${promoCodes.map(promo => `
-                            <tr>
-                                <td><strong>${promo.code}</strong></td>
-                                <td>${tierNames[promo.tier] || promo.tier}</td>
-                                <td>${promo.duration_days}</td>
-                                <td>
-                                    ${promo.current_uses}${promo.max_uses ? ` / ${promo.max_uses}` : ' / ∞'}
-                                    ${promo.uses_remaining !== null ? `<br><small style="color: #999;">(осталось: ${promo.uses_remaining})</small>` : ''}
-                                </td>
-                                <td>
-                                    ${promo.is_valid
-                                        ? '<span class="badge" style="background: #d4edda; color: #155724;">✅ Активен</span>'
-                                        : '<span class="badge" style="background: #f8d7da; color: #721c24;">❌ Неактивен</span>'}
-                                </td>
-                                <td>${promo.valid_until ? new Date(promo.valid_until).toLocaleString('ru-RU') : 'Бессрочно'}</td>
-                                <td>${promo.description || '-'}</td>
-                                <td>
-                                    ${promo.is_active
-                                        ? `<button class="btn-action" onclick="deactivatePromoCode('${promo.code}')" style="background: #dc3545;">🚫 Деактивировать</button>`
-                                        : '<span style="color: #999;">Деактивирован</span>'}
-                                </td>
-                            </tr>
-                        `).join('')}
+                        ${promoCodes.map(promo => {
+                            let typeText = '';
+                            let detailsText = '';
+
+                            if (promo.promo_type === 'activation') {
+                                typeText = '🎁 Активация';
+                                detailsText = `${tierNames[promo.tier] || promo.tier}<br>${promo.duration_days} дней`;
+                            } else if (promo.promo_type === 'discount') {
+                                typeText = '💰 Скидка';
+                                const discountText = promo.discount_type === 'percent'
+                                    ? `${promo.discount_value}%`
+                                    : `${promo.discount_value}₽`;
+                                const tiersArray = promo.applicable_tiers ? promo.applicable_tiers.split(',') : [];
+                                const tiersText = tiersArray.map(t => tierNames[t.trim()] || t).join(', ');
+                                detailsText = `Скидка: <strong>${discountText}</strong><br>Тарифы: ${tiersText}`;
+                            }
+
+                            return `
+                                <tr>
+                                    <td><strong>${promo.code}</strong></td>
+                                    <td>${typeText}</td>
+                                    <td>${detailsText}</td>
+                                    <td>
+                                        ${promo.current_uses}${promo.max_uses ? ` / ${promo.max_uses}` : ' / ∞'}
+                                        ${promo.uses_remaining !== null ? `<br><small style="color: #999;">(осталось: ${promo.uses_remaining})</small>` : ''}
+                                    </td>
+                                    <td>
+                                        ${promo.is_valid
+                                            ? '<span class="badge" style="background: #d4edda; color: #155724;">✅ Активен</span>'
+                                            : '<span class="badge" style="background: #f8d7da; color: #721c24;">❌ Неактивен</span>'}
+                                    </td>
+                                    <td>${promo.valid_until ? new Date(promo.valid_until).toLocaleString('ru-RU') : 'Бессрочно'}</td>
+                                    <td>${promo.description || '-'}</td>
+                                    <td>
+                                        ${promo.is_active
+                                            ? `<button class="btn-action" onclick="deactivatePromoCode('${promo.code}')" style="background: #dc3545;">🚫 Деактивировать</button>`
+                                            : '<span style="color: #999;">Деактивирован</span>'}
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
                     </tbody>
                 </table>
             `;
@@ -896,11 +1046,32 @@
             document.getElementById('promoModal').classList.add('show');
             document.getElementById('promoModalStatus').innerHTML = '';
             document.getElementById('promoCode').value = '';
+            document.getElementById('promoType').value = 'activation';
             document.getElementById('promoTier').value = 'pro';
             document.getElementById('promoDuration').value = '30';
+            document.getElementById('discountType').value = 'percent';
+            document.getElementById('discountValue').value = '';
+            document.getElementById('tierPro').checked = true;
+            document.getElementById('tierPremium').checked = true;
+            document.getElementById('tierElite').checked = true;
             document.getElementById('promoMaxUses').value = '';
             document.getElementById('promoValidUntil').value = '';
             document.getElementById('promoDescription').value = '';
+            togglePromoFields();
+        }
+
+        function togglePromoFields() {
+            const promoType = document.getElementById('promoType').value;
+            const activationFields = document.getElementById('activationFields');
+            const discountFields = document.getElementById('discountFields');
+
+            if (promoType === 'activation') {
+                activationFields.style.display = 'block';
+                discountFields.style.display = 'none';
+            } else {
+                activationFields.style.display = 'none';
+                discountFields.style.display = 'block';
+            }
         }
 
         function closePromoModal() {
@@ -914,13 +1085,45 @@
             statusDiv.innerHTML = '<p class="loading">Создание промокода...</p>';
 
             const code = document.getElementById('promoCode').value.trim().toUpperCase();
-            const tier = document.getElementById('promoTier').value;
-            const duration_days = parseInt(document.getElementById('promoDuration').value);
+            const promo_type = document.getElementById('promoType').value;
             const max_uses = document.getElementById('promoMaxUses').value ? parseInt(document.getElementById('promoMaxUses').value) : null;
             const valid_until = document.getElementById('promoValidUntil').value || null;
             const description = document.getElementById('promoDescription').value.trim() || null;
 
             const token = localStorage.getItem('admin_token');
+
+            let requestBody = {
+                code,
+                promo_type,
+                max_uses,
+                valid_until,
+                description
+            };
+
+            if (promo_type === 'activation') {
+                const tier = document.getElementById('promoTier').value;
+                const duration_days = parseInt(document.getElementById('promoDuration').value);
+                requestBody.tier = tier;
+                requestBody.duration_days = duration_days;
+            } else {
+                const discount_type = document.getElementById('discountType').value;
+                const discount_value = parseFloat(document.getElementById('discountValue').value);
+
+                // Get selected tiers
+                const applicable_tiers = [];
+                if (document.getElementById('tierPro').checked) applicable_tiers.push('pro');
+                if (document.getElementById('tierPremium').checked) applicable_tiers.push('premium');
+                if (document.getElementById('tierElite').checked) applicable_tiers.push('elite');
+
+                if (applicable_tiers.length === 0) {
+                    statusDiv.innerHTML = '<p class="error-msg">❌ Выберите хотя бы один тариф</p>';
+                    return;
+                }
+
+                requestBody.discount_type = discount_type;
+                requestBody.discount_value = discount_value;
+                requestBody.applicable_tiers = applicable_tiers;
+            }
 
             try {
                 const response = await fetch('/admin/api/promo-codes/create', {
@@ -929,14 +1132,7 @@
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        code,
-                        tier,
-                        duration_days,
-                        max_uses,
-                        valid_until,
-                        description
-                    })
+                    body: JSON.stringify(requestBody)
                 });
 
                 const result = await response.json();

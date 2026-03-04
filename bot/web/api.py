@@ -490,7 +490,7 @@ async def admin_promo_codes(request: web.Request) -> web.Response:
 
 
 async def admin_create_promo_code(request: web.Request) -> web.Response:
-    """Create new promo code."""
+    """Create new promo code (activation or discount)."""
     if not check_admin_token(request):
         return web.json_response({"error": "Unauthorized"}, status=401)
 
@@ -500,18 +500,18 @@ async def admin_create_promo_code(request: web.Request) -> web.Response:
 
         data = await request.json()
         code = data.get("code", "").strip().upper()
-        tier = data.get("tier")
-        duration_days = int(data.get("duration_days", 30))
+        promo_type = data.get("promo_type", "activation")
         max_uses = data.get("max_uses")
         valid_until_str = data.get("valid_until")
         description = data.get("description")
 
-        if not code or not tier:
-            return web.json_response({"error": "Code and tier are required"}, status=400)
+        if not code:
+            return web.json_response({"error": "Code is required"}, status=400)
 
-        if tier not in ["pro", "premium", "elite"]:
-            return web.json_response({"error": "Invalid tier"}, status=400)
+        if promo_type not in ["activation", "discount"]:
+            return web.json_response({"error": "Invalid promo_type"}, status=400)
 
+        # Parse common fields
         if max_uses is not None:
             max_uses = int(max_uses)
 
@@ -519,24 +519,62 @@ async def admin_create_promo_code(request: web.Request) -> web.Response:
         if valid_until_str:
             valid_until = datetime.fromisoformat(valid_until_str)
 
-        promo = await create_promo_code(
-            code=code,
-            tier=tier,
-            duration_days=duration_days,
-            max_uses=max_uses,
-            valid_until=valid_until,
-            description=description
-        )
+        # Type-specific validation
+        if promo_type == "activation":
+            tier = data.get("tier")
+            duration_days = data.get("duration_days")
 
-        logger.info(f"Admin created promo code: {code}")
+            if not tier or not duration_days:
+                return web.json_response({"error": "Tier and duration_days required for activation"}, status=400)
+
+            if tier not in ["pro", "premium", "elite"]:
+                return web.json_response({"error": "Invalid tier"}, status=400)
+
+            promo = await create_promo_code(
+                code=code,
+                promo_type="activation",
+                tier=tier,
+                duration_days=int(duration_days),
+                max_uses=max_uses,
+                valid_until=valid_until,
+                description=description
+            )
+
+        else:  # discount
+            discount_type = data.get("discount_type")
+            discount_value = data.get("discount_value")
+            applicable_tiers = data.get("applicable_tiers", [])
+
+            if not discount_type or discount_value is None or not applicable_tiers:
+                return web.json_response({"error": "discount_type, discount_value, and applicable_tiers required"}, status=400)
+
+            if discount_type not in ["percent", "fixed"]:
+                return web.json_response({"error": "Invalid discount_type"}, status=400)
+
+            # Validate tiers
+            for tier in applicable_tiers:
+                if tier not in ["pro", "premium", "elite"]:
+                    return web.json_response({"error": f"Invalid tier: {tier}"}, status=400)
+
+            promo = await create_promo_code(
+                code=code,
+                promo_type="discount",
+                discount_type=discount_type,
+                discount_value=float(discount_value),
+                applicable_tiers=applicable_tiers,
+                max_uses=max_uses,
+                valid_until=valid_until,
+                description=description
+            )
+
+        logger.info(f"Admin created {promo_type} promo code: {code}")
 
         return web.json_response({
             "success": True,
             "promo_code": {
                 "id": promo.id,
                 "code": promo.code,
-                "tier": promo.tier,
-                "duration_days": promo.duration_days
+                "promo_type": promo.promo_type
             }
         })
 
@@ -574,6 +612,65 @@ async def admin_deactivate_promo_code(request: web.Request) -> web.Response:
         return web.json_response({"error": "Server error"}, status=500)
 
 
+async def admin_update_balance(request: web.Request) -> web.Response:
+    """Update user balance."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        from bot.services.admin import update_user_balance
+
+        data = await request.json()
+        telegram_id = data.get("telegram_id")
+        amount = data.get("amount")
+
+        if not telegram_id or amount is None:
+            return web.json_response({"error": "telegram_id and amount are required"}, status=400)
+
+        success = await update_user_balance(int(telegram_id), float(amount))
+
+        if success:
+            logger.info(f"Admin updated balance for user {telegram_id}: {amount}")
+            return web.json_response({"success": True})
+        else:
+            return web.json_response({"error": "User not found"}, status=404)
+
+    except Exception as e:
+        logger.error(f"Error updating balance: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_update_subscription(request: web.Request) -> web.Response:
+    """Update user subscription tier."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        from bot.services.admin import update_user_subscription
+
+        data = await request.json()
+        telegram_id = data.get("telegram_id")
+        tier = data.get("tier")
+
+        if not telegram_id or not tier:
+            return web.json_response({"error": "telegram_id and tier are required"}, status=400)
+
+        if tier not in ["free", "pro", "premium", "elite"]:
+            return web.json_response({"error": "Invalid tier"}, status=400)
+
+        success = await update_user_subscription(int(telegram_id), tier)
+
+        if success:
+            logger.info(f"Admin updated subscription for user {telegram_id}: {tier}")
+            return web.json_response({"success": True})
+        else:
+            return web.json_response({"error": "User not found"}, status=404)
+
+    except Exception as e:
+        logger.error(f"Error updating subscription: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
 def create_app() -> web.Application:
     app = web.Application()
     app.router.add_get("/", index)
@@ -601,6 +698,8 @@ def create_app() -> web.Application:
     app.router.add_post("/admin/api/reset-user", admin_reset_user)
     app.router.add_post("/admin/api/delete-user", admin_delete_user)
     app.router.add_post("/admin/api/broadcast", admin_broadcast)
+    app.router.add_post("/admin/api/update-balance", admin_update_balance)
+    app.router.add_post("/admin/api/update-subscription", admin_update_subscription)
 
     # Promo code routes
     app.router.add_get("/admin/api/promo-codes", admin_promo_codes)
