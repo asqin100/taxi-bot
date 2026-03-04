@@ -7,8 +7,9 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bot.config import settings
 from bot.database.db import init_db
-from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding, referral, location, export, statistics, tax, heatmap
+from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding, referral, location, export, statistics, tax, heatmap, subscription_check
 from bot.middlewares.auth import ThrottleMiddleware
+from bot.middlewares.channel_subscription import ChannelSubscriptionMiddleware
 from bot.services.yandex_api import fetch_all_coefficients
 from bot.services.coefficient_collector import collect_and_store_coefficients
 from bot.services.notifier import check_and_notify
@@ -74,8 +75,11 @@ async def main():
 
     # Middleware
     dp.message.middleware(ThrottleMiddleware(rate_limit=0.5))
+    dp.message.middleware(ChannelSubscriptionMiddleware())
+    dp.callback_query.middleware(ChannelSubscriptionMiddleware())
 
     # Routers
+    dp.include_router(subscription_check.router)  # Must be first to handle subscription check
     dp.include_router(start.router)
     dp.include_router(menu.router)
     dp.include_router(onboarding.router)

@@ -8,6 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 class Settings(BaseSettings):
     bot_token: str
     bot_username: str = "KefPulse_bot"  # Bot username for referral links
+    channel_id: str = "@kefpulsechannel"  # Channel ID for mandatory subscription
     yandex_api_key: str = ""
     yandex_traffic_api_key: str = ""  # Yandex Traffic/Jams API key
     yandex_bearer_token: str = ""
