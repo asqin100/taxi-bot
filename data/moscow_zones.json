@@ -45,6 +45,25 @@
     {"id": "bibirevo", "name": "Бибирево", "lat": 55.8850, "lon": 37.6050, "radius_km": 3},
     {"id": "sviblovo", "name": "Свиблово", "lat": 55.8550, "lon": 37.6550, "radius_km": 3},
     {"id": "perovo", "name": "Перово", "lat": 55.7500, "lon": 37.7850, "radius_km": 3},
-    {"id": "novokosino", "name": "Новокосино", "lat": 55.7450, "lon": 37.8650, "radius_km": 3}
+    {"id": "novokosino", "name": "Новокосино", "lat": 55.7450, "lon": 37.8650, "radius_km": 3},
+
+    {"id": "sheremetyevo", "name": "Шереметьево", "lat": 55.9726, "lon": 37.4146, "radius_km": 5},
+    {"id": "domodedovo", "name": "Домодедово", "lat": 55.4088, "lon": 37.9063, "radius_km": 5},
+    {"id": "vnukovo", "name": "Внуково", "lat": 55.5914, "lon": 37.2615, "radius_km": 5},
+
+    {"id": "kazansky_station", "name": "Казанский вокзал", "lat": 55.7731, "lon": 37.6556, "radius_km": 2},
+    {"id": "leningradsky_station", "name": "Ленинградский вокзал", "lat": 55.7762, "lon": 37.6556, "radius_km": 2},
+    {"id": "kursky_station", "name": "Курский вокзал", "lat": 55.7583, "lon": 37.6606, "radius_km": 2},
+    {"id": "kievsky_station", "name": "Киевский вокзал", "lat": 55.7439, "lon": 37.5667, "radius_km": 2},
+    {"id": "paveletsky_station", "name": "Павелецкий вокзал", "lat": 55.7297, "lon": 37.6394, "radius_km": 2},
+
+    {"id": "moscow_city", "name": "Москва-Сити", "lat": 55.7494, "lon": 37.5378, "radius_km": 3},
+    {"id": "sokolniki", "name": "Сокольники", "lat": 55.7894, "lon": 37.6797, "radius_km": 3},
+    {"id": "izmailovo", "name": "Измайлово", "lat": 55.7900, "lon": 37.7500, "radius_km": 3},
+    {"id": "strogino", "name": "Строгино", "lat": 55.8033, "lon": 37.4017, "radius_km": 3},
+    {"id": "krylatskoe", "name": "Крылатское", "lat": 55.7567, "lon": 37.4083, "radius_km": 3},
+    {"id": "tekstilshchiki", "name": "Текстильщики", "lat": 55.7083, "lon": 37.7317, "radius_km": 3},
+    {"id": "chertanovo", "name": "Чертаново", "lat": 55.6417, "lon": 37.6050, "radius_km": 3},
+    {"id": "butovo", "name": "Бутово", "lat": 55.5333, "lon": 37.5667, "radius_km": 4}
   ]
 }

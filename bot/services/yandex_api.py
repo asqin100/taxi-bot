@@ -90,24 +90,36 @@ class YandexGoPassengerProvider(BasePriceProvider):
             "account_type": "yandex",
         }
 
-        try:
-            async with aiohttp.ClientSession(headers=self._build_headers()) as session:
-                async with session.post(
-                    self._build_url(),
-                    json=body,
-                    timeout=aiohttp.ClientTimeout(total=10),
-                ) as resp:
-                    if resp.status == 200:
-                        data = await resp.json()
-                        return self._extract_surge_coefficient(data, tariff)
-                    else:
-                        error_body = await resp.text()
-                        logger.warning(
-                            "Yandex.Go API returned %s for zone %s: %s",
-                            resp.status, zone.id, error_body[:500]
-                        )
-        except Exception as e:
-            logger.error("Yandex.Go API error for zone %s: %s", zone.id, e)
+        # Retry logic for 429 errors
+        max_retries = 2
+        retry_delay = 10
+
+        for attempt in range(max_retries + 1):
+            try:
+                async with aiohttp.ClientSession(headers=self._build_headers()) as session:
+                    async with session.post(
+                        self._build_url(),
+                        json=body,
+                        timeout=aiohttp.ClientTimeout(total=10),
+                    ) as resp:
+                        if resp.status == 200:
+                            data = await resp.json()
+                            return self._extract_surge_coefficient(data, tariff)
+                        elif resp.status == 429 and attempt < max_retries:
+                            logger.warning(
+                                "Rate limited (429) for zone %s, retrying in %ds (attempt %d/%d)",
+                                zone.id, retry_delay, attempt + 1, max_retries
+                            )
+                            await asyncio.sleep(retry_delay)
+                            continue
+                        else:
+                            error_body = await resp.text()
+                            logger.warning(
+                                "Yandex.Go API returned %s for zone %s: %s",
+                                resp.status, zone.id, error_body[:500]
+                            )
+            except Exception as e:
+                logger.error("Yandex.Go API error for zone %s: %s", zone.id, e)
 
         return 1.0
 
