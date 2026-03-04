@@ -115,6 +115,7 @@ async def cb_pay_with_balance(callback: CallbackQuery):
 
     pro_price = SUBSCRIPTION_FEATURES[SubscriptionTier.PRO]["price"]
     premium_price = SUBSCRIPTION_FEATURES[SubscriptionTier.PREMIUM]["price"]
+    elite_price = SUBSCRIPTION_FEATURES[SubscriptionTier.ELITE]["price"]
 
     text = (
         f"💰 <b>ОПЛАТА ПОДПИСКИ</b>\n\n"
@@ -127,7 +128,12 @@ async def cb_pay_with_balance(callback: CallbackQuery):
         f"💎 <b>Premium</b> — {premium_price}₽/мес\n"
         f"  • Все функции Pro\n"
         f"  • Приоритетные уведомления\n"
-        f"  • Персональные рекомендации"
+        f"  • Персональные рекомендации\n\n"
+        f"👑 <b>Elite</b> — {elite_price}₽/мес\n"
+        f"  • Все функции Premium\n"
+        f"  • CSV экспорт смен\n"
+        f"  • Тепловая карта заработка\n"
+        f"  • ML предсказания спроса"
     )
 
     keyboard_buttons = []
@@ -147,6 +153,15 @@ async def cb_pay_with_balance(callback: CallbackQuery):
             InlineKeyboardButton(
                 text=f"💎 Premium — {premium_price}₽ (с баланса)",
                 callback_data="referral:buy_balance:premium"
+            )
+        ])
+
+    # Show Elite button if balance is sufficient
+    if balance >= elite_price:
+        keyboard_buttons.append([
+            InlineKeyboardButton(
+                text=f"👑 Elite — {elite_price}₽ (с баланса)",
+                callback_data="referral:buy_balance:elite"
             )
         ])
 
@@ -219,7 +234,8 @@ async def cb_buy_with_balance(callback: CallbackQuery):
 
     tier_names = {
         SubscriptionTier.PRO: "⭐ Pro",
-        SubscriptionTier.PREMIUM: "💎 Premium"
+        SubscriptionTier.PREMIUM: "💎 Premium",
+        SubscriptionTier.ELITE: "👑 Elite"
     }
 
     text = (
