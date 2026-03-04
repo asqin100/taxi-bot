@@ -7,7 +7,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bot.config import settings
 from bot.database.db import init_db
-from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding, referral, location, export, statistics, tax, heatmap, subscription_check
+from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding, referral, location, export, statistics, tax, heatmap, subscription_check, promo_code
 from bot.middlewares.auth import ThrottleMiddleware
 from bot.middlewares.channel_subscription import ChannelSubscriptionMiddleware
 from bot.services.yandex_api import fetch_all_coefficients
@@ -30,6 +30,7 @@ from bot.models.achievement import UserAchievement
 from bot.models.challenge import UserChallenge
 from bot.models.ai_usage import AIUsage
 from bot.models.referral import ReferralEarning
+from bot.models.promo_code import PromoCode, PromoCodeUsage
 
 from aiohttp import web
 
@@ -93,6 +94,7 @@ async def main():
     dp.include_router(traffic.router)
     dp.include_router(hotspots.router)
     dp.include_router(subscription.router)
+    dp.include_router(promo_code.router)
     dp.include_router(referral.router)
     dp.include_router(ai_advisor.router)
     dp.include_router(achievements.router)

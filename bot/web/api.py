@@ -454,6 +454,126 @@ async def api_game_submit_score(request: web.Request) -> web.Response:
         return web.json_response({"success": False, "error": "Ошибка сервера"}, status=500)
 
 
+async def admin_promo_codes(request: web.Request) -> web.Response:
+    """Get all promo codes."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        from bot.services.promo_code import get_all_promo_codes
+
+        promo_codes = await get_all_promo_codes()
+
+        result = []
+        for promo in promo_codes:
+            result.append({
+                "id": promo.id,
+                "code": promo.code,
+                "tier": promo.tier,
+                "duration_days": promo.duration_days,
+                "max_uses": promo.max_uses,
+                "current_uses": promo.current_uses,
+                "uses_remaining": promo.uses_remaining,
+                "is_active": promo.is_active,
+                "is_valid": promo.is_valid,
+                "valid_from": promo.valid_from.isoformat(),
+                "valid_until": promo.valid_until.isoformat() if promo.valid_until else None,
+                "description": promo.description,
+                "created_at": promo.created_at.isoformat()
+            })
+
+        return web.json_response(result)
+
+    except Exception as e:
+        logger.error(f"Error fetching promo codes: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_create_promo_code(request: web.Request) -> web.Response:
+    """Create new promo code."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        from bot.services.promo_code import create_promo_code
+        from datetime import datetime
+
+        data = await request.json()
+        code = data.get("code", "").strip().upper()
+        tier = data.get("tier")
+        duration_days = int(data.get("duration_days", 30))
+        max_uses = data.get("max_uses")
+        valid_until_str = data.get("valid_until")
+        description = data.get("description")
+
+        if not code or not tier:
+            return web.json_response({"error": "Code and tier are required"}, status=400)
+
+        if tier not in ["pro", "premium", "elite"]:
+            return web.json_response({"error": "Invalid tier"}, status=400)
+
+        if max_uses is not None:
+            max_uses = int(max_uses)
+
+        valid_until = None
+        if valid_until_str:
+            valid_until = datetime.fromisoformat(valid_until_str)
+
+        promo = await create_promo_code(
+            code=code,
+            tier=tier,
+            duration_days=duration_days,
+            max_uses=max_uses,
+            valid_until=valid_until,
+            description=description
+        )
+
+        logger.info(f"Admin created promo code: {code}")
+
+        return web.json_response({
+            "success": True,
+            "promo_code": {
+                "id": promo.id,
+                "code": promo.code,
+                "tier": promo.tier,
+                "duration_days": promo.duration_days
+            }
+        })
+
+    except ValueError as e:
+        return web.json_response({"error": str(e)}, status=400)
+    except Exception as e:
+        logger.error(f"Error creating promo code: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_deactivate_promo_code(request: web.Request) -> web.Response:
+    """Deactivate promo code."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        from bot.services.promo_code import deactivate_promo_code
+
+        data = await request.json()
+        code = data.get("code", "").strip().upper()
+
+        if not code:
+            return web.json_response({"error": "Code is required"}, status=400)
+
+        success = await deactivate_promo_code(code)
+
+        if success:
+            logger.info(f"Admin deactivated promo code: {code}")
+            return web.json_response({"success": True})
+        else:
+            return web.json_response({"error": "Promo code not found"}, status=404)
+
+    except Exception as e:
+        logger.error(f"Error deactivating promo code: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
 def create_app() -> web.Application:
     app = web.Application()
     app.router.add_get("/", index)
@@ -481,6 +601,11 @@ def create_app() -> web.Application:
     app.router.add_post("/admin/api/reset-user", admin_reset_user)
     app.router.add_post("/admin/api/delete-user", admin_delete_user)
     app.router.add_post("/admin/api/broadcast", admin_broadcast)
+
+    # Promo code routes
+    app.router.add_get("/admin/api/promo-codes", admin_promo_codes)
+    app.router.add_post("/admin/api/promo-codes/create", admin_create_promo_code)
+    app.router.add_post("/admin/api/promo-codes/deactivate", admin_deactivate_promo_code)
 
     app.router.add_get("/{name}", static_file)
     return app

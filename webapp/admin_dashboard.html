@@ -236,6 +236,7 @@
         <div class="tabs">
             <button class="tab active" onclick="switchTab('dashboard')">📊 Дашборд</button>
             <button class="tab" onclick="switchTab('users')">👥 Управление пользователями</button>
+            <button class="tab" onclick="switchTab('promo')">🎁 Промокоды</button>
             <button class="tab" onclick="switchTab('broadcast')">📢 Рассылка</button>
         </div>
 
@@ -253,6 +254,19 @@
                     <button onclick="searchUsers()">Найти</button>
                 </div>
                 <div id="searchResults"></div>
+            </div>
+        </div>
+
+        <!-- Promo Codes Tab -->
+        <div id="promo-tab" class="tab-content">
+            <div class="section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>🎁 Управление промокодами</h2>
+                    <button class="btn-action" onclick="showCreatePromoModal()" style="padding: 10px 20px; font-size: 14px;">
+                        ➕ Создать промокод
+                    </button>
+                </div>
+                <div id="promoCodesContent" class="loading">Загрузка...</div>
             </div>
         </div>
 
@@ -295,6 +309,50 @@
         </div>
     </div>
 
+    <!-- Create Promo Code Modal -->
+    <div id="promoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Создать промокод</h2>
+                <button class="close-btn" onclick="closePromoModal()">&times;</button>
+            </div>
+            <div id="promoModalStatus"></div>
+            <form onsubmit="createPromoCode(event)">
+                <div class="form-group">
+                    <label>Код промокода *</label>
+                    <input type="text" id="promoCode" required placeholder="SUMMER2026" style="text-transform: uppercase;">
+                </div>
+                <div class="form-group">
+                    <label>Тариф *</label>
+                    <select id="promoTier" required>
+                        <option value="pro">⭐ Pro (299₽/мес)</option>
+                        <option value="premium">💎 Premium (499₽/мес)</option>
+                        <option value="elite">👑 Elite (999₽/мес)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Длительность (дней) *</label>
+                    <input type="number" id="promoDuration" required value="30" min="1" max="365">
+                </div>
+                <div class="form-group">
+                    <label>Максимум использований (оставьте пустым для безлимита)</label>
+                    <input type="number" id="promoMaxUses" min="1" placeholder="Без ограничений">
+                </div>
+                <div class="form-group">
+                    <label>Действителен до (оставьте пустым для бессрочного)</label>
+                    <input type="datetime-local" id="promoValidUntil">
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <input type="text" id="promoDescription" placeholder="Летняя акция 2026">
+                </div>
+                <button type="submit" class="btn-action" style="width: 100%; padding: 12px; font-size: 16px;">
+                    ✅ Создать промокод
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script>
         let currentUser = null;
 
@@ -304,6 +362,11 @@
 
             event.target.classList.add('active');
             document.getElementById(tab + '-tab').classList.add('active');
+
+            // Load promo codes when switching to promo tab
+            if (tab === 'promo') {
+                loadPromoCodes();
+            }
         }
 
         async function loadDashboard() {
@@ -746,6 +809,180 @@
         function logout() {
             localStorage.removeItem('admin_token');
             window.location.href = '/admin/login';
+        }
+
+        // Promo Codes Functions
+        async function loadPromoCodes() {
+            const content = document.getElementById('promoCodesContent');
+            content.className = 'loading';
+            content.innerHTML = 'Загрузка промокодов...';
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/promo-codes', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load promo codes');
+
+                const promoCodes = await response.json();
+                renderPromoCodes(promoCodes);
+            } catch (error) {
+                content.className = '';
+                content.innerHTML = '<p class="error-msg">❌ Ошибка загрузки промокодов</p>';
+            }
+        }
+
+        function renderPromoCodes(promoCodes) {
+            const content = document.getElementById('promoCodesContent');
+            content.className = '';
+
+            if (promoCodes.length === 0) {
+                content.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Промокодов пока нет. Создайте первый!</p>';
+                return;
+            }
+
+            const tierNames = {
+                'pro': '⭐ Pro',
+                'premium': '💎 Premium',
+                'elite': '👑 Elite'
+            };
+
+            content.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Код</th>
+                            <th>Тариф</th>
+                            <th>Дней</th>
+                            <th>Использований</th>
+                            <th>Статус</th>
+                            <th>Действителен до</th>
+                            <th>Описание</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${promoCodes.map(promo => `
+                            <tr>
+                                <td><strong>${promo.code}</strong></td>
+                                <td>${tierNames[promo.tier] || promo.tier}</td>
+                                <td>${promo.duration_days}</td>
+                                <td>
+                                    ${promo.current_uses}${promo.max_uses ? ` / ${promo.max_uses}` : ' / ∞'}
+                                    ${promo.uses_remaining !== null ? `<br><small style="color: #999;">(осталось: ${promo.uses_remaining})</small>` : ''}
+                                </td>
+                                <td>
+                                    ${promo.is_valid
+                                        ? '<span class="badge" style="background: #d4edda; color: #155724;">✅ Активен</span>'
+                                        : '<span class="badge" style="background: #f8d7da; color: #721c24;">❌ Неактивен</span>'}
+                                </td>
+                                <td>${promo.valid_until ? new Date(promo.valid_until).toLocaleString('ru-RU') : 'Бессрочно'}</td>
+                                <td>${promo.description || '-'}</td>
+                                <td>
+                                    ${promo.is_active
+                                        ? `<button class="btn-action" onclick="deactivatePromoCode('${promo.code}')" style="background: #dc3545;">🚫 Деактивировать</button>`
+                                        : '<span style="color: #999;">Деактивирован</span>'}
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function showCreatePromoModal() {
+            document.getElementById('promoModal').classList.add('show');
+            document.getElementById('promoModalStatus').innerHTML = '';
+            document.getElementById('promoCode').value = '';
+            document.getElementById('promoTier').value = 'pro';
+            document.getElementById('promoDuration').value = '30';
+            document.getElementById('promoMaxUses').value = '';
+            document.getElementById('promoValidUntil').value = '';
+            document.getElementById('promoDescription').value = '';
+        }
+
+        function closePromoModal() {
+            document.getElementById('promoModal').classList.remove('show');
+        }
+
+        async function createPromoCode(event) {
+            event.preventDefault();
+
+            const statusDiv = document.getElementById('promoModalStatus');
+            statusDiv.innerHTML = '<p class="loading">Создание промокода...</p>';
+
+            const code = document.getElementById('promoCode').value.trim().toUpperCase();
+            const tier = document.getElementById('promoTier').value;
+            const duration_days = parseInt(document.getElementById('promoDuration').value);
+            const max_uses = document.getElementById('promoMaxUses').value ? parseInt(document.getElementById('promoMaxUses').value) : null;
+            const valid_until = document.getElementById('promoValidUntil').value || null;
+            const description = document.getElementById('promoDescription').value.trim() || null;
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/promo-codes/create', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        code,
+                        tier,
+                        duration_days,
+                        max_uses,
+                        valid_until,
+                        description
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    statusDiv.innerHTML = `<p class="success-msg">✅ Промокод <strong>${code}</strong> успешно создан!</p>`;
+                    setTimeout(() => {
+                        closePromoModal();
+                        loadPromoCodes();
+                    }, 2000);
+                } else {
+                    statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось создать промокод'}</p>`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка сети: ${error.message}</p>`;
+            }
+        }
+
+        async function deactivatePromoCode(code) {
+            if (!confirm(`Вы уверены, что хотите деактивировать промокод ${code}?\n\nПосле деактивации его нельзя будет использовать.`)) {
+                return;
+            }
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/promo-codes/deactivate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ code })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    alert(`✅ Промокод ${code} деактивирован`);
+                    loadPromoCodes();
+                } else {
+                    alert(`❌ Ошибка: ${result.error || 'Не удалось деактивировать промокод'}`);
+                }
+            } catch (error) {
+                alert(`❌ Ошибка сети: ${error.message}`);
+            }
         }
 
         loadDashboard();

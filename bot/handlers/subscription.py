@@ -24,6 +24,7 @@ async def cb_subscription_menu(callback: CallbackQuery):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="📊 Сравнить тарифы", callback_data="subscription:compare")],
         [InlineKeyboardButton(text="⬆️ Улучшить тариф", callback_data="subscription:upgrade")],
+        [InlineKeyboardButton(text="🎁 Ввести промокод", callback_data="subscription:promo")],
         [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
     ])
 
