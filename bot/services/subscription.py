@@ -56,11 +56,25 @@ async def upgrade_subscription(
             subscription = Subscription(user_id=user_id)
             session.add(subscription)
 
+        # Determine start date for new subscription period
+        now = datetime.now()
+
+        # If user has active subscription with future expiration, extend from that date
+        if subscription.expires_at and subscription.expires_at > now and not subscription.is_expired:
+            # Extend existing subscription
+            new_expires_at = subscription.expires_at + timedelta(days=duration_days)
+            logger.info("Extending subscription for user %d from %s to %s",
+                       user_id, subscription.expires_at, new_expires_at)
+        else:
+            # Start new subscription from now
+            new_expires_at = now + timedelta(days=duration_days)
+            subscription.started_at = now
+            logger.info("Starting new subscription for user %d until %s", user_id, new_expires_at)
+
         subscription.tier = tier.value
         subscription.is_active = True
-        subscription.started_at = datetime.now()
-        subscription.expires_at = datetime.now() + timedelta(days=duration_days)
-        subscription.last_payment_at = datetime.now()
+        subscription.expires_at = new_expires_at
+        subscription.last_payment_at = now
         subscription.payment_method = payment_method
 
         await session.commit()
