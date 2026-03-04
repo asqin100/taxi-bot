@@ -13,3 +13,10 @@ pandas>=2.0.0
 numpy>=1.24.0
 scikit-learn>=1.3.0
 joblib>=1.3.0
+
+# PostgreSQL support (для VPS)
+asyncpg==0.29.0
+psycopg2-binary==2.9.9
+
+# Redis support (для VPS)
+redis==5.0.1

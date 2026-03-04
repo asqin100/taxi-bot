@@ -1,0 +1,24 @@
+[Unit]
+Description=Taxi Bot - Web Server Service
+After=network.target
+
+[Service]
+Type=simple
+User=taxibot
+Group=taxibot
+WorkingDirectory=/opt/taxibot
+Environment="PATH=/opt/taxibot/venv/bin"
+ExecStart=/opt/taxibot/venv/bin/python -m bot.web.server
+Restart=always
+RestartSec=10
+
+# Логирование
+StandardOutput=append:/var/log/taxibot/web.log
+StandardError=append:/var/log/taxibot/web-error.log
+
+# Безопасность
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

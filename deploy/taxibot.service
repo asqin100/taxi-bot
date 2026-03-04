@@ -1,0 +1,24 @@
+[Unit]
+Description=Taxi Bot - Telegram Bot Service
+After=network.target postgresql.service redis.service
+
+[Service]
+Type=simple
+User=taxibot
+Group=taxibot
+WorkingDirectory=/opt/taxibot
+Environment="PATH=/opt/taxibot/venv/bin"
+ExecStart=/opt/taxibot/venv/bin/python -m bot.main
+Restart=always
+RestartSec=10
+
+# Логирование
+StandardOutput=append:/var/log/taxibot/bot.log
+StandardError=append:/var/log/taxibot/bot-error.log
+
+# Безопасность
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
