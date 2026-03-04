@@ -47,12 +47,34 @@ pip install matplotlib seaborn pandas numpy scikit-learn joblib fastapi uvicorn
 python apply_ml_migration.py
 ```
 
+## Туннель для WebApp (карта)
+
+### Проблема ngrok
+Бесплатный ngrok показывает предупреждение "Visit Site" перед каждым посещением.
+
+### Решение: Cloudflare Tunnel (РЕКОМЕНДУЕТСЯ)
+
+1. Скачать cloudflared: https://github.com/cloudflare/cloudflared/releases/latest
+2. Положить `cloudflared.exe` в папку проекта
+3. Запустить: `start_cloudflare_tunnel.bat`
+4. Скопировать URL из консоли
+5. Обновить WebApp URL в боте: `/setwebapp https://your-url.trycloudflare.com`
+
+**Преимущества:**
+- ✅ Бесплатно
+- ✅ Без предупреждений
+- ✅ Стабильнее ngrok
+- ✅ Подходит для 100+ пользователей
+
+Подробнее: см. `TUNNEL_SETUP.md`
+
 ## Статус
 
 ✅ Бот запущен и работает
 ✅ Все handlers зарегистрированы
 ✅ Scheduler активен
 ✅ Сбор исторических данных включен
+⚠️ Требуется настройка туннеля (см. выше)
 
 ## Коммиты
 
