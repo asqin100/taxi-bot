@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     bot_token: str
     bot_username: str = "KefPulse_bot"  # Bot username for referral links
     channel_id: str = "@kefpulsechannel"  # Channel ID for mandatory subscription
+    admin_ids: str = ""  # Comma-separated admin Telegram IDs
     yandex_api_key: str = ""
     yandex_traffic_api_key: str = ""  # Yandex Traffic/Jams API key
     yandex_bearer_token: str = ""
@@ -21,13 +22,22 @@ class Settings(BaseSettings):
     yookassa_shop_id: str = ""  # YooKassa shop ID
     yookassa_secret_key: str = ""  # YooKassa secret key
     admin_password: str = "admin123!@#"  # Admin panel password
-    db_url: str = f"sqlite+aiosqlite:///{BASE_DIR / 'data' / 'bot.db'}"
+    database_url: str = f"sqlite+aiosqlite:///{BASE_DIR / 'data' / 'bot.db'}"  # Production uses PostgreSQL
+    db_url: str = ""  # Deprecated, use database_url
     parse_interval_seconds: int = 1200  # 20 minutes - enough time for 43 zones × 3 tariffs with 8s delay
     default_surge_threshold: float = 1.5
     webapp_url: str = ""
+    web_host: str = "0.0.0.0"  # Web server host
     web_port: int = 8080
+    redis_url: str = "redis://localhost:6379/0"  # Redis connection URL
+    environment: str = "development"  # development or production
 
-    model_config = {"env_file": str(BASE_DIR / ".env"), "env_file_encoding": "utf-8"}
+    model_config = {"env_file": str(BASE_DIR / ".env"), "env_file_encoding": "utf-8", "extra": "allow"}
+
+    @property
+    def effective_db_url(self) -> str:
+        """Return the effective database URL (database_url takes precedence over db_url)"""
+        return self.database_url or self.db_url
 
 
 settings = Settings()
