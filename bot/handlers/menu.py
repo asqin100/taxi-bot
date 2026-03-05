@@ -103,32 +103,6 @@ async def cb_traffic_menu(callback: CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(F.data == "menu:search")
-async def cb_search_menu(callback: CallbackQuery, state: FSMContext):
-    """Show search menu and enter FSM mode."""
-    text = (
-        "🔍 <b>ПОИСК ПО АДРЕСУ</b>\n\n"
-        "Введите адрес, метро или название места:\n\n"
-        "Примеры:\n"
-        "  • Красная площадь\n"
-        "  • м. Тверская\n"
-        "  • Шереметьево\n"
-        "  • Ленинский проспект 15"
-    )
-
-    from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="❌ Отмена", callback_data="cmd:menu")]
-    ])
-
-    await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
-
-    # Enter FSM state for address input
-    from bot.handlers.search import SearchAddress
-    await state.set_state(SearchAddress.waiting_for_address)
-    await callback.answer()
-
-
 @router.callback_query(F.data == "search:help")
 async def cb_search_help(callback: CallbackQuery):
     """Show search help."""
