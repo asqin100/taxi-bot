@@ -9,7 +9,7 @@ class Base(DeclarativeBase):
     pass
 
 
-engine = create_async_engine(settings.db_url, echo=False)
+engine = create_async_engine(settings.effective_db_url, echo=False)
 session_factory = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
