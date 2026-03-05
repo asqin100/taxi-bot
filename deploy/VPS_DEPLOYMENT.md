@@ -24,7 +24,7 @@ ssh root@5.42.110.16
 
 ```bash
 # Скачать deploy.sh на сервер
-wget https://raw.githubusercontent.com/your-repo/taxi-bot/main/deploy/deploy.sh
+wget https://raw.githubusercontent.com/asqin100/taxi-bot/main/deploy/deploy.sh
 # ИЛИ скопировать файл вручную
 
 # Сделать исполняемым
@@ -49,7 +49,7 @@ sudo bash deploy.sh
 **Вариант A: Через Git (рекомендуется)**
 ```bash
 cd /opt/taxibot
-sudo -u taxibot git clone https://github.com/your-repo/taxi-bot.git .
+sudo -u taxibot git clone https://github.com/asqin100/taxi-bot.git .
 ```
 
 **Вариант B: Через SCP с локального компьютера**

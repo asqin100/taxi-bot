@@ -34,7 +34,7 @@
 # На сервере
 ssh root@5.42.110.16
 cd /opt/taxibot
-git clone https://github.com/your-repo/taxi-bot.git .
+git clone https://github.com/asqin100/taxi-bot.git .
 ```
 
 **Вариант B: Через WinSCP/FileZilla**
