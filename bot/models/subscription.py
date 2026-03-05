@@ -79,6 +79,7 @@ SUBSCRIPTION_FEATURES = {
         "priority_notifications": False,
         "detailed_analytics": False,
         "business_tariff": False,
+        "search": False,
         "features": [
             "✅ Базовый радар коэффициентов",
             "✅ Тарифы: Эконом, Комфорт",
@@ -97,6 +98,7 @@ SUBSCRIPTION_FEATURES = {
         "priority_notifications": False,
         "detailed_analytics": True,
         "business_tariff": True,
+        "search": True,
         "features": [
             "✅ Все функции бесплатного",
             "✅ Доступ к тарифу Бизнес 🚕",
@@ -117,6 +119,7 @@ SUBSCRIPTION_FEATURES = {
         "priority_notifications": True,
         "detailed_analytics": True,
         "business_tariff": True,
+        "search": True,
         "features": [
             "✅ Все функции Pro",
             "⚡ Приоритет: уведомления через 60 секунд",
@@ -135,6 +138,7 @@ SUBSCRIPTION_FEATURES = {
         "priority_notifications": True,
         "detailed_analytics": True,
         "business_tariff": True,
+        "search": True,
         "csv_export": True,
         "heatmap": True,
         "tax_calculator": True,
