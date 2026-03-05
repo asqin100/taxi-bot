@@ -122,7 +122,7 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="🚦 Пробки", callback_data="menu:traffic"),
         ],
         [
-            InlineKeyboardButton(text="🔍 Поиск", callback_data="menu:search"),
+            InlineKeyboardButton(text="🔍 Поиск 🔒 Pro", callback_data="menu:search"),
             InlineKeyboardButton(text="📍 Геоалерты", callback_data="menu:geo_alerts"),
         ],
         [
@@ -225,7 +225,6 @@ def features_menu_keyboard(tier: str) -> InlineKeyboardMarkup:
     buttons.extend([
         [InlineKeyboardButton(text="📊 Коэффициенты", callback_data="cmd:kef")],
         [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
-        [InlineKeyboardButton(text="🔍 Поиск по адресу", callback_data="menu:search")],
     ])
 
     # Pro+ features
