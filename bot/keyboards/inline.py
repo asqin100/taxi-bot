@@ -116,7 +116,7 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="⚡ Все функции", callback_data="menu:features")],
         [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
         [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
-        [InlineKeyboardButton(text="🗺 Горячие точки", callback_data="menu:hotspots")],
+        # [InlineKeyboardButton(text="🗺 Горячие точки", callback_data="menu:hotspots")],
         [
             InlineKeyboardButton(text="💰 Финансы", callback_data="menu:financial"),
             InlineKeyboardButton(text="🚦 Пробки", callback_data="menu:traffic"),
