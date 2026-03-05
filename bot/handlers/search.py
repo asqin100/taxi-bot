@@ -21,8 +21,17 @@ class SearchAddress(StatesGroup):
 async def cb_search_menu(callback: CallbackQuery, state: FSMContext):
     """Enter search mode from menu."""
     # Check Pro access
-    from bot.services.subscription import check_feature_access
+    from bot.services.subscription import check_feature_access, get_subscription
+    import logging
+
+    logger = logging.getLogger(__name__)
+
+    # Debug logging
+    subscription = await get_subscription(callback.from_user.id)
+    logger.info(f"Search access check: user_id={callback.from_user.id}, tier={subscription.tier}, is_expired={subscription.is_expired}")
+
     has_access = await check_feature_access(callback.from_user.id, "search")
+    logger.info(f"Search access result: has_access={has_access}")
 
     if not has_access:
         from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
