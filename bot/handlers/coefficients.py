@@ -43,12 +43,47 @@ async def _send_coefficients(message: Message, edit: bool = False):
 
 @router.message(Command("top"))
 async def cmd_top(message: Message):
-    await _send_top(message)
+    # Get user's selected tariffs from settings
+    from bot.database.db import session_factory
+    from bot.models.user import User
+    from sqlalchemy import select
+
+    async with session_factory() as session:
+        result = await session.execute(select(User).where(User.telegram_id == message.from_user.id))
+        user = result.scalar_one_or_none()
+
+        # Use user's selected tariffs if available
+        if user and user.tariffs:
+            selected_tariffs = [t for t in user.tariffs.split(",") if t]
+            # If single tariff selected, use it as filter
+            tariff = selected_tariffs[0] if len(selected_tariffs) == 1 else None
+        else:
+            tariff = None
+
+    await _send_top(message, tariff=tariff)
 
 
 @router.callback_query(F.data == "cmd:top")
 async def cb_top(callback: CallbackQuery):
-    await _send_top(callback.message)
+    # Get user's selected tariffs from settings
+    from bot.database.db import session_factory
+    from bot.models.user import User
+    from sqlalchemy import select
+
+    async with session_factory() as session:
+        result = await session.execute(select(User).where(User.telegram_id == callback.from_user.id))
+        user = result.scalar_one_or_none()
+
+        # Use user's selected tariffs if available
+        if user and user.tariffs:
+            selected_tariffs = [t for t in user.tariffs.split(",") if t]
+            # If multiple tariffs selected, show all of them (no filter)
+            # If single tariff, use it as filter
+            tariff = selected_tariffs[0] if len(selected_tariffs) == 1 else None
+        else:
+            tariff = None
+
+    await _send_top(callback.message, tariff=tariff)
     await callback.answer()
 
 

@@ -43,6 +43,7 @@ async def cb_feature_locked(callback: CallbackQuery):
     feature_names = {
         "ai_advisor": "AI-советник",
         "traffic": "Прогноз пробок",
+        "search": "Поиск по адресу",
         "csv_export": "Экспорт в CSV",
         "heatmap": "Карта заработка",
         "tax": "Калькулятор налогов"
@@ -51,6 +52,7 @@ async def cb_feature_locked(callback: CallbackQuery):
     feature_tiers = {
         "ai_advisor": "Pro",
         "traffic": "Pro",
+        "search": "Pro",
         "csv_export": "Elite",
         "heatmap": "Elite",
         "tax": "Elite"

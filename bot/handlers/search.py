@@ -20,6 +20,30 @@ class SearchAddress(StatesGroup):
 @router.callback_query(F.data == "menu:search")
 async def cb_search_menu(callback: CallbackQuery, state: FSMContext):
     """Enter search mode from menu."""
+    # Check Pro access
+    from bot.services.subscription import check_feature_access
+    has_access = await check_feature_access(callback.from_user.id, "search")
+
+    if not has_access:
+        from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="⭐ Улучшить до Pro", callback_data="subscription:upgrade")],
+            [InlineKeyboardButton(text="◀️ Назад", callback_data="cmd:menu")],
+        ])
+        await callback.message.edit_text(
+            "🔒 <b>Поиск по адресу</b>\n\n"
+            "Эта функция доступна только в Pro, Premium и Elite подписках.\n\n"
+            "💡 <b>Что даёт поиск:</b>\n"
+            "• Найти коэффициент по любому адресу\n"
+            "• Поиск по метро и аэропортам\n"
+            "• Быстрая проверка зоны перед выездом\n\n"
+            "Улучшите подписку, чтобы получить доступ:",
+            reply_markup=keyboard,
+            parse_mode="HTML"
+        )
+        await callback.answer("🔒 Требуется Pro подписка", show_alert=True)
+        return
+
     text = (
         "🔍 <b>ПОИСК ПО АДРЕСУ</b>\n\n"
         "Введите адрес, метро или название места:\n\n"
@@ -42,6 +66,26 @@ async def cb_search_menu(callback: CallbackQuery, state: FSMContext):
 @router.message(Command("search"))
 async def cmd_search(message: Message, state: FSMContext):
     """Search for coefficients by address or metro station."""
+    # Check Pro access
+    from bot.services.subscription import check_feature_access
+    has_access = await check_feature_access(message.from_user.id, "search")
+
+    if not has_access:
+        from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="⭐ Улучшить до Pro", callback_data="subscription:upgrade")],
+            [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
+        ])
+        await send_and_cleanup(
+            message,
+            "🔒 <b>Поиск по адресу</b>\n\n"
+            "Эта функция доступна только в Pro, Premium и Elite подписках.\n\n"
+            "Улучшите подписку, чтобы получить доступ:",
+            reply_markup=keyboard,
+            parse_mode="HTML"
+        )
+        return
+
     # Extract address from command
     command_parts = message.text.split(maxsplit=1)
 
