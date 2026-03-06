@@ -67,11 +67,39 @@ async def check_geo_alerts(bot: Bot):
 async def _check_user_alerts(bot: Bot, user: User, zone_map: dict):
     """Check alerts for a single user."""
     # Check if user has access to geo alerts feature
-    from bot.services.subscription import check_feature_access
+    from bot.services.subscription import check_feature_access, get_alert_limit
 
     has_access = await check_feature_access(user.telegram_id, "geo_alerts")
     if not has_access:
         return
+
+    # Check daily limit
+    from bot.database.db import session_factory
+    async with session_factory() as session:
+        # Refresh user object in this session
+        from sqlalchemy import select
+        from bot.models.user import User as UserModel
+        result = await session.execute(
+            select(UserModel).where(UserModel.telegram_id == user.telegram_id)
+        )
+        db_user = result.scalar_one()
+
+        # Reset counter if it's a new day
+        now = datetime.now()
+        if db_user.geo_alerts_reset_date is None or db_user.geo_alerts_reset_date.date() < now.date():
+            db_user.geo_alerts_sent_today = 0
+            db_user.geo_alerts_reset_date = now
+            await session.commit()
+            logger.info(f"Reset geo alerts counter for user {user.telegram_id}")
+
+        # Check if user has reached daily limit
+        daily_limit = await get_alert_limit(user.telegram_id)
+        if db_user.geo_alerts_sent_today >= daily_limit:
+            logger.info(f"User {user.telegram_id} reached daily geo alerts limit ({daily_limit})")
+            return
+
+        # Calculate remaining alerts
+        remaining_alerts = daily_limit - db_user.geo_alerts_sent_today
 
     user_lat = user.last_latitude
     user_lon = user.last_longitude
@@ -117,9 +145,22 @@ async def _check_user_alerts(bot: Bot, user: User, zone_map: dict):
                 # Update cooldown
                 _last_alerts[alert_key] = now
 
-    # Send alerts (max 3 at once to avoid spam)
-    for alert in alerts_to_send[:3]:
+    # Send alerts (limited by remaining daily limit)
+    alerts_sent = 0
+    for alert in alerts_to_send[:remaining_alerts]:
         await _send_alert(bot, user, alert)
+        alerts_sent += 1
+
+    # Update counter in database
+    if alerts_sent > 0:
+        async with session_factory() as session:
+            result = await session.execute(
+                select(UserModel).where(UserModel.telegram_id == user.telegram_id)
+            )
+            db_user = result.scalar_one()
+            db_user.geo_alerts_sent_today += alerts_sent
+            await session.commit()
+            logger.info(f"Sent {alerts_sent} geo alerts to user {user.telegram_id}, total today: {db_user.geo_alerts_sent_today}/{daily_limit}")
 
 
 async def _send_alert(bot: Bot, user: User, alert: dict):

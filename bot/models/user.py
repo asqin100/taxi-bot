@@ -33,6 +33,10 @@ class User(Base):
     last_location_update: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     live_location_expires_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 
+    # Geo alerts daily limit tracking
+    geo_alerts_sent_today: Mapped[int] = mapped_column(Integer, default=0)
+    geo_alerts_reset_date: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
     # Onboarding
     onboarding_completed: Mapped[bool] = mapped_column(Boolean, default=False)
 
