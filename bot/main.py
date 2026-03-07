@@ -7,7 +7,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bot.config import settings
 from bot.database.db import init_db
-from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, search, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding, referral, location, export, statistics, tax, heatmap, subscription_check, promo_code
+from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding, referral, location, export, statistics, tax, heatmap, subscription_check, promo_code
 from bot.middlewares.auth import ThrottleMiddleware
 from bot.middlewares.channel_subscription import ChannelSubscriptionMiddleware
 from bot.services.yandex_api import fetch_all_coefficients
@@ -89,7 +89,6 @@ async def main():
     dp.include_router(notifications.router)
     dp.include_router(location.router)
     dp.include_router(events.router)
-    dp.include_router(search.router)
     dp.include_router(financial.router)
     dp.include_router(traffic.router)
     dp.include_router(hotspots.router)

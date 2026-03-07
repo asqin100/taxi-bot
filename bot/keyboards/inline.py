@@ -122,7 +122,6 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="🚦 Пробки", callback_data="menu:traffic"),
         ],
         [
-            InlineKeyboardButton(text="🔍 Поиск 🔒 Pro", callback_data="menu:search"),
             InlineKeyboardButton(text="📍 Геоалерты", callback_data="menu:geo_alerts"),
         ],
         [
@@ -197,12 +196,6 @@ def traffic_menu_keyboard() -> InlineKeyboardMarkup:
     ])
 
 
-def search_menu_keyboard() -> InlineKeyboardMarkup:
-    """Search menu with instructions."""
-    return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="ℹ️ Как использовать", callback_data="search:help")],
-        BACK_BUTTON,
-    ])
 
 
 def subscription_keyboard() -> InlineKeyboardMarkup:
@@ -232,13 +225,11 @@ def features_menu_keyboard(tier: str) -> InlineKeyboardMarkup:
         buttons.extend([
             [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
             [InlineKeyboardButton(text="🚦 Прогноз пробок", callback_data="menu:traffic")],
-            [InlineKeyboardButton(text="🔍 Поиск по адресу", callback_data="menu:search")],
         ])
     else:
         buttons.extend([
             [InlineKeyboardButton(text="🤖 AI-советник 🔒 Pro", callback_data="feature_locked:ai_advisor")],
             [InlineKeyboardButton(text="🚦 Прогноз пробок 🔒 Pro", callback_data="feature_locked:traffic")],
-            [InlineKeyboardButton(text="🔍 Поиск по адресу 🔒 Pro", callback_data="feature_locked:search")],
         ])
 
     # Elite features

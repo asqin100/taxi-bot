@@ -43,7 +43,6 @@ async def cb_feature_locked(callback: CallbackQuery):
     feature_names = {
         "ai_advisor": "AI-советник",
         "traffic": "Прогноз пробок",
-        "search": "Поиск по адресу",
         "csv_export": "Экспорт в CSV",
         "heatmap": "Карта заработка",
         "tax": "Калькулятор налогов"
@@ -52,7 +51,6 @@ async def cb_feature_locked(callback: CallbackQuery):
     feature_tiers = {
         "ai_advisor": "Pro",
         "traffic": "Pro",
-        "search": "Pro",
         "csv_export": "Elite",
         "heatmap": "Elite",
         "tax": "Elite"
@@ -99,28 +97,6 @@ async def cb_traffic_menu(callback: CallbackQuery):
         "Проверьте текущую ситуацию на дорогах Москвы.",
         parse_mode="HTML",
         reply_markup=traffic_menu_keyboard()
-    )
-    await callback.answer()
-
-
-@router.callback_query(F.data == "search:help")
-async def cb_search_help(callback: CallbackQuery):
-    """Show search help."""
-    await callback.message.edit_text(
-        "🔍 <b>Поиск коэффициента по адресу</b>\n\n"
-        "<b>Примеры использования:</b>\n\n"
-        "📍 По адресу:\n"
-        "<code>/search Красная площадь</code>\n"
-        "<code>/search Тверская улица 15</code>\n\n"
-        "🚇 По метро:\n"
-        "<code>/search м. Тверская</code>\n"
-        "<code>/search метро Маяковская</code>\n\n"
-        "✈️ По аэропорту:\n"
-        "<code>/search Шереметьево</code>\n"
-        "<code>/search Внуково</code>\n\n"
-        "Бот найдёт ближайшую зону и покажет текущие коэффициенты.",
-        parse_mode="HTML",
-        reply_markup=search_menu_keyboard()
     )
     await callback.answer()
 
