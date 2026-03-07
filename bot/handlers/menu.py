@@ -3,7 +3,7 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
-from bot.keyboards.inline import financial_menu_keyboard, traffic_menu_keyboard, search_menu_keyboard, main_menu_keyboard, features_menu_keyboard
+from bot.keyboards.inline import financial_menu_keyboard, traffic_menu_keyboard, main_menu_keyboard, features_menu_keyboard
 from bot.services import financial as fin_service
 from bot.services import traffic as traffic_service
 from bot.services.yandex_api import get_cached_coefficients
