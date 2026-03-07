@@ -10,6 +10,7 @@ from bot.services.yandex_api import get_cached_coefficients, get_top_zones
 from bot.services.zones import get_zones
 from bot.services.hex_grid import hex_grid_json
 from bot.services.payment import process_payment_webhook
+from bot.services.payment_robokassa import process_payment_result
 from bot.services.admin import get_dashboard_stats, get_recent_users, get_top_earners, search_users, get_user_details, grant_subscription, reset_user_data, delete_user_permanently, get_all_user_ids
 from bot.services.game import submit_game_score
 
@@ -178,6 +179,82 @@ async def webhook_yookassa(request: web.Request) -> web.Response:
     except Exception as e:
         logger.error(f"Webhook processing error: {e}")
         return web.json_response({"status": "error", "message": str(e)}, status=500)
+
+
+async def webhook_robokassa_result(request: web.Request) -> web.Response:
+    """Handle Robokassa Result URL callback (payment confirmation)."""
+    try:
+        # Robokassa sends data as GET parameters
+        result_data = dict(request.query)
+        logger.info(f"Received Robokassa Result callback: InvId={result_data.get('InvId')}")
+
+        success = await process_payment_result(result_data)
+
+        if success:
+            # Return OK for Robokassa
+            return web.Response(text=f"OK{result_data.get('InvId')}")
+        return web.Response(text="ERROR", status=400)
+
+    except Exception as e:
+        logger.error(f"Error processing Robokassa Result: {e}")
+        return web.Response(text="ERROR", status=500)
+
+
+async def webhook_robokassa_success(request: web.Request) -> web.Response:
+    """Handle Robokassa Success URL (user redirect after payment)."""
+    try:
+        # This is where user is redirected after successful payment
+        return web.Response(
+            text="""
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <title>Оплата успешна</title>
+                <style>
+                    body { font-family: Arial; text-align: center; padding: 50px; }
+                    h1 { color: #4CAF50; }
+                </style>
+            </head>
+            <body>
+                <h1>✅ Оплата успешна!</h1>
+                <p>Ваша подписка активирована.</p>
+                <p><a href="https://t.me/KefPulse_bot">Вернуться в бот</a></p>
+            </body>
+            </html>
+            """,
+            content_type="text/html"
+        )
+    except Exception as e:
+        logger.error(f"Error in Robokassa Success handler: {e}")
+        return web.Response(text="ERROR", status=500)
+
+
+async def webhook_robokassa_fail(request: web.Request) -> web.Response:
+    """Handle Robokassa Fail URL (user redirect after failed payment)."""
+    try:
+        return web.Response(
+            text="""
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <title>Ошибка оплаты</title>
+                <style>
+                    body { font-family: Arial; text-align: center; padding: 50px; }
+                    h1 { color: #f44336; }
+                </style>
+            </head>
+            <body>
+                <h1>❌ Ошибка оплаты</h1>
+                <p>Платеж не был завершен.</p>
+                <p><a href="https://t.me/KefPulse_bot">Вернуться в бот</a></p>
+            </body>
+            </html>
+            """,
+            content_type="text/html"
+        )
+    except Exception as e:
+        logger.error(f"Error in Robokassa Fail handler: {e}")
+        return web.Response(text="ERROR", status=500)
 
 
 # Admin panel endpoints
@@ -680,6 +757,11 @@ def create_app() -> web.Application:
     app.router.add_get("/api/hexgrid", api_hexgrid)
     app.router.add_get("/api/user/subscription", api_user_subscription)
     app.router.add_post("/webhook/yookassa", webhook_yookassa)
+
+    # Robokassa webhooks
+    app.router.add_get("/webhook/robokassa/result", webhook_robokassa_result)
+    app.router.add_get("/webhook/robokassa/success", webhook_robokassa_success)
+    app.router.add_get("/webhook/robokassa/fail", webhook_robokassa_fail)
 
     # Game routes
     app.router.add_get("/game", game_index)

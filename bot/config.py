@@ -21,6 +21,11 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""  # Google Gemini API key for AI advisor
     yookassa_shop_id: str = ""  # YooKassa shop ID
     yookassa_secret_key: str = ""  # YooKassa secret key
+    robokassa_merchant_login: str = ""  # Robokassa merchant login
+    robokassa_password1: str = ""  # Robokassa password #1 (for payment link)
+    robokassa_password2: str = ""  # Robokassa password #2 (for result verification)
+    robokassa_test_mode: bool = True  # Robokassa test mode (True for testing, False for production)
+    payment_provider: str = "robokassa"  # Payment provider: "yookassa" or "robokassa"
     admin_password: str = "admin123!@#"  # Admin panel password
     database_url: str = f"sqlite+aiosqlite:///{BASE_DIR / 'data' / 'bot.db'}"  # Production uses PostgreSQL
     db_url: str = ""  # Deprecated, use database_url

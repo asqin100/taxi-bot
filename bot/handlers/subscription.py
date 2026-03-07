@@ -153,13 +153,23 @@ async def cb_subscription_buy(callback: CallbackQuery):
             )
         ])
 
-    # Create payment via YooKassa
-    payment_info = await create_payment(user_id, tier, duration_days=30)
+    # Create payment based on configured provider
+    from bot.config import settings
+
+    if settings.payment_provider == "robokassa":
+        from bot.services.payment_robokassa import create_payment as create_robokassa_payment
+        payment_info = await create_robokassa_payment(user_id, tier, duration_days=30)
+    else:
+        # Default to YooKassa
+        payment_info = await create_payment(user_id, tier, duration_days=30)
 
     if payment_info:
-        keyboard_buttons.append([
-            InlineKeyboardButton(text="💳 Оплатить картой", url=payment_info["confirmation_url"])
-        ])
+        # Robokassa uses payment_url, YooKassa uses confirmation_url
+        payment_url = payment_info.get("payment_url") or payment_info.get("confirmation_url")
+        if payment_url:
+            keyboard_buttons.append([
+                InlineKeyboardButton(text="💳 Оплатить картой", url=payment_url)
+            ])
 
     oferta_url = f"{settings.webapp_url}/oferta.html" if settings.webapp_url else "#"
     keyboard_buttons.append([InlineKeyboardButton(text="📄 Публичная оферта", web_app=WebAppInfo(url=oferta_url))])
