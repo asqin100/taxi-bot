@@ -211,16 +211,73 @@ async def webhook_robokassa_success(request: web.Request) -> web.Response:
             <html>
             <head>
                 <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Оплата успешна</title>
                 <style>
-                    body { font-family: Arial; text-align: center; padding: 50px; }
-                    h1 { color: #4CAF50; }
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+                        text-align: center;
+                        padding: 20px;
+                        margin: 0;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        min-height: 100vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .container {
+                        background: white;
+                        border-radius: 20px;
+                        padding: 40px 30px;
+                        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+                        max-width: 400px;
+                    }
+                    h1 {
+                        color: #4CAF50;
+                        font-size: 28px;
+                        margin: 0 0 20px 0;
+                    }
+                    p {
+                        color: #666;
+                        font-size: 16px;
+                        line-height: 1.6;
+                        margin: 15px 0;
+                    }
+                    .btn {
+                        display: inline-block;
+                        background: #0088cc;
+                        color: white;
+                        text-decoration: none;
+                        padding: 15px 40px;
+                        border-radius: 30px;
+                        font-size: 18px;
+                        font-weight: 600;
+                        margin-top: 20px;
+                        transition: background 0.3s;
+                    }
+                    .btn:hover {
+                        background: #006699;
+                    }
+                    .emoji {
+                        font-size: 64px;
+                        margin-bottom: 20px;
+                    }
                 </style>
+                <script>
+                    // Try to open Telegram bot automatically
+                    setTimeout(function() {
+                        window.location.href = 'https://t.me/KefPulse_bot?start=payment_success';
+                    }, 2000);
+                </script>
             </head>
             <body>
-                <h1>✅ Оплата успешна!</h1>
-                <p>Ваша подписка активирована.</p>
-                <p><a href="https://t.me/KefPulse_bot">Вернуться в бот</a></p>
+                <div class="container">
+                    <div class="emoji">✅</div>
+                    <h1>Оплата успешна!</h1>
+                    <p>Ваша подписка активирована.</p>
+                    <p>Через 2 секунды вы будете перенаправлены в бот...</p>
+                    <a href="https://t.me/KefPulse_bot?start=payment_success" class="btn">Открыть бот</a>
+                </div>
             </body>
             </html>
             """,
@@ -239,16 +296,73 @@ async def webhook_robokassa_fail(request: web.Request) -> web.Response:
             <html>
             <head>
                 <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Ошибка оплаты</title>
                 <style>
-                    body { font-family: Arial; text-align: center; padding: 50px; }
-                    h1 { color: #f44336; }
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+                        text-align: center;
+                        padding: 20px;
+                        margin: 0;
+                        background: linear-gradient(135deg, #f44336 0%, #e91e63 100%);
+                        min-height: 100vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .container {
+                        background: white;
+                        border-radius: 20px;
+                        padding: 40px 30px;
+                        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+                        max-width: 400px;
+                    }
+                    h1 {
+                        color: #f44336;
+                        font-size: 28px;
+                        margin: 0 0 20px 0;
+                    }
+                    p {
+                        color: #666;
+                        font-size: 16px;
+                        line-height: 1.6;
+                        margin: 15px 0;
+                    }
+                    .btn {
+                        display: inline-block;
+                        background: #0088cc;
+                        color: white;
+                        text-decoration: none;
+                        padding: 15px 40px;
+                        border-radius: 30px;
+                        font-size: 18px;
+                        font-weight: 600;
+                        margin-top: 20px;
+                        transition: background 0.3s;
+                    }
+                    .btn:hover {
+                        background: #006699;
+                    }
+                    .emoji {
+                        font-size: 64px;
+                        margin-bottom: 20px;
+                    }
                 </style>
+                <script>
+                    // Try to open Telegram bot automatically
+                    setTimeout(function() {
+                        window.location.href = 'https://t.me/KefPulse_bot';
+                    }, 3000);
+                </script>
             </head>
             <body>
-                <h1>❌ Ошибка оплаты</h1>
-                <p>Платеж не был завершен.</p>
-                <p><a href="https://t.me/KefPulse_bot">Вернуться в бот</a></p>
+                <div class="container">
+                    <div class="emoji">❌</div>
+                    <h1>Ошибка оплаты</h1>
+                    <p>Платеж не был завершен.</p>
+                    <p>Через 3 секунды вы будете перенаправлены в бот...</p>
+                    <a href="https://t.me/KefPulse_bot" class="btn">Открыть бот</a>
+                </div>
             </body>
             </html>
             """,
