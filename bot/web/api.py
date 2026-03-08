@@ -188,7 +188,9 @@ async def webhook_robokassa_result(request: web.Request) -> web.Response:
         result_data = dict(request.query)
         logger.info(f"Received Robokassa Result callback: InvId={result_data.get('InvId')}")
 
-        success = await process_payment_result(result_data)
+        # Get bot instance from app
+        bot = request.app.get("bot")
+        success = await process_payment_result(result_data, bot=bot)
 
         if success:
             # Return OK for Robokassa

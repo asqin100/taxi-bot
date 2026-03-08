@@ -168,7 +168,7 @@ async def create_payment(
         return None
 
 
-async def process_payment_result(result_data: dict) -> bool:
+async def process_payment_result(result_data: dict, bot=None) -> bool:
     """
     Process payment result callback from Robokassa.
 
@@ -236,28 +236,30 @@ async def process_payment_result(result_data: dict) -> bool:
         await process_subscription_payment(user_id, tier, expected_price)
 
         # Send notification to user
-        try:
-            from bot.main import bot
-            tier_names = {
-                "pro": "⭐ Pro",
-                "premium": "💎 Premium",
-                "elite": "👑 Elite"
-            }
-            tier_name = tier_names.get(tier.value, tier.value.upper())
+        if bot:
+            try:
+                tier_names = {
+                    "pro": "⭐ Pro",
+                    "premium": "💎 Premium",
+                    "elite": "👑 Elite"
+                }
+                tier_name = tier_names.get(tier.value, tier.value.upper())
 
-            message = (
-                f"✅ <b>Подписка активирована!</b>\n\n"
-                f"Тариф: <b>{tier_name}</b>\n"
-                f"Сумма: <b>{expected_price}₽</b>\n"
-                f"Срок: <b>{duration_days} дней</b>\n\n"
-                f"Спасибо за покупку! 🎉\n\n"
-                f"Используйте /menu для доступа ко всем функциям."
-            )
+                message = (
+                    f"✅ <b>Подписка активирована!</b>\n\n"
+                    f"Тариф: <b>{tier_name}</b>\n"
+                    f"Сумма: <b>{expected_price}₽</b>\n"
+                    f"Срок: <b>{duration_days} дней</b>\n\n"
+                    f"Спасибо за покупку! 🎉\n\n"
+                    f"Используйте /menu для доступа ко всем функциям."
+                )
 
-            await bot.send_message(user_id, message, parse_mode="HTML")
-            logger.info(f"Sent payment confirmation to user {user_id}")
-        except Exception as e:
-            logger.error(f"Failed to send payment notification to user {user_id}: {e}")
+                await bot.send_message(user_id, message, parse_mode="HTML")
+                logger.info(f"Sent payment confirmation to user {user_id}")
+            except Exception as e:
+                logger.error(f"Failed to send payment notification to user {user_id}: {e}")
+        else:
+            logger.warning(f"Bot instance not available, skipping notification for user {user_id}")
 
         logger.info(f"Successfully processed Robokassa payment {inv_id} for user {user_id}")
         return True
