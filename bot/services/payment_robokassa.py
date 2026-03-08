@@ -92,6 +92,8 @@ def verify_result_signature(
     sig_string = ":".join(sig_parts)
     calculated_sig = hashlib.md5(sig_string.encode('utf-8')).hexdigest().upper()
 
+    logger.info(f"Signature verification: string='{sig_string}', calculated={calculated_sig}, received={signature.upper()}")
+
     return calculated_sig == signature.upper()
 
 
@@ -187,6 +189,8 @@ async def process_payment_result(result_data: dict, bot=None) -> bool:
         True if processed successfully
     """
     try:
+        logger.info(f"Processing payment result: {result_data}")
+
         out_sum = float(result_data.get("OutSum", 0))
         inv_id = int(result_data.get("InvId", 0))
         signature = result_data.get("SignatureValue", "")
@@ -196,8 +200,10 @@ async def process_payment_result(result_data: dict, bot=None) -> bool:
         tier_value = result_data.get("Shp_tier", "")
         duration_days = int(result_data.get("Shp_duration", 30))
 
+        logger.info(f"Parsed: OutSum={out_sum}, InvId={inv_id}, user_id={user_id}, tier={tier_value}, duration={duration_days}")
+
         if not all([out_sum, inv_id, signature, user_id, tier_value]):
-            logger.error("Missing required parameters in result callback")
+            logger.error(f"Missing required parameters: out_sum={out_sum}, inv_id={inv_id}, signature={bool(signature)}, user_id={user_id}, tier_value={tier_value}")
             return False
 
         # Verify signature
@@ -207,6 +213,8 @@ async def process_payment_result(result_data: dict, bot=None) -> bool:
             "Shp_duration": str(duration_days)
         }
 
+        logger.info(f"Verifying signature: received={signature}, custom_params={custom_params}")
+
         if not verify_result_signature(
             out_sum=out_sum,
             inv_id=inv_id,
@@ -214,8 +222,10 @@ async def process_payment_result(result_data: dict, bot=None) -> bool:
             signature=signature,
             **custom_params
         ):
-            logger.error(f"Invalid signature for payment {inv_id}")
+            logger.error(f"Invalid signature for payment {inv_id}. Received: {signature}")
             return False
+
+        logger.info(f"Signature verified successfully for payment {inv_id}")
 
         # Convert tier string to enum
         tier = SubscriptionTier(tier_value)
