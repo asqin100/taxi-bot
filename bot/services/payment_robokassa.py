@@ -65,7 +65,7 @@ def calculate_signature(
 
 
 def verify_result_signature(
-    out_sum: float,
+    out_sum: str,
     inv_id: int,
     password: str,
     signature: str,
@@ -75,9 +75,12 @@ def verify_result_signature(
     Verify signature from Robokassa result callback.
 
     Format: MD5(OutSum:InvId:Password2[:Shp_param1=value1:Shp_param2=value2...])
+
+    Note: out_sum must be the original string from Robokassa (e.g., "5.000000")
+    to match their signature calculation.
     """
     sig_parts = [
-        f"{out_sum:.2f}",
+        out_sum,
         str(inv_id),
         password
     ]
@@ -191,7 +194,9 @@ async def process_payment_result(result_data: dict, bot=None) -> bool:
     try:
         logger.info(f"Processing payment result: {result_data}")
 
-        out_sum = float(result_data.get("OutSum", 0))
+        # Keep OutSum as original string for signature verification
+        out_sum_str = result_data.get("OutSum", "0")
+        out_sum = float(out_sum_str)
         inv_id = int(result_data.get("InvId", 0))
         signature = result_data.get("SignatureValue", "")
 
@@ -216,7 +221,7 @@ async def process_payment_result(result_data: dict, bot=None) -> bool:
         logger.info(f"Verifying signature: received={signature}, custom_params={custom_params}")
 
         if not verify_result_signature(
-            out_sum=out_sum,
+            out_sum=out_sum_str,  # Pass original string, not formatted float
             inv_id=inv_id,
             password=settings.robokassa_password2,
             signature=signature,
