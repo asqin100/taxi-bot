@@ -1,0 +1,18 @@
+#!/bin/bash
+echo "════════════════════════════════════════════════════════════"
+echo "  ПРОВЕРКА PASSWORD2"
+echo "════════════════════════════════════════════════════════════"
+echo ""
+echo "Password2 в .env файле бота:"
+grep "ROBOKASSA_PASSWORD2" /opt/taxibot/.env | cut -d= -f2
+echo ""
+echo "════════════════════════════════════════════════════════════"
+echo ""
+echo "Этот пароль должен совпадать с Password #2 в настройках"
+echo "Robokassa (PRODUCTION режим)."
+echo ""
+echo "Зайди: https://auth.robokassa.ru/ → Технические настройки"
+echo "Проверь Password #2 в PRODUCTION режиме."
+echo ""
+echo "Если пароли не совпадают - обнови .env файл или Robokassa."
+echo "════════════════════════════════════════════════════════════"
