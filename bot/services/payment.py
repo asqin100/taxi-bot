@@ -23,6 +23,11 @@ SUBSCRIPTION_PRICES = {
 
 def init_yookassa():
     """Initialize YooKassa configuration."""
+    # Only initialize if YooKassa is the selected payment provider
+    if settings.payment_provider != "yookassa":
+        logger.info(f"Payment provider is {settings.payment_provider}, skipping YooKassa initialization")
+        return
+
     if settings.yookassa_shop_id and settings.yookassa_secret_key:
         Configuration.account_id = settings.yookassa_shop_id
         Configuration.secret_key = settings.yookassa_secret_key
