@@ -17,6 +17,9 @@ SUBSCRIPTION_PRICES = {
     SubscriptionTier.ELITE: 999,
 }
 
+# Test price for debugging (5 rubles for 1 day pro subscription)
+TEST_PRICE = 5
+
 
 def get_robokassa_url(test_mode: bool = True) -> str:
     """Get Robokassa payment URL based on mode."""
@@ -217,11 +220,18 @@ async def process_payment_result(result_data: dict, bot=None) -> bool:
         # Convert tier string to enum
         tier = SubscriptionTier(tier_value)
 
-        # Verify amount
+        # Verify amount (allow test price of 5 rubles for 1-day subscriptions)
         expected_price = SUBSCRIPTION_PRICES.get(tier)
-        if abs(out_sum - expected_price) > 0.01:
+        is_test_payment = (abs(out_sum - TEST_PRICE) < 0.01 and duration_days == 1)
+
+        if not is_test_payment and abs(out_sum - expected_price) > 0.01:
             logger.error(f"Amount mismatch: expected {expected_price}, got {out_sum}")
             return False
+
+        # Use actual paid amount for test payments
+        if is_test_payment:
+            expected_price = TEST_PRICE
+            logger.info(f"Processing test payment: {out_sum}₽ for {duration_days} day(s)")
 
         # Upgrade subscription
         await upgrade_subscription(
