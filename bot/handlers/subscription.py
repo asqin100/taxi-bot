@@ -106,6 +106,7 @@ async def cb_subscription_upgrade(callback: CallbackQuery):
         [InlineKeyboardButton(text="📄 Публичная оферта", web_app=WebAppInfo(url=oferta_url))],
         [InlineKeyboardButton(text="🔒 Политика конфиденциальности", web_app=WebAppInfo(url=privacy_url))],
         [InlineKeyboardButton(text="↩️ Политика возврата", web_app=WebAppInfo(url=refund_url))],
+        [InlineKeyboardButton(text="🧪 ТЕСТ — 5₽ (1 день)", callback_data="subscription:buy:test")],
         [InlineKeyboardButton(text="⭐ Pro — 299₽/мес", callback_data="subscription:buy:pro")],
         [InlineKeyboardButton(text="💎 Premium — 499₽/мес", callback_data="subscription:buy:premium")],
         [InlineKeyboardButton(text="👑 Elite — 999₽/мес", callback_data="subscription:buy:elite")],
