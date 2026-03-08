@@ -1,6 +1,7 @@
 """Subscription handler - manage user subscriptions."""
 from aiogram import Router, F
-from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+from aiogram.filters import Command
+from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
 from bot.config import settings
 from bot.services.subscription import (
@@ -13,6 +14,21 @@ from bot.models.subscription import SubscriptionTier
 from bot.services.message_manager import send_and_cleanup
 
 router = Router()
+
+
+@router.message(Command("status"))
+async def cmd_status(message: Message):
+    """Show user's subscription status."""
+    user_id = message.from_user.id
+    subscription = await get_subscription(user_id)
+    text = format_subscription_info(subscription)
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="⬆️ Улучшить тариф", callback_data="subscription:upgrade")],
+        [InlineKeyboardButton(text="📊 Главное меню", callback_data="cmd:menu")],
+    ])
+
+    await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
 
 
 @router.callback_query(F.data == "menu:subscription")
