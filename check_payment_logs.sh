@@ -1,25 +1,15 @@
 #!/bin/bash
-# Check logs for Robokassa webhook calls
-
-echo "Проверяю логи за последние 10 минут..."
+echo "════════════════════════════════════════════════════════════"
+echo "  ПРОВЕРКА ЛОГОВ ПЛАТЕЖА 299₽"
+echo "════════════════════════════════════════════════════════════"
 echo ""
 
-echo "1. Поиск запросов от Robokassa:"
-journalctl -u taxibot --since "10 minutes ago" | grep -i "robokassa" | tail -20
-
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "[1] Последние 50 строк логов (ищем платеж 299):"
+journalctl -u taxibot -n 50 --no-pager --output=cat | grep -E "(299|Robokassa|payment|webhook)" || echo "Нет записей о платеже"
 echo ""
 
-echo "2. Поиск ошибок:"
-journalctl -u taxibot --since "10 minutes ago" | grep -i "error" | tail -10
-
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "[2] Все логи за последние 5 минут:"
+journalctl -u taxibot --since "5 minutes ago" --no-pager --output=cat | tail -30
 echo ""
 
-echo "3. Все логи за последние 5 минут:"
-journalctl -u taxibot --since "5 minutes ago" | tail -50
-
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "════════════════════════════════════════════════════════════"
