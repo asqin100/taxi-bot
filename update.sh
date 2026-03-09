@@ -17,9 +17,15 @@ echo "📦 Установка зависимостей..."
 source venv/bin/activate
 pip install -r requirements.txt --quiet
 
-# Применить миграции базы данных
-echo "🗄️ Обновление базы данных..."
-venv/bin/alembic upgrade head
+# Исправить базу данных (добавить недостающие колонки)
+echo "🗄️ Исправление базы данных..."
+venv/bin/python fix_db.py
+
+# Применить миграции базы данных (если есть)
+if [ -f "alembic.ini" ]; then
+    echo "🗄️ Применение миграций..."
+    venv/bin/alembic upgrade head 2>/dev/null || echo "  (миграции уже применены)"
+fi
 
 # Остановить старый процесс
 echo "⏹ Остановка бота..."
