@@ -40,7 +40,7 @@ async def handle_location(message: Message):
             user.live_location_expires_at = datetime.now() + timedelta(seconds=location.live_period)
 
         # Auto-enable geo alerts if not already enabled (and user has access)
-        was_disabled = not user.geo_alerts_enabled
+        alerts_just_enabled = False
         if not user.geo_alerts_enabled:
             # Check subscription access
             from bot.services.subscription import check_feature_access
@@ -48,18 +48,17 @@ async def handle_location(message: Message):
 
             if has_access:
                 user.geo_alerts_enabled = True
-            else:
-                # Don't enable, but save location
-                was_disabled = False
+                alerts_just_enabled = True
 
         await session.commit()
 
-        # Send confirmation only for initial location, not for live updates
-        if was_disabled:
-            keyboard = InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="📊 Главное меню", callback_data="cmd:menu")]
-            ])
+        # Always send confirmation when location is received
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="📊 Главное меню", callback_data="cmd:menu")]
+        ])
 
+        if alerts_just_enabled:
+            # First time enabling - detailed message
             await send_and_cleanup(
                 message,
                 "✅ <b>Live Location активирована!</b>\n\n"
@@ -71,6 +70,26 @@ async def handle_location(message: Message):
                 "• Если зона в радиусе 7 км — вы получите алерт\n"
                 "• Кнопка 'Поехали' откроет навигацию в Яндекс.Картах\n\n"
                 "⏱ Live Location активна на 8 часов. За 30 минут до окончания придет напоминание.",
+                reply_markup=keyboard,
+                parse_mode="HTML",
+            )
+        elif user.geo_alerts_enabled:
+            # Alerts already enabled - brief confirmation
+            await message.answer(
+                "✅ <b>Местоположение обновлено</b>\n\n"
+                f"📍 {location.latitude:.6f}, {location.longitude:.6f}\n"
+                "🔔 Геоалерты активны\n\n"
+                "Продолжаю отслеживать высокие коэффициенты рядом с вами.",
+                reply_markup=keyboard,
+                parse_mode="HTML",
+            )
+        else:
+            # No access to geo alerts - save location but inform about feature
+            await message.answer(
+                "✅ <b>Местоположение сохранено</b>\n\n"
+                f"📍 {location.latitude:.6f}, {location.longitude:.6f}\n\n"
+                "💡 Геоалерты доступны на тарифах <b>Pro</b>, <b>Premium</b> и <b>Elite</b>.\n\n"
+                "С геоалертами вы будете получать уведомления о высоких коэффициентах в радиусе 7 км от вас!",
                 reply_markup=keyboard,
                 parse_mode="HTML",
             )
