@@ -1,8 +1,11 @@
 """Payment service - Robokassa integration for subscriptions."""
 import logging
 import hashlib
+import json
 from typing import Optional
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
+
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from bot.config import settings
 from bot.models.subscription import SubscriptionTier
@@ -39,19 +42,23 @@ def calculate_signature(
     """
     Calculate MD5 signature for Robokassa payment.
 
-    Format: MD5(MerchantLogin:OutSum:InvId:Password[:Shp_param1=value1:Shp_param2=value2...])
+    Format: MD5(MerchantLogin:OutSum:InvId:Receipt:Password[:Shp_param1=value1:Shp_param2=value2...])
+
+    Note: Receipt must be URL-encoded before being added to signature.
     """
     # Build signature string
     sig_parts = [
         merchant_login,
         f"{out_sum:.2f}",
-        str(inv_id),
-        password
+        str(inv_id)
     ]
 
     # Add receipt if provided (for 54-FZ compliance)
+    # Receipt must be URL-encoded for signature calculation
     if receipt:
-        sig_parts.append(receipt)
+        sig_parts.append(quote(receipt))
+
+    sig_parts.append(password)
 
     # Add custom parameters in alphabetical order (Shp_*)
     if extra_params:
@@ -140,12 +147,36 @@ async def create_payment(
             "Shp_duration": str(duration_days)
         }
 
-        # Calculate signature
+        # Build receipt for fiscal compliance (54-FZ)
+        tier_names = {
+            SubscriptionTier.PRO: "Подписка Pro",
+            SubscriptionTier.PREMIUM: "Подписка Premium",
+            SubscriptionTier.ELITE: "Подписка Elite"
+        }
+
+        receipt = {
+            "sno": "usn_income",
+            "items": [
+                {
+                    "name": f"{tier_names.get(tier, 'Подписка')} на {duration_days} дней",
+                    "quantity": 1,
+                    "sum": price,
+                    "payment_method": "full_prepayment",
+                    "payment_object": "service",
+                    "tax": "none"
+                }
+            ]
+        }
+
+        receipt_json = json.dumps(receipt, ensure_ascii=False)
+
+        # Calculate signature with receipt
         signature = calculate_signature(
             merchant_login=settings.robokassa_merchant_login,
             out_sum=price,
             inv_id=inv_id,
             password=settings.robokassa_password1,
+            receipt=receipt_json,
             **custom_params
         )
 
@@ -156,13 +187,14 @@ async def create_payment(
             "InvId": inv_id,
             "Description": f"Подписка {tier.value.upper()} на {duration_days} дней",
             "SignatureValue": signature,
+            "Receipt": quote(receipt_json),
             "IsTest": "1" if settings.robokassa_test_mode else "0",
             **custom_params
         }
 
-        payment_url = f"{get_robokassa_url(settings.robokassa_test_mode)}?{urlencode(params)}"
+        payment_url = f"{get_robokassa_url(settings.robokassa_test_mode)}?{urlencode(params, safe=':,')}"
 
-        logger.info(f"Created Robokassa payment for user {user_id}, tier {tier.value}, inv_id {inv_id}")
+        logger.info(f"Created Robokassa payment for user {user_id}, tier {tier.value}, inv_id {inv_id}, receipt={receipt_json}")
 
         return {
             "payment_url": payment_url,
@@ -275,11 +307,14 @@ async def process_payment_result(result_data: dict, bot=None) -> bool:
                     f"Тариф: <b>{tier_name}</b>\n"
                     f"Сумма: <b>{expected_price}₽</b>\n"
                     f"Срок: <b>{duration_days} дней</b>\n\n"
-                    f"Спасибо за покупку! 🎉\n\n"
-                    f"Используйте /menu для доступа ко всем функциям."
+                    f"Спасибо за покупку! 🎉"
                 )
 
-                await bot.send_message(user_id, message, parse_mode="HTML")
+                keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                    [InlineKeyboardButton(text="📊 Главное меню", callback_data="cmd:menu")]
+                ])
+
+                await bot.send_message(user_id, message, parse_mode="HTML", reply_markup=keyboard)
                 logger.info(f"Sent payment confirmation to user {user_id}")
             except Exception as e:
                 logger.error(f"Failed to send payment notification to user {user_id}: {e}")
