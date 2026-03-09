@@ -607,13 +607,13 @@ async def cb_profile_menu(callback: CallbackQuery):
     text = (
         "👤 <b>Мой кабинет</b>\n\n"
         f"Подписка: <b>{subscription.tier.upper()}</b>\n\n"
-        "Управляйте своими финансами, достижениями и челленджами."
+        "Доступ к функциям и инструментам."
     )
 
     await callback.message.edit_text(
         text,
         parse_mode="HTML",
-        reply_markup=profile_menu_keyboard()
+        reply_markup=profile_menu_keyboard(subscription.tier)
     )
     await callback.answer()
 

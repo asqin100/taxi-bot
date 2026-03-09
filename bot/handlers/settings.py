@@ -17,7 +17,13 @@ async def cmd_settings(message: Message):
 
 @router.callback_query(F.data == "cmd:settings")
 async def cb_settings(callback: CallbackQuery):
-    await _send_tariff_selector(callback.message, edit=True)
+    from bot.keyboards.inline import settings_menu_keyboard
+    await callback.message.edit_text(
+        "⚙️ <b>Настройки</b>\n\n"
+        "Выберите раздел:",
+        reply_markup=settings_menu_keyboard(),
+        parse_mode="HTML"
+    )
     await callback.answer()
 
 

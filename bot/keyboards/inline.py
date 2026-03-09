@@ -109,30 +109,14 @@ def main_menu_keyboard(tier: str = "free") -> InlineKeyboardMarkup:
             text="🗺 Открыть карту",
             web_app=WebAppInfo(url=settings.webapp_url),
         )])
-        # Game button temporarily disabled - will be enabled later
-        # buttons.append([InlineKeyboardButton(
-        #     text="🎮 Игра (зарабатывай баланс!)",
-        #     web_app=WebAppInfo(url=f"{settings.webapp_url}/game"),
-        # )])
-
-    # Check if user has Pro+ access for traffic
-    has_traffic_access = tier in [SubscriptionTier.PRO.value, SubscriptionTier.PREMIUM.value, SubscriptionTier.ELITE.value]
-    traffic_button_text = "🚦 Пробки" if has_traffic_access else "🚦 Пробки 🔒 Pro"
 
     buttons.extend([
         [InlineKeyboardButton(text="🗺 Куда ехать?", callback_data="menu:where_to_go")],
-        [InlineKeyboardButton(text="⚡ Все функции", callback_data="menu:features")],
-        [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
-        [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
-        [InlineKeyboardButton(text=traffic_button_text, callback_data="menu:traffic")],
-        [InlineKeyboardButton(text="📍 Геоалерты", callback_data="menu:geo_alerts")],
-        [InlineKeyboardButton(text="🔔 Уведомления", callback_data="cmd:notify")],
         [InlineKeyboardButton(text="👤 Мой кабинет", callback_data="menu:profile")],
+        [InlineKeyboardButton(text="⚙️ Настройки", callback_data="cmd:settings")],
         [InlineKeyboardButton(text="⭐ Подписка", callback_data="menu:subscription")],
         [InlineKeyboardButton(text="🎁 Промокод", callback_data="subscription:promo")],
         [InlineKeyboardButton(text="💰 Реферальная программа", callback_data="menu:referral")],
-        [InlineKeyboardButton(text="⚙️ Настройки", callback_data="cmd:settings")],
-        [InlineKeyboardButton(text="❓ Справка", callback_data="help:main")],
     ])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
@@ -199,13 +183,29 @@ def subscription_keyboard() -> InlineKeyboardMarkup:
     ])
 
 
-def profile_menu_keyboard() -> InlineKeyboardMarkup:
-    """Profile/Cabinet menu with personal features."""
+def settings_menu_keyboard() -> InlineKeyboardMarkup:
+    """Settings menu keyboard."""
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="💰 Финансы", callback_data="menu:financial")],
-        [InlineKeyboardButton(text="🏅 Достижения", callback_data="menu:achievements")],
-        [InlineKeyboardButton(text="🏆 Челлендж", callback_data="menu:challenge")],
-        # [InlineKeyboardButton(text="📊 Рейтинг", callback_data="menu:leaderboard")],  # Временно отключено
+        [InlineKeyboardButton(text="🔔 Уведомления", callback_data="cmd:notify")],
+        [InlineKeyboardButton(text="❓ Справка", callback_data="help:main")],
+        BACK_BUTTON,
+    ])
+
+
+def profile_menu_keyboard(tier: str = "free") -> InlineKeyboardMarkup:
+    """Profile/Cabinet menu with personal features."""
+    from bot.models.subscription import SubscriptionTier
+
+    # Check if user has Pro+ access for traffic
+    has_traffic_access = tier in [SubscriptionTier.PRO.value, SubscriptionTier.PREMIUM.value, SubscriptionTier.ELITE.value]
+    traffic_button_text = "🚦 Пробки" if has_traffic_access else "🚦 Пробки 🔒 Pro"
+
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="⚡ Все функции", callback_data="menu:features")],
+        [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
+        [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
+        [InlineKeyboardButton(text=traffic_button_text, callback_data="menu:traffic")],
+        [InlineKeyboardButton(text="📍 Геоалерты", callback_data="menu:geo_alerts")],
         BACK_BUTTON,
     ])
 
