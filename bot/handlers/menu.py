@@ -375,16 +375,45 @@ async def cb_traffic_general(callback: CallbackQuery):
         )
         return
 
+    # Answer callback immediately to prevent timeout
+    await callback.answer()
+
     # Show processing
     await callback.message.edit_text("🚦 Получаю данные о пробках...")
 
     # Clear cache to force fresh data
     traffic_service.clear_traffic_cache()
 
-    # Get traffic data
-    moscow_traffic = await traffic_service.get_moscow_traffic()
-    mkad_traffic = await traffic_service.get_mkad_traffic()
-    ttk_traffic = await traffic_service.get_ttk_traffic()
+    try:
+        # Get traffic data with timeout
+        import asyncio
+        moscow_traffic = await asyncio.wait_for(
+            traffic_service.get_moscow_traffic(),
+            timeout=15.0
+        )
+        mkad_traffic = await asyncio.wait_for(
+            traffic_service.get_mkad_traffic(),
+            timeout=10.0
+        )
+        ttk_traffic = await asyncio.wait_for(
+            traffic_service.get_ttk_traffic(),
+            timeout=10.0
+        )
+    except asyncio.TimeoutError:
+        await callback.message.edit_text(
+            "⏱ Превышено время ожидания.\n"
+            "Попробуйте позже.",
+            reply_markup=traffic_menu_keyboard()
+        )
+        return
+    except Exception as e:
+        logger.error(f"Error fetching traffic data: {e}")
+        await callback.message.edit_text(
+            "❌ Не удалось получить данные о пробках.\n"
+            "Попробуйте позже.",
+            reply_markup=traffic_menu_keyboard()
+        )
+        return
 
     if not moscow_traffic:
         await callback.message.edit_text(
@@ -392,7 +421,6 @@ async def cb_traffic_general(callback: CallbackQuery):
             "Попробуйте позже.",
             reply_markup=traffic_menu_keyboard()
         )
-        await callback.answer()
         return
 
     # Format response
@@ -445,12 +473,35 @@ async def cb_traffic_mkad(callback: CallbackQuery):
         )
         return
 
+    # Answer callback immediately to prevent timeout
+    await callback.answer()
+
     await callback.message.edit_text("🚦 Получаю данные о МКАД...")
 
     # Clear cache to force fresh data
     traffic_service.clear_traffic_cache()
 
-    mkad_traffic = await traffic_service.get_mkad_traffic()
+    try:
+        import asyncio
+        mkad_traffic = await asyncio.wait_for(
+            traffic_service.get_mkad_traffic(),
+            timeout=15.0
+        )
+    except asyncio.TimeoutError:
+        await callback.message.edit_text(
+            "⏱ Превышено время ожидания.\n"
+            "Попробуйте позже.",
+            reply_markup=traffic_menu_keyboard()
+        )
+        return
+    except Exception as e:
+        logger.error(f"Error fetching MKAD traffic: {e}")
+        await callback.message.edit_text(
+            "❌ Не удалось получить данные о пробках на МКАД.\n"
+            "Попробуйте позже.",
+            reply_markup=traffic_menu_keyboard()
+        )
+        return
 
     if not mkad_traffic:
         await callback.message.edit_text(
@@ -458,7 +509,6 @@ async def cb_traffic_mkad(callback: CallbackQuery):
             "Попробуйте позже.",
             reply_markup=traffic_menu_keyboard()
         )
-        await callback.answer()
         return
 
     text = (
@@ -491,7 +541,6 @@ async def cb_traffic_mkad(callback: CallbackQuery):
         parse_mode="HTML",
         reply_markup=traffic_menu_keyboard()
     )
-    await callback.answer()
 
 
 @router.callback_query(F.data == "traffic:ttk")
@@ -510,12 +559,35 @@ async def cb_traffic_ttk(callback: CallbackQuery):
         )
         return
 
+    # Answer callback immediately to prevent timeout
+    await callback.answer()
+
     await callback.message.edit_text("🚦 Получаю данные о ТТК...")
 
     # Clear cache to force fresh data
     traffic_service.clear_traffic_cache()
 
-    ttk_traffic = await traffic_service.get_ttk_traffic()
+    try:
+        import asyncio
+        ttk_traffic = await asyncio.wait_for(
+            traffic_service.get_ttk_traffic(),
+            timeout=15.0
+        )
+    except asyncio.TimeoutError:
+        await callback.message.edit_text(
+            "⏱ Превышено время ожидания.\n"
+            "Попробуйте позже.",
+            reply_markup=traffic_menu_keyboard()
+        )
+        return
+    except Exception as e:
+        logger.error(f"Error fetching TTK traffic: {e}")
+        await callback.message.edit_text(
+            "❌ Не удалось получить данные о пробках на ТТК.\n"
+            "Попробуйте позже.",
+            reply_markup=traffic_menu_keyboard()
+        )
+        return
 
     if not ttk_traffic:
         await callback.message.edit_text(
@@ -556,7 +628,6 @@ async def cb_traffic_ttk(callback: CallbackQuery):
         parse_mode="HTML",
         reply_markup=traffic_menu_keyboard()
     )
-    await callback.answer()
 
 
 @router.callback_query(F.data == "menu:game_leaderboard")
