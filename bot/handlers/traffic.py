@@ -77,11 +77,17 @@ async def cmd_traffic(message: Message):
 
     text += f"\n\n🕐 Обновлено: {moscow_traffic.timestamp.strftime('%H:%M')}"
 
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+    ])
+
     await message.bot.edit_message_text(
         text,
         chat_id=message.chat.id,
         message_id=processing_msg.message_id,
-        parse_mode="HTML"
+        parse_mode="HTML",
+        reply_markup=keyboard
     )
 
 
@@ -142,11 +148,17 @@ async def cmd_traffic_mkad(message: Message):
 
     text += f"\n\n🕐 Обновлено: {mkad_traffic.timestamp.strftime('%H:%M')}"
 
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+    ])
+
     await message.bot.edit_message_text(
         text,
         chat_id=message.chat.id,
         message_id=processing_msg.message_id,
-        parse_mode="HTML"
+        parse_mode="HTML",
+        reply_markup=keyboard
     )
 
 
@@ -207,9 +219,15 @@ async def cmd_traffic_ttk(message: Message):
 
     text += f"\n\n🕐 Обновлено: {ttk_traffic.timestamp.strftime('%H:%M')}"
 
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+    ])
+
     await message.bot.edit_message_text(
         text,
         chat_id=message.chat.id,
         message_id=processing_msg.message_id,
-        parse_mode="HTML"
+        parse_mode="HTML",
+        reply_markup=keyboard
     )

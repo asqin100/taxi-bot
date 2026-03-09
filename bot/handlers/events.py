@@ -25,10 +25,15 @@ class AddEventStates(StatesGroup):
 @router.message(Command("events"))
 async def cmd_events(message: Message):
     """Show upcoming events."""
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
     upcoming = await event_service.get_upcoming_events(limit=10)
 
     if not upcoming:
-        await message.answer("📅 Нет запланированных мероприятий")
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+        ])
+        await message.answer("📅 Нет запланированных мероприятий", reply_markup=keyboard)
         return
 
     text = "📅 <b>Ближайшие мероприятия:</b>\n\n"
@@ -44,7 +49,10 @@ async def cmd_events(message: Message):
         text += f"   Зона: {event.zone_id}\n"
         text += f"   Окончание: {time_str}\n\n"
 
-    await message.answer(text, parse_mode="HTML")
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+    ])
+    await message.answer(text, parse_mode="HTML", reply_markup=keyboard)
 
 
 @router.message(Command("addevent"))
@@ -147,12 +155,18 @@ async def process_event_end_time(message: Message, state: FSMContext):
             end_time=end_time,
         )
 
+        from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+        ])
+
         await message.answer(
             f"✅ <b>Мероприятие добавлено!</b>\n\n"
             f"📝 {event.name}\n"
             f"📍 Зона: {event.zone_id}\n"
             f"⏰ Окончание: {end_time.strftime('%d.%m.%Y %H:%M')}",
-            parse_mode="HTML"
+            parse_mode="HTML",
+            reply_markup=keyboard
         )
 
         await state.clear()
