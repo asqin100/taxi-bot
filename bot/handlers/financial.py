@@ -329,7 +329,12 @@ async def cmd_stats(message: Message):
     else:
         text += "Нет данных\n"
 
-    await send_and_cleanup(message, text, parse_mode="HTML")
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+    ])
+
+    await send_and_cleanup(message, text, parse_mode="HTML", reply_markup=keyboard)
 
 
 @router.message(Command("expenses"))
@@ -353,7 +358,12 @@ async def cmd_expenses(message: Message):
         f"💡 Или используйте меню: 💰 Финансы → 🚗 Мой тариф"
     )
 
-    await send_and_cleanup(message, text, parse_mode="HTML")
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+    ])
+
+    await send_and_cleanup(message, text, parse_mode="HTML", reply_markup=keyboard)
 
 
 @router.message(Command("set_fuel"))
