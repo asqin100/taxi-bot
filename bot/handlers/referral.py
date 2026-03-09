@@ -50,7 +50,7 @@ async def cmd_referral(message: Message):
     )
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="💰 Оплатить подпиской", callback_data="referral:pay_subscription")],
+        [InlineKeyboardButton(text="💰 Оплатить балансом", callback_data="referral:pay_subscription")],
         [InlineKeyboardButton(text="📊 Главное меню", callback_data="cmd:menu")],
     ])
 
@@ -97,7 +97,7 @@ async def cb_referral_menu(callback: CallbackQuery):
     )
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="💰 Оплатить подпиской", callback_data="referral:pay_subscription")],
+        [InlineKeyboardButton(text="💰 Оплатить балансом", callback_data="referral:pay_subscription")],
         [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
     ])
 
