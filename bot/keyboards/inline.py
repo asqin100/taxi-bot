@@ -167,7 +167,7 @@ def traffic_menu_keyboard() -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="🚦 Общая обстановка", callback_data="traffic:general")],
         [InlineKeyboardButton(text="🛣 МКАД", callback_data="traffic:mkad")],
         [InlineKeyboardButton(text="🔄 ТТК", callback_data="traffic:ttk")],
-        BACK_BUTTON,
+        [InlineKeyboardButton(text="◀️ Мой кабинет", callback_data="menu:profile")],
     ])
 
 
@@ -247,5 +247,5 @@ def features_menu_keyboard(tier: str) -> InlineKeyboardMarkup:
             [InlineKeyboardButton(text="💰 Калькулятор налогов 🔒 Elite", callback_data="feature_locked:tax")],
         ])
 
-    buttons.append(BACK_BUTTON)
+    buttons.append([InlineKeyboardButton(text="◀️ Мой кабинет", callback_data="menu:profile")])
     return InlineKeyboardMarkup(inline_keyboard=buttons)

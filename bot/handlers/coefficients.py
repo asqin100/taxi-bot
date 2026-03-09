@@ -146,7 +146,7 @@ async def _send_top(message: Message, tariff: str | None = None):
         [
             InlineKeyboardButton(text="🔄 Обновить", callback_data="cmd:top"),
         ],
-        [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
+        [InlineKeyboardButton(text="◀️ Мой кабинет", callback_data="menu:profile")],
     ])
 
     await send_and_cleanup(message, text, reply_markup=keyboard, parse_mode="HTML")

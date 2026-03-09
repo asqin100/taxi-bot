@@ -52,7 +52,7 @@ async def _send_advisor(message: Message):
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="⬆️ Улучшить тариф", callback_data="subscription:upgrade")],
-            [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
+            [InlineKeyboardButton(text="◀️ Мой кабинет", callback_data="menu:profile")],
         ])
 
         await send_and_cleanup(message, text, reply_markup=keyboard, parse_mode="HTML")
@@ -79,7 +79,7 @@ async def _send_advisor(message: Message):
         ])
 
     keyboard_buttons.append([
-        InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")
+        InlineKeyboardButton(text="◀️ Мой кабинет", callback_data="menu:profile")
     ])
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard_buttons)

@@ -196,7 +196,7 @@ async def cb_geo_alerts_menu(callback: CallbackQuery):
         )
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="⬆️ Улучшить тариф", callback_data="subscription:upgrade")],
-            [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
+            [InlineKeyboardButton(text="◀️ Мой кабинет", callback_data="menu:profile")],
         ])
         await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
         await callback.answer()
@@ -243,7 +243,7 @@ async def cb_geo_alerts_menu(callback: CallbackQuery):
 
         keyboard_buttons.append([InlineKeyboardButton(text="⚙️ Изменить порог коэффициента", callback_data="geo_alerts:threshold")])
         keyboard_buttons.append([InlineKeyboardButton(text="📍 Обновить Live Location", callback_data="geo_alerts:update_location")])
-        keyboard_buttons.append([InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")])
+        keyboard_buttons.append([InlineKeyboardButton(text="◀️ Мой кабинет", callback_data="menu:profile")])
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard_buttons)
 
