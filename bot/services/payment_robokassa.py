@@ -111,7 +111,8 @@ async def create_payment(
     user_id: int,
     tier: SubscriptionTier,
     duration_days: int = 30,
-    inv_id: Optional[int] = None
+    inv_id: Optional[int] = None,
+    custom_amount: Optional[float] = None
 ) -> Optional[dict]:
     """
     Create payment URL for Robokassa.
@@ -121,6 +122,7 @@ async def create_payment(
         tier: Subscription tier to purchase
         duration_days: Subscription duration in days
         inv_id: Invoice ID (optional, will be generated if not provided)
+        custom_amount: Custom payment amount (optional, for test payments)
 
     Returns:
         Payment info dict with payment_url and inv_id
@@ -130,10 +132,14 @@ async def create_payment(
         return None
 
     try:
-        price = SUBSCRIPTION_PRICES.get(tier)
-        if not price:
-            logger.error(f"No price configured for tier {tier}")
-            return None
+        # Use custom amount if provided, otherwise use standard price
+        if custom_amount is not None:
+            price = custom_amount
+        else:
+            price = SUBSCRIPTION_PRICES.get(tier)
+            if not price:
+                logger.error(f"No price configured for tier {tier}")
+                return None
 
         # Generate invoice ID if not provided
         if inv_id is None:

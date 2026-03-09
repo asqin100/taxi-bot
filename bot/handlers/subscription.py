@@ -106,6 +106,7 @@ async def cb_subscription_upgrade(callback: CallbackQuery):
         [InlineKeyboardButton(text="📄 Публичная оферта", web_app=WebAppInfo(url=oferta_url))],
         [InlineKeyboardButton(text="🔒 Политика конфиденциальности", web_app=WebAppInfo(url=privacy_url))],
         [InlineKeyboardButton(text="↩️ Политика возврата", web_app=WebAppInfo(url=refund_url))],
+        [InlineKeyboardButton(text="🧪 Тест платеж 5₽ (1 день Pro)", callback_data="subscription:buy:test")],
         [InlineKeyboardButton(text="⭐ Pro — 299₽/мес", callback_data="subscription:buy:pro")],
         [InlineKeyboardButton(text="💎 Premium — 499₽/мес", callback_data="subscription:buy:premium")],
         [InlineKeyboardButton(text="👑 Elite — 999₽/мес", callback_data="subscription:buy:elite")],
@@ -122,6 +123,11 @@ async def cb_subscription_buy(callback: CallbackQuery):
     """Handle subscription purchase."""
     tier_str = callback.data.split(":")[-1]
     user_id = callback.from_user.id
+
+    # Handle test payment separately
+    if tier_str == "test":
+        await _handle_test_payment(callback)
+        return
 
     # Map string to enum
     tier_map = {
@@ -185,6 +191,53 @@ async def cb_subscription_buy(callback: CallbackQuery):
         if payment_url:
             keyboard_buttons.append([
                 InlineKeyboardButton(text="💳 Оплатить", url=payment_url)
+            ])
+
+    oferta_url = f"{settings.webapp_url}/oferta.html" if settings.webapp_url else "#"
+    keyboard_buttons.append([InlineKeyboardButton(text="📄 Публичная оферта", web_app=WebAppInfo(url=oferta_url))])
+    keyboard_buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="subscription:upgrade")])
+    keyboard_buttons.append([InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")])
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard_buttons)
+
+    await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
+    await callback.answer()
+
+
+async def _handle_test_payment(callback: CallbackQuery):
+    """Handle test payment (5₽ for 1 day Pro)."""
+    user_id = callback.from_user.id
+    tier = SubscriptionTier.PRO
+    test_price = 5  # 5 rubles
+    test_duration = 1  # 1 day
+
+    text = (
+        "🧪 <b>ТЕСТ ПЛАТЕЖ</b>\n\n"
+        "Тариф: <b>Pro (тестовый)</b>\n"
+        "Стоимость: <b>5₽</b>\n"
+        "Срок: <b>1 день</b>\n\n"
+        "⚠️ Это тестовый платеж для проверки работы системы оплаты и чеков.\n\n"
+        "Нажмите кнопку ниже для оплаты:"
+    )
+
+    # Create payment based on configured provider
+    from bot.config import settings
+
+    keyboard_buttons = []
+
+    if settings.payment_provider == "robokassa":
+        from bot.services.payment_robokassa import create_payment as create_robokassa_payment
+        payment_info = await create_robokassa_payment(user_id, tier, duration_days=test_duration, custom_amount=test_price)
+    else:
+        # Default to YooKassa
+        payment_info = await create_payment(user_id, tier, duration_days=test_duration)
+
+    if payment_info:
+        # Robokassa uses payment_url, YooKassa uses confirmation_url
+        payment_url = payment_info.get("payment_url") or payment_info.get("confirmation_url")
+        if payment_url:
+            keyboard_buttons.append([
+                InlineKeyboardButton(text="💳 Оплатить 5₽", url=payment_url)
             ])
 
     oferta_url = f"{settings.webapp_url}/oferta.html" if settings.webapp_url else "#"
