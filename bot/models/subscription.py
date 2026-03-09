@@ -79,12 +79,12 @@ SUBSCRIPTION_FEATURES = {
         "priority_notifications": False,
         "detailed_analytics": False,
         "business_tariff": False,
+        "traffic": False,
         "features": [
             "✅ Базовый радар коэффициентов",
             "✅ Тарифы: Эконом, Комфорт",
             "✅ До 3 уведомлений",
             "✅ Топ-5 жирных точек",
-            "✅ Информация о пробках",
             "⏱ Уведомления через 120 секунд",
         ]
     },
@@ -97,11 +97,13 @@ SUBSCRIPTION_FEATURES = {
         "priority_notifications": False,
         "detailed_analytics": True,
         "business_tariff": True,
+        "traffic": True,
         "features": [
             "✅ Все функции бесплатного",
             "✅ Доступ к тарифу Бизнес 🚕",
             "✅ Неограниченные уведомления",
             "⏱ Уведомления через 90 секунд",
+            "✅ Прогноз пробок 🚦",
             "✅ AI-советник (5 вопросов/день)",
             "✅ Геоалерты (уведомления рядом с вами)",
             "✅ Детальная аналитика",
@@ -117,6 +119,7 @@ SUBSCRIPTION_FEATURES = {
         "priority_notifications": True,
         "detailed_analytics": True,
         "business_tariff": True,
+        "traffic": True,
         "features": [
             "✅ Все функции Pro",
             "⚡ Приоритет: уведомления через 60 секунд",
@@ -135,6 +138,7 @@ SUBSCRIPTION_FEATURES = {
         "priority_notifications": True,
         "detailed_analytics": True,
         "business_tariff": True,
+        "traffic": True,
         "csv_export": True,
         "heatmap": True,
         "tax_calculator": True,

@@ -92,6 +92,19 @@ async def cb_financial_menu(callback: CallbackQuery):
 @router.callback_query(F.data == "menu:traffic")
 async def cb_traffic_menu(callback: CallbackQuery):
     """Show traffic menu."""
+    user_id = callback.from_user.id
+
+    # Check if user has access to traffic feature (Pro+)
+    from bot.services.subscription import check_feature_access
+    has_access = await check_feature_access(user_id, "traffic")
+
+    if not has_access:
+        await callback.answer(
+            "🔒 Прогноз пробок доступен только в подписке Pro и выше",
+            show_alert=True
+        )
+        return
+
     await callback.message.edit_text(
         "🚦 <b>Дорожная обстановка</b>\n\n"
         "Проверьте текущую ситуацию на дорогах Москвы.",
@@ -349,6 +362,19 @@ async def cb_tariff_select(callback: CallbackQuery):
 @router.callback_query(F.data == "traffic:general")
 async def cb_traffic_general(callback: CallbackQuery):
     """Show general traffic from menu."""
+    user_id = callback.from_user.id
+
+    # Check access
+    from bot.services.subscription import check_feature_access
+    has_access = await check_feature_access(user_id, "traffic")
+
+    if not has_access:
+        await callback.answer(
+            "🔒 Прогноз пробок доступен только в подписке Pro и выше",
+            show_alert=True
+        )
+        return
+
     # Show processing
     await callback.message.edit_text("🚦 Получаю данные о пробках...")
 
@@ -406,6 +432,19 @@ async def cb_traffic_general(callback: CallbackQuery):
 @router.callback_query(F.data == "traffic:mkad")
 async def cb_traffic_mkad(callback: CallbackQuery):
     """Show MKAD traffic from menu."""
+    user_id = callback.from_user.id
+
+    # Check access
+    from bot.services.subscription import check_feature_access
+    has_access = await check_feature_access(user_id, "traffic")
+
+    if not has_access:
+        await callback.answer(
+            "🔒 Прогноз пробок доступен только в подписке Pro и выше",
+            show_alert=True
+        )
+        return
+
     await callback.message.edit_text("🚦 Получаю данные о МКАД...")
 
     # Clear cache to force fresh data
@@ -458,6 +497,19 @@ async def cb_traffic_mkad(callback: CallbackQuery):
 @router.callback_query(F.data == "traffic:ttk")
 async def cb_traffic_ttk(callback: CallbackQuery):
     """Show TTK traffic from menu."""
+    user_id = callback.from_user.id
+
+    # Check access
+    from bot.services.subscription import check_feature_access
+    has_access = await check_feature_access(user_id, "traffic")
+
+    if not has_access:
+        await callback.answer(
+            "🔒 Прогноз пробок доступен только в подписке Pro и выше",
+            show_alert=True
+        )
+        return
+
     await callback.message.edit_text("🚦 Получаю данные о ТТК...")
 
     # Clear cache to force fresh data

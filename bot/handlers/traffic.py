@@ -13,6 +13,24 @@ router = Router()
 @router.message(Command("traffic"))
 async def cmd_traffic(message: Message):
     """Show current traffic conditions in Moscow."""
+    user_id = message.from_user.id
+
+    # Check if user has access to traffic feature (Pro+)
+    from bot.services.subscription import check_feature_access
+    has_access = await check_feature_access(user_id, "traffic")
+
+    if not has_access:
+        await message.answer(
+            "🔒 <b>Прогноз пробок</b>\n\n"
+            "Эта функция доступна только в подписке Pro и выше.\n\n"
+            "Улучшите подписку, чтобы получить доступ к:\n"
+            "• Прогнозу пробок в реальном времени\n"
+            "• Данным по МКАД и ТТК\n"
+            "• Рекомендациям на основе коэффициентов",
+            parse_mode="HTML"
+        )
+        return
+
     # Show processing message
     processing_msg = await send_and_cleanup(message, "🚦 Получаю данные о пробках...")
 
@@ -70,6 +88,19 @@ async def cmd_traffic(message: Message):
 @router.message(Command("traffic_mkad"))
 async def cmd_traffic_mkad(message: Message):
     """Show traffic conditions on MKAD."""
+    user_id = message.from_user.id
+
+    # Check if user has access to traffic feature (Pro+)
+    from bot.services.subscription import check_feature_access
+    has_access = await check_feature_access(user_id, "traffic")
+
+    if not has_access:
+        await message.answer(
+            "🔒 Прогноз пробок доступен только в подписке Pro и выше",
+            parse_mode="HTML"
+        )
+        return
+
     processing_msg = await send_and_cleanup(message, "🚦 Получаю данные о МКАД...")
 
     # Clear cache to force fresh data
@@ -122,6 +153,19 @@ async def cmd_traffic_mkad(message: Message):
 @router.message(Command("traffic_ttk"))
 async def cmd_traffic_ttk(message: Message):
     """Show traffic conditions on TTK."""
+    user_id = message.from_user.id
+
+    # Check if user has access to traffic feature (Pro+)
+    from bot.services.subscription import check_feature_access
+    has_access = await check_feature_access(user_id, "traffic")
+
+    if not has_access:
+        await message.answer(
+            "🔒 Прогноз пробок доступен только в подписке Pro и выше",
+            parse_mode="HTML"
+        )
+        return
+
     processing_msg = await send_and_cleanup(message, "🚦 Получаю данные о ТТК...")
 
     # Clear cache to force fresh data
