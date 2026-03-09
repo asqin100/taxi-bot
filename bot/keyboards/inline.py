@@ -232,7 +232,6 @@ def features_menu_keyboard(tier: str) -> InlineKeyboardMarkup:
 
     # Basic features (available to all)
     buttons.extend([
-        [InlineKeyboardButton(text="📊 Коэффициенты", callback_data="cmd:kef")],
         [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
     ])
 
