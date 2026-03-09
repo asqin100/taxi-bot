@@ -690,14 +690,15 @@ async def cb_profile_menu(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "menu:where_to_go")
-async def cb_where_to_go(callback: CallbackQuery):
+async def cb_where_to_go(callback: CallbackQuery, state: FSMContext):
     """Show 'Where to go' feature - request user location."""
     from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
+    from bot.handlers.location import LocationStates
 
     text = (
         "🗺 <b>Куда ехать?</b>\n\n"
         "Эта функция найдет ближайшую зону с высоким коэффициентом (≥ 1.3) "
-        "в радиусе 5 км от вас.\n\n"
+        "в радиусе 10 км от вас.\n\n"
         "📍 Поделитесь своей геопозицией, чтобы начать поиск."
     )
 
@@ -711,6 +712,9 @@ async def cb_where_to_go(callback: CallbackQuery):
         resize_keyboard=True,
         one_time_keyboard=True
     )
+
+    # Set state to distinguish from geo alerts
+    await state.set_state(LocationStates.waiting_for_where_to_go)
 
     await callback.message.answer(
         text,
