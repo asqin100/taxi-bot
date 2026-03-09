@@ -55,6 +55,8 @@ async def check_live_location_expiration(bot: Bot):
 
 async def _send_expiration_reminder(bot: Bot, user: User, remaining_minutes: float):
     """Send reminder to user about expiring Live Location."""
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
     keyboard = ReplyKeyboardMarkup(
         keyboard=[[KeyboardButton(text="📍 Продлить Live Location (8 часов)", request_location=True)]],
         resize_keyboard=True,
@@ -69,12 +71,23 @@ async def _send_expiration_reminder(bot: Bot, user: User, remaining_minutes: flo
         f"👇 Нажмите кнопку ниже:"
     )
 
+    # Add inline keyboard with main menu button
+    inline_keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+    ])
+
     try:
         await bot.send_message(
             chat_id=user.telegram_id,
             text=text,
             reply_markup=keyboard,
             parse_mode="HTML",
+        )
+        # Send inline keyboard in a separate message to provide main menu access
+        await bot.send_message(
+            chat_id=user.telegram_id,
+            text="Или вернитесь в главное меню:",
+            reply_markup=inline_keyboard,
         )
         logger.info(f"Sent Live Location expiration reminder to user {user.telegram_id}")
     except Exception as e:
