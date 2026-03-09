@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from aiogram import Bot
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from sqlalchemy import select
 
 from bot.database.db import session_factory
@@ -118,8 +119,14 @@ async def _send_notifications_to_users(bot: Bot, users: list[User], all_data: li
 
         if alerts:
             text = "🔔 Высокие коэффициенты!\n\n" + "\n".join(alerts)
+
+            # Add main menu button
+            keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+            ])
+
             try:
-                await bot.send_message(user.telegram_id, text)
+                await bot.send_message(user.telegram_id, text, reply_markup=keyboard)
                 sent_count += 1
             except Exception as e:
                 logger.warning("Failed to notify user %s: %s", user.telegram_id, e)
