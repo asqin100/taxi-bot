@@ -100,7 +100,14 @@ async def get_alert_limit(user_id: int) -> int:
     """Get maximum number of alerts for user's subscription tier."""
     subscription = await get_subscription(user_id)
     features = SUBSCRIPTION_FEATURES.get(SubscriptionTier(subscription.tier), {})
-    return features.get("max_alerts", 3)
+    return features.get("max_alerts", 1)
+
+
+async def get_alert_cooldown(user_id: int) -> int:
+    """Get alert cooldown in seconds for user's subscription tier."""
+    subscription = await get_subscription(user_id)
+    features = SUBSCRIPTION_FEATURES.get(SubscriptionTier(subscription.tier), {})
+    return features.get("alert_cooldown_seconds", 120)
 
 
 async def can_create_alert(user_id: int, current_alert_count: int) -> bool:

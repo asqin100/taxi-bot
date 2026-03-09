@@ -73,7 +73,8 @@ SUBSCRIPTION_FEATURES = {
     SubscriptionTier.FREE: {
         "name": "Бесплатный",
         "price": 0,
-        "max_alerts": 3,
+        "max_alerts": 1,
+        "alert_cooldown_seconds": 120,
         "ai_advisor": False,
         "geo_alerts": False,
         "priority_notifications": False,
@@ -83,7 +84,7 @@ SUBSCRIPTION_FEATURES = {
         "features": [
             "✅ Базовый радар коэффициентов",
             "✅ Тарифы: Эконом, Комфорт",
-            "✅ До 3 уведомлений",
+            "✅ 1 геоалерт в день",
             "✅ Топ-5 жирных точек",
             "⏱ Уведомления через 120 секунд",
         ]
@@ -91,7 +92,8 @@ SUBSCRIPTION_FEATURES = {
     SubscriptionTier.PRO: {
         "name": "Pro",
         "price": 299,
-        "max_alerts": 999,  # unlimited
+        "max_alerts": 5,
+        "alert_cooldown_seconds": 90,
         "ai_advisor": True,
         "geo_alerts": True,
         "priority_notifications": False,
@@ -101,7 +103,7 @@ SUBSCRIPTION_FEATURES = {
         "features": [
             "✅ Все функции бесплатного",
             "✅ Доступ к тарифу Бизнес 🚕",
-            "✅ Неограниченные уведомления",
+            "✅ 5 геоалертов в день",
             "⏱ Уведомления через 90 секунд",
             "✅ Прогноз пробок 🚦",
             "✅ AI-советник (5 вопросов/день)",
@@ -113,7 +115,8 @@ SUBSCRIPTION_FEATURES = {
     SubscriptionTier.PREMIUM: {
         "name": "Premium",
         "price": 499,
-        "max_alerts": 999,
+        "max_alerts": 20,
+        "alert_cooldown_seconds": 60,
         "ai_advisor": True,
         "geo_alerts": True,
         "priority_notifications": True,
@@ -122,7 +125,8 @@ SUBSCRIPTION_FEATURES = {
         "traffic": True,
         "features": [
             "✅ Все функции Pro",
-            "⚡ Приоритет: уведомления через 60 секунд",
+            "⚡ Приоритет: 20 геоалертов в день",
+            "⚡ Уведомления через 60 секунд",
             "✅ AI-советник (20 вопросов/день)",
             "✅ Расширенная аналитика",
             "✅ Персональные рекомендации",
@@ -132,7 +136,8 @@ SUBSCRIPTION_FEATURES = {
     SubscriptionTier.ELITE: {
         "name": "Elite",
         "price": 999,
-        "max_alerts": 999,
+        "max_alerts": 50,
+        "alert_cooldown_seconds": 0,
         "ai_advisor": True,
         "geo_alerts": True,
         "priority_notifications": True,
@@ -146,7 +151,8 @@ SUBSCRIPTION_FEATURES = {
         "extended_stats": True,
         "features": [
             "✅ Все функции Premium",
-            "🚀 Максимальный приоритет: уведомления мгновенно",
+            "🚀 Максимальный приоритет: 50 геоалертов в день",
+            "🚀 Уведомления мгновенно (без задержки)",
             "✅ Выгрузка смен для налоговой (безлимит)",
             "✅ Карта заработка: когда выгоднее работать",
             "✅ Статистика за месяц",

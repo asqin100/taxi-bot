@@ -67,7 +67,7 @@ async def check_geo_alerts(bot: Bot):
 async def _check_user_alerts(bot: Bot, user: User, zone_map: dict):
     """Check alerts for a single user."""
     # Check if user has access to geo alerts feature
-    from bot.services.subscription import check_feature_access, get_alert_limit
+    from bot.services.subscription import check_feature_access, get_alert_limit, get_alert_cooldown
 
     has_access = await check_feature_access(user.telegram_id, "geo_alerts")
     if not has_access:
@@ -105,6 +105,9 @@ async def _check_user_alerts(bot: Bot, user: User, zone_map: dict):
     user_lon = user.last_longitude
     threshold = user.surge_threshold
 
+    # Get user's alert cooldown based on subscription tier
+    user_cooldown_seconds = await get_alert_cooldown(user.telegram_id)
+
     # Get user's tariffs
     tariffs = user.tariffs.split(",") if user.tariffs else ["econom"]
 
@@ -126,12 +129,12 @@ async def _check_user_alerts(bot: Bot, user: User, zone_map: dict):
             distance = _calculate_distance(user_lat, user_lon, zone.lat, zone.lon)
 
             if distance <= DISTANCE_THRESHOLD_KM:
-                # Check cooldown
+                # Check cooldown based on user's subscription tier
                 alert_key = (user.telegram_id, surge_data.zone_id)
                 last_alert = _last_alerts.get(alert_key)
                 now = datetime.now()
 
-                if last_alert and (now - last_alert).total_seconds() < ALERT_COOLDOWN_MINUTES * 60:
+                if last_alert and user_cooldown_seconds > 0 and (now - last_alert).total_seconds() < user_cooldown_seconds:
                     continue
 
                 # Add to alerts
