@@ -77,12 +77,12 @@ async def parse_kudago_events() -> list[dict]:
 
         params = {
             "location": "msk",
-            "categories": "concert,theater,festival,party",
+            "categories": "concert,theater,festival,party,exhibition,show,kids,sport,entertainment",
             "fields": "id,title,place,dates",
             "expand": "place",
             "actual_since": actual_since,
             "actual_until": actual_until,
-            "page_size": 100,
+            "page_size": 200,
         }
 
         async with aiohttp.ClientSession() as session:
