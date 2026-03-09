@@ -27,22 +27,36 @@ async def cb_settings(callback: CallbackQuery):
     await callback.answer()
 
 
+@router.callback_query(F.data == "settings:notifications")
+async def cb_notifications_menu(callback: CallbackQuery):
+    """Show notifications settings with tariff selection."""
+    await _send_tariff_selector(callback.message, edit=True)
+    await callback.answer()
+
+
 async def _send_tariff_selector(message: Message, edit: bool = False):
     user = await _get_user(message)
     selected = set(user.tariffs.split(",")) if user.tariffs else set()
 
     # Check subscription for Business access
     from bot.services.subscription import check_feature_access
-    tg_id = message.chat.id
+    tg_id = message.chat.id if hasattr(message, 'chat') else message.from_user.id
     has_business = await check_feature_access(tg_id, "business_tariff")
 
     kb = tariff_keyboard(selected, has_business)
-    text = "⚙️ Выберите тарифы для отслеживания:"
+    text = (
+        "🔔 <b>НАСТРОЙКА УВЕДОМЛЕНИЙ</b>\n\n"
+        "Выберите тарифы, по которым вы хотите получать уведомления о высоких коэффициентах:\n\n"
+        "🚗 <b>Эконом</b> — базовый тариф\n"
+        "🚕 <b>Комфорт</b> — средний класс\n"
+        "💼 <b>Бизнес</b> — премиум класс (Pro+)\n\n"
+        "💡 Можно выбрать несколько тарифов"
+    )
 
     if edit:
-        await message.edit_text(text, reply_markup=kb)
+        await message.edit_text(text, reply_markup=kb, parse_mode="HTML")
     else:
-        await message.answer(text, reply_markup=kb)
+        await message.answer(text, reply_markup=kb, parse_mode="HTML")
 
 
 @router.callback_query(F.data.startswith("tariff:"))
@@ -50,7 +64,14 @@ async def cb_tariff(callback: CallbackQuery):
     action = callback.data.split(":")[1]
 
     if action == "done":
-        await _send_zone_selector(callback.message, edit=True)
+        # Check if we're in notifications settings flow
+        from bot.keyboards.inline import settings_menu_keyboard
+        await callback.message.edit_text(
+            "✅ <b>Настройки уведомлений сохранены!</b>\n\n"
+            "Вы будете получать уведомления о высоких коэффициентах по выбранным тарифам.",
+            reply_markup=settings_menu_keyboard(),
+            parse_mode="HTML"
+        )
         await callback.answer()
         return
 

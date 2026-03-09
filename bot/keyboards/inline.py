@@ -186,7 +186,7 @@ def subscription_keyboard() -> InlineKeyboardMarkup:
 def settings_menu_keyboard() -> InlineKeyboardMarkup:
     """Settings menu keyboard."""
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="🔔 Уведомления", callback_data="cmd:notify")],
+        [InlineKeyboardButton(text="🔔 Уведомления", callback_data="settings:notifications")],
         [InlineKeyboardButton(text="❓ Справка", callback_data="help:main")],
         BACK_BUTTON,
     ])
