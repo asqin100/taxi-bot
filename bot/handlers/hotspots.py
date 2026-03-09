@@ -160,7 +160,6 @@ async def cb_hotspot_view(callback: CallbackQuery):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text="🔄 Обновить", callback_data=f"hotspot:view:{hotspot_id}"),
-            InlineKeyboardButton(text="🗺 На карте", callback_data="cmd:kef"),
         ],
         [InlineKeyboardButton(text="◀️ Назад", callback_data=back_data)],
         [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],

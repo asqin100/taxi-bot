@@ -145,7 +145,6 @@ async def _send_top(message: Message, tariff: str | None = None):
         ],
         [
             InlineKeyboardButton(text="🔄 Обновить", callback_data="cmd:top"),
-            InlineKeyboardButton(text="🗺 На карте", callback_data="cmd:kef"),
         ],
         [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
     ])
