@@ -2,12 +2,21 @@
 import logging
 from typing import Optional
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import aiohttp
 
 from bot.config import settings
 
 logger = logging.getLogger(__name__)
+
+# Moscow timezone
+MOSCOW_TZ = ZoneInfo("Europe/Moscow")
+
+
+def get_moscow_time() -> datetime:
+    """Get current time in Moscow timezone."""
+    return datetime.now(MOSCOW_TZ)
 
 
 class TrafficData:
@@ -49,6 +58,14 @@ _cache_timestamp: Optional[datetime] = None
 CACHE_TTL_SECONDS = 300  # 5 minutes
 
 
+def clear_traffic_cache():
+    """Clear traffic cache to force refresh."""
+    global _traffic_cache, _cache_timestamp
+    _traffic_cache.clear()
+    _cache_timestamp = None
+    logger.info("Traffic cache cleared")
+
+
 def _get_simulated_traffic_level() -> int:
     """
     Generate realistic traffic level based on time of day.
@@ -56,7 +73,7 @@ def _get_simulated_traffic_level() -> int:
     Returns:
         Traffic level 1-10
     """
-    hour = datetime.now().hour
+    hour = get_moscow_time().hour
 
     # Morning rush (7-10): high traffic
     if 7 <= hour < 10:
@@ -82,7 +99,7 @@ async def get_moscow_traffic() -> Optional[TrafficData]:
     global _traffic_cache, _cache_timestamp
 
     # Check cache
-    if _cache_timestamp and (datetime.now() - _cache_timestamp).total_seconds() < CACHE_TTL_SECONDS:
+    if _cache_timestamp and (get_moscow_time() - _cache_timestamp).total_seconds() < CACHE_TTL_SECONDS:
         return _traffic_cache.get("moscow")
 
     # Try TomTom Traffic API with multiple points across Moscow
@@ -167,12 +184,12 @@ async def get_moscow_traffic() -> Optional[TrafficData]:
                     region="moscow",
                     level=avg_traffic_level,
                     description=f"Пробки {avg_traffic_level} баллов",
-                    timestamp=datetime.now()
+                    timestamp=get_moscow_time()
                 )
 
                 # Update cache
                 _traffic_cache["moscow"] = traffic_data
-                _cache_timestamp = datetime.now()
+                _cache_timestamp = get_moscow_time()
 
                 logger.info("Got real traffic data from TomTom (avg of %d points): level=%d",
                            len(traffic_levels), avg_traffic_level)
@@ -190,12 +207,12 @@ async def get_moscow_traffic() -> Optional[TrafficData]:
         region="moscow",
         level=traffic_level,
         description=f"Пробки {traffic_level} баллов (симуляция)",
-        timestamp=datetime.now()
+        timestamp=get_moscow_time()
     )
 
     # Update cache
     _traffic_cache["moscow"] = traffic_data
-    _cache_timestamp = datetime.now()
+    _cache_timestamp = get_moscow_time()
 
     return traffic_data
 
@@ -215,7 +232,7 @@ async def get_mkad_traffic() -> Optional[TrafficData]:
         region="mkad",
         level=mkad_level,
         description=f"МКАД: {mkad_level} баллов",
-        timestamp=datetime.now()
+        timestamp=get_moscow_time()
     )
 
 
@@ -234,7 +251,7 @@ async def get_ttk_traffic() -> Optional[TrafficData]:
         region="ttk",
         level=ttk_level,
         description=f"ТТК: {ttk_level} баллов",
-        timestamp=datetime.now()
+        timestamp=get_moscow_time()
     )
 
 
@@ -366,7 +383,7 @@ async def get_traffic_forecast(region: str = "moscow") -> Optional[TrafficForeca
         return None
 
     # Predict change
-    current_hour = datetime.now().hour
+    current_hour = get_moscow_time().hour
     forecast_level, trend, confidence = _predict_traffic_change(current_hour, current_traffic.level)
 
     return TrafficForecast(

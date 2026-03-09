@@ -352,6 +352,9 @@ async def cb_traffic_general(callback: CallbackQuery):
     # Show processing
     await callback.message.edit_text("🚦 Получаю данные о пробках...")
 
+    # Clear cache to force fresh data
+    traffic_service.clear_traffic_cache()
+
     # Get traffic data
     moscow_traffic = await traffic_service.get_moscow_traffic()
     mkad_traffic = await traffic_service.get_mkad_traffic()
@@ -405,6 +408,9 @@ async def cb_traffic_mkad(callback: CallbackQuery):
     """Show MKAD traffic from menu."""
     await callback.message.edit_text("🚦 Получаю данные о МКАД...")
 
+    # Clear cache to force fresh data
+    traffic_service.clear_traffic_cache()
+
     mkad_traffic = await traffic_service.get_mkad_traffic()
 
     if not mkad_traffic:
@@ -453,6 +459,9 @@ async def cb_traffic_mkad(callback: CallbackQuery):
 async def cb_traffic_ttk(callback: CallbackQuery):
     """Show TTK traffic from menu."""
     await callback.message.edit_text("🚦 Получаю данные о ТТК...")
+
+    # Clear cache to force fresh data
+    traffic_service.clear_traffic_cache()
 
     ttk_traffic = await traffic_service.get_ttk_traffic()
 

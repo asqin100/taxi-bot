@@ -16,6 +16,9 @@ async def cmd_traffic(message: Message):
     # Show processing message
     processing_msg = await send_and_cleanup(message, "🚦 Получаю данные о пробках...")
 
+    # Clear cache to force fresh data
+    traffic_service.clear_traffic_cache()
+
     # Get traffic data
     moscow_traffic = await traffic_service.get_moscow_traffic()
     mkad_traffic = await traffic_service.get_mkad_traffic()
@@ -69,6 +72,9 @@ async def cmd_traffic_mkad(message: Message):
     """Show traffic conditions on MKAD."""
     processing_msg = await send_and_cleanup(message, "🚦 Получаю данные о МКАД...")
 
+    # Clear cache to force fresh data
+    traffic_service.clear_traffic_cache()
+
     mkad_traffic = await traffic_service.get_mkad_traffic()
 
     if not mkad_traffic:
@@ -117,6 +123,9 @@ async def cmd_traffic_mkad(message: Message):
 async def cmd_traffic_ttk(message: Message):
     """Show traffic conditions on TTK."""
     processing_msg = await send_and_cleanup(message, "🚦 Получаю данные о ТТК...")
+
+    # Clear cache to force fresh data
+    traffic_service.clear_traffic_cache()
 
     ttk_traffic = await traffic_service.get_ttk_traffic()
 
