@@ -29,12 +29,47 @@ async def cb_settings(callback: CallbackQuery):
 
 @router.callback_query(F.data == "settings:notifications")
 async def cb_notifications_menu(callback: CallbackQuery):
-    """Show notifications settings with tariff selection."""
-    await _send_tariff_selector(callback.message, edit=True)
+    """Show notifications settings menu."""
+    from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🚗 Выбрать тарифы", callback_data="settings:edit_tariffs")],
+        [InlineKeyboardButton(text="📍 Выбрать зоны", callback_data="settings:edit_zones")],
+        [InlineKeyboardButton(text="🎭 Типы мероприятий", callback_data="settings:edit_events")],
+        [InlineKeyboardButton(text="◀️ Назад", callback_data="cmd:settings")],
+    ])
+
+    await callback.message.edit_text(
+        "🔔 <b>НАСТРОЙКА УВЕДОМЛЕНИЙ</b>\n\n"
+        "Выберите, что хотите настроить:",
+        reply_markup=keyboard,
+        parse_mode="HTML"
+    )
     await callback.answer()
 
 
-async def _send_tariff_selector(message: Message, edit: bool = False):
+@router.callback_query(F.data == "settings:edit_tariffs")
+async def cb_edit_tariffs(callback: CallbackQuery):
+    """Edit tariff selection from notifications menu."""
+    await _send_tariff_selector(callback.message, edit=True, from_notifications=True)
+    await callback.answer()
+
+
+@router.callback_query(F.data == "settings:edit_zones")
+async def cb_edit_zones(callback: CallbackQuery):
+    """Edit zone selection from notifications menu."""
+    await _send_zone_selector(callback.message, edit=True, from_notifications=True)
+    await callback.answer()
+
+
+@router.callback_query(F.data == "settings:edit_events")
+async def cb_edit_events(callback: CallbackQuery):
+    """Edit event types from notifications menu."""
+    await _send_event_type_selector(callback.message, edit=True, from_notifications=True)
+    await callback.answer()
+
+
+async def _send_tariff_selector(message: Message, edit: bool = False, from_notifications: bool = False):
     user = await _get_user(message)
     selected = set(user.tariffs.split(",")) if user.tariffs else set()
 
@@ -43,9 +78,9 @@ async def _send_tariff_selector(message: Message, edit: bool = False):
     tg_id = message.chat.id if hasattr(message, 'chat') else message.from_user.id
     has_business = await check_feature_access(tg_id, "business_tariff")
 
-    kb = tariff_keyboard(selected, has_business)
+    kb = tariff_keyboard(selected, has_business, from_notifications)
     text = (
-        "🔔 <b>НАСТРОЙКА УВЕДОМЛЕНИЙ</b>\n\n"
+        "🔔 <b>ВЫБОР ТАРИФОВ</b>\n\n"
         "Выберите тарифы, по которым вы хотите получать уведомления о высоких коэффициентах:\n\n"
         "🚗 <b>Эконом</b> — базовый тариф\n"
         "🚕 <b>Комфорт</b> — средний класс\n"
@@ -61,18 +96,18 @@ async def _send_tariff_selector(message: Message, edit: bool = False):
 
 @router.callback_query(F.data.startswith("tariff:"))
 async def cb_tariff(callback: CallbackQuery):
-    action = callback.data.split(":")[1]
+    action_parts = callback.data.split(":")
+    action = action_parts[1]
+    from_notifications = len(action_parts) > 2 and action_parts[2] == "notif"
 
     if action == "done":
-        # Check if we're in notifications settings flow
-        from bot.keyboards.inline import settings_menu_keyboard
-        await callback.message.edit_text(
-            "✅ <b>Настройки уведомлений сохранены!</b>\n\n"
-            "Вы будете получать уведомления о высоких коэффициентах по выбранным тарифам.",
-            reply_markup=settings_menu_keyboard(),
-            parse_mode="HTML"
-        )
-        await callback.answer()
+        if from_notifications:
+            # Return to notifications menu
+            await cb_notifications_menu(callback)
+        else:
+            # Continue to zone selector (original flow)
+            await _send_zone_selector(callback.message, edit=True)
+            await callback.answer()
         return
 
     # Check if trying to select Business tariff
@@ -124,11 +159,11 @@ async def cb_tariff(callback: CallbackQuery):
     await callback.answer("Обновлено")
 
 
-async def _send_zone_selector(message: Message, edit: bool = False):
+async def _send_zone_selector(message: Message, edit: bool = False, from_notifications: bool = False):
     user = await _get_user(message)
     selected = set(user.zones.split(",")) if user.zones else set()
     selected.discard("")
-    kb = zones_keyboard(selected)
+    kb = zones_keyboard(selected, from_notifications)
     text = "📍 Выберите зоны интереса (или «Все зоны»):"
     if edit:
         await message.edit_text(text, reply_markup=kb)
@@ -138,11 +173,18 @@ async def _send_zone_selector(message: Message, edit: bool = False):
 
 @router.callback_query(F.data.startswith("zone:"))
 async def cb_zone(callback: CallbackQuery):
-    action = callback.data.split(":")[1]
+    action_parts = callback.data.split(":")
+    action = action_parts[1]
+    from_notifications = len(action_parts) > 2 and action_parts[2] == "notif"
 
     if action == "done":
-        await _send_event_type_selector(callback.message, edit=True)
-        await callback.answer()
+        if from_notifications:
+            # Return to notifications menu
+            await cb_notifications_menu(callback)
+        else:
+            # Continue to event type selector (original flow)
+            await _send_event_type_selector(callback.message, edit=True)
+            await callback.answer()
         return
 
     user = await _get_user(callback.message, tg_id=callback.from_user.id)
@@ -166,11 +208,11 @@ async def cb_zone(callback: CallbackQuery):
     await callback.answer("Обновлено")
 
 
-async def _send_event_type_selector(message: Message, edit: bool = False):
+async def _send_event_type_selector(message: Message, edit: bool = False, from_notifications: bool = False):
     user = await _get_user(message)
     selected = set(user.event_types.split(",")) if user.event_types else set()
     selected.discard("")
-    kb = event_types_keyboard(selected)
+    kb = event_types_keyboard(selected, from_notifications)
     text = "🎭 Выберите типы мероприятий для уведомлений:"
     if edit:
         await message.edit_text(text, reply_markup=kb)
@@ -180,16 +222,22 @@ async def _send_event_type_selector(message: Message, edit: bool = False):
 
 @router.callback_query(F.data.startswith("event_type:"))
 async def cb_event_type(callback: CallbackQuery):
-    action = callback.data.split(":")[1]
+    action_parts = callback.data.split(":")
+    action = action_parts[1]
+    from_notifications = len(action_parts) > 2 and action_parts[2] == "notif"
 
     if action == "done":
-        # Get user subscription tier for menu
-        from bot.services.subscription import get_subscription
-        subscription = await get_subscription(callback.from_user.id)
+        if from_notifications:
+            # Return to notifications menu
+            await cb_notifications_menu(callback)
+        else:
+            # Show success and return to main menu (original flow)
+            from bot.services.subscription import get_subscription
+            subscription = await get_subscription(callback.from_user.id)
 
-        from bot.keyboards.inline import main_menu_keyboard
-        await callback.message.edit_text("✅ Настройки сохранены!", reply_markup=main_menu_keyboard(subscription.tier))
-        await callback.answer()
+            from bot.keyboards.inline import main_menu_keyboard
+            await callback.message.edit_text("✅ Настройки сохранены!", reply_markup=main_menu_keyboard(subscription.tier))
+            await callback.answer()
         return
 
     user = await _get_user(callback.message, tg_id=callback.from_user.id)

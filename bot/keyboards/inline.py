@@ -21,7 +21,7 @@ EVENT_TYPE_OPTIONS = [
 BACK_BUTTON = [InlineKeyboardButton(text="◀️ Назад", callback_data="cmd:menu")]
 
 
-def tariff_keyboard(selected: set[str] | None = None, has_business_access: bool = True) -> InlineKeyboardMarkup:
+def tariff_keyboard(selected: set[str] | None = None, has_business_access: bool = True, from_notifications: bool = False) -> InlineKeyboardMarkup:
     selected = selected or set()
     buttons = []
     for tid, name in TARIFF_OPTIONS:
@@ -32,12 +32,17 @@ def tariff_keyboard(selected: set[str] | None = None, has_business_access: bool 
             name = f"{name} 🔒 Pro"
 
         buttons.append([InlineKeyboardButton(text=f"{check}{name}", callback_data=f"tariff:{tid}")])
-    buttons.append([InlineKeyboardButton(text="Готово ✔", callback_data="tariff:done")])
-    buttons.append(BACK_BUTTON)
+
+    # Add :notif suffix if coming from notifications menu
+    done_callback = "tariff:done:notif" if from_notifications else "tariff:done"
+    back_callback = "settings:notifications" if from_notifications else "cmd:menu"
+
+    buttons.append([InlineKeyboardButton(text="Готово ✔", callback_data=done_callback)])
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data=back_callback)])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def zones_keyboard(selected: set[str] | None = None) -> InlineKeyboardMarkup:
+def zones_keyboard(selected: set[str] | None = None, from_notifications: bool = False) -> InlineKeyboardMarkup:
     selected = selected or set()
     zones = get_zones()
     buttons = []
@@ -45,19 +50,29 @@ def zones_keyboard(selected: set[str] | None = None) -> InlineKeyboardMarkup:
         check = "✅ " if z.id in selected else ""
         buttons.append([InlineKeyboardButton(text=f"{check}{z.name}", callback_data=f"zone:{z.id}")])
     buttons.append([InlineKeyboardButton(text="Все зоны", callback_data="zone:all")])
-    buttons.append([InlineKeyboardButton(text="Готово ✔", callback_data="zone:done")])
-    buttons.append(BACK_BUTTON)
+
+    # Add :notif suffix if coming from notifications menu
+    done_callback = "zone:done:notif" if from_notifications else "zone:done"
+    back_callback = "settings:notifications" if from_notifications else "cmd:menu"
+
+    buttons.append([InlineKeyboardButton(text="Готово ✔", callback_data=done_callback)])
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data=back_callback)])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def event_types_keyboard(selected: set[str] | None = None) -> InlineKeyboardMarkup:
+def event_types_keyboard(selected: set[str] | None = None, from_notifications: bool = False) -> InlineKeyboardMarkup:
     selected = selected or set()
     buttons = []
     for tid, name in EVENT_TYPE_OPTIONS:
         check = "✅ " if tid in selected else ""
         buttons.append([InlineKeyboardButton(text=f"{check}{name}", callback_data=f"event_type:{tid}")])
-    buttons.append([InlineKeyboardButton(text="Готово ✔", callback_data="event_type:done")])
-    buttons.append(BACK_BUTTON)
+
+    # Add :notif suffix if coming from notifications menu
+    done_callback = "event_type:done:notif" if from_notifications else "event_type:done"
+    back_callback = "settings:notifications" if from_notifications else "cmd:menu"
+
+    buttons.append([InlineKeyboardButton(text="Готово ✔", callback_data=done_callback)])
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data=back_callback)])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
