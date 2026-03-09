@@ -148,8 +148,18 @@ async def cb_menu(callback: CallbackQuery):
     from bot.services.subscription import get_subscription
     subscription = await get_subscription(user_id)
 
-    await callback.message.edit_text(
-        "📋 Главное меню",
-        reply_markup=main_menu_keyboard(subscription.tier),
-    )
+    # Check if the message is a photo or document (can't edit_text on media)
+    if callback.message.photo or callback.message.document:
+        # Delete the media message and send a new text message
+        await callback.message.delete()
+        await callback.message.answer(
+            "📋 Главное меню",
+            reply_markup=main_menu_keyboard(subscription.tier),
+        )
+    else:
+        # Regular text message - can edit
+        await callback.message.edit_text(
+            "📋 Главное меню",
+            reply_markup=main_menu_keyboard(subscription.tier),
+        )
     await callback.answer()
