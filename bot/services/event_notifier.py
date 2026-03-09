@@ -3,6 +3,7 @@ import logging
 from datetime import datetime
 
 from aiogram import Bot
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from bot.services import events as event_service
 from bot.services.yandex_api import get_cached_coefficients
@@ -113,8 +114,13 @@ async def send_to_users_by_event_type(bot: Bot, text: str, event_type: str):
             user_event_types = [t.strip() for t in user.event_types.split(",") if t.strip()]
 
             if event_type in user_event_types:
+                # Add main menu button
+                keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                    [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+                ])
+
                 try:
-                    await bot.send_message(user.telegram_id, text, parse_mode="HTML")
+                    await bot.send_message(user.telegram_id, text, parse_mode="HTML", reply_markup=keyboard)
                     sent_count += 1
                 except Exception as e:
                     logger.warning("Failed to send notification to user %d: %s", user.telegram_id, e)
@@ -138,8 +144,13 @@ async def send_to_all_users(bot: Bot, text: str):
                 skipped_quiet += 1
                 continue
 
+            # Add main menu button
+            keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+            ])
+
             try:
-                await bot.send_message(user.telegram_id, text, parse_mode="HTML")
+                await bot.send_message(user.telegram_id, text, parse_mode="HTML", reply_markup=keyboard)
                 sent_count += 1
             except Exception as e:
                 logger.warning("Failed to send notification to user %d: %s", user.telegram_id, e)
