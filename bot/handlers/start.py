@@ -148,8 +148,19 @@ async def cb_menu(callback: CallbackQuery):
     from bot.services.subscription import get_subscription
     subscription = await get_subscription(user_id)
 
-    # Check if the message is a photo or document (can't edit_text on media)
-    if callback.message.photo or callback.message.document:
+    # Check if the message contains any media (can't edit_text on media messages)
+    has_media = any([
+        callback.message.photo,
+        callback.message.document,
+        callback.message.video,
+        callback.message.audio,
+        callback.message.animation,
+        callback.message.voice,
+        callback.message.video_note,
+        callback.message.sticker
+    ])
+
+    if has_media:
         # Delete the media message and send a new text message
         await callback.message.delete()
         await callback.message.answer(
