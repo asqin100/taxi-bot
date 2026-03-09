@@ -169,7 +169,7 @@ async def cb_pay_with_balance(callback: CallbackQuery):
         text += f"\n\n⚠️ Недостаточно средств на балансе.\nПригласите друзей для пополнения!"
 
     keyboard_buttons.append([
-        InlineKeyboardButton(text="💳 Оплатить картой", callback_data="subscription:upgrade")
+        InlineKeyboardButton(text="💳 Оплатить", callback_data="subscription:upgrade")
     ])
     keyboard_buttons.append([
         InlineKeyboardButton(text="◀️ Назад", callback_data="menu:referral")

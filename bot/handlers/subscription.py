@@ -199,7 +199,7 @@ async def cb_subscription_buy(callback: CallbackQuery):
                 payment_url = f"{get_robokassa_url(settings.robokassa_test_mode)}?{urlencode(params)}"
 
                 keyboard_buttons.append([
-                    InlineKeyboardButton(text="💳 Оплатить картой (5₽)", url=payment_url)
+                    InlineKeyboardButton(text="💳 Оплатить (5₽)", url=payment_url)
                 ])
 
         oferta_url = f"{settings.webapp_url}/oferta.html" if settings.webapp_url else "#"
@@ -273,7 +273,7 @@ async def cb_subscription_buy(callback: CallbackQuery):
         payment_url = payment_info.get("payment_url") or payment_info.get("confirmation_url")
         if payment_url:
             keyboard_buttons.append([
-                InlineKeyboardButton(text="💳 Оплатить картой", url=payment_url)
+                InlineKeyboardButton(text="💳 Оплатить", url=payment_url)
             ])
 
     oferta_url = f"{settings.webapp_url}/oferta.html" if settings.webapp_url else "#"
