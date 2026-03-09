@@ -156,8 +156,12 @@ async def cb_event_type(callback: CallbackQuery):
     action = callback.data.split(":")[1]
 
     if action == "done":
+        # Get user subscription tier for menu
+        from bot.services.subscription import get_subscription
+        subscription = await get_subscription(callback.from_user.id)
+
         from bot.keyboards.inline import main_menu_keyboard
-        await callback.message.edit_text("✅ Настройки сохранены!", reply_markup=main_menu_keyboard())
+        await callback.message.edit_text("✅ Настройки сохранены!", reply_markup=main_menu_keyboard(subscription.tier))
         await callback.answer()
         return
 

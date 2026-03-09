@@ -59,6 +59,10 @@ async def cmd_start(message: Message):
                 "Ваш реферер получит бонусы за ваши покупки."
             )
 
+    # Get user subscription tier for menu
+    from bot.services.subscription import get_subscription
+    subscription = await get_subscription(user_id)
+
     # Check if user should see onboarding
     if await should_show_onboarding(user_id):
         # Show onboarding for new users
@@ -81,14 +85,20 @@ async def cmd_start(message: Message):
             "🏆 Челленджи и рейтинг\n"
             "🤖 AI-советник с персональными рекомендациями\n"
             "📊 Прогноз пробок на час вперед",
-            reply_markup=main_menu_keyboard(),
+            reply_markup=main_menu_keyboard(subscription.tier),
         )
 
 
 @router.callback_query(F.data == "cmd:menu")
 async def cb_menu(callback: CallbackQuery):
+    user_id = callback.from_user.id
+
+    # Get user subscription tier for menu
+    from bot.services.subscription import get_subscription
+    subscription = await get_subscription(user_id)
+
     await callback.message.edit_text(
         "📋 Главное меню",
-        reply_markup=main_menu_keyboard(),
+        reply_markup=main_menu_keyboard(subscription.tier),
     )
     await callback.answer()

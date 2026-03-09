@@ -22,6 +22,67 @@ async def handle_location(message: Message):
     # Check if this is a live location update
     is_live = location.live_period is not None if hasattr(location, 'live_period') else False
 
+    # Check if this is for "where to go" feature by looking for cached surge data
+    from bot.services.yandex_api import get_cached_coefficients, generate_yandex_navigator_link, generate_yandex_maps_link
+    from bot.services.zones import find_nearest_high_coefficient_zone
+
+    surge_data = get_cached_coefficients()
+
+    # If we have surge data and this is not a live location, check for "where to go"
+    if surge_data and not is_live:
+        # Try to find a high coefficient zone
+        zone_result = find_nearest_high_coefficient_zone(
+            user_lat=location.latitude,
+            user_lon=location.longitude,
+            surge_data=surge_data,
+            min_coefficient=1.3,
+            max_distance_km=5.0,
+            tariff="econom"
+        )
+
+        if zone_result:
+            # Found a zone! Show navigation options
+            navigator_link = generate_yandex_navigator_link(
+                zone_result.zone.lat,
+                zone_result.zone.lon
+            )
+            maps_link = generate_yandex_maps_link(
+                zone_result.zone.lat,
+                zone_result.zone.lon
+            )
+
+            keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="🚗 Яндекс Навигатор", url=navigator_link)],
+                [InlineKeyboardButton(text="🗺 Яндекс Карты", url=maps_link)],
+                [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")]
+            ])
+
+            await message.answer(
+                f"✅ <b>Найдена зона с высоким коэффициентом!</b>\n\n"
+                f"📍 <b>Зона:</b> {zone_result.zone.name}\n"
+                f"💰 <b>Коэффициент:</b> {zone_result.coefficient:.2f}x\n"
+                f"📏 <b>Расстояние:</b> {zone_result.distance_km:.1f} км\n\n"
+                f"Выберите приложение для навигации:",
+                parse_mode="HTML",
+                reply_markup=keyboard
+            )
+            return
+        else:
+            # No zone found
+            keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")]
+            ])
+
+            await message.answer(
+                "😔 <b>Высокий коэффициент не найден</b>\n\n"
+                "К сожалению, в радиусе 5 км от вас нет зон "
+                "с коэффициентом ≥ 1.3.\n\n"
+                "💡 <i>Попробуйте позже или переместитесь в другой район</i>",
+                parse_mode="HTML",
+                reply_markup=keyboard
+            )
+            return
+
     # Update user's location in database
     async with session_factory() as session:
         result = await session.execute(select(User).where(User.telegram_id == user_id))

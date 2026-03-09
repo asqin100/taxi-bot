@@ -1,0 +1,12 @@
+#!/bin/bash
+echo "════════════════════════════════════════════════════════════"
+echo "  ПРОВЕРКА АКТИВАЦИИ ПОДПИСКИ"
+echo "════════════════════════════════════════════════════════════"
+echo ""
+echo "[1] Логи активации подписки (последние 50 строк):"
+journalctl -u taxibot -n 50 --no-pager --output=cat | grep -E "(upgrade_subscription|Subscription activated|Processing test payment)" || echo "Нет записей об активации"
+echo ""
+echo "[2] Логи отправки уведомлений:"
+journalctl -u taxibot -n 50 --no-pager --output=cat | grep -E "(Sending notification|notification sent)" || echo "Нет записей об отправке"
+echo ""
+echo "════════════════════════════════════════════════════════════"

@@ -125,19 +125,14 @@ def main_menu_keyboard(tier: str = "free") -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
         # [InlineKeyboardButton(text="🗺 Горячие точки", callback_data="menu:hotspots")],
         [
-            InlineKeyboardButton(text="💰 Финансы", callback_data="menu:financial"),
             InlineKeyboardButton(text=traffic_button_text, callback_data="menu:traffic"),
-        ],
-        [
             InlineKeyboardButton(text="📍 Геоалерты", callback_data="menu:geo_alerts"),
         ],
         [
             InlineKeyboardButton(text="🔔 Уведомления", callback_data="cmd:notify"),
-            InlineKeyboardButton(text="🏅 Достижения", callback_data="menu:achievements"),
         ],
         [
-            InlineKeyboardButton(text="🏆 Челлендж", callback_data="menu:challenge"),
-            # InlineKeyboardButton(text="📊 Рейтинг", callback_data="menu:leaderboard"),  # Временно отключено
+            InlineKeyboardButton(text="👤 Мой кабинет", callback_data="menu:profile"),
         ],
         [
             InlineKeyboardButton(text="⭐ Подписка", callback_data="menu:subscription"),
@@ -215,6 +210,17 @@ def subscription_keyboard() -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="💎 Улучшить до Premium (499₽)", callback_data="menu:subscription")],
         [InlineKeyboardButton(text="👑 Улучшить до Elite (999₽)", callback_data="menu:subscription")],
         [InlineKeyboardButton(text="◀️ Назад к настройкам", callback_data="cmd:settings")],
+    ])
+
+
+def profile_menu_keyboard() -> InlineKeyboardMarkup:
+    """Profile/Cabinet menu with personal features."""
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="💰 Финансы", callback_data="menu:financial")],
+        [InlineKeyboardButton(text="🏅 Достижения", callback_data="menu:achievements")],
+        [InlineKeyboardButton(text="🏆 Челлендж", callback_data="menu:challenge")],
+        # [InlineKeyboardButton(text="📊 Рейтинг", callback_data="menu:leaderboard")],  # Временно отключено
+        BACK_BUTTON,
     ])
 
 

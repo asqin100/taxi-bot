@@ -24,6 +24,12 @@ async def cb_kef(callback: CallbackQuery):
 
 
 async def _send_coefficients(message: Message, edit: bool = False):
+    user_id = message.from_user.id
+
+    # Get user subscription tier for menu
+    from bot.services.subscription import get_subscription
+    subscription = await get_subscription(user_id)
+
     data = get_cached_coefficients()
     text = format_surge_table(data)
 
@@ -35,10 +41,10 @@ async def _send_coefficients(message: Message, edit: bool = False):
             message,
             text,
             photo=photo,
-            reply_markup=main_menu_keyboard()
+            reply_markup=main_menu_keyboard(subscription.tier)
         )
     else:
-        await send_and_cleanup(message, text, reply_markup=main_menu_keyboard())
+        await send_and_cleanup(message, text, reply_markup=main_menu_keyboard(subscription.tier))
 
 
 @router.message(Command("top"))

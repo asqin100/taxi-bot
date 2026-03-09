@@ -19,6 +19,10 @@ async def cb_check_subscription(callback: CallbackQuery) -> None:
             # User is subscribed
             await callback.answer("✅ Подписка подтверждена! Добро пожаловать!", show_alert=True)
 
+            # Get user subscription tier for menu
+            from bot.services.subscription import get_subscription
+            subscription = await get_subscription(user_id)
+
             # Show main menu
             from bot.keyboards.inline import main_menu_keyboard
 
@@ -30,7 +34,7 @@ async def cb_check_subscription(callback: CallbackQuery) -> None:
 
             await callback.message.edit_text(
                 text,
-                reply_markup=main_menu_keyboard(),
+                reply_markup=main_menu_keyboard(subscription.tier),
                 parse_mode="HTML"
             )
         else:

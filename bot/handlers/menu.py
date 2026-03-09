@@ -3,7 +3,7 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
-from bot.keyboards.inline import financial_menu_keyboard, traffic_menu_keyboard, main_menu_keyboard, features_menu_keyboard
+from bot.keyboards.inline import financial_menu_keyboard, traffic_menu_keyboard, main_menu_keyboard, features_menu_keyboard, profile_menu_keyboard
 from bot.services import financial as fin_service
 from bot.services import traffic as traffic_service
 from bot.services.yandex_api import get_cached_coefficients
@@ -592,4 +592,58 @@ async def cb_leaderboard_menu(callback: CallbackQuery):
     ])
 
     await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
+    await callback.answer()
+
+
+@router.callback_query(F.data == "menu:profile")
+async def cb_profile_menu(callback: CallbackQuery):
+    """Show profile/cabinet menu with personal features."""
+    user_id = callback.from_user.id
+
+    # Get user info
+    from bot.services.subscription import get_subscription
+    subscription = await get_subscription(user_id)
+
+    text = (
+        "👤 <b>Мой кабинет</b>\n\n"
+        f"Подписка: <b>{subscription.tier.upper()}</b>\n\n"
+        "Управляйте своими финансами, достижениями и челленджами."
+    )
+
+    await callback.message.edit_text(
+        text,
+        parse_mode="HTML",
+        reply_markup=profile_menu_keyboard()
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "menu:where_to_go")
+async def cb_where_to_go(callback: CallbackQuery):
+    """Show 'Where to go' feature - request user location."""
+    from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
+
+    text = (
+        "🗺 <b>Куда ехать?</b>\n\n"
+        "Эта функция найдет ближайшую зону с высоким коэффициентом (≥ 1.3) "
+        "в радиусе 5 км от вас.\n\n"
+        "📍 Поделитесь своей геопозицией, чтобы начать поиск."
+    )
+
+    # Create keyboard with location request button
+    location_button = KeyboardButton(
+        text="📍 Поделиться геопозицией",
+        request_location=True
+    )
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=[[location_button]],
+        resize_keyboard=True,
+        one_time_keyboard=True
+    )
+
+    await callback.message.answer(
+        text,
+        parse_mode="HTML",
+        reply_markup=keyboard
+    )
     await callback.answer()

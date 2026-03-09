@@ -30457,3 +30457,32 @@ aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: messa
 2026-03-04 21:10:02,909 [INFO] bot.services.yandex_api: Found surge 1.73 for tariff business
 2026-03-04 21:10:18,181 [INFO] bot.services.yandex_api: Found surge 1.12 for tariff econom
 2026-03-04 21:10:19,346 [INFO] bot.services.yandex_api: Found surge 1.71 for tariff econom
+2026-03-08 23:12:04,647 [INFO] __main__: Database initialized
+2026-03-08 23:12:04,648 [WARNING] bot.services.payment: YooKassa credentials not configured
+2026-03-08 23:12:05,051 [INFO] __main__: Initial data fetch scheduled in background
+2026-03-08 23:12:05,060 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-08 23:12:05,061 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-08 23:12:05,061 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-08 23:12:05,061 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-08 23:12:05,061 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-08 23:12:05,062 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-08 23:12:05,062 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-08 23:12:05,062 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-08 23:12:05,064 [INFO] apscheduler.scheduler: Added job "fetch_all_coefficients" to job store "default"
+2026-03-08 23:12:05,064 [INFO] apscheduler.scheduler: Added job "collect_and_store_coefficients" to job store "default"
+2026-03-08 23:12:05,064 [INFO] apscheduler.scheduler: Added job "check_and_notify" to job store "default"
+2026-03-08 23:12:05,066 [INFO] apscheduler.scheduler: Added job "check_geo_alerts" to job store "default"
+2026-03-08 23:12:05,067 [INFO] apscheduler.scheduler: Added job "check_live_location_expiration" to job store "default"
+2026-03-08 23:12:05,067 [INFO] apscheduler.scheduler: Added job "check_and_notify_events" to job store "default"
+2026-03-08 23:12:05,067 [INFO] apscheduler.scheduler: Added job "fetch_and_store_events" to job store "default"
+2026-03-08 23:12:05,067 [INFO] apscheduler.scheduler: Added job "process_subscription_renewals" to job store "default"
+2026-03-08 23:12:05,068 [INFO] apscheduler.scheduler: Scheduler started
+2026-03-08 23:12:05,068 [INFO] __main__: Scheduler started (interval=480s)
+2026-03-08 23:12:05,070 [INFO] __main__: Starting initial coefficient fetch...
+2026-03-08 23:12:05,074 [INFO] __main__: Web server started on port 8080
+2026-03-08 23:12:05,076 [INFO] __main__: Bot starting polling...
+2026-03-08 23:12:05,077 [INFO] aiogram.dispatcher: Start polling
+2026-03-08 23:12:05,419 [INFO] aiogram.dispatcher: Run polling for bot @KefPulse_bot id=7845157915 - 'KefPulse'
+2026-03-08 23:12:05,658 [INFO] bot.services.yandex_api: Found surge 1.96 for tariff econom
+2026-03-08 23:12:09,527 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-08 23:12:09,527 [WARNING] aiogram.dispatcher: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7845157915)
