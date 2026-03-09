@@ -15,75 +15,76 @@ router = Router()
 
 @router.message(F.location)
 async def handle_location(message: Message):
-    """Handle location sharing from user (both initial and live updates)."""
+    """Handle location sharing from user (both one-time and live updates)."""
     location = message.location
     user_id = message.from_user.id
 
     # Check if this is a live location update
     is_live = location.live_period is not None if hasattr(location, 'live_period') else False
 
-    # Check if this is for "where to go" feature by looking for cached surge data
-    from bot.services.yandex_api import get_cached_coefficients, generate_yandex_navigator_link, generate_yandex_maps_link
-    from bot.services.zones import find_nearest_high_coefficient_zone
+    if not is_live:
+        # ONE-TIME LOCATION: "Куда ехать?" feature
+        # Search for high coefficient zones within 10 km, don't save to database
+        from bot.services.yandex_api import get_cached_coefficients, generate_yandex_navigator_link, generate_yandex_maps_link
+        from bot.services.zones import find_nearest_high_coefficient_zone
 
-    surge_data = get_cached_coefficients()
+        surge_data = get_cached_coefficients()
 
-    # If we have surge data and this is not a live location, check for "where to go"
-    if surge_data and not is_live:
-        # Try to find a high coefficient zone
-        zone_result = find_nearest_high_coefficient_zone(
-            user_lat=location.latitude,
-            user_lon=location.longitude,
-            surge_data=surge_data,
-            min_coefficient=1.3,
-            max_distance_km=5.0,
-            tariff="econom"
-        )
-
-        if zone_result:
-            # Found a zone! Show navigation options
-            navigator_link = generate_yandex_navigator_link(
-                zone_result.zone.lat,
-                zone_result.zone.lon
-            )
-            maps_link = generate_yandex_maps_link(
-                zone_result.zone.lat,
-                zone_result.zone.lon
+        if surge_data:
+            # Try to find a high coefficient zone within 10 km
+            zone_result = find_nearest_high_coefficient_zone(
+                user_lat=location.latitude,
+                user_lon=location.longitude,
+                surge_data=surge_data,
+                min_coefficient=1.3,
+                max_distance_km=10.0,  # 10 km for "where to go"
+                tariff="econom"
             )
 
-            keyboard = InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="🚗 Яндекс Навигатор", url=navigator_link)],
-                [InlineKeyboardButton(text="🗺 Яндекс Карты", url=maps_link)],
-                [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")]
-            ])
+            if zone_result:
+                # Found a zone! Show navigation options
+                navigator_link = generate_yandex_navigator_link(
+                    zone_result.zone.lat,
+                    zone_result.zone.lon
+                )
+                maps_link = generate_yandex_maps_link(
+                    zone_result.zone.lat,
+                    zone_result.zone.lon
+                )
 
-            await message.answer(
-                f"✅ <b>Найдена зона с высоким коэффициентом!</b>\n\n"
-                f"📍 <b>Зона:</b> {zone_result.zone.name}\n"
-                f"💰 <b>Коэффициент:</b> {zone_result.coefficient:.2f}x\n"
-                f"📏 <b>Расстояние:</b> {zone_result.distance_km:.1f} км\n\n"
-                f"Выберите приложение для навигации:",
-                parse_mode="HTML",
-                reply_markup=keyboard
-            )
-            return
-        else:
-            # No zone found
-            keyboard = InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")]
-            ])
+                keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                    [InlineKeyboardButton(text="🚗 Яндекс Навигатор", url=navigator_link)],
+                    [InlineKeyboardButton(text="🗺 Яндекс Карты", url=maps_link)],
+                    [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")]
+                ])
 
-            await message.answer(
-                "😔 <b>Высокий коэффициент не найден</b>\n\n"
-                "К сожалению, в радиусе 5 км от вас нет зон "
-                "с коэффициентом ≥ 1.3.\n\n"
-                "💡 <i>Попробуйте позже или переместитесь в другой район</i>",
-                parse_mode="HTML",
-                reply_markup=keyboard
-            )
-            return
+                await message.answer(
+                    f"✅ <b>Найдена зона с высоким коэффициентом!</b>\n\n"
+                    f"📍 <b>Зона:</b> {zone_result.zone.name}\n"
+                    f"💰 <b>Коэффициент:</b> {zone_result.coefficient:.2f}x\n"
+                    f"📏 <b>Расстояние:</b> {zone_result.distance_km:.1f} км\n\n"
+                    f"Выберите приложение для навигации:",
+                    parse_mode="HTML",
+                    reply_markup=keyboard
+                )
+                return
+            else:
+                # No zone found within 10 km
+                keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                    [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")]
+                ])
 
-    # Update user's location in database
+                await message.answer(
+                    "😔 <b>Высокий коэффициент не найден</b>\n\n"
+                    "К сожалению, в радиусе 10 км от вас нет зон "
+                    "с коэффициентом ≥ 1.3.\n\n"
+                    "💡 <i>Попробуйте позже или переместитесь в другой район</i>",
+                    parse_mode="HTML",
+                    reply_markup=keyboard
+                )
+                return
+
+    # LIVE LOCATION: Save to database for geo alerts feature
     async with session_factory() as session:
         result = await session.execute(select(User).where(User.telegram_id == user_id))
         user = result.scalar_one_or_none()
@@ -188,7 +189,7 @@ async def cb_geo_alerts_menu(callback: CallbackQuery):
             "📍 <b>ГЕОАЛЕРТЫ</b>\n\n"
             "⭐ Эта функция доступна только на тарифах <b>Pro</b>, <b>Premium</b> и <b>Elite</b>.\n\n"
             "Геоалерты автоматически находят высокие коэффициенты рядом с вами:\n"
-            "  • Отслеживание в радиусе 7 км\n"
+            "  • Отслеживание в радиусе <b>5 км</b>\n"
             "  • Проверка каждые 2 минуты\n"
             "  • Навигация одним кликом\n"
             "  • Уведомления о выгодных зонах поблизости\n\n"
@@ -225,11 +226,11 @@ async def cb_geo_alerts_menu(callback: CallbackQuery):
             f"📍 <b>ГЕОАЛЕРТЫ</b>\n\n"
             f"Статус: {status_emoji} <b>{status_text}</b>\n"
             f"Локация: {location_str}\n"
-            f"Радиус поиска: 7 км\n"
+            f"Радиус поиска: <b>5 км</b>\n"
             f"Порог коэффициента: x{user.surge_threshold}\n\n"
             f"💡 <b>Как это работает:</b>\n"
             f"• Бот проверяет зоны с высоким кэфом каждые 2 минуты\n"
-            f"• Если зона в радиусе 7 км — вы получите алерт\n"
+            f"• Если зона в радиусе <b>5 км</b> — вы получите алерт\n"
             f"• Кнопка 'Поехали' откроет навигацию в Яндекс.Картах\n\n"
             f"⏱ Live Location работает 8 часов. За 30 минут до окончания придет напоминание."
         )
@@ -283,7 +284,7 @@ async def cb_enable_geo_alerts(callback: CallbackQuery):
         "🎯 <b>Зачем это нужно?</b>\n"
         "Бот будет автоматически находить высокие коэффициенты рядом с вами и присылать алерты с кнопкой навигации.\n\n"
         "💰 <b>Как это работает:</b>\n"
-        "• Каждые 2 минуты бот проверяет зоны в радиусе 7 км от вас\n"
+        "• Каждые 2 минуты бот проверяет зоны в радиусе <b>5 км</b> от вас\n"
         "• Если коэффициент выше порога — вы получаете уведомление\n"
         "• Нажимаете 'Поехали' → открывается маршрут в Яндекс.Картах\n\n"
         "⏱ <b>Длительность:</b>\n"
@@ -319,7 +320,8 @@ async def cb_geo_alerts_threshold(callback: CallbackQuery):
         text = (
             "⚙️ <b>ПОРОГ КОЭФФИЦИЕНТА</b>\n\n"
             f"Текущий порог: <b>x{user.surge_threshold}</b>\n\n"
-            "Выберите минимальный коэффициент для получения геоалертов:"
+            "Выберите минимальный коэффициент для получения геоалертов:\n\n"
+            "💡 Геоалерты работают в радиусе <b>5 км</b> от вашей позиции."
         )
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -482,7 +484,7 @@ async def cb_update_location(callback: CallbackQuery):
     instruction_text = (
         "📍 <b>ОБНОВЛЕНИЕ LIVE LOCATION</b>\n\n"
         "Включите Live Location на 8 часов, чтобы получать актуальные алерты о высоких коэффициентах рядом с вами.\n\n"
-        "💡 Бот будет автоматически отслеживать ваше перемещение и присылать уведомления, когда рядом появится выгодная зона."
+        "💡 Бот будет автоматически отслеживать ваше перемещение и присылать уведомления, когда рядом (в радиусе <b>5 км</b>) появится выгодная зона."
     )
 
     keyboard = ReplyKeyboardMarkup(

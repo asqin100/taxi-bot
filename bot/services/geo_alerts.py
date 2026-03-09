@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 
 # Alert cooldown: don't send same zone alert more than once per 15 minutes
 ALERT_COOLDOWN_MINUTES = 15
-# Distance threshold: alert if high surge zone is within 7 km
-DISTANCE_THRESHOLD_KM = 7.0
+# Distance threshold: alert if high surge zone is within 5 km
+DISTANCE_THRESHOLD_KM = 5.0
 
 # Track last alert time per user per zone
 _last_alerts: dict[tuple[int, str], datetime] = {}
