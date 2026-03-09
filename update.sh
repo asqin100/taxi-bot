@@ -6,18 +6,25 @@ echo "🔄 Обновление бота..."
 # Получить изменения
 git pull origin main
 
-# Установить/обновить зависимости
+# Создать виртуальное окружение если его нет
+if [ ! -d "venv" ]; then
+    echo "📦 Создание виртуального окружения..."
+    python3 -m venv venv
+fi
+
+# Активировать виртуальное окружение и установить зависимости
 echo "📦 Установка зависимостей..."
-pip3 install -r requirements.txt --quiet
+source venv/bin/activate
+pip install -r requirements.txt --quiet
 
 # Остановить старый процесс
 echo "⏹ Остановка бота..."
 pkill -9 -f "python.*bot.main"
 sleep 2
 
-# Запустить новый процесс
+# Запустить новый процесс с виртуальным окружением
 echo "▶️ Запуск бота..."
-nohup python3 -m bot.main > bot.log 2>&1 &
+nohup venv/bin/python -m bot.main > bot.log 2>&1 &
 
 sleep 3
 
