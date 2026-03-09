@@ -6,6 +6,10 @@ echo "🔄 Обновление бота..."
 # Получить изменения
 git pull origin main
 
+# Установить/обновить зависимости
+echo "📦 Установка зависимостей..."
+pip3 install -r requirements.txt --quiet
+
 # Остановить старый процесс
 echo "⏹ Остановка бота..."
 pkill -9 -f "python.*bot.main"
