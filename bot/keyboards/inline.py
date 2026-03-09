@@ -149,10 +149,8 @@ def financial_menu_keyboard(has_active_shift: bool = False) -> InlineKeyboardMar
     buttons.extend([
         [InlineKeyboardButton(text="📊 Статистика", callback_data="financial:stats")],
         [InlineKeyboardButton(text="📥 Экспорт в CSV", callback_data="menu_export")],
-        [
-            InlineKeyboardButton(text="💸 Расходы", callback_data="financial:expenses"),
-            InlineKeyboardButton(text="🎯 Цели", callback_data="financial:goals"),
-        ],
+        [InlineKeyboardButton(text="💸 Расходы", callback_data="financial:expenses")],
+        [InlineKeyboardButton(text="🎯 Цели", callback_data="financial:goals")],
         [InlineKeyboardButton(text="🚗 Мой тариф", callback_data="financial:tariff")],
         BACK_BUTTON,
     ])
