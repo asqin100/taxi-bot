@@ -598,7 +598,13 @@ async def admin_broadcast(request: web.Request) -> web.Response:
         # Send message to all users
         for user_id in user_ids:
             try:
-                await bot.send_message(user_id, message, parse_mode="HTML")
+                # Add main menu button
+                from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+                keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                    [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+                ])
+
+                await bot.send_message(user_id, message, parse_mode="HTML", reply_markup=keyboard)
                 success_count += 1
             except Exception as e:
                 logger.warning(f"Failed to send broadcast to {user_id}: {e}")
