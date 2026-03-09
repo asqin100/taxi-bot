@@ -143,7 +143,7 @@ async def cb_pay_with_balance(callback: CallbackQuery):
         keyboard_buttons.append([
             InlineKeyboardButton(
                 text=f"⭐ Pro — {pro_price}₽ (с баланса)",
-                callback_data="referral:buy_balance:pro"
+                callback_data="subscription:pay_balance:pro"
             )
         ])
 
@@ -152,7 +152,7 @@ async def cb_pay_with_balance(callback: CallbackQuery):
         keyboard_buttons.append([
             InlineKeyboardButton(
                 text=f"💎 Premium — {premium_price}₽ (с баланса)",
-                callback_data="referral:buy_balance:premium"
+                callback_data="subscription:pay_balance:premium"
             )
         ])
 
@@ -161,7 +161,7 @@ async def cb_pay_with_balance(callback: CallbackQuery):
         keyboard_buttons.append([
             InlineKeyboardButton(
                 text=f"👑 Elite — {elite_price}₽ (с баланса)",
-                callback_data="referral:buy_balance:elite"
+                callback_data="subscription:pay_balance:elite"
             )
         ])
 
@@ -184,74 +184,5 @@ async def cb_pay_with_balance(callback: CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(F.data.startswith("referral:buy_balance:"))
-async def cb_buy_with_balance(callback: CallbackQuery):
-    """Purchase subscription using referral balance."""
-    tier_str = callback.data.split(":")[-1]
-    user_id = callback.from_user.id
-
-    from bot.models.subscription import SubscriptionTier, SUBSCRIPTION_FEATURES
-    from bot.services.subscription import upgrade_subscription
-
-    # Map string to enum
-    tier_map = {
-        "pro": SubscriptionTier.PRO,
-        "premium": SubscriptionTier.PREMIUM,
-        "elite": SubscriptionTier.ELITE
-    }
-    tier = tier_map.get(tier_str)
-
-    if not tier:
-        await callback.answer("❌ Неверный тариф", show_alert=True)
-        return
-
-    # Get price
-    price = SUBSCRIPTION_FEATURES[tier]["price"]
-
-    # Check balance
-    balance = await ref_service.get_balance(user_id)
-    if balance < price:
-        await callback.answer(
-            f"❌ Недостаточно средств!\nНужно: {price}₽\nДоступно: {balance:.2f}₽",
-            show_alert=True
-        )
-        return
-
-    # Withdraw from balance
-    success = await ref_service.withdraw_from_balance(user_id, price)
-
-    if not success:
-        await callback.answer("❌ Ошибка списания средств", show_alert=True)
-        return
-
-    # Upgrade subscription
-    subscription = await upgrade_subscription(
-        user_id=user_id,
-        tier=tier,
-        duration_days=30,
-        payment_method="referral_balance"
-    )
-
-    tier_names = {
-        SubscriptionTier.PRO: "⭐ Pro",
-        SubscriptionTier.PREMIUM: "💎 Premium",
-        SubscriptionTier.ELITE: "👑 Elite"
-    }
-
-    text = (
-        f"✅ <b>ПОДПИСКА АКТИВИРОВАНА!</b>\n\n"
-        f"Тариф: {tier_names[tier]}\n"
-        f"Оплачено: {price}₽ с реферального баланса\n"
-        f"Действует до: {subscription.expires_at.strftime('%d.%m.%Y')}\n\n"
-        f"Остаток на балансе: {balance - price:.2f}₽\n\n"
-        f"Спасибо за использование бота! 🎉"
-    )
-
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="📊 Мой тариф", callback_data="menu:subscription")],
-        [InlineKeyboardButton(text="🎁 Реферальная программа", callback_data="menu:referral")],
-        [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
-    ])
-
-    await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
-    await callback.answer("✅ Подписка успешно активирована!", show_alert=True)
+# Removed duplicate handler - now using subscription:pay_balance: from subscription.py
+# The referral program now redirects to the unified payment handler
