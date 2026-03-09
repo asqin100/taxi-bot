@@ -120,6 +120,7 @@ def main_menu_keyboard(tier: str = "free") -> InlineKeyboardMarkup:
     traffic_button_text = "🚦 Пробки" if has_traffic_access else "🚦 Пробки 🔒 Pro"
 
     buttons.extend([
+        [InlineKeyboardButton(text="🗺 Куда ехать?", callback_data="menu:where_to_go")],
         [InlineKeyboardButton(text="⚡ Все функции", callback_data="menu:features")],
         [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
         [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
