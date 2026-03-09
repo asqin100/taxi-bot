@@ -123,28 +123,15 @@ def main_menu_keyboard(tier: str = "free") -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="⚡ Все функции", callback_data="menu:features")],
         [InlineKeyboardButton(text="🏆 ТОП-5 зон", callback_data="cmd:top")],
         [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
-        # [InlineKeyboardButton(text="🗺 Горячие точки", callback_data="menu:hotspots")],
-        [
-            InlineKeyboardButton(text=traffic_button_text, callback_data="menu:traffic"),
-            InlineKeyboardButton(text="📍 Геоалерты", callback_data="menu:geo_alerts"),
-        ],
-        [
-            InlineKeyboardButton(text="🔔 Уведомления", callback_data="cmd:notify"),
-        ],
-        [
-            InlineKeyboardButton(text="👤 Мой кабинет", callback_data="menu:profile"),
-        ],
-        [
-            InlineKeyboardButton(text="⭐ Подписка", callback_data="menu:subscription"),
-            InlineKeyboardButton(text="🎁 Промокод", callback_data="subscription:promo"),
-        ],
-        [
-            InlineKeyboardButton(text="💰 Реферальная программа", callback_data="menu:referral"),
-        ],
-        [
-            InlineKeyboardButton(text="⚙️ Настройки", callback_data="cmd:settings"),
-            InlineKeyboardButton(text="❓ Справка", callback_data="help:main"),
-        ],
+        [InlineKeyboardButton(text=traffic_button_text, callback_data="menu:traffic")],
+        [InlineKeyboardButton(text="📍 Геоалерты", callback_data="menu:geo_alerts")],
+        [InlineKeyboardButton(text="🔔 Уведомления", callback_data="cmd:notify")],
+        [InlineKeyboardButton(text="👤 Мой кабинет", callback_data="menu:profile")],
+        [InlineKeyboardButton(text="⭐ Подписка", callback_data="menu:subscription")],
+        [InlineKeyboardButton(text="🎁 Промокод", callback_data="subscription:promo")],
+        [InlineKeyboardButton(text="💰 Реферальная программа", callback_data="menu:referral")],
+        [InlineKeyboardButton(text="⚙️ Настройки", callback_data="cmd:settings")],
+        [InlineKeyboardButton(text="❓ Справка", callback_data="help:main")],
     ])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
