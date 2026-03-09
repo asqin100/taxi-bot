@@ -559,8 +559,8 @@ async def cb_traffic_ttk(callback: CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(F.data == "menu:leaderboard")
-async def cb_leaderboard_menu(callback: CallbackQuery):
+@router.callback_query(F.data == "menu:game_leaderboard")
+async def cb_game_leaderboard_menu(callback: CallbackQuery):
     """Show game leaderboard."""
     from bot.services.leaderboard import get_game_leaderboard, get_user_game_stats, format_game_leaderboard
     from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
