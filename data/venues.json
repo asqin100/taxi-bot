@@ -37,6 +37,76 @@
 
     {"name": "Парк Горького", "aliases": ["gorky park", "горький", "парк горького"], "zone_id": "south", "lat": 55.7308, "lon": 37.6014},
     {"name": "Музеон", "aliases": ["muzeon", "музеон"], "zone_id": "south", "lat": 55.7353, "lon": 37.6069},
-    {"name": "Аптекарский Огород", "aliases": ["aptekarsky ogorod", "аптекарский огород", "ботанический сад"], "zone_id": "center", "lat": 55.7697, "lon": 37.6322}
+    {"name": "Аптекарский Огород", "aliases": ["aptekarsky ogorod", "аптекарский огород", "ботанический сад"], "zone_id": "center", "lat": 55.7697, "lon": 37.6322},
+
+    {"name": "Volta", "aliases": ["вольта", "клуб вольта"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Aglomerat", "aliases": ["агломерат", "клуб агломерат"], "zone_id": "east", "lat": 55.7403, "lon": 37.6539},
+    {"name": "Театр Современник", "aliases": ["sovremennik", "современник"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Ленком", "aliases": ["lenkom", "ленком", "театр ленком"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Театр Вахтангова", "aliases": ["vakhtangov", "вахтангов", "вахтанговский театр"], "zone_id": "arbat", "lat": 55.7500, "lon": 37.5833},
+    {"name": "МТЮЗ", "aliases": ["mtyuz", "мтюз", "театр юного зрителя"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Театр Сатиры", "aliases": ["satire theatre", "сатиры", "театр сатиры"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+
+    {"name": "Мариинский Театр", "aliases": ["mariinsky", "мариинский", "мариинка"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Театр Наций", "aliases": ["theatre of nations", "наций", "театр наций"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Гоголь-Центр", "aliases": ["gogol center", "гоголь центр", "гоголь-центр"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Театр Маяковского", "aliases": ["mayakovsky theatre", "маяковского", "маяковский"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Театр Моссовета", "aliases": ["mossovet theatre", "моссовета", "моссовет"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+
+    {"name": "Клуб Космонавт", "aliases": ["kosmonavt", "космонавт"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Клуб Мумий Тролль", "aliases": ["mumiy troll", "мумий тролль", "мумий тролль бар"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Клуб Gipsy", "aliases": ["gipsy", "гипси", "джипси"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Клуб Plan B", "aliases": ["plan b", "план б", "план b"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Клуб Китайский Летчик Джао Да", "aliases": ["jao da", "джао да", "китайский летчик"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+
+    {"name": "Парк Зарядье", "aliases": ["zaryadye park", "парк зарядье"], "zone_id": "center", "lat": 55.7514, "lon": 37.6289},
+    {"name": "Коломенское", "aliases": ["kolomenskoye", "коломенское", "парк коломенское"], "zone_id": "south", "lat": 55.6667, "lon": 37.6667},
+    {"name": "Царицыно", "aliases": ["tsaritsyno", "царицыно", "парк царицыно"], "zone_id": "south", "lat": 55.6167, "lon": 37.6833},
+    {"name": "Измайловский Парк", "aliases": ["izmailovo", "измайлово", "измайловский парк"], "zone_id": "east", "lat": 55.7903, "lon": 37.7903},
+
+    {"name": "Москва-Сити", "aliases": ["moscow city", "москва сити", "сити"], "zone_id": "west", "lat": 55.7494, "lon": 37.5378},
+    {"name": "Artplay", "aliases": ["артплей", "арт плей"], "zone_id": "east", "lat": 55.7403, "lon": 37.6539},
+    {"name": "Винзавод", "aliases": ["winzavod", "винзавод", "центр винзавод"], "zone_id": "east", "lat": 55.7403, "lon": 37.6539},
+    {"name": "Флакон", "aliases": ["flacon", "флакон", "дизайн завод флакон"], "zone_id": "north", "lat": 55.7917, "lon": 37.5594},
+    {"name": "Красный Октябрь", "aliases": ["red october", "красный октябрь"], "zone_id": "center", "lat": 55.7353, "lon": 37.6069},
+
+    {"name": "Москвариум", "aliases": ["moskvarium", "москвариум"], "zone_id": "northeast", "lat": 55.8297, "lon": 37.6278},
+    {"name": "Цирк на Цветном", "aliases": ["circus", "цирк", "цветной бульвар"], "zone_id": "center", "lat": 55.7708, "lon": 37.6197},
+    {"name": "Цирк на Вернадского", "aliases": ["vernadsky circus", "цирк вернадского", "большой московский цирк"], "zone_id": "southwest", "lat": 55.6778, "lon": 37.5556},
+
+    {"name": "Дворец Спорта Динамо", "aliases": ["dynamo palace", "дворец динамо"], "zone_id": "north", "lat": 55.7917, "lon": 37.5594},
+    {"name": "СК Олимпийский", "aliases": ["olympic sports complex", "ск олимпийский"], "zone_id": "center", "lat": 55.7797, "lon": 37.6197},
+    {"name": "Дворец Гимнастики Ирины Винер", "aliases": ["viner palace", "дворец винер", "гимнастика"], "zone_id": "south", "lat": 55.7153, "lon": 37.5531},
+
+    {"name": "Клуб Театръ", "aliases": ["teatr club", "театръ", "клуб театръ"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Клуб Powerhouse", "aliases": ["powerhouse", "пауэрхаус"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Клуб Mutabor", "aliases": ["mutabor", "мутабор"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Клуб Propaganda", "aliases": ["propaganda", "пропаганда"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+
+    {"name": "Концертный Зал Мир", "aliases": ["mir hall", "мир", "зал мир"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Концертный Зал Россия", "aliases": ["russia hall", "россия", "зал россия"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Дом Музыки", "aliases": ["house of music", "дом музыки", "московский дом музыки"], "zone_id": "south", "lat": 55.7308, "lon": 37.6014},
+    {"name": "Концертный Зал Чайковского", "aliases": ["tchaikovsky hall", "чайковского", "зал чайковского"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+
+    {"name": "Стадион Торпедо", "aliases": ["torpedo stadium", "торпедо"], "zone_id": "east", "lat": 55.7403, "lon": 37.6539},
+    {"name": "Стадион Химки", "aliases": ["khimki stadium", "химки", "арена химки"], "zone_id": "northwest", "lat": 55.8900, "lon": 37.4400},
+    {"name": "Ледовый Дворец ВТБ", "aliases": ["vtb ice palace", "ледовый втб"], "zone_id": "north", "lat": 55.7917, "lon": 37.5594},
+
+    {"name": "Театр Ермоловой", "aliases": ["ermolova theatre", "ермоловой", "театр ермоловой"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Театр Пушкина", "aliases": ["pushkin theatre", "пушкина", "театр пушкина"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Малый Театр", "aliases": ["maly theatre", "малый", "малый театр"], "zone_id": "kremlin", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Театр Станиславского", "aliases": ["stanislavsky theatre", "станиславского", "станиславский"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+
+    {"name": "Клуб Дом", "aliases": ["dom club", "дом", "клуб дом"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Клуб Руки Вверх Бар", "aliases": ["ruki vverh bar", "руки вверх бар"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+    {"name": "Клуб Lookin Rooms", "aliases": ["lookin rooms", "лукин румс"], "zone_id": "center", "lat": 55.7558, "lon": 37.6173},
+
+    {"name": "Парк Победы", "aliases": ["victory park", "победы", "парк победы"], "zone_id": "west", "lat": 55.7317, "lon": 37.5083},
+    {"name": "Воробьевы Горы", "aliases": ["sparrow hills", "воробьевы горы", "воробьёвы горы"], "zone_id": "southwest", "lat": 55.7097, "lon": 37.5422},
+    {"name": "Нескучный Сад", "aliases": ["neskuchny garden", "нескучный сад"], "zone_id": "south", "lat": 55.7186, "lon": 37.5989},
+
+    {"name": "Экспофорум", "aliases": ["expoforum", "экспофорум"], "zone_id": "west", "lat": 55.7531, "lon": 37.5428},
+    {"name": "Гостиный Двор", "aliases": ["gostiny dvor", "гостиный двор"], "zone_id": "center", "lat": 55.7603, "lon": 37.6186},
+    {"name": "Крокус Экспо", "aliases": ["crocus expo", "крокус экспо"], "zone_id": "krasnogorsk", "lat": 55.8233, "lon": 37.4108}
   ]
 }
