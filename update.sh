@@ -17,6 +17,10 @@ echo "📦 Установка зависимостей..."
 source venv/bin/activate
 pip install -r requirements.txt --quiet
 
+# Применить миграции базы данных
+echo "🗄️ Обновление базы данных..."
+venv/bin/alembic upgrade head
+
 # Остановить старый процесс
 echo "⏹ Остановка бота..."
 pkill -9 -f "python.*bot.main"
