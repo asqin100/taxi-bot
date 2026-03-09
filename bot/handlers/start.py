@@ -22,77 +22,117 @@ async def cmd_start(message: Message):
         is_new_user = False
         referral_code = None
 
+        logger.info(f"[START] Processing /start for user {user_id}")
+
         # Extract referral code from deep link
         if message.text and len(message.text.split()) > 1:
             referral_code = message.text.split()[1]
 
-        async with session_factory() as session:
-            result = await session.execute(
-                select(User).where(User.telegram_id == user_id)
-            )
-            user = result.scalar_one_or_none()
-            if not user:
-                is_new_user = True
-                # Generate referral code for new user
-                from bot.services.referral import generate_referral_code
-
-                # Ensure unique code
-                while True:
-                    code = generate_referral_code()
-                    existing = await session.execute(
-                        select(User).where(User.referral_code == code)
-                    )
-                    if not existing.scalar_one_or_none():
-                        break
-
-                user = User(
-                    telegram_id=user_id,
-                    username=message.from_user.username,
-                    referral_code=code,
+        try:
+            logger.info(f"[START] Creating/fetching user {user_id}")
+            async with session_factory() as session:
+                result = await session.execute(
+                    select(User).where(User.telegram_id == user_id)
                 )
-                session.add(user)
-                await session.commit()
+                user = result.scalar_one_or_none()
+                if not user:
+                    is_new_user = True
+                    # Generate referral code for new user
+                    from bot.services.referral import generate_referral_code
+
+                    # Ensure unique code
+                    while True:
+                        code = generate_referral_code()
+                        existing = await session.execute(
+                            select(User).where(User.referral_code == code)
+                        )
+                        if not existing.scalar_one_or_none():
+                            break
+
+                    user = User(
+                        telegram_id=user_id,
+                        username=message.from_user.username,
+                        referral_code=code,
+                    )
+                    session.add(user)
+                    await session.commit()
+                    logger.info(f"[START] Created new user {user_id}")
+        except Exception as e:
+            logger.error(f"[START] Error creating user: {e}", exc_info=True)
+            raise
 
         # Process referral code for new users
         if is_new_user and referral_code:
-            from bot.services.referral import register_referral
-            success = await register_referral(user_id, referral_code)
-            if success:
-                await message.answer(
-                    "🎉 Вы зарегистрированы по реферальной ссылке!\n"
-                    "Ваш реферер получит бонусы за ваши покупки."
-                )
+            try:
+                logger.info(f"[START] Processing referral code for user {user_id}")
+                from bot.services.referral import register_referral
+                success = await register_referral(user_id, referral_code)
+                if success:
+                    await message.answer(
+                        "🎉 Вы зарегистрированы по реферальной ссылке!\n"
+                        "Ваш реферер получит бонусы за ваши покупки."
+                    )
+            except Exception as e:
+                logger.error(f"[START] Error processing referral: {e}", exc_info=True)
+                # Continue even if referral fails
 
         # Get user subscription tier for menu
-        from bot.services.subscription import get_subscription
-        subscription = await get_subscription(user_id)
+        try:
+            logger.info(f"[START] Getting subscription for user {user_id}")
+            from bot.services.subscription import get_subscription
+            subscription = await get_subscription(user_id)
+            logger.info(f"[START] Got subscription: tier={subscription.tier}")
+        except Exception as e:
+            logger.error(f"[START] Error getting subscription: {e}", exc_info=True)
+            raise
 
         # Check if user should see onboarding
-        if await should_show_onboarding(user_id):
+        try:
+            logger.info(f"[START] Checking onboarding for user {user_id}")
+            show_onboarding = await should_show_onboarding(user_id)
+            logger.info(f"[START] Show onboarding: {show_onboarding}")
+        except Exception as e:
+            logger.error(f"[START] Error checking onboarding: {e}", exc_info=True)
+            raise
+
+        if show_onboarding:
             # Show onboarding for new users
-            step_data = get_onboarding_step("welcome")
-            text = f"{step_data['title']}\n\n{step_data['text']}"
+            try:
+                logger.info(f"[START] Showing onboarding to user {user_id}")
+                step_data = get_onboarding_step("welcome")
+                text = f"{step_data['title']}\n\n{step_data['text']}"
 
-            keyboard = InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="Начать обучение 🚀", callback_data="onboarding:coefficients")],
-                [InlineKeyboardButton(text="Пропустить", callback_data="onboarding:skip")],
-            ])
+                keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                    [InlineKeyboardButton(text="Начать обучение 🚀", callback_data="onboarding:coefficients")],
+                    [InlineKeyboardButton(text="Пропустить", callback_data="onboarding:skip")],
+                ])
 
-            await send_and_cleanup(message, text, reply_markup=keyboard, parse_mode="HTML")
+                await send_and_cleanup(message, text, reply_markup=keyboard, parse_mode="HTML")
+                logger.info(f"[START] Sent onboarding to user {user_id}")
+            except Exception as e:
+                logger.error(f"[START] Error showing onboarding: {e}", exc_info=True)
+                raise
         else:
             # Show regular welcome for returning users
-            await send_and_cleanup(
-                message,
-                "👋 С возвращением!\n\n"
-                "Используйте меню ниже для навигации.\n\n"
-                "💡 Новые функции:\n"
-                "🏆 Челленджи и рейтинг\n"
-                "🤖 AI-советник с персональными рекомендациями\n"
-                "📊 Прогноз пробок на час вперед",
-                reply_markup=main_menu_keyboard(subscription.tier),
-            )
+            try:
+                logger.info(f"[START] Showing main menu to user {user_id}")
+                await send_and_cleanup(
+                    message,
+                    "👋 С возвращением!\n\n"
+                    "Используйте меню ниже для навигации.\n\n"
+                    "💡 Новые функции:\n"
+                    "🏆 Челленджи и рейтинг\n"
+                    "🤖 AI-советник с персональными рекомендациями\n"
+                    "📊 Прогноз пробок на час вперед",
+                    reply_markup=main_menu_keyboard(subscription.tier),
+                )
+                logger.info(f"[START] Sent main menu to user {user_id}")
+            except Exception as e:
+                logger.error(f"[START] Error showing main menu: {e}", exc_info=True)
+                raise
+
     except Exception as e:
-        logger.error(f"Error in cmd_start for user {message.from_user.id}: {e}", exc_info=True)
+        logger.error(f"[START] FATAL ERROR for user {message.from_user.id}: {e}", exc_info=True)
         # Send a simple error message to user
         try:
             await message.answer("Произошла ошибка. Попробуйте позже или обратитесь в поддержку.")
