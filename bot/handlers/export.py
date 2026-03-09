@@ -102,9 +102,13 @@ async def handle_export(telegram_id: int, event) -> None:
         f"⚠️ Следующий экспорт будет доступен завтра"
     )
 
+    # Add main menu button
+    builder = InlineKeyboardBuilder()
+    builder.button(text="🏠 Главное меню", callback_data="cmd:menu")
+
     if is_callback:
-        await event.message.answer_document(file, caption=caption)
+        await event.message.answer_document(file, caption=caption, reply_markup=builder.as_markup())
         await event.message.delete()
         await event.answer()
     else:
-        await event.answer_document(file, caption=caption)
+        await event.answer_document(file, caption=caption, reply_markup=builder.as_markup())
