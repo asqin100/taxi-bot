@@ -43,9 +43,10 @@ async def send_pre_notification(bot: Bot, event):
 
     time_str = event.end_time.strftime("%H:%M")
 
-    # Get zone name
+    # Get zone info
     zones = get_zones()
-    zone_name = next((z.name for z in zones if z.id == event.zone_id), event.zone_id)
+    zone = next((z for z in zones if z.id == event.zone_id), None)
+    zone_name = zone.name if zone else event.zone_id
 
     text = (
         f"⏰ <b>Скоро закончится мероприятие!</b>\n\n"
@@ -55,7 +56,20 @@ async def send_pre_notification(bot: Bot, event):
         f"💡 Ожидается высокий спрос на такси!"
     )
 
-    await send_to_users_by_event_type(bot, text, event.event_type)
+    # Create navigation buttons if zone has coordinates
+    keyboard = None
+    if zone:
+        from bot.services.yandex_api import generate_yandex_navigator_link, generate_yandex_maps_link
+        navigator_link = generate_yandex_navigator_link(zone.lat, zone.lon)
+        maps_link = generate_yandex_maps_link(zone.lat, zone.lon)
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="🚗 Поехали (Навигатор)", url=navigator_link)],
+            [InlineKeyboardButton(text="🗺 Поехали (Карты)", url=maps_link)],
+            [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+        ])
+
+    await send_to_users_by_event_type(bot, text, event.event_type, keyboard)
     logger.info("Sent pre-notification for event: %s (type: %s)", event.name, event.event_type)
 
 
@@ -77,9 +91,10 @@ async def send_end_notification(bot: Bot, event):
     if zone_coeffs:
         max_coeff = max(c.coefficient for c in zone_coeffs)
 
-    # Get zone name
+    # Get zone info
     zones = get_zones()
-    zone_name = next((z.name for z in zones if z.id == event.zone_id), event.zone_id)
+    zone = next((z for z in zones if z.id == event.zone_id), None)
+    zone_name = zone.name if zone else event.zone_id
 
     coeff_emoji = "🔥" if max_coeff >= 2.0 else "📈" if max_coeff >= 1.5 else "📊"
 
@@ -91,11 +106,24 @@ async def send_end_notification(bot: Bot, event):
         f"💰 Самое время работать в этой зоне!"
     )
 
-    await send_to_users_by_event_type(bot, text, event.event_type)
+    # Create navigation buttons if zone has coordinates
+    keyboard = None
+    if zone:
+        from bot.services.yandex_api import generate_yandex_navigator_link, generate_yandex_maps_link
+        navigator_link = generate_yandex_navigator_link(zone.lat, zone.lon)
+        maps_link = generate_yandex_maps_link(zone.lat, zone.lon)
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="🚗 Поехали (Навигатор)", url=navigator_link)],
+            [InlineKeyboardButton(text="🗺 Поехали (Карты)", url=maps_link)],
+            [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+        ])
+
+    await send_to_users_by_event_type(bot, text, event.event_type, keyboard)
     logger.info("Sent end notification for event: %s (type: %s, coeff: %.2f)", event.name, event.event_type, max_coeff)
 
 
-async def send_to_users_by_event_type(bot: Bot, text: str, event_type: str):
+async def send_to_users_by_event_type(bot: Bot, text: str, event_type: str, keyboard: InlineKeyboardMarkup = None):
     """Send message to users who have notifications enabled for this event type."""
     async with session_factory() as session:
         stmt = select(User).where(User.event_notify_enabled == True)
@@ -114,10 +142,11 @@ async def send_to_users_by_event_type(bot: Bot, text: str, event_type: str):
             user_event_types = [t.strip() for t in user.event_types.split(",") if t.strip()]
 
             if event_type in user_event_types:
-                # Add main menu button
-                keyboard = InlineKeyboardMarkup(inline_keyboard=[
-                    [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
-                ])
+                # Use provided keyboard or create default one
+                if not keyboard:
+                    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                        [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
+                    ])
 
                 try:
                     await bot.send_message(user.telegram_id, text, parse_mode="HTML", reply_markup=keyboard)
