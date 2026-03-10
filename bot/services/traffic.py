@@ -106,13 +106,12 @@ async def get_moscow_traffic() -> Optional[TrafficData]:
     if settings.tomtom_api_key:
         try:
             # Multiple points across Moscow for better coverage
+            # Reduced to 4 strategic points to save API calls while maintaining accuracy
             moscow_points = [
-                (55.7558, 37.6173),  # Center
-                (55.7522, 37.6156),  # Kremlin area
+                (55.7558, 37.6173),  # Center (Kremlin area)
                 (55.7558, 37.5173),  # West
                 (55.7558, 37.7173),  # East
-                (55.8058, 37.6173),  # North
-                (55.7058, 37.6173),  # South
+                (55.8058, 37.6173),  # North (MKAD area)
             ]
 
             traffic_levels = []
