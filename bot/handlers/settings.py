@@ -33,6 +33,7 @@ async def cb_notifications_menu(callback: CallbackQuery):
     from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🔔 Уведомления о коэффициентах", callback_data="cmd:notify")],
         [InlineKeyboardButton(text="🚗 Основной тариф", callback_data="settings:preferred_tariff")],
         [InlineKeyboardButton(text="🚗 Выбрать тарифы", callback_data="settings:edit_tariffs")],
         [InlineKeyboardButton(text="📍 Выбрать зоны", callback_data="settings:edit_zones")],
