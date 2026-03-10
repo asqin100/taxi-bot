@@ -64,6 +64,39 @@
     {"id": "krylatskoe", "name": "Крылатское", "lat": 55.7567, "lon": 37.4083, "radius_km": 3},
     {"id": "tekstilshchiki", "name": "Текстильщики", "lat": 55.7083, "lon": 37.7317, "radius_km": 3},
     {"id": "chertanovo", "name": "Чертаново", "lat": 55.6417, "lon": 37.6050, "radius_km": 3},
-    {"id": "butovo", "name": "Бутово", "lat": 55.5333, "lon": 37.5667, "radius_km": 4}
+    {"id": "butovo", "name": "Бутово", "lat": 55.5333, "lon": 37.5667, "radius_km": 4},
+
+    {"id": "otradnoe", "name": "Отрадное", "lat": 55.8633, "lon": 37.6050, "radius_km": 3},
+    {"id": "vykhino", "name": "Выхино", "lat": 55.7000, "lon": 37.8167, "radius_km": 3},
+    {"id": "brateevo", "name": "Братеево", "lat": 55.6350, "lon": 37.7500, "radius_km": 3},
+    {"id": "solntsevo", "name": "Солнцево", "lat": 55.6500, "lon": 37.3833, "radius_km": 3},
+    {"id": "mitino", "name": "Митино", "lat": 55.8450, "lon": 37.3600, "radius_km": 3},
+    {"id": "novogireevo", "name": "Новогиреево", "lat": 55.7517, "lon": 37.8167, "radius_km": 3},
+    {"id": "yasenevo_south", "name": "Ясенево Южное", "lat": 55.5950, "lon": 37.5200, "radius_km": 3},
+    {"id": "khovrino", "name": "Ховрино", "lat": 55.8717, "lon": 37.4717, "radius_km": 3},
+    {"id": "altufevo", "name": "Алтуфьево", "lat": 55.8983, "lon": 37.5900, "radius_km": 3},
+    {"id": "babushkinskaya", "name": "Бабушкинская", "lat": 55.8700, "lon": 37.6650, "radius_km": 3},
+
+    {"id": "ramenskoye", "name": "Раменское", "lat": 55.5667, "lon": 38.2333, "radius_km": 4},
+    {"id": "zhukovsky", "name": "Жуковский", "lat": 55.5967, "lon": 38.1200, "radius_km": 4},
+    {"id": "ivanteevka", "name": "Ивантеевка", "lat": 55.9717, "lon": 37.9200, "radius_km": 4},
+    {"id": "fryazino", "name": "Фрязино", "lat": 55.9600, "lon": 38.0450, "radius_km": 3},
+    {"id": "lobnya", "name": "Лобня", "lat": 56.0100, "lon": 37.4800, "radius_km": 4},
+    {"id": "khimki_north", "name": "Химки Северные", "lat": 55.9100, "lon": 37.4500, "radius_km": 3},
+    {"id": "krasnoarmeysk", "name": "Красноармейск", "lat": 56.1100, "lon": 38.1400, "radius_km": 4},
+    {"id": "elektrostal", "name": "Электросталь", "lat": 55.7900, "lon": 38.4500, "radius_km": 4},
+    {"id": "noginsk", "name": "Ногинск", "lat": 55.8667, "lon": 38.4333, "radius_km": 4},
+    {"id": "orekhovo_zuevo", "name": "Орехово-Зуево", "lat": 55.8067, "lon": 38.9617, "radius_km": 4},
+
+    {"id": "vnukovo_village", "name": "Внуково посёлок", "lat": 55.6050, "lon": 37.2800, "radius_km": 3},
+    {"id": "rumyantsevo", "name": "Румянцево", "lat": 55.6333, "lon": 37.4417, "radius_km": 3},
+    {"id": "salaryevo", "name": "Саларьево", "lat": 55.6217, "lon": 37.4233, "radius_km": 3},
+    {"id": "kommunarka", "name": "Коммунарка", "lat": 55.5617, "lon": 37.4733, "radius_km": 3},
+    {"id": "novoperedelkino", "name": "Новопеределкино", "lat": 55.6433, "lon": 37.3817, "radius_km": 3},
+    {"id": "yugo_zapadnaya", "name": "Юго-Западная", "lat": 55.6633, "lon": 37.4833, "radius_km": 3},
+    {"id": "teply_stan", "name": "Тёплый Стан", "lat": 55.6183, "lon": 37.5083, "radius_km": 3},
+    {"id": "yasenevo_metro", "name": "Ясенево метро", "lat": 55.6067, "lon": 37.5333, "radius_km": 2},
+    {"id": "novoyasenevskaya", "name": "Новоясеневская", "lat": 55.6033, "lon": 37.5533, "radius_km": 2},
+    {"id": "biryulevo", "name": "Бирюлёво", "lat": 55.6167, "lon": 37.6500, "radius_km": 3}
   ]
 }
