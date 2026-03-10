@@ -108,8 +108,10 @@ class YandexGoPassengerProvider(BasePriceProvider):
         )
 
     async def fetch_surge(self, zone: Zone, tariff: str) -> float:
-        """Fetch surge coefficient using Yandex.Go passenger API."""
-        # Create a short route within the zone
+        """Fetch surge coefficient using Yandex.Go passenger API with device rotation."""
+        # Get next device credentials for load distribution
+        device = self._get_next_device()
+
         dest_lat = zone.lat + 0.01
         dest_lon = zone.lon + 0.01
 
@@ -143,7 +145,7 @@ class YandexGoPassengerProvider(BasePriceProvider):
 
         for attempt in range(max_retries + 1):
             try:
-                async with aiohttp.ClientSession(headers=self._build_headers()) as session:
+                async with aiohttp.ClientSession(headers=self._build_headers(device)) as session:
                     async with session.post(
                         self._build_url(),
                         json=body,
