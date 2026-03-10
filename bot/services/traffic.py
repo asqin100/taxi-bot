@@ -1,10 +1,21 @@
-"""Traffic service - Yandex Traffic API integration."""
+"""Traffic service - Yandex Traffic tiles parsing + TomTom fallback."""
+import asyncio
 import logging
+import math
 from typing import Optional
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from io import BytesIO
+from collections import Counter
 
 import aiohttp
+
+try:
+    from PIL import Image
+    PILLOW_AVAILABLE = True
+except ImportError:
+    PILLOW_AVAILABLE = False
+    logging.warning("Pillow not installed, Yandex traffic parsing disabled")
 
 from bot.config import settings
 
@@ -66,6 +77,125 @@ def clear_traffic_cache():
     logger.info("Traffic cache cleared")
 
 
+async def _download_yandex_traffic_map(lat: float, lon: float, zoom: int = 13) -> Optional[bytes]:
+    """
+    Download Yandex static map with traffic layer for given coordinates.
+
+    Uses Yandex Static Maps API which is more reliable than tiles.
+
+    Args:
+        lat: Latitude
+        lon: Longitude
+        zoom: Zoom level (13 is good for city areas)
+
+    Returns:
+        PNG image bytes or None if failed
+    """
+    if not PILLOW_AVAILABLE:
+        return None
+
+    # Yandex Static Maps API
+    url = 'https://static-maps.yandex.ru/1.x/'
+    params = {
+        'l': 'map,trf',  # map + traffic layer
+        'll': f'{lon},{lat}',  # lon,lat format
+        'z': str(zoom),
+        'size': '450,450',
+        'lang': 'ru_RU'
+    }
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Referer': 'https://yandex.ru/maps/',
+    }
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params, headers=headers, timeout=aiohttp.ClientTimeout(total=10)) as resp:
+                if resp.status == 200:
+                    return await resp.read()
+                else:
+                    logger.debug(f"Failed to download Yandex map: {resp.status}")
+                    return None
+    except Exception as e:
+        logger.debug(f"Error downloading Yandex map: {e}")
+        return None
+
+
+def _analyze_traffic_colors(image_data: bytes) -> int:
+    """
+    Analyze Yandex traffic tile colors to estimate traffic level.
+
+    Yandex traffic colors:
+    - Green: Free flow (1-3)
+    - Yellow: Medium traffic (4-6)
+    - Orange: Heavy traffic (7-8)
+    - Red: Jammed (9-10)
+
+    Returns:
+        Traffic level 1-10
+    """
+    if not PILLOW_AVAILABLE:
+        return 5
+
+    try:
+        img = Image.open(BytesIO(image_data))
+
+        # Convert to RGB
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
+
+        pixels = list(img.getdata())
+
+        # Count traffic colors
+        green_pixels = 0
+        yellow_pixels = 0
+        orange_pixels = 0
+        red_pixels = 0
+
+        for r, g, b in pixels:
+            # Green: high green, low red/blue
+            if g > 150 and r < 100 and b < 100:
+                green_pixels += 1
+            # Yellow: high red+green, low blue
+            elif r > 150 and g > 150 and b < 100:
+                yellow_pixels += 1
+            # Orange: high red, medium green, low blue
+            elif r > 200 and 80 < g < 180 and b < 80:
+                orange_pixels += 1
+            # Red: high red, low green/blue
+            elif r > 180 and g < 100 and b < 100:
+                red_pixels += 1
+
+        total_traffic = green_pixels + yellow_pixels + orange_pixels + red_pixels
+
+        if total_traffic == 0:
+            # No traffic data in tile, return medium
+            return 5
+
+        # Calculate weighted traffic level
+        red_ratio = red_pixels / total_traffic
+        orange_ratio = orange_pixels / total_traffic
+        yellow_ratio = yellow_pixels / total_traffic
+        green_ratio = green_pixels / total_traffic
+
+        # Weight: red=10, orange=8, yellow=5, green=2
+        # Adjusted weights to better reflect Moscow traffic conditions
+        traffic_level = (
+            red_ratio * 10 +
+            orange_ratio * 8 +
+            yellow_ratio * 5 +
+            green_ratio * 2
+        )
+
+        # Ensure level is between 1-10
+        return int(min(10, max(1, traffic_level)))
+
+    except Exception as e:
+        logger.debug(f"Error analyzing traffic colors: {e}")
+        return 5
+
+
 def _get_simulated_traffic_level() -> int:
     """
     Generate realistic traffic level based on time of day.
@@ -91,7 +221,12 @@ def _get_simulated_traffic_level() -> int:
 
 async def get_moscow_traffic() -> Optional[TrafficData]:
     """
-    Get current traffic level for Moscow using TomTom API with multiple points.
+    Get current traffic level for Moscow.
+
+    Priority:
+    1. Yandex traffic tiles parsing (if Pillow available)
+    2. TomTom Traffic API (fallback)
+    3. Simulated data (last resort)
 
     Returns:
         TrafficData object or None if failed
@@ -102,7 +237,57 @@ async def get_moscow_traffic() -> Optional[TrafficData]:
     if _cache_timestamp and (get_moscow_time() - _cache_timestamp).total_seconds() < CACHE_TTL_SECONDS:
         return _traffic_cache.get("moscow")
 
-    # Try TomTom Traffic API with multiple points across Moscow
+    # Try Yandex traffic tiles parsing first
+    if PILLOW_AVAILABLE:
+        try:
+            # Sample multiple points across Moscow for better accuracy
+            moscow_points = [
+                (55.7558, 37.6173),  # Center
+                (55.7558, 37.5173),  # West
+                (55.7558, 37.7173),  # East
+                (55.8058, 37.6173),  # North
+            ]
+
+            traffic_levels = []
+
+            for lat, lon in moscow_points:
+                try:
+                    image_data = await _download_yandex_traffic_map(lat, lon, zoom=13)
+                    if image_data:
+                        level = _analyze_traffic_colors(image_data)
+                        traffic_levels.append(level)
+                        logger.debug(f"Yandex map ({lat}, {lon}): level={level}")
+
+                    # Small delay to be nice to Yandex servers
+                    await asyncio.sleep(0.3)
+                except Exception as e:
+                    logger.debug(f"Failed to parse Yandex map ({lat}, {lon}): {e}")
+                    continue
+
+            if traffic_levels:
+                # Average traffic level across all points
+                avg_traffic_level = int(sum(traffic_levels) / len(traffic_levels))
+
+                traffic_data = TrafficData(
+                    region="moscow",
+                    level=avg_traffic_level,
+                    description=f"Пробки {avg_traffic_level} баллов",
+                    timestamp=get_moscow_time()
+                )
+
+                # Update cache
+                _traffic_cache["moscow"] = traffic_data
+                _cache_timestamp = get_moscow_time()
+
+                logger.info(f"Got traffic from Yandex tiles (avg of {len(traffic_levels)} points): level={avg_traffic_level}")
+                return traffic_data
+            else:
+                logger.warning("Yandex tiles parsing failed, falling back to TomTom")
+
+        except Exception as e:
+            logger.warning(f"Yandex tiles parsing error: {e}, falling back to TomTom")
+
+    # Fallback to TomTom Traffic API
     if settings.tomtom_api_key:
         try:
             # Multiple points across Moscow for better coverage
