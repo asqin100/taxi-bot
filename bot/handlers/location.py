@@ -59,13 +59,13 @@ async def _handle_where_to_go(message: Message, location):
         )
         return
 
-    # Search for high coefficient zone within 10 km
+    # Search for nearest zone with any coefficient (no distance limit)
     zone_result = find_nearest_high_coefficient_zone(
         user_lat=location.latitude,
         user_lon=location.longitude,
         surge_data=surge_data,
-        min_coefficient=1.3,
-        max_distance_km=100.0,
+        min_coefficient=1.0,
+        max_distance_km=1000.0,
         tariff="econom"
     )
 
@@ -86,26 +86,25 @@ async def _handle_where_to_go(message: Message, location):
             [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")]
         ])
 
+        coef_emoji = "💰" if zone_result.coefficient >= 1.3 else "📊"
         await message.answer(
-            f"✅ <b>Найдена зона с высоким коэффициентом!</b>\n\n"
+            f"✅ <b>Ближайшая зона найдена!</b>\n\n"
             f"📍 <b>Зона:</b> {zone_result.zone.name}\n"
-            f"💰 <b>Коэффициент:</b> {zone_result.coefficient:.2f}x\n"
+            f"{coef_emoji} <b>Коэффициент:</b> {zone_result.coefficient:.2f}x\n"
             f"📏 <b>Расстояние:</b> {zone_result.distance_km:.1f} км\n\n"
             f"Выберите приложение для навигации:",
             parse_mode="HTML",
             reply_markup=keyboard
         )
     else:
-        # No zone found within 10 km
+        # Fallback if no zones at all
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")]
         ])
 
         await message.answer(
-            "😔 <b>Высокий коэффициент не найден</b>\n\n"
-            "К сожалению, в радиусе 10 км от вас нет зон "
-            "с коэффициентом ≥ 1.3.\n\n"
-            "💡 <i>Попробуйте позже или переместитесь в другой район</i>",
+            "⚠️ <b>Данные о зонах недоступны</b>\n\n"
+            "Попробуйте позже.",
             parse_mode="HTML",
             reply_markup=keyboard
         )
