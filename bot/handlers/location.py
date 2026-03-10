@@ -49,10 +49,12 @@ async def handle_location(message: Message, state: FSMContext):
 async def _handle_where_to_go(message: Message, location):
     """Handle 'Where to go' feature - search for high coefficient zones."""
     from bot.services.yandex_api import get_cached_coefficients, generate_yandex_navigator_link, generate_yandex_maps_link
-    from bot.services.zones import find_nearest_high_coefficient_zone
+    from bot.services.zones import find_nearest_high_coefficient_zone, calculate_distance
     from bot.database.db import session_factory
     from bot.models.user import User
     from sqlalchemy import select
+    import json
+    from pathlib import Path
 
     # Get user's preferred tariff
     user_id = message.from_user.id
@@ -86,6 +88,35 @@ async def _handle_where_to_go(message: Message, location):
     )
 
     if zone_result:
+        # Find nearest metro station to the zone
+        metro_info = ""
+        try:
+            metro_path = Path(__file__).resolve().parent.parent.parent / "data" / "moscow_metro.json"
+            if metro_path.exists():
+                with open(metro_path, 'r', encoding='utf-8') as f:
+                    metro_data = json.load(f)
+                    stations = metro_data.get("stations", [])
+
+                    if stations:
+                        # Find nearest station to the zone
+                        nearest_station = None
+                        min_distance = float('inf')
+
+                        for station in stations:
+                            dist = calculate_distance(
+                                zone_result.zone.lat, zone_result.zone.lon,
+                                station['lat'], station['lon']
+                            )
+                            if dist < min_distance:
+                                min_distance = dist
+                                nearest_station = station
+
+                        if nearest_station and min_distance < 3.0:  # Only show if within 3km
+                            metro_info = f"🚇 Метро: <b>{nearest_station['name']}</b> (~{min_distance:.1f} км)\n"
+        except Exception as e:
+            # Silently ignore metro lookup errors
+            pass
+
         # Found a zone! Show navigation options
         navigator_link = generate_yandex_navigator_link(
             zone_result.zone.lat,
@@ -106,6 +137,7 @@ async def _handle_where_to_go(message: Message, location):
         await message.answer(
             f"✅ <b>Ближайшая зона найдена!</b>\n\n"
             f"📍 <b>Зона:</b> {zone_result.zone.name}\n"
+            f"{metro_info}"
             f"{coef_emoji} <b>Коэффициент:</b> {zone_result.coefficient:.2f}x\n"
             f"📏 <b>Расстояние:</b> {zone_result.distance_km:.1f} км\n\n"
             f"Выберите приложение для навигации:",

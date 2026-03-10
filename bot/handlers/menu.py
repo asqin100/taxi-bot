@@ -693,11 +693,22 @@ async def cb_profile_menu(callback: CallbackQuery):
 
     # Get user info
     from bot.services.subscription import get_subscription
+    from bot.database.db import session_factory
+    from bot.models.user import User
+    from sqlalchemy import select
+
     subscription = await get_subscription(user_id)
+
+    # Get user balance
+    async with session_factory() as session:
+        result = await session.execute(select(User).where(User.telegram_id == user_id))
+        user = result.scalar_one_or_none()
+        balance = user.referral_balance if user else 0.0
 
     text = (
         "👤 <b>Мой кабинет</b>\n\n"
-        f"Подписка: <b>{subscription.tier.upper()}</b>\n\n"
+        f"💰 Баланс: <b>{balance:.0f}₽</b>\n"
+        f"📋 Подписка: <b>{subscription.tier.upper()}</b>\n\n"
         "Доступ к функциям и инструментам."
     )
 
