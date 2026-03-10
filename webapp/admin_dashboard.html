@@ -5,22 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Дашборд - Админ-панель</title>
     <style>
+        :root {
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f8f9fa;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-tertiary: #999;
+            --border-color: #e0e0e0;
+            --border-light: #f0f0f0;
+            --shadow: rgba(0,0,0,0.05);
+            --shadow-hover: rgba(0,0,0,0.1);
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+        }
+
+        body.dark-theme {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --text-primary: #e4e4e4;
+            --text-secondary: #b8b8b8;
+            --text-tertiary: #888;
+            --border-color: #2d3748;
+            --border-light: #374151;
+            --shadow: rgba(0,0,0,0.3);
+            --shadow-hover: rgba(0,0,0,0.5);
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f7fa;
-            color: #333;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.3s, color 0.3s;
         }
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
             color: white;
             padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px var(--shadow-hover);
         }
         .header h1 { font-size: 24px; }
+        .header-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .theme-toggle {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: background 0.3s;
+        }
+        .theme-toggle:hover { background: rgba(255,255,255,0.3); }
         .logout-btn {
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.3);
@@ -37,7 +84,7 @@
             display: flex;
             gap: 10px;
             margin-bottom: 30px;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 2px solid var(--border-color);
         }
         .tab {
             padding: 12px 24px;
@@ -45,13 +92,13 @@
             border: none;
             cursor: pointer;
             font-size: 16px;
-            color: #666;
+            color: var(--text-secondary);
             border-bottom: 3px solid transparent;
             transition: all 0.3s;
         }
         .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
+            color: var(--gradient-start);
+            border-bottom-color: var(--gradient-start);
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -62,32 +109,35 @@
             margin-bottom: 40px;
         }
         .stat-card {
-            background: white;
+            background: var(--bg-secondary);
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
+            box-shadow: 0 2px 10px var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .stat-card:hover { transform: translateY(-5px); }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px var(--shadow-hover);
+        }
         .stat-card h3 {
             font-size: 14px;
-            color: #666;
+            color: var(--text-secondary);
             margin-bottom: 10px;
             text-transform: uppercase;
         }
         .stat-card .value {
             font-size: 36px;
             font-weight: bold;
-            color: #667eea;
+            color: var(--gradient-start);
             margin-bottom: 5px;
         }
-        .stat-card .label { font-size: 12px; color: #999; }
+        .stat-card .label { font-size: 12px; color: var(--text-tertiary); }
         .section {
-            background: white;
+            background: var(--bg-secondary);
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px var(--shadow);
         }
         .section h2 { font-size: 20px; margin-bottom: 20px; }
         .search-box {
@@ -98,13 +148,15 @@
         .search-box input {
             flex: 1;
             padding: 12px 15px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid var(--border-color);
             border-radius: 10px;
             font-size: 16px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
         .search-box button {
             padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
             color: white;
             border: none;
             border-radius: 10px;
@@ -115,17 +167,18 @@
         th {
             text-align: left;
             padding: 12px;
-            background: #f8f9fa;
+            background: var(--bg-tertiary);
             font-weight: 600;
-            color: #666;
+            color: var(--text-secondary);
             font-size: 14px;
         }
         td {
             padding: 12px;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--border-light);
             font-size: 14px;
+            color: var(--text-primary);
         }
-        tr:hover { background: #f8f9fa; }
+        tr:hover { background: var(--bg-tertiary); }
         .badge {
             display: inline-block;
             padding: 4px 12px;
@@ -136,9 +189,10 @@
         .badge-free { background: #e3f2fd; color: #1976d2; }
         .badge-pro { background: #fff3e0; color: #f57c00; }
         .badge-premium { background: #f3e5f5; color: #7b1fa2; }
+        .badge-elite { background: #fce4ec; color: #c2185b; }
         .btn-action {
             padding: 6px 16px;
-            background: #667eea;
+            background: var(--gradient-start);
             color: white;
             border: none;
             border-radius: 6px;
@@ -160,7 +214,7 @@
         }
         .modal.show { display: flex; }
         .modal-content {
-            background: white;
+            background: var(--bg-secondary);
             border-radius: 20px;
             padding: 40px;
             max-width: 600px;
@@ -174,13 +228,13 @@
             align-items: center;
             margin-bottom: 20px;
         }
-        .modal-header h2 { font-size: 24px; }
+        .modal-header h2 { font-size: 24px; color: var(--text-primary); }
         .close-btn {
             background: none;
             border: none;
             font-size: 28px;
             cursor: pointer;
-            color: #999;
+            color: var(--text-tertiary);
         }
         .form-group {
             margin-bottom: 20px;
@@ -189,17 +243,19 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #333;
+            color: var(--text-primary);
         }
-        .form-group select, .form-group input {
+        .form-group select, .form-group input, .form-group textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid var(--border-color);
             border-radius: 10px;
             font-size: 16px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
         .user-info {
-            background: #f8f9fa;
+            background: var(--bg-tertiary);
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -207,9 +263,10 @@
         .user-info p {
             margin-bottom: 10px;
             font-size: 14px;
+            color: var(--text-primary);
         }
-        .user-info strong { color: #667eea; }
-        .loading { text-align: center; padding: 40px; color: #999; }
+        .user-info strong { color: var(--gradient-start); }
+        .loading { text-align: center; padding: 40px; color: var(--text-tertiary); }
         .success-msg {
             background: #d4edda;
             color: #155724;
@@ -248,7 +305,10 @@
 <body>
     <div class="header">
         <h1>🚕 KefPulse - Админ-панель</h1>
-        <button class="logout-btn" onclick="logout()">Выйти</button>
+        <div class="header-controls">
+            <button class="theme-toggle" onclick="toggleTheme()" title="Переключить тему">🌙</button>
+            <button class="logout-btn" onclick="logout()">Выйти</button>
+        </div>
     </div>
 
     <div class="container">
@@ -968,6 +1028,36 @@
             localStorage.removeItem('admin_token');
             window.location.href = '/admin/login';
         }
+
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.querySelector('.theme-toggle');
+
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                themeBtn.textContent = '🌙';
+                localStorage.setItem('admin_theme', 'light');
+            } else {
+                body.classList.add('dark-theme');
+                themeBtn.textContent = '☀️';
+                localStorage.setItem('admin_theme', 'dark');
+            }
+        }
+
+        // Load saved theme on page load
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('admin_theme');
+            const themeBtn = document.querySelector('.theme-toggle');
+
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                if (themeBtn) themeBtn.textContent = '☀️';
+            }
+        }
+
+        // Initialize theme on page load
+        document.addEventListener('DOMContentLoaded', loadTheme);
 
         // Promo Codes Functions
         async function loadPromoCodes() {
