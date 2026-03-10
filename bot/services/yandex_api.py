@@ -383,15 +383,12 @@ def generate_yandex_navigator_link(latitude: float, longitude: float, name: str 
         name: Название точки (опционально)
 
     Returns:
-        URL для открытия в Яндекс.Навигаторе
+        URL для открытия в Яндекс.Навигаторе (HTTPS для совместимости с Telegram)
     """
-    # Формат: yandexnavi://build_route_on_map?lat_to=55.7558&lon_to=37.6173
-    params = {
-        'lat_to': latitude,
-        'lon_to': longitude
-    }
-
-    return f"yandexnavi://build_route_on_map?{urlencode(params)}"
+    # Используем HTTPS ссылку вместо yandexnavi:// для совместимости с Telegram inline buttons
+    # Формат: https://yandex.ru/navi/?rtext=~lat,lon
+    # Откроет приложение Навигатора если установлено, иначе веб-версию
+    return f"https://yandex.ru/navi/?rtext=~{latitude},{longitude}"
 
 
 def generate_yandex_maps_link(latitude: float, longitude: float, name: str = "") -> str:
