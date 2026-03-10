@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     yandex_device_ids: str = ""  # Multiple device IDs: id1|id2|id3
     yandex_mob_ids: str = ""  # Multiple mob IDs: id1|id2|id3
     yandex_geocoder_key: str = ""  # Yandex Geocoder API key
+    yandex_router_api_key: str = ""  # Yandex Router API key (for traffic inference)
     tomtom_api_key: str = ""  # TomTom Traffic API key
     gemini_api_key: str = ""  # Google Gemini API key for AI advisor
     yookassa_shop_id: str = ""  # YooKassa shop ID
