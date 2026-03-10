@@ -33,6 +33,7 @@ async def cb_notifications_menu(callback: CallbackQuery):
     from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🚗 Основной тариф", callback_data="settings:preferred_tariff")],
         [InlineKeyboardButton(text="🚗 Выбрать тарифы", callback_data="settings:edit_tariffs")],
         [InlineKeyboardButton(text="📍 Выбрать зоны", callback_data="settings:edit_zones")],
         [InlineKeyboardButton(text="🎭 Типы мероприятий", callback_data="settings:edit_events")],
@@ -46,6 +47,79 @@ async def cb_notifications_menu(callback: CallbackQuery):
         parse_mode="HTML"
     )
     await callback.answer()
+
+
+@router.callback_query(F.data == "settings:preferred_tariff")
+async def cb_preferred_tariff_menu(callback: CallbackQuery):
+    """Show preferred tariff selection menu."""
+    user_id = callback.from_user.id
+
+    async with session_factory() as session:
+        result = await session.execute(select(User).where(User.telegram_id == user_id))
+        user = result.scalar_one_or_none()
+
+        if not user:
+            await callback.answer("❌ Пользователь не найден", show_alert=True)
+            return
+
+        current_tariff = user.preferred_tariff if hasattr(user, 'preferred_tariff') else "econom"
+
+    from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
+
+    tariff_names = {
+        "econom": "Эконом",
+        "comfort": "Комфорт",
+        "business": "Бизнес"
+    }
+
+    buttons = []
+    for tariff_id, tariff_name in tariff_names.items():
+        check = "✅ " if tariff_id == current_tariff else ""
+        buttons.append([InlineKeyboardButton(
+            text=f"{check}{tariff_name}",
+            callback_data=f"settings:set_tariff:{tariff_id}"
+        )])
+
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="settings:notifications")])
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+
+    await callback.message.edit_text(
+        "🚗 <b>ОСНОВНОЙ ТАРИФ</b>\n\n"
+        f"Текущий тариф: <b>{tariff_names.get(current_tariff, 'Эконом')}</b>\n\n"
+        "Этот тариф будет использоваться для:\n"
+        "• Функции 'Куда ехать'\n"
+        "• Геоалертов\n"
+        "• Уведомлений о коэффициентах\n\n"
+        "Выберите тариф:",
+        reply_markup=keyboard,
+        parse_mode="HTML"
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data.startswith("settings:set_tariff:"))
+async def cb_set_preferred_tariff(callback: CallbackQuery):
+    """Set user's preferred tariff."""
+    tariff = callback.data.split(":")[-1]
+    user_id = callback.from_user.id
+
+    async with session_factory() as session:
+        result = await session.execute(select(User).where(User.telegram_id == user_id))
+        user = result.scalar_one()
+        user.preferred_tariff = tariff
+        await session.commit()
+
+    tariff_names = {
+        "econom": "Эконом",
+        "comfort": "Комфорт",
+        "business": "Бизнес"
+    }
+
+    await callback.answer(f"✅ Установлен тариф: {tariff_names.get(tariff, tariff)}")
+
+    # Refresh the menu
+    await cb_preferred_tariff_menu(callback)
 
 
 @router.callback_query(F.data == "settings:edit_tariffs")

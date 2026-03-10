@@ -50,6 +50,16 @@ async def _handle_where_to_go(message: Message, location):
     """Handle 'Where to go' feature - search for high coefficient zones."""
     from bot.services.yandex_api import get_cached_coefficients, generate_yandex_navigator_link, generate_yandex_maps_link
     from bot.services.zones import find_nearest_high_coefficient_zone
+    from bot.database.db import session_factory
+    from bot.models.user import User
+    from sqlalchemy import select
+
+    # Get user's preferred tariff
+    user_id = message.from_user.id
+    async with session_factory() as session:
+        result = await session.execute(select(User).where(User.telegram_id == user_id))
+        user = result.scalar_one_or_none()
+        preferred_tariff = user.preferred_tariff if user and hasattr(user, 'preferred_tariff') else "econom"
 
     surge_data = get_cached_coefficients()
 
@@ -72,7 +82,7 @@ async def _handle_where_to_go(message: Message, location):
         surge_data=surge_data,
         min_coefficient=1.0,
         max_distance_km=1000.0,
-        tariff="econom"
+        tariff=preferred_tariff
     )
 
     if zone_result:

@@ -13,6 +13,7 @@ class User(Base):
     telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True, index=True)
     username: Mapped[str | None] = mapped_column(String(64))
     tariffs: Mapped[str] = mapped_column(String(128), default="econom")  # comma-separated
+    preferred_tariff: Mapped[str] = mapped_column(String(20), default="econom")  # Primary tariff for alerts and recommendations
     zones: Mapped[str] = mapped_column(String(512), default="")  # comma-separated zone ids
     notify_enabled: Mapped[bool] = mapped_column(Boolean, default=False)
     surge_threshold: Mapped[float] = mapped_column(Float, default=1.5)

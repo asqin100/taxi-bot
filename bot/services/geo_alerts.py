@@ -108,8 +108,9 @@ async def _check_user_alerts(bot: Bot, user: User, zone_map: dict):
     # Get user's alert cooldown based on subscription tier
     user_cooldown_seconds = await get_alert_cooldown(user.telegram_id)
 
-    # Get user's tariffs
-    tariffs = user.tariffs.split(",") if user.tariffs else ["econom"]
+    # Get user's preferred tariff (or default to econom)
+    preferred_tariff = user.preferred_tariff if hasattr(user, 'preferred_tariff') else "econom"
+    tariffs = [preferred_tariff]  # Use only preferred tariff for geo alerts
 
     # Get cached coefficients for user's tariffs
     alerts_to_send = []

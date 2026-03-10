@@ -76,7 +76,7 @@ SUBSCRIPTION_FEATURES = {
         "max_alerts": 1,
         "alert_cooldown_seconds": 120,
         "ai_advisor": False,
-        "geo_alerts": False,
+        "geo_alerts": True,  # Changed from False to True
         "priority_notifications": False,
         "detailed_analytics": False,
         "business_tariff": False,
