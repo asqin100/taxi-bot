@@ -221,6 +221,7 @@ def profile_menu_keyboard(tier: str = "free") -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="🤖 AI-советник", callback_data="menu:advisor")],
         [InlineKeyboardButton(text=traffic_button_text, callback_data="menu:traffic")],
         [InlineKeyboardButton(text="📍 Геоалерты", callback_data="menu:geo_alerts")],
+        [InlineKeyboardButton(text="💰 Финансы", callback_data="menu:finance")],
         BACK_BUTTON,
     ])
 
