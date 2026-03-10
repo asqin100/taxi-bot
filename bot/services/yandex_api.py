@@ -406,8 +406,8 @@ async def fetch_all_coefficients() -> list[SurgeData]:
     tasks = [(zone, tariff) for zone in zones for tariff in TARIFFS]
 
     # Process in batches to avoid overwhelming the API
-    batch_size = 3  # Reduced from 5 to avoid rate limiting
-    batch_delay = 3  # Increased from 2s to give API more breathing room
+    batch_size = 2  # Reduced from 3 due to 429 errors with 89 zones
+    batch_delay = 4  # Increased from 3s to give API more breathing room
 
     logger.info("Starting coefficient fetch: %d zones × %d tariffs = %d requests in batches of %d",
                 len(zones), len(TARIFFS), len(tasks), batch_size)
