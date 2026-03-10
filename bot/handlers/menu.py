@@ -668,10 +668,22 @@ async def cb_game_leaderboard_menu(callback: CallbackQuery):
 
 @router.callback_query(F.data == "menu:finance")
 async def cb_finance_menu(callback: CallbackQuery):
-    """Show finance menu from My Cabinet."""
-    # Redirect to referral menu which shows balance and finance info
-    from bot.handlers.referral import cb_referral_menu
-    await cb_referral_menu(callback)
+    """Show financial tracker menu."""
+    user_id = callback.from_user.id
+
+    # Check if user has active shift
+    from bot.services import financial as fin_service
+    active_shift = await fin_service.get_active_shift(user_id)
+    has_active = active_shift is not None
+
+    from bot.keyboards.inline import financial_menu_keyboard
+    await callback.message.edit_text(
+        "💰 <b>Финансовый трекер</b>\n\n"
+        "Управляйте сменами, отслеживайте расходы и достигайте целей.",
+        parse_mode="HTML",
+        reply_markup=financial_menu_keyboard(has_active)
+    )
+    await callback.answer()
 
 
 @router.callback_query(F.data == "menu:profile")

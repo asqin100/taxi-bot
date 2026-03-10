@@ -151,7 +151,7 @@ def financial_menu_keyboard(has_active_shift: bool = False) -> InlineKeyboardMar
         [InlineKeyboardButton(text="💸 Расходы", callback_data="financial:expenses")],
         [InlineKeyboardButton(text="🎯 Цели", callback_data="financial:goals")],
         [InlineKeyboardButton(text="🚗 Мой тариф", callback_data="financial:tariff")],
-        BACK_BUTTON,
+        [InlineKeyboardButton(text="◀️ Мой кабинет", callback_data="menu:profile")],
     ])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
