@@ -666,6 +666,14 @@ async def cb_game_leaderboard_menu(callback: CallbackQuery):
     await callback.answer()
 
 
+@router.callback_query(F.data == "menu:finance")
+async def cb_finance_menu(callback: CallbackQuery):
+    """Show finance menu from My Cabinet."""
+    # Redirect to referral menu which shows balance and finance info
+    from bot.handlers.referral import cb_referral_menu
+    await cb_referral_menu(callback)
+
+
 @router.callback_query(F.data == "menu:profile")
 async def cb_profile_menu(callback: CallbackQuery):
     """Show profile/cabinet menu with personal features."""

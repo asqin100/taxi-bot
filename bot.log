@@ -30486,3 +30486,42 @@ aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: messa
 2026-03-08 23:12:05,658 [INFO] bot.services.yandex_api: Found surge 1.96 for tariff econom
 2026-03-08 23:12:09,527 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
 2026-03-08 23:12:09,527 [WARNING] aiogram.dispatcher: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7845157915)
+2026-03-09 15:08:43,659 [INFO] __main__: Database initialized
+2026-03-09 15:08:43,660 [INFO] bot.services.payment: Payment provider is robokassa, skipping YooKassa initialization
+2026-03-09 15:08:43,965 [INFO] __main__: Initial data fetch scheduled in background
+2026-03-09 15:08:43,968 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-09 15:08:43,970 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-09 15:08:43,970 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-09 15:08:43,970 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-09 15:08:43,970 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-09 15:08:43,971 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-09 15:08:43,971 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-09 15:08:43,971 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-03-09 15:08:43,972 [INFO] apscheduler.scheduler: Added job "fetch_all_coefficients" to job store "default"
+2026-03-09 15:08:43,972 [INFO] apscheduler.scheduler: Added job "collect_and_store_coefficients" to job store "default"
+2026-03-09 15:08:43,973 [INFO] apscheduler.scheduler: Added job "check_and_notify" to job store "default"
+2026-03-09 15:08:43,973 [INFO] apscheduler.scheduler: Added job "check_geo_alerts" to job store "default"
+2026-03-09 15:08:43,973 [INFO] apscheduler.scheduler: Added job "check_live_location_expiration" to job store "default"
+2026-03-09 15:08:43,973 [INFO] apscheduler.scheduler: Added job "check_and_notify_events" to job store "default"
+2026-03-09 15:08:43,973 [INFO] apscheduler.scheduler: Added job "fetch_and_store_events" to job store "default"
+2026-03-09 15:08:43,973 [INFO] apscheduler.scheduler: Added job "process_subscription_renewals" to job store "default"
+2026-03-09 15:08:43,973 [INFO] apscheduler.scheduler: Scheduler started
+2026-03-09 15:08:43,974 [INFO] __main__: Scheduler started (interval=480s)
+2026-03-09 15:08:43,976 [INFO] __main__: Starting initial coefficient fetch...
+2026-03-09 15:08:43,979 [INFO] __main__: Web server started on port 8080
+2026-03-09 15:08:43,979 [INFO] __main__: Bot starting polling...
+2026-03-09 15:08:43,980 [INFO] aiogram.dispatcher: Start polling
+2026-03-09 15:08:53,304 [INFO] aiogram.dispatcher: Run polling for bot @KefPulse_bot id=7845157915 - 'KefPulse'
+2026-03-09 15:08:57,469 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-09 15:08:57,469 [WARNING] aiogram.dispatcher: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7845157915)
+2026-03-09 15:09:02,964 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-09 15:09:02,965 [WARNING] aiogram.dispatcher: Sleep for 1.266478 seconds and try again... (tryings = 1, bot id = 7845157915)
+2026-03-09 15:09:07,841 [WARNING] bot.services.yandex_api: Rate limited (429) for zone center, retrying in 10s (attempt 1/2)
+2026-03-09 15:09:09,079 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-09 15:09:09,079 [WARNING] aiogram.dispatcher: Sleep for 1.730452 seconds and try again... (tryings = 2, bot id = 7845157915)
+2026-03-09 15:09:16,532 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-09 15:09:16,532 [WARNING] aiogram.dispatcher: Sleep for 2.254093 seconds and try again... (tryings = 3, bot id = 7845157915)
+2026-03-09 15:09:24,711 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-09 15:09:24,711 [WARNING] aiogram.dispatcher: Sleep for 2.768642 seconds and try again... (tryings = 4, bot id = 7845157915)
+2026-03-09 15:09:31,282 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-03-09 15:09:31,283 [WARNING] aiogram.dispatcher: Sleep for 3.506044 seconds and try again... (tryings = 5, bot id = 7845157915)
