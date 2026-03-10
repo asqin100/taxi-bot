@@ -229,6 +229,7 @@ class YandexGoProvider(BasePriceProvider):
         # Retry logic for 429 errors
         max_retries = 2
         retry_delay = 10
+        rate_limited = False
 
         for attempt in range(max_retries + 1):
             try:
@@ -241,13 +242,20 @@ class YandexGoProvider(BasePriceProvider):
                         if resp.status == 200:
                             data = await resp.json()
                             return self._extract_surge(data, tariff)
-                        elif resp.status == 429 and attempt < max_retries:
-                            logger.warning(
-                                "Rate limited (429) for zone %s, retrying in %ds (attempt %d/%d)",
-                                zone.id, retry_delay, attempt + 1, max_retries
-                            )
-                            await asyncio.sleep(retry_delay)
-                            continue
+                        elif resp.status == 429:
+                            rate_limited = True
+                            if attempt < max_retries:
+                                logger.warning(
+                                    "⚠️ RATE LIMITED (429) - Zone: %s, Tariff: %s, Attempt: %d/%d, Retrying in %ds",
+                                    zone.id, tariff, attempt + 1, max_retries, retry_delay
+                                )
+                                await asyncio.sleep(retry_delay)
+                                continue
+                            else:
+                                logger.error(
+                                    "❌ RATE LIMIT EXCEEDED - Zone: %s, Tariff: %s - All %d retries failed, returning default 1.0",
+                                    zone.id, tariff, max_retries
+                                )
                         body_text = await resp.text()
                         logger.warning(
                             "Yandex API returned %s for zone %s: %s",
@@ -255,6 +263,9 @@ class YandexGoProvider(BasePriceProvider):
                         )
             except Exception as e:
                 logger.error("Yandex API error for zone %s: %s", zone.id, e)
+
+        if rate_limited:
+            logger.error("🚨 Rate limit caused failure for zone %s, tariff %s", zone.id, tariff)
         return 1.0
 
     @staticmethod
