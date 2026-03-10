@@ -16,6 +16,11 @@ class Settings(BaseSettings):
     yandex_uuid: str = ""
     yandex_device_id: str = ""
     yandex_mob_id: str = ""
+    # Multiple device credentials for load distribution (pipe-separated)
+    yandex_bearer_tokens: str = ""  # Multiple tokens: token1|token2|token3
+    yandex_uuids: str = ""  # Multiple UUIDs: uuid1|uuid2|uuid3
+    yandex_device_ids: str = ""  # Multiple device IDs: id1|id2|id3
+    yandex_mob_ids: str = ""  # Multiple mob IDs: id1|id2|id3
     yandex_geocoder_key: str = ""  # Yandex Geocoder API key
     tomtom_api_key: str = ""  # TomTom Traffic API key
     gemini_api_key: str = ""  # Google Gemini API key for AI advisor

@@ -40,22 +40,64 @@ class YandexGoPassengerProvider(BasePriceProvider):
 
     ROUTESTATS_URL = "https://tc.mobile.yandex.net/3.0/routestats"
 
-    def _build_headers(self) -> dict:
+    def __init__(self):
+        """Initialize provider with device credentials pool."""
+        self._load_device_pool()
+        self._current_device_index = 0
+
+    def _load_device_pool(self):
+        """Load multiple device credentials from settings."""
+        # Try to load multiple credentials first
+        if settings.yandex_bearer_tokens and settings.yandex_uuids and settings.yandex_device_ids and settings.yandex_mob_ids:
+            tokens = settings.yandex_bearer_tokens.split('|')
+            uuids = settings.yandex_uuids.split('|')
+            device_ids = settings.yandex_device_ids.split('|')
+            mob_ids = settings.yandex_mob_ids.split('|')
+
+            # Ensure all lists have the same length
+            min_len = min(len(tokens), len(uuids), len(device_ids), len(mob_ids))
+            self.devices = [
+                {
+                    'bearer_token': tokens[i].strip(),
+                    'uuid': uuids[i].strip(),
+                    'device_id': device_ids[i].strip(),
+                    'mob_id': mob_ids[i].strip()
+                }
+                for i in range(min_len)
+            ]
+            logger.info("Loaded %d device credentials for load distribution", len(self.devices))
+        else:
+            # Fallback to single device credentials
+            self.devices = [{
+                'bearer_token': settings.yandex_bearer_token,
+                'uuid': settings.yandex_uuid,
+                'device_id': settings.yandex_device_id,
+                'mob_id': settings.yandex_mob_id
+            }]
+            logger.info("Using single device credentials (no multi-device config found)")
+
+    def _get_next_device(self) -> dict:
+        """Get next device credentials in round-robin fashion."""
+        device = self.devices[self._current_device_index]
+        self._current_device_index = (self._current_device_index + 1) % len(self.devices)
+        return device
+
+    def _build_headers(self, device: dict) -> dict:
         headers = {
             "accept-encoding": "gzip",
             "accept-language": "ru-RU",
             "content-type": "application/json; charset=utf-8",
             "user-agent": "yandex-taxi/5.63.1.127773 Android/15 (Xiaomi; 23013PC75G)",
         }
-        if settings.yandex_bearer_token:
-            headers["authorization"] = f"Bearer {settings.yandex_bearer_token}"
-            headers["x-oauth-token"] = settings.yandex_bearer_token
-        if settings.yandex_device_id:
-            headers["x-appmetrica-deviceid"] = settings.yandex_device_id
-        if settings.yandex_uuid:
-            headers["x-appmetrica-uuid"] = settings.yandex_uuid
-        if settings.yandex_mob_id:
-            headers["x-mob-id"] = settings.yandex_mob_id
+        if device.get('bearer_token'):
+            headers["authorization"] = f"Bearer {device['bearer_token']}"
+            headers["x-oauth-token"] = device['bearer_token']
+        if device.get('device_id'):
+            headers["x-appmetrica-deviceid"] = device['device_id']
+        if device.get('uuid'):
+            headers["x-appmetrica-uuid"] = device['uuid']
+        if device.get('mob_id'):
+            headers["x-mob-id"] = device['mob_id']
         return headers
 
     def _build_url(self) -> str:
@@ -198,6 +240,10 @@ class YandexGoProvider(BasePriceProvider):
         return self.SURGE_MAP_URL + params
 
     async def fetch_surge(self, zone: Zone, tariff: str) -> float:
+        """Fetch surge coefficient using Yandex.Go passenger API with device rotation."""
+        # Get next device credentials for load distribution
+        device = self._get_next_device()
+
         dest_lat = zone.lat + 0.01
         dest_lon = zone.lon + 0.01
         body = {
@@ -233,7 +279,7 @@ class YandexGoProvider(BasePriceProvider):
 
         for attempt in range(max_retries + 1):
             try:
-                async with aiohttp.ClientSession(headers=self._build_headers()) as session:
+                async with aiohttp.ClientSession(headers=self._build_headers(device)) as session:
                     async with session.post(
                         self._build_url(),
                         json=body,
@@ -246,15 +292,15 @@ class YandexGoProvider(BasePriceProvider):
                             rate_limited = True
                             if attempt < max_retries:
                                 logger.warning(
-                                    "⚠️ RATE LIMITED (429) - Zone: %s, Tariff: %s, Attempt: %d/%d, Retrying in %ds",
-                                    zone.id, tariff, attempt + 1, max_retries, retry_delay
+                                    "⚠️ RATE LIMITED (429) - Zone: %s, Tariff: %s, Device: %s, Attempt: %d/%d, Retrying in %ds",
+                                    zone.id, tariff, device.get('device_id', 'unknown')[-8:], attempt + 1, max_retries, retry_delay
                                 )
                                 await asyncio.sleep(retry_delay)
                                 continue
                             else:
                                 logger.error(
-                                    "❌ RATE LIMIT EXCEEDED - Zone: %s, Tariff: %s - All %d retries failed, returning default 1.0",
-                                    zone.id, tariff, max_retries
+                                    "❌ RATE LIMIT EXCEEDED - Zone: %s, Tariff: %s, Device: %s - All %d retries failed, returning default 1.0",
+                                    zone.id, tariff, device.get('device_id', 'unknown')[-8:], max_retries
                                 )
                         body_text = await resp.text()
                         logger.warning(
@@ -265,7 +311,8 @@ class YandexGoProvider(BasePriceProvider):
                 logger.error("Yandex API error for zone %s: %s", zone.id, e)
 
         if rate_limited:
-            logger.error("🚨 Rate limit caused failure for zone %s, tariff %s", zone.id, tariff)
+            logger.error("🚨 Rate limit caused failure for zone %s, tariff %s, device %s",
+                        zone.id, tariff, device.get('device_id', 'unknown')[-8:])
         return 1.0
 
     @staticmethod
