@@ -65,7 +65,7 @@ async def _handle_where_to_go(message: Message, location):
         user_lon=location.longitude,
         surge_data=surge_data,
         min_coefficient=1.3,
-        max_distance_km=10.0,
+        max_distance_km=100.0,
         tariff="econom"
     )
 
