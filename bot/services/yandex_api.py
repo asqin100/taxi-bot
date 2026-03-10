@@ -336,20 +336,44 @@ def set_provider(provider: BasePriceProvider):
 async def fetch_all_coefficients() -> list[SurgeData]:
     """Fetch surge for all zones and tariffs, update cache.
 
-    Requests are made sequentially with a delay to avoid
-    429 rate limiting from the Yandex API.
+    Uses controlled parallelism with batching to avoid rate limiting.
+    Batch size: 5 concurrent requests, 2s delay between batches.
     """
     zones = get_zones()
     results: list[SurgeData] = []
 
-    for zone in zones:
-        for tariff in TARIFFS:
-            sd = await _fetch_one(zone, tariff)
-            results.append(sd)
-            cache.set(sd)
-            await asyncio.sleep(8)  # 8 second delay to avoid rate limiting
+    # Create list of all (zone, tariff) combinations
+    tasks = [(zone, tariff) for zone in zones for tariff in TARIFFS]
 
-    logger.info("Fetched %d surge data points", len(results))
+    # Process in batches to avoid overwhelming the API
+    batch_size = 5
+    batch_delay = 2  # seconds between batches
+
+    logger.info("Starting coefficient fetch: %d zones × %d tariffs = %d requests in batches of %d",
+                len(zones), len(TARIFFS), len(tasks), batch_size)
+
+    for i in range(0, len(tasks), batch_size):
+        batch = tasks[i:i + batch_size]
+
+        # Fetch batch concurrently
+        batch_results = await asyncio.gather(
+            *[_fetch_one(zone, tariff) for zone, tariff in batch],
+            return_exceptions=True
+        )
+
+        # Process results
+        for result in batch_results:
+            if isinstance(result, Exception):
+                logger.error("Batch fetch error: %s", result)
+                continue
+            results.append(result)
+            cache.set(result)
+
+        # Delay between batches (except for last batch)
+        if i + batch_size < len(tasks):
+            await asyncio.sleep(batch_delay)
+
+    logger.info("Fetched %d surge data points in %d batches", len(results), (len(tasks) + batch_size - 1) // batch_size)
     return results
 
 

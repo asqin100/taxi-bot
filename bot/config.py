@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     admin_password: str = "admin123!@#"  # Admin panel password
     database_url: str = f"sqlite+aiosqlite:///{BASE_DIR / 'data' / 'bot.db'}"  # Production uses PostgreSQL
     db_url: str = ""  # Deprecated, use database_url
-    parse_interval_seconds: int = 1200  # 20 minutes - enough time for 43 zones × 3 tariffs with 8s delay
+    parse_interval_seconds: int = 480  # 8 minutes - parallel batching allows faster updates
     default_surge_threshold: float = 1.5
     webapp_url: str = ""
     web_host: str = "0.0.0.0"  # Web server host
