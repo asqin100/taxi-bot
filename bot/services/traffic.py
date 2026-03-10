@@ -66,7 +66,7 @@ class TrafficData:
 # Cache for traffic data
 _traffic_cache: dict[str, TrafficData] = {}
 _cache_timestamp: Optional[datetime] = None
-CACHE_TTL_SECONDS = 300  # 5 minutes
+CACHE_TTL_SECONDS = 180  # 3 minutes - optimal balance between freshness and safety
 
 
 def clear_traffic_cache():
