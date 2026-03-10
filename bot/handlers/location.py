@@ -23,19 +23,25 @@ class LocationStates(StatesGroup):
 @router.message(F.location)
 async def handle_location(message: Message, state: FSMContext):
     """Handle location sharing from user."""
+    import logging
+    logger = logging.getLogger(__name__)
+
     location = message.location
     user_id = message.from_user.id
 
     # Get current state to determine context
     current_state = await state.get_state()
+    logger.info(f"Location received from user {user_id}, current state: {current_state}")
 
     # Check if this is for "Where to go" feature
-    if current_state == LocationStates.waiting_for_where_to_go.state:
+    if current_state and "waiting_for_where_to_go" in current_state:
+        logger.info(f"Handling as 'Where to go' for user {user_id}")
         await state.clear()
         await _handle_where_to_go(message, location)
         return
 
     # Otherwise, treat as geo alerts setup (save location, don't search)
+    logger.info(f"Handling as geo alerts for user {user_id}")
     await state.clear()
     await _handle_geo_alerts_location(message, location, user_id)
 
