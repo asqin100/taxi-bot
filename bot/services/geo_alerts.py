@@ -188,9 +188,9 @@ async def _send_alert(bot: Bot, user: User, alert: dict):
         f"Выберите приложение для навигации:"
     )
 
-    # Yandex Maps and Navigator URLs
+    # Yandex Maps and Navigator URLs (HTTPS for Telegram compatibility)
     maps_url = f"https://yandex.ru/maps/?rtext=~{zone.lat},{zone.lon}&rtt=auto"
-    navigator_url = f"yandexnavi://build_route_on_map?lat_to={zone.lat}&lon_to={zone.lon}"
+    navigator_url = f"https://yandex.ru/navi/?rtext=~{zone.lat},{zone.lon}"
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
