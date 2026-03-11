@@ -109,6 +109,14 @@ class YandexGoPassengerProvider(BasePriceProvider):
 
     async def fetch_surge(self, zone: Zone, tariff: str) -> float:
         """Fetch surge coefficient using Yandex.Go passenger API with device rotation."""
+        # Check if Business tariff is restricted to MKAD
+        if tariff == "business":
+            from bot.services.mkad import is_inside_mkad
+            if not is_inside_mkad(zone.lat, zone.lon):
+                # Zone is outside MKAD, return 1.0 (no surge) for Business
+                logger.info(f"Business tariff blocked for zone {zone.id} (outside MKAD)")
+                return 1.0
+
         # Get next device credentials for load distribution
         device = self._get_next_device()
 
