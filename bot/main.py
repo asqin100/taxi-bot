@@ -7,7 +7,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bot.config import settings
 from bot.database.db import init_db
-from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding, referral, location, export, statistics, tax, heatmap, subscription_check, promo_code, admin_commands
+from bot.handlers import start, coefficients, settings as settings_handler, notifications, events, financial, traffic, menu, hotspots, subscription, ai_advisor, achievements, challenges, leaderboard, help as help_handler, onboarding, referral, location, export, statistics, tax, heatmap, subscription_check, promo_code, admin_commands, lunch
 from bot.middlewares.auth import ThrottleMiddleware
 from bot.middlewares.channel_subscription import ChannelSubscriptionMiddleware
 from bot.middlewares.ban_check import BanCheckMiddleware
@@ -87,6 +87,7 @@ async def main():
     dp.include_router(admin_commands.router)  # Admin commands
     dp.include_router(start.router)
     dp.include_router(menu.router)
+    dp.include_router(lunch.router)
     dp.include_router(onboarding.router)
     dp.include_router(coefficients.router)
     dp.include_router(settings_handler.router)

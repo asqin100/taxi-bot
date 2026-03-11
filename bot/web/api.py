@@ -870,6 +870,77 @@ async def admin_update_subscription(request: web.Request) -> web.Response:
         return web.json_response({"error": "Server error"}, status=500)
 
 
+async def admin_ban_user(request: web.Request) -> web.Response:
+    """Ban user from using the bot."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        from bot.services.admin import ban_user
+
+        data = await request.json()
+        telegram_id = data.get("telegram_id")
+        reason = data.get("reason", "Нарушение правил")
+
+        if not telegram_id:
+            return web.json_response({"error": "telegram_id is required"}, status=400)
+
+        success = await ban_user(int(telegram_id), reason)
+
+        if success:
+            logger.info(f"Admin banned user {telegram_id}: {reason}")
+            return web.json_response({"success": True})
+        else:
+            return web.json_response({"error": "User not found"}, status=404)
+
+    except Exception as e:
+        logger.error(f"Error banning user: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_unban_user(request: web.Request) -> web.Response:
+    """Unban user."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        from bot.services.admin import unban_user
+
+        data = await request.json()
+        telegram_id = data.get("telegram_id")
+
+        if not telegram_id:
+            return web.json_response({"error": "telegram_id is required"}, status=400)
+
+        success = await unban_user(int(telegram_id))
+
+        if success:
+            logger.info(f"Admin unbanned user {telegram_id}")
+            return web.json_response({"success": True})
+        else:
+            return web.json_response({"error": "User not found"}, status=404)
+
+    except Exception as e:
+        logger.error(f"Error unbanning user: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_banned_users(request: web.Request) -> web.Response:
+    """Get list of banned users."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        from bot.services.admin import get_banned_users
+
+        banned = await get_banned_users()
+        return web.json_response(banned)
+
+    except Exception as e:
+        logger.error(f"Error getting banned users: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
 def create_app() -> web.Application:
     app = web.Application()
     app.router.add_get("/", index)
@@ -909,6 +980,11 @@ def create_app() -> web.Application:
     app.router.add_get("/admin/api/promo-codes", admin_promo_codes)
     app.router.add_post("/admin/api/promo-codes/create", admin_create_promo_code)
     app.router.add_post("/admin/api/promo-codes/deactivate", admin_deactivate_promo_code)
+
+    # Ban system routes
+    app.router.add_post("/admin/api/ban-user", admin_ban_user)
+    app.router.add_post("/admin/api/unban-user", admin_unban_user)
+    app.router.add_get("/admin/api/banned-users", admin_banned_users)
 
     app.router.add_get("/{name}", static_file)
     return app

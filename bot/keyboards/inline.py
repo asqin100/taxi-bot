@@ -84,6 +84,8 @@ def notify_keyboard(enabled: bool, event_notify_enabled: bool = True, quiet_hour
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=f"Уведомления о коэффициентах: {status}", callback_data="notify:toggle")],
         [InlineKeyboardButton(text="Порог коэффициента", callback_data="notify:threshold")],
+        [InlineKeyboardButton(text="🎯 Фильтры (тарифы)", callback_data="notify:tariffs")],
+        [InlineKeyboardButton(text="📍 Фильтры (зоны)", callback_data="notify:zones")],
         [InlineKeyboardButton(text=f"Уведомления о мероприятиях: {event_status}", callback_data="notify:event_toggle")],
         [InlineKeyboardButton(text="Типы мероприятий", callback_data="notify:event_types")],
         [InlineKeyboardButton(text=f"📍 Геоалерты: {geo_status}", callback_data="geo_alerts:toggle")],
@@ -127,11 +129,13 @@ def main_menu_keyboard(tier: str = "free") -> InlineKeyboardMarkup:
 
     buttons.extend([
         [InlineKeyboardButton(text="🗺 Куда ехать?", callback_data="menu:where_to_go")],
+        [InlineKeyboardButton(text="🍽 Заехать на обед", callback_data="menu:lunch")],
         [InlineKeyboardButton(text="👤 Мой кабинет", callback_data="menu:profile")],
         [InlineKeyboardButton(text="⚙️ Настройки", callback_data="cmd:settings")],
         [InlineKeyboardButton(text="⭐ Подписка", callback_data="menu:subscription")],
         [InlineKeyboardButton(text="🎁 Промокод", callback_data="subscription:promo")],
         [InlineKeyboardButton(text="💰 Реферальная программа", callback_data="menu:referral")],
+        [InlineKeyboardButton(text="🔐 VPN", url="https://t.me/vpn_yota_bot")],
     ])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 

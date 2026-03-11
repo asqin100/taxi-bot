@@ -243,6 +243,43 @@ async def cb_event_type(callback: CallbackQuery):
     await callback.answer("Обновлено")
 
 
+@router.callback_query(F.data == "notify:tariffs")
+async def cb_notify_tariffs(callback: CallbackQuery):
+    """Show tariff filter selection for notifications."""
+    user = await _get_user(callback.from_user.id)
+    selected = set(user.tariffs.split(",")) if user.tariffs else set()
+
+    # Check if user has business access
+    from bot.services.subscription import check_feature_access
+    has_business = await check_feature_access(callback.from_user.id, "business_tariff")
+
+    from bot.keyboards.inline import tariff_keyboard
+    await callback.message.edit_text(
+        "🎯 <b>Фильтры тарифов для уведомлений</b>\n\n"
+        "Выберите тарифы, по которым хотите получать уведомления:",
+        reply_markup=tariff_keyboard(selected, has_business_access=has_business, from_notifications=True),
+        parse_mode="HTML"
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "notify:zones")
+async def cb_notify_zones(callback: CallbackQuery):
+    """Show zone filter selection for notifications."""
+    user = await _get_user(callback.from_user.id)
+    selected = set(user.zones.split(",")) if user.zones else set()
+    selected.discard("")
+
+    from bot.keyboards.inline import zones_keyboard
+    await callback.message.edit_text(
+        "📍 <b>Фильтры зон для уведомлений</b>\n\n"
+        "Выберите зоны, по которым хотите получать уведомления:",
+        reply_markup=zones_keyboard(selected, from_notifications=True),
+        parse_mode="HTML"
+    )
+    await callback.answer()
+
+
 @router.callback_query(F.data == "notify:threshold")
 async def cb_threshold_menu(callback: CallbackQuery):
     await callback.message.edit_text(

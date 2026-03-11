@@ -74,6 +74,7 @@ SUBSCRIPTION_FEATURES = {
         "name": "Бесплатный",
         "price": 0,
         "max_alerts": 1,
+        "where_to_go_limit": 3,
         "alert_cooldown_seconds": 120,
         "ai_advisor": False,
         "geo_alerts": True,  # Changed from False to True
@@ -85,6 +86,7 @@ SUBSCRIPTION_FEATURES = {
             "✅ Базовый радар коэффициентов",
             "✅ Тарифы: Эконом, Комфорт",
             "✅ 1 геоалерт в день",
+            "✅ 3 запроса 'Куда ехать' в день",
             "✅ Топ-5 жирных точек",
             "⏱ Уведомления через 120 секунд",
         ]
@@ -93,6 +95,7 @@ SUBSCRIPTION_FEATURES = {
         "name": "Pro",
         "price": 299,
         "max_alerts": 5,
+        "where_to_go_limit": 7,
         "alert_cooldown_seconds": 90,
         "ai_advisor": True,
         "geo_alerts": True,
@@ -104,6 +107,7 @@ SUBSCRIPTION_FEATURES = {
             "✅ Все функции бесплатного",
             "✅ Доступ к тарифу Бизнес 🚕",
             "✅ 5 геоалертов в день",
+            "✅ 7 запросов 'Куда ехать' в день",
             "⏱ Уведомления через 90 секунд",
             "✅ Прогноз пробок 🚦",
             "✅ AI-советник (5 вопросов/день)",
@@ -116,6 +120,7 @@ SUBSCRIPTION_FEATURES = {
         "name": "Premium",
         "price": 499,
         "max_alerts": 20,
+        "where_to_go_limit": 20,
         "alert_cooldown_seconds": 60,
         "ai_advisor": True,
         "geo_alerts": True,
@@ -126,6 +131,7 @@ SUBSCRIPTION_FEATURES = {
         "features": [
             "✅ Все функции Pro",
             "⚡ Приоритет: 20 геоалертов в день",
+            "⚡ 20 запросов 'Куда ехать' в день",
             "⚡ Уведомления через 60 секунд",
             "✅ AI-советник (20 вопросов/день)",
             "✅ Расширенная аналитика",
@@ -137,6 +143,7 @@ SUBSCRIPTION_FEATURES = {
         "name": "Elite",
         "price": 999,
         "max_alerts": 50,
+        "where_to_go_limit": 999999,
         "alert_cooldown_seconds": 0,
         "ai_advisor": True,
         "geo_alerts": True,
@@ -152,6 +159,7 @@ SUBSCRIPTION_FEATURES = {
         "features": [
             "✅ Все функции Premium",
             "🚀 Максимальный приоритет: 50 геоалертов в день",
+            "🚀 Безлимитные запросы 'Куда ехать'",
             "🚀 Уведомления мгновенно (без задержки)",
             "✅ Выгрузка смен для налоговой (безлимит)",
             "✅ Карта заработка: когда выгоднее работать",

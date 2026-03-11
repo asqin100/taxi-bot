@@ -38,6 +38,10 @@ class User(Base):
     geo_alerts_sent_today: Mapped[int] = mapped_column(Integer, default=0)
     geo_alerts_reset_date: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 
+    # Where to go daily limit tracking
+    where_to_go_requests_today: Mapped[int] = mapped_column(Integer, default=0)
+    where_to_go_reset_date: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
     # Onboarding
     onboarding_completed: Mapped[bool] = mapped_column(Boolean, default=False)
 
