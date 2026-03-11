@@ -488,6 +488,87 @@ async def update_user_balance(telegram_id: int, amount: float) -> bool:
         return False
 
 
+async def ban_user(telegram_id: int, reason: str = "Нарушение правил") -> bool:
+    """Ban user from using the bot."""
+    try:
+        async with get_session() as session:
+            user_result = await session.execute(
+                select(User).where(User.telegram_id == telegram_id)
+            )
+            user = user_result.scalar_one_or_none()
+
+            if not user:
+                logger.warning(f"User {telegram_id} not found for ban")
+                return False
+
+            user.is_banned = True
+            user.ban_reason = reason
+            user.banned_at = datetime.now()
+            await session.commit()
+
+            logger.info(f"Admin banned user {telegram_id}: {reason}")
+            return True
+
+    except Exception as e:
+        logger.error(f"Error banning user: {e}")
+        return False
+
+
+async def unban_user(telegram_id: int) -> bool:
+    """Unban user."""
+    try:
+        async with get_session() as session:
+            user_result = await session.execute(
+                select(User).where(User.telegram_id == telegram_id)
+            )
+            user = user_result.scalar_one_or_none()
+
+            if not user:
+                logger.warning(f"User {telegram_id} not found for unban")
+                return False
+
+            user.is_banned = False
+            user.ban_reason = None
+            user.banned_at = None
+            await session.commit()
+
+            logger.info(f"Admin unbanned user {telegram_id}")
+            return True
+
+    except Exception as e:
+        logger.error(f"Error unbanning user: {e}")
+        return False
+
+
+async def get_banned_users() -> List[Dict]:
+    """Get list of all banned users."""
+    async with get_session() as session:
+        result = await session.execute(
+            select(User).where(User.is_banned == True).order_by(User.banned_at.desc())
+        )
+        users = result.scalars().all()
+
+        return [
+            {
+                "telegram_id": user.telegram_id,
+                "username": user.username or "Unknown",
+                "ban_reason": user.ban_reason,
+                "banned_at": user.banned_at.isoformat() if user.banned_at else None
+            }
+            for user in users
+        ]
+
+
+async def is_user_banned(telegram_id: int) -> bool:
+    """Check if user is banned."""
+    async with get_session() as session:
+        result = await session.execute(
+            select(User.is_banned).where(User.telegram_id == telegram_id)
+        )
+        is_banned = result.scalar_one_or_none()
+        return is_banned or False
+
+
 async def update_user_subscription(telegram_id: int, tier: str) -> bool:
     """Update user subscription tier (including setting to FREE)."""
     try:

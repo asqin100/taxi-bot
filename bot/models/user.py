@@ -49,6 +49,11 @@ class User(Base):
     # Export tracking
     last_export_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 
+    # Ban system
+    is_banned: Mapped[bool] = mapped_column(Boolean, default=False)
+    ban_reason: Mapped[str | None] = mapped_column(String(256), nullable=True)
+    banned_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
     # Relationships
