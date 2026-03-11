@@ -180,9 +180,18 @@ async def _send_alert(bot: Bot, user: User, alert: dict):
         "business": "Бизнес",
     }
 
+    # Get nearest metro from ZONE CENTER (not user location)
+    from bot.services.zones import find_nearest_metro
+    metro_info = find_nearest_metro(zone.lat, zone.lon)
+    metro_text = ""
+    if metro_info:
+        metro_name, metro_distance = metro_info
+        metro_text = f"🚇 Метро: <b>{metro_name}</b> ({metro_distance:.1f} км от зоны)\n"
+
     text = (
         f"🔥 <b>ВЫСОКИЙ КОЭФФИЦИЕНТ РЯДОМ!</b>\n\n"
         f"📍 Зона: <b>{zone.name}</b>\n"
+        f"{metro_text}"
         f"💰 Коэффициент: <b>x{coeff}</b>\n"
         f"🚗 Тариф: {tariff_names.get(tariff, tariff)}\n"
         f"📏 Расстояние: <b>{distance:.1f} км</b>\n\n"

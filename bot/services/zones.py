@@ -3,7 +3,10 @@ import math
 from dataclasses import dataclass
 from pathlib import Path
 
+from typing import Optional, Tuple, List
+
 DATA_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "moscow_zones.json"
+METRO_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "moscow_metro.json"
 
 
 @dataclass
@@ -45,6 +48,46 @@ def get_zone_by_id(zone_id: str) -> Zone | None:
 
 def get_zone_names_map() -> dict[str, str]:
     return {z.id: z.name for z in get_zones()}
+
+
+def load_metro_stations() -> List[dict]:
+    """Load Moscow metro stations from JSON file."""
+    try:
+        if METRO_PATH.exists():
+            with open(METRO_PATH, encoding="utf-8") as f:
+                data = json.load(f)
+                return data.get("stations", [])
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Failed to load metro stations: {e}")
+    return []
+
+
+def find_nearest_metro(zone_lat: float, zone_lon: float) -> Optional[Tuple[str, float]]:
+    """
+    Find nearest metro station to the specified zone center.
+
+    Args:
+        zone_lat: Zone center latitude
+        zone_lon: Zone center longitude
+
+    Returns:
+        Tuple (station name, distance in km) or None
+    """
+    stations = load_metro_stations()
+    if not stations:
+        return None
+
+    nearest_station = None
+    min_distance = float('inf')
+
+    for station in stations:
+        distance = calculate_distance(zone_lat, zone_lon, station['lat'], station['lon'])
+        if distance < min_distance:
+            min_distance = distance
+            nearest_station = station['name']
+
+    return (nearest_station, min_distance) if nearest_station else None
 
 
 def calculate_distance(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
