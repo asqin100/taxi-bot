@@ -77,7 +77,9 @@ async def main():
 
     # Middleware
     dp.message.middleware(ThrottleMiddleware(rate_limit=0.5))
+    dp.message.middleware(BanCheckMiddleware())
     dp.message.middleware(ChannelSubscriptionMiddleware())
+    dp.callback_query.middleware(BanCheckMiddleware())
     dp.callback_query.middleware(ChannelSubscriptionMiddleware())
 
     # Routers
