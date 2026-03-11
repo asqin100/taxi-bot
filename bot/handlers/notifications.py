@@ -25,6 +25,21 @@ async def cmd_notify(message: Message):
     if user.last_latitude and user.last_longitude:
         location_str = f"{user.last_latitude:.4f}, {user.last_longitude:.4f}"
 
+    # Get geo alerts usage info
+    from bot.services.subscription import get_alert_limit
+    from datetime import datetime
+
+    geo_alerts_info = ""
+    if user.geo_alerts_enabled:
+        daily_limit = await get_alert_limit(message.from_user.id)
+        used_today = user.geo_alerts_sent_today
+
+        # Reset counter if it's a new day
+        if user.geo_alerts_reset_date is None or user.geo_alerts_reset_date.date() < datetime.now().date():
+            used_today = 0
+
+        geo_alerts_info = f"   Использовано сегодня: {used_today}/{daily_limit}\n"
+
     await send_and_cleanup(
         message,
         f"🔔 <b>Настройки уведомлений</b>\n\n"
@@ -33,6 +48,7 @@ async def cmd_notify(message: Message):
         f"🎭 Мероприятия: {'включены' if user.event_notify_enabled else 'выключены'}\n"
         f"   Типы: {event_types_str}\n\n"
         f"📍 Геоалерты: {'включены' if user.geo_alerts_enabled else 'выключены'}\n"
+        f"{geo_alerts_info}"
         f"   Локация: {location_str}\n\n"
         f"🌙 Тихие часы: {quiet_hours_str}",
         reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled, user.geo_alerts_enabled),
@@ -54,6 +70,21 @@ async def cb_notify(callback: CallbackQuery):
     if user.last_latitude and user.last_longitude:
         location_str = f"{user.last_latitude:.4f}, {user.last_longitude:.4f}"
 
+    # Get geo alerts usage info
+    from bot.services.subscription import get_alert_limit
+    from datetime import datetime
+
+    geo_alerts_info = ""
+    if user.geo_alerts_enabled:
+        daily_limit = await get_alert_limit(callback.from_user.id)
+        used_today = user.geo_alerts_sent_today
+
+        # Reset counter if it's a new day
+        if user.geo_alerts_reset_date is None or user.geo_alerts_reset_date.date() < datetime.now().date():
+            used_today = 0
+
+        geo_alerts_info = f"   Использовано сегодня: {used_today}/{daily_limit}\n"
+
     await callback.message.edit_text(
         f"🔔 <b>Настройки уведомлений</b>\n\n"
         f"📊 Коэффициенты: {'включены' if user.notify_enabled else 'выключены'}\n"
@@ -61,6 +92,7 @@ async def cb_notify(callback: CallbackQuery):
         f"🎭 Мероприятия: {'включены' if user.event_notify_enabled else 'выключены'}\n"
         f"   Типы: {event_types_str}\n\n"
         f"📍 Геоалерты: {'включены' if user.geo_alerts_enabled else 'выключены'}\n"
+        f"{geo_alerts_info}"
         f"   Локация: {location_str}\n\n"
         f"🌙 Тихие часы: {quiet_hours_str}",
         reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled, user.geo_alerts_enabled),
