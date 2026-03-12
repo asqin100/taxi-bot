@@ -33,6 +33,7 @@ from bot.models.ai_usage import AIUsage
 from bot.models.referral import ReferralEarning
 from bot.models.promo_code import PromoCode, PromoCodeUsage
 from bot.models.where_to_go_usage import WhereToGoUsage
+from bot.models.event import Event
 
 from aiohttp import web
 
