@@ -941,6 +941,114 @@ async def admin_banned_users(request: web.Request) -> web.Response:
         return web.json_response({"error": "Server error"}, status=500)
 
 
+async def admin_get_events(request: web.Request) -> web.Response:
+    """Get all upcoming events."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        from bot.services.events import get_upcoming_events
+        from bot.services.zones import get_zones
+
+        events = await get_upcoming_events(limit=100)
+        zones_map = {z.id: z.name for z in get_zones()}
+
+        result = []
+        for event in events:
+            result.append({
+                "id": event.id,
+                "name": event.name,
+                "zone_id": event.zone_id,
+                "zone_name": zones_map.get(event.zone_id, event.zone_id),
+                "event_type": event.event_type,
+                "end_time": event.end_time.isoformat(),
+                "pre_notified": event.pre_notified,
+                "end_notified": event.end_notified,
+                "created_at": event.created_at.isoformat()
+            })
+
+        return web.json_response(result)
+
+    except Exception as e:
+        logger.error(f"Error getting events: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_create_event(request: web.Request) -> web.Response:
+    """Create new event."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        from bot.services.events import create_event
+        from datetime import datetime
+
+        data = await request.json()
+        name = data.get("name", "").strip()
+        zone_id = data.get("zone_id", "").strip()
+        event_type = data.get("event_type", "").strip()
+        end_time_str = data.get("end_time", "").strip()
+
+        if not name or not zone_id or not event_type or not end_time_str:
+            return web.json_response({"error": "All fields are required"}, status=400)
+
+        # Parse end_time
+        try:
+            end_time = datetime.fromisoformat(end_time_str)
+        except ValueError:
+            return web.json_response({"error": "Invalid datetime format"}, status=400)
+
+        # Check if end_time is in the future
+        if end_time <= datetime.now():
+            return web.json_response({"error": "End time must be in the future"}, status=400)
+
+        event = await create_event(name, zone_id, event_type, end_time)
+
+        logger.info(f"Admin created event: {name} at {zone_id}, ends at {end_time}")
+
+        return web.json_response({
+            "success": True,
+            "event": {
+                "id": event.id,
+                "name": event.name,
+                "zone_id": event.zone_id,
+                "event_type": event.event_type,
+                "end_time": event.end_time.isoformat()
+            }
+        })
+
+    except Exception as e:
+        logger.error(f"Error creating event: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
+async def admin_delete_event(request: web.Request) -> web.Response:
+    """Delete event."""
+    if not check_admin_token(request):
+        return web.json_response({"error": "Unauthorized"}, status=401)
+
+    try:
+        from bot.services.events import delete_event
+
+        data = await request.json()
+        event_id = data.get("event_id")
+
+        if not event_id:
+            return web.json_response({"error": "event_id is required"}, status=400)
+
+        success = await delete_event(int(event_id))
+
+        if success:
+            logger.info(f"Admin deleted event {event_id}")
+            return web.json_response({"success": True})
+        else:
+            return web.json_response({"error": "Event not found"}, status=404)
+
+    except Exception as e:
+        logger.error(f"Error deleting event: {e}")
+        return web.json_response({"error": "Server error"}, status=500)
+
+
 def create_app() -> web.Application:
     app = web.Application()
     app.router.add_get("/", index)
@@ -985,6 +1093,11 @@ def create_app() -> web.Application:
     app.router.add_post("/admin/api/ban-user", admin_ban_user)
     app.router.add_post("/admin/api/unban-user", admin_unban_user)
     app.router.add_get("/admin/api/banned-users", admin_banned_users)
+
+    # Events management routes
+    app.router.add_get("/admin/api/events", admin_get_events)
+    app.router.add_post("/admin/api/events/create", admin_create_event)
+    app.router.add_post("/admin/api/events/delete", admin_delete_event)
 
     app.router.add_get("/{name}", static_file)
     return app

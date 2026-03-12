@@ -315,6 +315,7 @@
         <div class="tabs">
             <button class="tab active" onclick="switchTab('dashboard')">📊 Дашборд</button>
             <button class="tab" onclick="switchTab('users')">👥 Управление пользователями</button>
+            <button class="tab" onclick="switchTab('events')">🎭 Мероприятия</button>
             <button class="tab" onclick="switchTab('bans')">🚫 Забаненные</button>
             <button class="tab" onclick="switchTab('promo')">🎁 Промокоды</button>
             <button class="tab" onclick="switchTab('broadcast')">📢 Рассылка</button>
@@ -334,6 +335,19 @@
                     <button onclick="searchUsers()">Найти</button>
                 </div>
                 <div id="searchResults"></div>
+            </div>
+        </div>
+
+        <!-- Events Management Tab -->
+        <div id="events-tab" class="tab-content">
+            <div class="section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>🎭 Управление мероприятиями</h2>
+                    <button class="btn-action" onclick="showCreateEventModal()" style="padding: 10px 20px; font-size: 14px;">
+                        ➕ Добавить мероприятие
+                    </button>
+                </div>
+                <div id="eventsContent" class="loading">Загрузка...</div>
             </div>
         </div>
 
@@ -512,6 +526,80 @@
         </div>
     </div>
 
+    <!-- Create Event Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить мероприятие</h2>
+                <button class="close-btn" onclick="closeEventModal()">&times;</button>
+            </div>
+            <div id="eventModalStatus"></div>
+            <form onsubmit="createEvent(event)">
+                <div class="form-group">
+                    <label>Название мероприятия *</label>
+                    <input type="text" id="eventName" required placeholder="Концерт в Лужниках">
+                </div>
+                <div class="form-group">
+                    <label>ID зоны *</label>
+                    <input type="text" id="eventZone" required placeholder="luzhniki" list="zonesList">
+                    <datalist id="zonesList">
+                        <option value="luzhniki">Лужники</option>
+                        <option value="crocus">Крокус Сити Холл</option>
+                        <option value="vdnh">ВДНХ</option>
+                        <option value="olympic">Олимпийский</option>
+                        <option value="megasport">Мегаспорт</option>
+                        <option value="svo">Шереметьево</option>
+                        <option value="dme">Домодедово</option>
+                        <option value="vko">Внуково</option>
+                    </datalist>
+                    <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">
+                        Введите ID зоны из списка или свой ID
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label>Тип мероприятия *</label>
+                    <select id="eventType" required>
+                        <option value="concert">🎵 Концерт</option>
+                        <option value="sport">⚽ Спортивное событие</option>
+                        <option value="conference">🎤 Конференция</option>
+                        <option value="festival">🎪 Фестиваль</option>
+                        <option value="exhibition">🖼 Выставка</option>
+                        <option value="other">📅 Другое</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Время окончания *</label>
+                    <input type="datetime-local" id="eventEndTime" required>
+                    <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">
+                        Уведомления будут отправлены за 20 минут до окончания и сразу после
+                    </small>
+                </div>
+                <button type="submit" class="btn-action" style="width: 100%; padding: 12px; font-size: 16px;">
+                    ✅ Создать мероприятие
+                </button>
+            </form>
+        </div>
+    </div>
+
+                <div class="form-group">
+                    <label>Максимум использований (оставьте пустым для безлимита)</label>
+                    <input type="number" id="promoMaxUses" min="1" placeholder="Без ограничений">
+                </div>
+                <div class="form-group">
+                    <label>Действителен до (оставьте пустым для бессрочного)</label>
+                    <input type="datetime-local" id="promoValidUntil">
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <input type="text" id="promoDescription" placeholder="Летняя акция 2026">
+                </div>
+                <button type="submit" class="btn-action" style="width: 100%; padding: 12px; font-size: 16px;">
+                    ✅ Создать промокод
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script>
         let currentUser = null;
 
@@ -522,9 +610,13 @@
             event.target.classList.add('active');
             document.getElementById(tab + '-tab').classList.add('active');
 
-            // Load promo codes when switching to promo tab
+            // Load data when switching tabs
             if (tab === 'promo') {
                 loadPromoCodes();
+            } else if (tab === 'events') {
+                loadEvents();
+            } else if (tab === 'bans') {
+                loadBannedUsers();
             }
         }
 
@@ -1602,6 +1694,178 @@
                     loadPromoCodes();
                 } else {
                     alert(`❌ Ошибка: ${result.error || 'Не удалось деактивировать промокод'}`);
+                }
+            } catch (error) {
+                alert(`❌ Ошибка сети: ${error.message}`);
+            }
+        }
+
+        async function loadEvents() {
+            const content = document.getElementById('eventsContent');
+            content.className = 'loading';
+            content.innerHTML = 'Загрузка мероприятий...';
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/events', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const events = await response.json();
+
+                content.className = '';
+
+                if (events.length === 0) {
+                    content.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Нет мероприятий</p>';
+                    return;
+                }
+
+                const eventTypes = {
+                    'concert': '🎵 Концерт',
+                    'sport': '⚽ Спорт',
+                    'conference': '🎤 Конференция',
+                    'festival': '🎪 Фестиваль',
+                    'exhibition': '🖼 Выставка',
+                    'other': '📅 Другое'
+                };
+
+                content.innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название</th>
+                                <th>Зона</th>
+                                <th>Тип</th>
+                                <th>Окончание</th>
+                                <th>Уведомления</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${events.map(event => {
+                                const endTime = new Date(event.end_time);
+                                const now = new Date();
+                                const isEnded = endTime < now;
+
+                                return `
+                                    <tr style="${isEnded ? 'opacity: 0.6;' : ''}">
+                                        <td>${event.id}</td>
+                                        <td><strong>${event.name}</strong></td>
+                                        <td>${event.zone_name}</td>
+                                        <td>${eventTypes[event.event_type] || event.event_type}</td>
+                                        <td>
+                                            ${endTime.toLocaleString('ru-RU')}
+                                            ${isEnded ? '<br><span style="color: #dc3545; font-size: 12px;">Завершено</span>' : ''}
+                                        </td>
+                                        <td>
+                                            ${event.pre_notified ? '✅' : '⏳'} За 20 мин<br>
+                                            ${event.end_notified ? '✅' : '⏳'} Окончание
+                                        </td>
+                                        <td>
+                                            <button class="btn-action" onclick="deleteEvent(${event.id})" style="background: #dc3545;">
+                                                🗑 Удалить
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                content.className = '';
+                content.innerHTML = `<p style="color: #dc3545;">Ошибка загрузки: ${error.message}</p>`;
+            }
+        }
+
+        function showCreateEventModal() {
+            document.getElementById('eventModal').classList.add('show');
+            document.getElementById('eventModalStatus').innerHTML = '';
+            document.getElementById('eventName').value = '';
+            document.getElementById('eventZone').value = '';
+            document.getElementById('eventType').value = 'concert';
+            document.getElementById('eventEndTime').value = '';
+        }
+
+        function closeEventModal() {
+            document.getElementById('eventModal').classList.remove('show');
+        }
+
+        async function createEvent(e) {
+            e.preventDefault();
+
+            const statusDiv = document.getElementById('eventModalStatus');
+            statusDiv.innerHTML = '<p class="loading">Создание мероприятия...</p>';
+
+            const name = document.getElementById('eventName').value.trim();
+            const zoneId = document.getElementById('eventZone').value.trim();
+            const eventType = document.getElementById('eventType').value;
+            const endTime = document.getElementById('eventEndTime').value;
+
+            if (!name || !zoneId || !eventType || !endTime) {
+                statusDiv.innerHTML = '<p class="error-msg">❌ Заполните все поля</p>';
+                return;
+            }
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/events/create', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        zone_id: zoneId,
+                        event_type: eventType,
+                        end_time: endTime
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    statusDiv.innerHTML = `<p class="success-msg">✅ Мероприятие <strong>${name}</strong> создано!</p>`;
+                    setTimeout(() => {
+                        closeEventModal();
+                        loadEvents();
+                    }, 2000);
+                } else {
+                    statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось создать мероприятие'}</p>`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка сети: ${error.message}</p>`;
+            }
+        }
+
+        async function deleteEvent(eventId) {
+            if (!confirm('Вы уверены, что хотите удалить это мероприятие?')) {
+                return;
+            }
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/events/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ event_id: eventId })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    alert('✅ Мероприятие удалено');
+                    loadEvents();
+                } else {
+                    alert(`❌ Ошибка: ${result.error || 'Не удалось удалить мероприятие'}`);
                 }
             } catch (error) {
                 alert(`❌ Ошибка сети: ${error.message}`);
