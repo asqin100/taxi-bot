@@ -102,68 +102,79 @@ async def cb_lunch_menu(callback: CallbackQuery):
 
 
 async def _search_restaurants(lat: float, lon: float, radius: int = 1000):
-    """Search for restaurants near location using Yandex Geocoder."""
+    """Search for restaurants near location using Yandex Search API."""
     if not settings.yandex_geocoder_key:
         logger.warning("YANDEX_GEOCODER_KEY not set")
         return []
 
-    url = "https://geocode-maps.yandex.ru/1.x/"
+    # Use Yandex Search API for organizations
+    url = "https://search-maps.yandex.ru/v1/"
+
+    # Calculate span (search radius in degrees, approximately)
+    # 1 degree ≈ 111 km, so for 1000m radius: 1000/111000 ≈ 0.009
+    span = (radius / 111000) * 2  # diameter in degrees
+
     params = {
         "apikey": settings.yandex_geocoder_key,
-        "geocode": f"{lon},{lat}",
-        "kind": "house",
-        "results": 10,
-        "format": "json",
+        "text": "кафе ресторан столовая",
+        "ll": f"{lon},{lat}",
+        "spn": f"{span},{span}",
+        "lang": "ru_RU",
+        "type": "biz",
+        "results": 50,
     }
 
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params, timeout=aiohttp.ClientTimeout(total=10)) as response:
                 if response.status != 200:
-                    logger.error(f"Yandex Geocoder error: {response.status}")
+                    logger.error(f"Yandex Search API error: {response.status}")
                     return []
 
                 data = await response.json()
 
-                # Parse response
+                # Parse response from Search API
                 restaurants = []
-                members = data.get("response", {}).get("GeoObjectCollection", {}).get("featureMember", [])
+                features = data.get("features", [])
 
-                for member in members:
-                    geo_object = member.get("GeoObject", {})
-                    name = geo_object.get("name", "")
-                    description = geo_object.get("description", "")
+                for feature in features:
+                    properties = feature.get("properties", {})
+                    geometry = feature.get("geometry", {})
 
-                    # Check if it's a restaurant/cafe
-                    if any(keyword in name.lower() or keyword in description.lower()
-                           for keyword in ["ресторан", "кафе", "cafe", "restaurant", "столовая", "бар"]):
+                    name = properties.get("name", "")
+                    description = properties.get("description", "")
+                    company_meta = properties.get("CompanyMetaData", {})
+                    categories = company_meta.get("Categories", [])
 
-                        point = geo_object.get("Point", {}).get("pos", "").split()
-                        if len(point) == 2:
-                            rest_lon, rest_lat = float(point[0]), float(point[1])
+                    # Get coordinates
+                    coordinates = geometry.get("coordinates", [])
+                    if len(coordinates) != 2:
+                        continue
 
-                            # Calculate distance
-                            from math import radians, sin, cos, sqrt, atan2
-                            R = 6371000  # Earth radius in meters
+                    rest_lon, rest_lat = float(coordinates[0]), float(coordinates[1])
 
-                            lat1, lon1 = radians(lat), radians(lon)
-                            lat2, lon2 = radians(rest_lat), radians(rest_lon)
+                    # Calculate distance
+                    from math import radians, sin, cos, sqrt, atan2
+                    R = 6371000  # Earth radius in meters
 
-                            dlat = lat2 - lat1
-                            dlon = lon2 - lon1
+                    lat1, lon1 = radians(lat), radians(lon)
+                    lat2, lon2 = radians(rest_lat), radians(rest_lon)
 
-                            a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-                            c = 2 * atan2(sqrt(a), sqrt(1-a))
-                            distance = R * c
+                    dlat = lat2 - lat1
+                    dlon = lon2 - lon1
 
-                            if distance <= radius:
-                                restaurants.append({
-                                    "name": name,
-                                    "address": description,
-                                    "lat": rest_lat,
-                                    "lon": rest_lon,
-                                    "distance": distance
-                                })
+                    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+                    c = 2 * atan2(sqrt(a), sqrt(1-a))
+                    distance = R * c
+
+                    if distance <= radius:
+                        restaurants.append({
+                            "name": name,
+                            "address": description,
+                            "lat": rest_lat,
+                            "lon": rest_lon,
+                            "distance": distance
+                        })
 
                 # Sort by distance
                 restaurants.sort(key=lambda x: x["distance"])
