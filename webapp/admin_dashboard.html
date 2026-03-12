@@ -341,6 +341,26 @@
         <div id="bans-tab" class="tab-content">
             <div class="section">
                 <h2>🚫 Забаненные пользователи</h2>
+
+                <!-- Ban User Form -->
+                <div style="background: #fff3cd; padding: 20px; border-radius: 10px; margin-bottom: 30px; border-left: 4px solid #ffc107;">
+                    <h3 style="margin-bottom: 15px;">➕ Забанить пользователя</h3>
+                    <div id="banFormStatus"></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Telegram ID или @username</label>
+                            <input type="text" id="banUserInput" placeholder="Например: 123456789 или @username" style="width: 100%;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Причина бана</label>
+                            <input type="text" id="banReasonInput" placeholder="Например: Нарушение правил" value="Нарушение правил" style="width: 100%;">
+                        </div>
+                    </div>
+                    <button onclick="banUserByInput()" style="background: #ff9800; color: white; padding: 12px 30px; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                        🚫 Забанить
+                    </button>
+                </div>
+
                 <div id="bannedUsersContent" class="loading">Загрузка...</div>
             </div>
         </div>
@@ -1253,6 +1273,76 @@
                 }
             } catch (error) {
                 alert(`❌ Ошибка сети: ${error.message}`);
+            }
+        }
+
+        async function banUserByInput() {
+            const input = document.getElementById('banUserInput').value.trim();
+            const reason = document.getElementById('banReasonInput').value.trim() || 'Нарушение правил';
+            const statusDiv = document.getElementById('banFormStatus');
+
+            if (!input) {
+                statusDiv.innerHTML = '<p class="error-msg">❌ Введите Telegram ID или username</p>';
+                return;
+            }
+
+            statusDiv.innerHTML = '<p class="loading">Поиск пользователя...</p>';
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                // First, search for the user
+                const searchQuery = input.startsWith('@') ? input.substring(1) : input;
+                const searchResponse = await fetch(`/admin/api/search-users?q=${encodeURIComponent(searchQuery)}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const users = await searchResponse.json();
+
+                if (!users || users.length === 0) {
+                    statusDiv.innerHTML = '<p class="error-msg">❌ Пользователь не найден</p>';
+                    return;
+                }
+
+                // If multiple users found, use the first one (or we could show a selection)
+                const user = users[0];
+                const telegramId = user.telegram_id;
+
+                if (!confirm(`Забанить пользователя @${user.username} (ID: ${telegramId})?\n\nПричина: ${reason}`)) {
+                    statusDiv.innerHTML = '';
+                    return;
+                }
+
+                statusDiv.innerHTML = '<p class="loading">Бан пользователя...</p>';
+
+                // Ban the user
+                const banResponse = await fetch('/admin/api/ban-user', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        telegram_id: telegramId,
+                        reason: reason
+                    })
+                });
+
+                const result = await banResponse.json();
+
+                if (banResponse.ok && result.success) {
+                    statusDiv.innerHTML = '<p class="success-msg">✅ Пользователь успешно забанен!</p>';
+                    document.getElementById('banUserInput').value = '';
+                    document.getElementById('banReasonInput').value = 'Нарушение правил';
+                    setTimeout(() => {
+                        statusDiv.innerHTML = '';
+                        loadBannedUsers();
+                    }, 2000);
+                } else {
+                    statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось забанить пользователя'}</p>`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${error.message}</p>`;
             }
         }
 
