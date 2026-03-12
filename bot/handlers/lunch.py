@@ -79,18 +79,14 @@ async def cb_lunch_menu(callback: CallbackQuery):
                 text += f"   📍 {address}\n"
             text += f"   📏 {distance_str}\n\n"
 
-            # Add buttons to open in Yandex Maps and Navigator
+            # Add button to open in Yandex Maps
             lat = restaurant.get("lat")
             lon = restaurant.get("lon")
             if lat and lon:
                 buttons.append([
                     InlineKeyboardButton(
-                        text=f"🗺 {name[:20]}... на карте",
+                        text=f"🗺 {name[:25]}",
                         url=f"https://yandex.ru/maps/?pt={lon},{lat}&z=16&l=map"
-                    ),
-                    InlineKeyboardButton(
-                        text="🧭 Навигатор",
-                        url=f"yandexnavi://build_route_on_map?lat_to={lat}&lon_to={lon}"
                     )
                 ])
 
