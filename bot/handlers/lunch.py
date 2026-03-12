@@ -40,14 +40,17 @@ async def cb_lunch_menu(callback: CallbackQuery):
             await callback.answer()
             return
 
-    # Search for restaurants using Yandex Geocoder
+    # Search for restaurants
     try:
+        logger.info(f"Searching restaurants for user {user_id} at ({user.last_latitude}, {user.last_longitude})")
         restaurants = await _search_restaurants(user.last_latitude, user.last_longitude)
+        logger.info(f"Found {len(restaurants)} restaurants")
 
         if not restaurants:
             await callback.message.edit_text(
                 "🍽 <b>Рестораны не найдены</b>\n\n"
-                "К сожалению, рядом с вашей локацией не найдено ресторанов.",
+                "К сожалению, рядом с вашей локацией не найдено ресторанов в радиусе 10км.\n\n"
+                "Попробуйте обновить геолокацию или повторите попытку позже.",
                 parse_mode="HTML",
                 reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                     [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
@@ -115,6 +118,8 @@ async def cb_lunch_menu(callback: CallbackQuery):
 
 async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
     """Search for restaurants near location using Nominatim (OpenStreetMap) API."""
+    logger.info(f"Starting restaurant search at ({lat}, {lon}) with radius {radius}m")
+
     # Search for each restaurant chain separately
     restaurant_chains = ["Вкусно и точка", "Ростикс", "Бургер Кинг", "Burger King"]
     all_restaurants = []
@@ -130,6 +135,8 @@ async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
     try:
         async with aiohttp.ClientSession() as session:
             for chain in restaurant_chains:
+                logger.info(f"Searching for chain: {chain}")
+
                 # Calculate bounding box (~20km around user)
                 lat_delta = 0.2  # ~20km
                 lon_delta = 0.2
@@ -144,12 +151,16 @@ async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
 
                 try:
                     async with session.get(url, params=params, headers=headers, timeout=aiohttp.ClientTimeout(total=10)) as response:
+                        logger.info(f"Nominatim response status for {chain}: {response.status}")
+
                         if response.status != 200:
-                            logger.error(f"Nominatim API error for {chain}: {response.status}")
+                            response_text = await response.text()
+                            logger.error(f"Nominatim API error for {chain}: {response.status}, response: {response_text[:200]}")
                             await asyncio.sleep(1)  # Rate limiting
                             continue
 
                         data = await response.json()
+                        logger.info(f"Nominatim returned {len(data)} results for {chain}")
 
                         for item in data:
                             display_name = item.get("display_name", "")
@@ -190,19 +201,25 @@ async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
                                         "lon": rest_lon,
                                         "distance": distance
                                     })
+                                    logger.debug(f"Added restaurant: {restaurant_name} at {distance/1000:.1f}km")
 
                         # Rate limiting for Nominatim (1 request per second)
                         await asyncio.sleep(1)
 
+                except asyncio.TimeoutError:
+                    logger.error(f"Timeout searching for {chain}")
+                    await asyncio.sleep(1)
+                    continue
                 except Exception as e:
-                    logger.error(f"Error searching for {chain}: {e}")
+                    logger.error(f"Error searching for {chain}: {e}", exc_info=True)
                     await asyncio.sleep(1)
                     continue
 
         # Sort by distance
         all_restaurants.sort(key=lambda x: x["distance"])
+        logger.info(f"Total restaurants found: {len(all_restaurants)}")
         return all_restaurants
 
     except Exception as e:
-        logger.error(f"Error in _search_restaurants: {e}")
+        logger.error(f"Error in _search_restaurants: {e}", exc_info=True)
         return []
