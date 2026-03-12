@@ -1,5 +1,7 @@
 """Lunch feature - find nearby restaurants."""
+import asyncio
 import logging
+from math import radians, sin, cos, sqrt, atan2
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 import aiohttp
@@ -112,62 +114,49 @@ async def cb_lunch_menu(callback: CallbackQuery):
 
 
 async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
-    """Search for restaurants near location using Yandex Search API."""
-    if not settings.yandex_geocoder_key:
-        logger.warning("YANDEX_GEOCODER_KEY not set")
-        return []
-
+    """Search for restaurants near location using Nominatim (OpenStreetMap) API."""
     # Search for each restaurant chain separately
-    restaurant_chains = ["Вкусно и точка", "Ростикс", "Бургер Кинг"]
+    restaurant_chains = ["Вкусно и точка", "Ростикс", "Бургер Кинг", "Burger King"]
     all_restaurants = []
 
-    # Use Yandex Search API for organizations
-    url = "https://search-maps.yandex.ru/v1/"
+    # Nominatim search endpoint
+    url = "https://nominatim.openstreetmap.org/search"
 
-    # Calculate span (search radius in degrees, approximately)
-    # 1 degree ≈ 111 km, so for 10000m radius: 10000/111000 ≈ 0.09
-    span = (radius / 111000) * 2  # diameter in degrees
+    # Required User-Agent header for Nominatim
+    headers = {
+        "User-Agent": "KefPulse TaxiBot/1.0 (Telegram Bot for taxi drivers)"
+    }
 
     try:
         async with aiohttp.ClientSession() as session:
             for chain in restaurant_chains:
+                # Calculate bounding box (~20km around user)
+                lat_delta = 0.2  # ~20km
+                lon_delta = 0.2
+
                 params = {
-                    "apikey": settings.yandex_geocoder_key,
-                    "text": chain,
-                    "ll": f"{lon},{lat}",
-                    "spn": f"{span},{span}",
-                    "lang": "ru_RU",
-                    "type": "biz",
-                    "results": 20,
+                    "q": chain,
+                    "format": "json",
+                    "limit": 50,
+                    "bounded": 1,
+                    "viewbox": f"{lon-lon_delta},{lat-lat_delta},{lon+lon_delta},{lat+lat_delta}",
                 }
 
                 try:
-                    async with session.get(url, params=params, timeout=aiohttp.ClientTimeout(total=10)) as response:
+                    async with session.get(url, params=params, headers=headers, timeout=aiohttp.ClientTimeout(total=10)) as response:
                         if response.status != 200:
-                            logger.error(f"Yandex Search API error for {chain}: {response.status}")
+                            logger.error(f"Nominatim API error for {chain}: {response.status}")
+                            await asyncio.sleep(1)  # Rate limiting
                             continue
 
                         data = await response.json()
 
-                        # Parse response from Search API
-                        features = data.get("features", [])
-
-                        for feature in features:
-                            properties = feature.get("properties", {})
-                            geometry = feature.get("geometry", {})
-
-                            name = properties.get("name", "")
-                            description = properties.get("description", "")
-
-                            # Get coordinates
-                            coordinates = geometry.get("coordinates", [])
-                            if len(coordinates) != 2:
-                                continue
-
-                            rest_lon, rest_lat = float(coordinates[0]), float(coordinates[1])
+                        for item in data:
+                            display_name = item.get("display_name", "")
+                            rest_lat = float(item.get("lat", 0))
+                            rest_lon = float(item.get("lon", 0))
 
                             # Calculate distance
-                            from math import radians, sin, cos, sqrt, atan2
                             R = 6371000  # Earth radius in meters
 
                             lat1, lon1 = radians(lat), radians(lon)
@@ -189,16 +178,25 @@ async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
                                         break
 
                                 if not duplicate:
+                                    # Extract name and address from display_name
+                                    parts = display_name.split(", ")
+                                    restaurant_name = parts[0] if parts else chain
+                                    address = ", ".join(parts[1:4]) if len(parts) > 1 else ""
+
                                     all_restaurants.append({
-                                        "name": name,
-                                        "address": description,
+                                        "name": restaurant_name,
+                                        "address": address,
                                         "lat": rest_lat,
                                         "lon": rest_lon,
                                         "distance": distance
                                     })
 
+                        # Rate limiting for Nominatim (1 request per second)
+                        await asyncio.sleep(1)
+
                 except Exception as e:
                     logger.error(f"Error searching for {chain}: {e}")
+                    await asyncio.sleep(1)
                     continue
 
         # Sort by distance
