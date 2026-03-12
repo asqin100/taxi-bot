@@ -48,6 +48,7 @@ async def handle_location(message: Message, state: FSMContext):
 
 async def _handle_where_to_go(message: Message, location):
     """Handle 'Where to go' feature - search for high coefficient zones."""
+    import logging
     from bot.services.yandex_api import get_cached_coefficients, generate_yandex_navigator_link, generate_yandex_maps_link
     from bot.services.zones import find_nearest_high_coefficient_zone, calculate_distance
     from bot.database.db import session_factory
@@ -55,9 +56,44 @@ async def _handle_where_to_go(message: Message, location):
     from sqlalchemy import select
     import json
     from pathlib import Path
+    from bot.services.where_to_go_tracker import check_where_to_go_limit, record_where_to_go_use
+
+    logger = logging.getLogger(__name__)
+    user_id = message.from_user.id
+
+    logger.info(f"'Where to go' feature called by user {user_id}")
+
+    # Check usage limit
+    can_use, current_usage, daily_limit = await check_where_to_go_limit(user_id)
+
+    if not can_use:
+        logger.warning(f"User {user_id} exceeded 'Where to go' limit: {current_usage}/{daily_limit}")
+
+        from bot.services.subscription import get_subscription
+        subscription = await get_subscription(user_id)
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="⭐ Улучшить подписку", callback_data="menu:subscription")],
+            [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")]
+        ])
+
+        await message.answer(
+            f"⚠️ <b>Лимит исчерпан</b>\n\n"
+            f"Вы использовали все запросы 'Куда ехать' на сегодня.\n\n"
+            f"📊 Использовано: <b>{current_usage}/{daily_limit}</b>\n"
+            f"💳 Ваш тариф: <b>{subscription.tier.upper()}</b>\n\n"
+            f"Улучшите подписку для увеличения лимита:\n"
+            f"• Pro: 7 запросов/день\n"
+            f"• Premium: 20 запросов/день\n"
+            f"• Elite: безлимит",
+            parse_mode="HTML",
+            reply_markup=keyboard
+        )
+        return
+
+    logger.info(f"User {user_id} can use feature: {current_usage}/{daily_limit}")
 
     # Get user's preferred tariff
-    user_id = message.from_user.id
     async with session_factory() as session:
         result = await session.execute(select(User).where(User.telegram_id == user_id))
         user = result.scalar_one_or_none()
@@ -134,13 +170,23 @@ async def _handle_where_to_go(message: Message, location):
         ])
 
         coef_emoji = "💰" if zone_result.coefficient >= 1.3 else "📊"
+
+        # Record usage AFTER successful search
+        await record_where_to_go_use(user_id)
+        logger.info(f"Recorded 'Where to go' usage for user {user_id}")
+
+        # Get updated usage for display
+        from bot.services.where_to_go_tracker import get_where_to_go_usage
+        updated_usage, limit = await get_where_to_go_usage(user_id)
+        usage_text = f"\n\n📊 Использовано сегодня: {updated_usage}/{limit}"
+
         await message.answer(
             f"✅ <b>Ближайшая зона найдена!</b>\n\n"
             f"📍 <b>Зона:</b> {zone_result.zone.name}\n"
             f"{metro_info}"
             f"{coef_emoji} <b>Коэффициент:</b> {zone_result.coefficient:.2f}x\n"
             f"📏 <b>Расстояние:</b> {zone_result.distance_km:.1f} км\n\n"
-            f"Выберите приложение для навигации:",
+            f"Выберите приложение для навигации:{usage_text}",
             parse_mode="HTML",
             reply_markup=keyboard
         )
