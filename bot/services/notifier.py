@@ -120,8 +120,10 @@ async def _send_notifications_to_users(bot: Bot, users: list[User], all_data: li
         if alerts:
             text = "🔔 Высокие коэффициенты!\n\n" + "\n".join(alerts)
 
-            # Add main menu button
+            # Add sorting and main menu buttons
             keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="🔤 Сортировать по имени", callback_data="coef_sort:name")],
+                [InlineKeyboardButton(text="📊 Сортировать по коэффициенту", callback_data="coef_sort:coef")],
                 [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
             ])
 
