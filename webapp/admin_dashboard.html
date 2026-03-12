@@ -1824,6 +1824,14 @@
             const token = localStorage.getItem('admin_token');
 
             try {
+                // Add seconds to datetime if missing (datetime-local returns format without seconds)
+                let formattedEndTime = endTime;
+                if (endTime && endTime.length === 16) {
+                    formattedEndTime = endTime + ':00';
+                }
+
+                console.log('Formatted end_time:', formattedEndTime);
+
                 const response = await fetch('/admin/api/events/create', {
                     method: 'POST',
                     headers: {
@@ -1834,7 +1842,7 @@
                         name,
                         zone_id: zoneId,
                         event_type: eventType,
-                        end_time: endTime
+                        end_time: formattedEndTime
                     })
                 });
 
