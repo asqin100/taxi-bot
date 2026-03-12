@@ -135,7 +135,6 @@ def main_menu_keyboard(tier: str = "free") -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="⭐ Подписка", callback_data="menu:subscription")],
         [InlineKeyboardButton(text="🎁 Промокод", callback_data="subscription:promo")],
         [InlineKeyboardButton(text="💰 Реферальная программа", callback_data="menu:referral")],
-        [InlineKeyboardButton(text="🔐 VPN", url="https://t.me/vpn_yota_bot")],
     ])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 

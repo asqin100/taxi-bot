@@ -101,7 +101,7 @@ async def cb_lunch_menu(callback: CallbackQuery):
         await callback.answer()
 
 
-async def _search_restaurants(lat: float, lon: float, radius: int = 1000):
+async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
     """Search for restaurants near location using Yandex Search API."""
     if not settings.yandex_geocoder_key:
         logger.warning("YANDEX_GEOCODER_KEY not set")
@@ -111,12 +111,12 @@ async def _search_restaurants(lat: float, lon: float, radius: int = 1000):
     url = "https://search-maps.yandex.ru/v1/"
 
     # Calculate span (search radius in degrees, approximately)
-    # 1 degree ≈ 111 km, so for 1000m radius: 1000/111000 ≈ 0.009
+    # 1 degree ≈ 111 km, so for 10000m radius: 10000/111000 ≈ 0.09
     span = (radius / 111000) * 2  # diameter in degrees
 
     params = {
         "apikey": settings.yandex_geocoder_key,
-        "text": "кафе ресторан столовая",
+        "text": "Вкусно и точка Ростикс Бургер Кинг",
         "ll": f"{lon},{lat}",
         "spn": f"{span},{span}",
         "lang": "ru_RU",
