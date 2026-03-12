@@ -1707,12 +1707,21 @@
 
             const token = localStorage.getItem('admin_token');
 
+            console.log('Loading events...');
+
             try {
                 const response = await fetch('/admin/api/events', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
+                console.log('Events response status:', response.status);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
                 const events = await response.json();
+                console.log('Events loaded:', events.length, events);
 
                 content.className = '';
 
@@ -1775,6 +1784,7 @@
                     </table>
                 `;
             } catch (error) {
+                console.error('Error loading events:', error);
                 content.className = '';
                 content.innerHTML = `<p style="color: #dc3545;">Ошибка загрузки: ${error.message}</p>`;
             }
@@ -1804,6 +1814,8 @@
             const eventType = document.getElementById('eventType').value;
             const endTime = document.getElementById('eventEndTime').value;
 
+            console.log('Creating event:', { name, zoneId, eventType, endTime });
+
             if (!name || !zoneId || !eventType || !endTime) {
                 statusDiv.innerHTML = '<p class="error-msg">❌ Заполните все поля</p>';
                 return;
@@ -1826,19 +1838,24 @@
                     })
                 });
 
+                console.log('Response status:', response.status);
                 const result = await response.json();
+                console.log('Response data:', result);
 
                 if (response.ok && result.success) {
                     statusDiv.innerHTML = `<p class="success-msg">✅ Мероприятие <strong>${name}</strong> создано!</p>`;
                     setTimeout(() => {
                         closeEventModal();
+                        console.log('Loading events after creation...');
                         loadEvents();
                     }, 2000);
                 } else {
                     statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось создать мероприятие'}</p>`;
+                    console.error('Event creation failed:', result);
                 }
             } catch (error) {
                 statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка сети: ${error.message}</p>`;
+                console.error('Network error:', error);
             }
         }
 
