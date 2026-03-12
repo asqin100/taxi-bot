@@ -95,6 +95,19 @@ async def check_geo_alerts(user_id: int, latitude: float, longitude: float) -> O
         # Sort by coefficient (highest first)
         nearby_zones.sort(key=lambda x: x['coefficient'], reverse=True)
 
+        # Get usage counter info
+        tier = get_user_tier(user_id)
+        daily_limit = get_alert_limit(user_id)
+
+        # Get today's alert count
+        cursor.execute("""
+            SELECT COUNT(*) FROM alert_history
+            WHERE user_id = ? AND DATE(sent_at) = DATE('now')
+        """, (user_id,))
+        alerts_sent_today = cursor.fetchone()[0]
+
+        usage_info = f"\n📊 Использовано сегодня: {alerts_sent_today}/{daily_limit}"
+
         # Build alert message
         if len(nearby_zones) == 1:
             zone = nearby_zones[0]
@@ -103,6 +116,7 @@ async def check_geo_alerts(user_id: int, latitude: float, longitude: float) -> O
                 f"📍 {zone['name']}\n"
                 f"💰 Коэффициент: {zone['coefficient']:.1f}x\n"
                 f"📏 Расстояние: {zone['distance']:.1f} км"
+                f"{usage_info}"
             )
         else:
             message = f"🔥 <b>Найдено {len(nearby_zones)} выгодных зон:</b>\n\n"
@@ -112,6 +126,7 @@ async def check_geo_alerts(user_id: int, latitude: float, longitude: float) -> O
                     f"   💰 {zone['coefficient']:.1f}x | "
                     f"📏 {zone['distance']:.1f} км\n"
                 )
+            message += usage_info
 
         return message
 
