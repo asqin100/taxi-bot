@@ -152,6 +152,9 @@ async def _check_user_alerts(bot: Bot, user: User, zone_map: dict):
     # Send alerts (limited by remaining daily limit)
     alerts_sent = 0
     for alert in alerts_to_send[:remaining_alerts]:
+        # Pass current usage and limit for display
+        alert["usage_today"] = db_user.geo_alerts_sent_today + alerts_sent
+        alert["daily_limit"] = daily_limit
         await _send_alert(bot, user, alert)
         alerts_sent += 1
 
@@ -173,6 +176,8 @@ async def _send_alert(bot: Bot, user: User, alert: dict):
     coeff = alert["coefficient"]
     tariff = alert["tariff"]
     distance = alert["distance"]
+    usage_today = alert.get("usage_today", 0)
+    daily_limit = alert.get("daily_limit", 0)
 
     tariff_names = {
         "econom": "Эконом",
@@ -188,13 +193,17 @@ async def _send_alert(bot: Bot, user: User, alert: dict):
         metro_name, metro_distance = metro_info
         metro_text = f"🚇 Метро: <b>{metro_name}</b> ({metro_distance:.1f} км от зоны)\n"
 
+    # Add usage counter (incremented by 1 since this alert is being sent now)
+    usage_text = f"\n\n📊 Использовано сегодня: {usage_today + 1}/{daily_limit}"
+
     text = (
         f"🔥 <b>ВЫСОКИЙ КОЭФФИЦИЕНТ РЯДОМ!</b>\n\n"
         f"📍 Зона: <b>{zone.name}</b>\n"
         f"{metro_text}"
         f"💰 Коэффициент: <b>x{coeff}</b>\n"
         f"🚗 Тариф: {tariff_names.get(tariff, tariff)}\n"
-        f"📏 Расстояние: <b>{distance:.1f} км</b>\n\n"
+        f"📏 Расстояние: <b>{distance:.1f} км</b>"
+        f"{usage_text}\n\n"
         f"Выберите приложение для навигации:"
     )
 
