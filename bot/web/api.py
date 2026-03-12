@@ -984,23 +984,32 @@ async def admin_create_event(request: web.Request) -> web.Response:
         from datetime import datetime
 
         data = await request.json()
+        logger.info(f"Received event creation request: {data}")
+
         name = data.get("name", "").strip()
         zone_id = data.get("zone_id", "").strip()
         event_type = data.get("event_type", "").strip()
         end_time_str = data.get("end_time", "").strip()
 
         if not name or not zone_id or not event_type or not end_time_str:
+            logger.warning(f"Missing fields: name={bool(name)}, zone_id={bool(zone_id)}, event_type={bool(event_type)}, end_time={bool(end_time_str)}")
             return web.json_response({"error": "All fields are required"}, status=400)
 
         # Parse end_time
         try:
             end_time = datetime.fromisoformat(end_time_str)
-        except ValueError:
-            return web.json_response({"error": "Invalid datetime format"}, status=400)
+            logger.info(f"Parsed end_time: {end_time}, current time: {datetime.now()}")
+        except ValueError as e:
+            logger.error(f"Invalid datetime format '{end_time_str}': {e}")
+            return web.json_response({"error": f"Invalid datetime format: {end_time_str}"}, status=400)
 
         # Check if end_time is in the future
-        if end_time <= datetime.now():
-            return web.json_response({"error": "End time must be in the future"}, status=400)
+        now = datetime.now()
+        if end_time <= now:
+            logger.warning(f"End time {end_time} is not in the future (now: {now})")
+            return web.json_response({
+                "error": f"End time must be in the future. Received: {end_time}, Server time: {now}"
+            }, status=400)
 
         event = await create_event(name, zone_id, event_type, end_time)
 
@@ -1018,8 +1027,8 @@ async def admin_create_event(request: web.Request) -> web.Response:
         })
 
     except Exception as e:
-        logger.error(f"Error creating event: {e}")
-        return web.json_response({"error": "Server error"}, status=500)
+        logger.error(f"Error creating event: {e}", exc_info=True)
+        return web.json_response({"error": f"Server error: {str(e)}"}, status=500)
 
 
 async def admin_delete_event(request: web.Request) -> web.Response:
