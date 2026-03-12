@@ -14,6 +14,15 @@ sqlite3 data/bot.db "SELECT COUNT(*) as total FROM events;" 2>/dev/null || echo 
 echo ""
 echo "2. Тест создания мероприятия через Python..."
 
+# Check if venv exists and use it
+if [ -d "venv" ]; then
+    echo "   Используем виртуальное окружение venv/"
+    source venv/bin/activate
+elif [ -d ".venv" ]; then
+    echo "   Используем виртуальное окружение .venv/"
+    source .venv/bin/activate
+fi
+
 python3 << 'PYTHON_SCRIPT'
 import asyncio
 import sys
