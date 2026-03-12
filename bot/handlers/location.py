@@ -93,6 +93,11 @@ async def _handle_where_to_go(message: Message, location):
 
     logger.info(f"User {user_id} can use feature: {current_usage}/{daily_limit}")
 
+    # Record usage IMMEDIATELY after limit check passes (before search)
+    # This ensures every attempt counts, even if no zone is found
+    await record_where_to_go_use(user_id)
+    logger.info(f"Recorded 'Where to go' usage for user {user_id} (before search)")
+
     # Get user's preferred tariff
     async with session_factory() as session:
         result = await session.execute(select(User).where(User.telegram_id == user_id))
@@ -171,11 +176,7 @@ async def _handle_where_to_go(message: Message, location):
 
         coef_emoji = "💰" if zone_result.coefficient >= 1.3 else "📊"
 
-        # Record usage AFTER successful search
-        await record_where_to_go_use(user_id)
-        logger.info(f"Recorded 'Where to go' usage for user {user_id}")
-
-        # Get updated usage for display
+        # Get updated usage for display (already recorded above)
         from bot.services.where_to_go_tracker import get_where_to_go_usage
         updated_usage, limit = await get_where_to_go_usage(user_id)
         usage_text = f"\n\n📊 Использовано сегодня: {updated_usage}/{limit}"
