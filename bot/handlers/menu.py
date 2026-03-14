@@ -335,6 +335,8 @@ async def cb_tariff_select(callback: CallbackQuery):
     from bot.models.user import User
     from sqlalchemy import select
 
+    should_show_onboarding_after_tariff = False
+
     async with session_factory() as session:
         result = await session.execute(select(User).where(User.telegram_id == user_id))
         user = result.scalar_one_or_none()
@@ -342,10 +344,31 @@ async def cb_tariff_select(callback: CallbackQuery):
             user.preferred_tariff = tariff
             # Keep tariffs list consistent for notifications (single choice on onboarding)
             user.tariffs = tariff
+
+            # If user hasn't completed onboarding yet, show it right after choosing tariff
+            should_show_onboarding_after_tariff = not bool(getattr(user, "onboarding_completed", False))
+
             await session.commit()
 
     # Update tariff and commission in financial settings
     await fin_service.update_settings(user_id, tariff=tariff)
+
+    # If onboarding is not completed, start it now
+    if should_show_onboarding_after_tariff:
+        from bot.services.onboarding import get_onboarding_step
+
+        step_data = get_onboarding_step("welcome")
+        text = f"{step_data['title']}\n\n{step_data['text']}"
+
+        from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="Начать обучение 🚀", callback_data="onboarding:coefficients")],
+            [InlineKeyboardButton(text="Пропустить", callback_data="onboarding:skip")],
+        ])
+
+        await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
+        await callback.answer("Тариф выбран")
+        return
 
     # Get updated settings
     settings = await fin_service.get_or_create_settings(user_id)
