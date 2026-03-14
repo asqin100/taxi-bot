@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
@@ -55,6 +57,7 @@ async def cmd_start(message: Message):
                         telegram_id=user_id,
                         username=message.from_user.username,
                         referral_code=code,
+                        created_at=datetime.now(),
                     )
                     session.add(user)
                     await session.commit()
