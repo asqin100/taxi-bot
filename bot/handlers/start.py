@@ -21,6 +21,7 @@ async def cmd_start(message: Message):
         user_id = message.from_user.id
         is_new_user = False
         referral_code = None
+        should_choose_tariff = False
 
         logger.info(f"[START] Processing /start for user {user_id}")
 
@@ -37,6 +38,7 @@ async def cmd_start(message: Message):
                 user = result.scalar_one_or_none()
                 if not user:
                     is_new_user = True
+                    should_choose_tariff = True
                     # Generate referral code for new user
                     from bot.services.referral import generate_referral_code
 
@@ -57,6 +59,34 @@ async def cmd_start(message: Message):
                     session.add(user)
                     await session.commit()
                     logger.info(f"[START] Created new user {user_id}")
+                else:
+                    # Existing user but tariff not selected yet
+                    if not getattr(user, "preferred_tariff", None):
+                        should_choose_tariff = True
+                        logger.info(f"[START] User {user_id} has no preferred_tariff, will ask")
+
+            # If new user or missing tariff, ask to choose tariff right away
+            if should_choose_tariff:
+                from bot.keyboards.inline import tariff_selection_keyboard
+                await send_and_cleanup(
+                    message,
+                    "🚗 <b>Выберите ваш тариф</b>\n\n"
+                    "Этот тариф будет использоваться для показа коэффициентов и расчёта комиссии в Финансах.\n"
+                    "Вы сможете изменить его позже в разделе: <b>Финансы → Мой тариф</b>.\n\n"
+                    "Выберите тариф:",
+                    reply_markup=tariff_selection_keyboard(current_tariff="econom"),
+                    parse_mode="HTML",
+                    delete_user_message=False,
+                )
+                return
+
+            # Ensure financial settings exist for users (so admin panel sees them consistently)
+            if is_new_user:
+                try:
+                    from bot.services import financial as fin_service
+                    await fin_service.get_or_create_settings(user_id)
+                except Exception:
+                    logger.warning(f"[START] Failed to create financial settings for user {user_id}")
         except Exception as e:
             logger.error(f"[START] Error creating user: {e}", exc_info=True)
             raise

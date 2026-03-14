@@ -330,7 +330,21 @@ async def cb_tariff_select(callback: CallbackQuery):
     tariff = callback.data.split(":")[1]
     user_id = callback.from_user.id
 
-    # Update tariff and commission
+    # Persist user's main working tariff (used by "Куда ехать" and geo alerts)
+    from bot.database.db import session_factory
+    from bot.models.user import User
+    from sqlalchemy import select
+
+    async with session_factory() as session:
+        result = await session.execute(select(User).where(User.telegram_id == user_id))
+        user = result.scalar_one_or_none()
+        if user:
+            user.preferred_tariff = tariff
+            # Keep tariffs list consistent for notifications (single choice on onboarding)
+            user.tariffs = tariff
+            await session.commit()
+
+    # Update tariff and commission in financial settings
     await fin_service.update_settings(user_id, tariff=tariff)
 
     # Get updated settings
@@ -438,7 +452,11 @@ async def cb_traffic_general(callback: CallbackQuery):
     # Add forecast
     forecast = await traffic_service.get_traffic_forecast("moscow")
     if forecast:
-        text += f"\n📊 <b>Прогноз на час:</b> {forecast.trend_emoji} {forecast.trend_text} ({forecast.forecast_level}/10)\n"
+        basis = getattr(forecast, "basis", "эвристика по времени суток")
+        text += (
+            f"\n📊 <b>Прогноз на час:</b> {forecast.trend_emoji} {forecast.trend_text} ({forecast.forecast_level}/10)\n"
+            f"<i>Основание: текущее значение {forecast.current_level}/10 + {basis}; уверенность: {forecast.confidence}</i>\n"
+        )
 
     # Add recommendation
     coeffs = get_cached_coefficients()

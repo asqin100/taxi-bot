@@ -72,6 +72,15 @@ async def _send_advisor(message: Message):
         ]
     ]
 
+    # If recommendation includes navigation links, show them
+    if getattr(recommendation, "navigation", None):
+        nav = recommendation.navigation
+        if nav and nav.get("navigator_url") and nav.get("maps_url"):
+            keyboard_buttons.insert(0, [
+                InlineKeyboardButton(text="🚗 Навигатор", url=nav["navigator_url"]),
+                InlineKeyboardButton(text="🗺 Карты", url=nav["maps_url"]),
+            ])
+
     # Add "Ask Question" button for Premium users
     if subscription and subscription.tier == "premium":
         keyboard_buttons.append([

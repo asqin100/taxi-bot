@@ -66,7 +66,11 @@ async def cmd_traffic(message: Message):
     # Add forecast
     forecast = await traffic_service.get_traffic_forecast("moscow")
     if forecast:
-        text += f"\n📊 <b>Прогноз на час:</b> {forecast.trend_emoji} {forecast.trend_text} ({forecast.forecast_level}/10)\n"
+        basis = getattr(forecast, "basis", "эвристика по времени суток")
+        text += (
+            f"\n📊 <b>Прогноз на час:</b> {forecast.trend_emoji} {forecast.trend_text} ({forecast.forecast_level}/10)\n"
+            f"<i>Основание: текущее значение {forecast.current_level}/10 + {basis}; уверенность: {forecast.confidence}</i>\n"
+        )
 
     # Add recommendation based on coefficients
     coeffs = get_cached_coefficients()

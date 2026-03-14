@@ -16,11 +16,21 @@ logger = logging.getLogger(__name__)
 
 class Recommendation:
     """AI recommendation with reasoning."""
-    def __init__(self, text: str, confidence: str, reasoning: list[str], personal_insights: list[str] = None):
+    def __init__(
+        self,
+        text: str,
+        confidence: str,
+        reasoning: list[str],
+        personal_insights: list[str] = None,
+        navigation: dict | None = None,
+    ):
         self.text = text
         self.confidence = confidence  # high, medium, low
         self.reasoning = reasoning
         self.personal_insights = personal_insights or []
+        # Optional navigation links to the recommended zone
+        # Example: {"name": "...", "navigator_url": "...", "maps_url": "..."}
+        self.navigation = navigation
 
 
 async def _get_user_shift_stats(user_id: int, days: int = 30) -> dict:
@@ -128,6 +138,12 @@ async def _generate_personal_insights(user_id: int, current_hour: int, current_d
 
 
 async def get_smart_recommendation(user_id: Optional[int] = None) -> Recommendation:
+    """Smart recommendation.
+
+    Улучшения по 3434.txt (п.3):
+    - учитываем выбранный тариф пользователя (preferred_tariff)
+    - если есть последняя геолокация пользователя, добавляем рекомендации по ближайшим зонам
+    """
     """
     Analyze current conditions and provide intelligent recommendation.
 
@@ -144,33 +160,109 @@ async def get_smart_recommendation(user_id: Optional[int] = None) -> Recommendat
     current_day = now.weekday()
 
     # Get current data
-    coefficients = get_cached_coefficients()
+    preferred_tariff = "econom"
+    user_location = None  # (lat, lon)
+
+    if user_id:
+        try:
+            from bot.database.db import get_session
+            from bot.models.user import User
+            async with get_session() as session:
+                result = await session.execute(select(User).where(User.telegram_id == user_id))
+                db_user = result.scalar_one_or_none()
+                if db_user and getattr(db_user, "preferred_tariff", None):
+                    preferred_tariff = db_user.preferred_tariff
+                if db_user and db_user.last_latitude and db_user.last_longitude:
+                    user_location = (db_user.last_latitude, db_user.last_longitude)
+        except Exception as e:
+            logger.debug("AI advisor: failed to load user context: %s", e)
+
+    # Coefficients filtered by user's tariff
+    coefficients = get_cached_coefficients(preferred_tariff)
     traffic = await get_moscow_traffic()
-    top_zones = get_top_zones(3)
+    top_zones = get_top_zones(3, tariff=preferred_tariff)
+
+    user_context_insights: list[str] = []
+
+    user_context_insights.append(f"🚗 Тариф: {preferred_tariff}")
+    if user_location:
+        user_context_insights.append(f"📍 Гео: {user_location[0]:.4f}, {user_location[1]:.4f}")
+
+    nearest = None
+    if user_location and coefficients:
+        try:
+            from bot.services.zones import find_nearest_high_coefficient_zone
+            # try a few coefficient thresholds to always give something useful
+            nearest = (
+                find_nearest_high_coefficient_zone(user_location[0], user_location[1], coefficients, min_coefficient=2.0, max_distance_km=8.0, tariff=preferred_tariff)
+                or find_nearest_high_coefficient_zone(user_location[0], user_location[1], coefficients, min_coefficient=1.7, max_distance_km=8.0, tariff=preferred_tariff)
+                or find_nearest_high_coefficient_zone(user_location[0], user_location[1], coefficients, min_coefficient=1.5, max_distance_km=8.0, tariff=preferred_tariff)
+            )
+            if nearest:
+                user_context_insights.append(
+                    f"📍 <b>Рядом с вами</b>: {nearest.zone.name} — x{nearest.coefficient:.2f} (~{nearest.distance_km:.1f} км)"
+                )
+        except Exception as e:
+            logger.debug("AI advisor: nearest zones failed: %s", e)
+            nearest = None
+
+    # If we have a nearby zone, make it the primary recommendation text
+    primary_nearby_text = None
+    if nearest:
+        primary_nearby_text = (
+            "📍 <b>РЕКОМЕНДУЮ СЕЙЧАС:</b> "
+            f"<b>{nearest.zone.name}</b> — x{nearest.coefficient:.2f} (≈{nearest.distance_km:.1f} км от вас).\n\n"
+            "Нажмите «Куда ехать?» и отправьте геолокацию — бот даст кнопки навигации."
+        )
+
+    # We'll override generated recommendation text later if primary_nearby_text is set
+
+
 
     reasoning = []
     personal_insights = []
 
+    # prepend context insights (tariff/geo/nearest zone)
+    personal_insights.extend(user_context_insights)
+
     # Get personal insights if user_id provided
     if user_id:
-        personal_insights = await _generate_personal_insights(user_id, hour, current_day)
+        personal_insights.extend(await _generate_personal_insights(user_id, hour, current_day))
 
-    # Analyze time of day
-    if 6 <= hour < 10:
-        time_factor = "morning_rush"
-        reasoning.append("🌅 Утренний час-пик: высокий спрос на поездки")
-    elif 10 <= hour < 17:
-        time_factor = "midday"
-        reasoning.append("☀️ Дневное время: средний спрос")
-    elif 17 <= hour < 21:
-        time_factor = "evening_rush"
-        reasoning.append("🌆 Вечерний час-пик: пиковый спрос")
-    elif 21 <= hour < 24:
+    # Analyze time of day (per 3434.txt)
+    # Morning: 04:00–10:59, Day: 11:00–15:59, Evening: 16:00–22:59, Night: 23:00–03:59
+    if 4 <= hour <= 10:
+        time_factor = "morning"
+        reasoning.append("🌅 Утро (04:00–10:59): обычно растёт спрос на поездки")
+    elif 11 <= hour <= 15:
+        time_factor = "day"
+        reasoning.append("☀️ День (11:00–15:59): чаще средний спрос")
+    elif 16 <= hour <= 22:
         time_factor = "evening"
-        reasoning.append("🌙 Вечер: спрос снижается")
+        reasoning.append("🌆 Вечер (16:00–22:59): часто пик спроса")
     else:
         time_factor = "night"
-        reasoning.append("🌃 Ночь: низкий спрос, но высокие коэффициенты")
+        reasoning.append("🌃 Ночь (23:00–03:59): ниже спрос, но бывают высокие коэффициенты")
+
+    # Backward-compatible mapping for existing recommendation rules
+    if time_factor == "morning":
+        legacy_time_factor = "morning_rush"
+    elif time_factor == "day":
+        legacy_time_factor = "midday"
+    elif time_factor == "evening":
+        legacy_time_factor = "evening_rush"
+    else:
+        legacy_time_factor = "night"
+
+    time_factor = legacy_time_factor
+
+    # Log slot for diagnostics
+    logger.info("AI advisor time slot: hour=%d -> %s", hour, legacy_time_factor)
+
+    # add slot label
+    personal_insights.insert(0, f"⏰ Сейчас: {('утро' if legacy_time_factor=='morning_rush' else 'день' if legacy_time_factor=='midday' else 'вечер' if legacy_time_factor=='evening_rush' else 'ночь')}")
+
+    # Continue with existing logic
 
     # Analyze weekend
     if is_weekend:
@@ -215,12 +307,35 @@ async def get_smart_recommendation(user_id: Optional[int] = None) -> Recommendat
         top_zones=top_zones
     )
 
+    navigation = None
+
+    # Prefer nearby zone as primary recommendation
+    if primary_nearby_text and nearest:
+        recommendation_text = primary_nearby_text
+        # If we found something nearby, confidence should be at least medium
+        if confidence == "low":
+            confidence = "medium"
+
+        try:
+            from bot.services.yandex_api import generate_yandex_navigator_link, generate_yandex_maps_link
+            navigation = {
+                "name": nearest.zone.name,
+                "navigator_url": generate_yandex_navigator_link(nearest.zone.lat, nearest.zone.lon),
+                "maps_url": generate_yandex_maps_link(nearest.zone.lat, nearest.zone.lon),
+            }
+        except Exception as e:
+            logger.debug("AI advisor: failed to build navigation links: %s", e)
+
     return Recommendation(
         text=recommendation_text,
         confidence=confidence,
         reasoning=reasoning,
-        personal_insights=personal_insights
+        personal_insights=personal_insights,
+        navigation=navigation,
     )
+
+
+# (removed duplicated unreachable block)
 
 
 def _generate_recommendation(
