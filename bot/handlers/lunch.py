@@ -101,16 +101,12 @@ async def lunch_location(message: Message, state: FSMContext):
             rest_lat = restaurant.get("lat")
             rest_lon = restaurant.get("lon")
             if rest_lat and rest_lon:
+                # One compact button per place
+                from bot.handlers.route_chooser import make_route_callback
                 buttons.append([
                     InlineKeyboardButton(
-                        text=f"🚗 {name[:25]} (Навигатор)",
-                        url=f"https://yandex.ru/navi/?rtext=~{rest_lat},{rest_lon}"
-                    )
-                ])
-                buttons.append([
-                    InlineKeyboardButton(
-                        text=f"🗺 {name[:25]} (Карты)",
-                        url=f"https://yandex.ru/maps/?rtext=~{rest_lat},{rest_lon}"
+                        text=f"🧭 {name[:28]}",
+                        callback_data=make_route_callback(rest_lat, rest_lon, "menu"),
                     )
                 ])
 

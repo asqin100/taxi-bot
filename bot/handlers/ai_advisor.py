@@ -72,10 +72,20 @@ async def _send_advisor(message: Message):
         ]
     ]
 
-    # If recommendation includes navigation links, show them
+    # If recommendation includes navigation links, show one "Open route" button
     if getattr(recommendation, "navigation", None):
         nav = recommendation.navigation
-        if nav and nav.get("navigator_url") and nav.get("maps_url"):
+        if nav and nav.get("lat") is not None and nav.get("lon") is not None:
+            from bot.handlers.route_chooser import route_choice_keyboard
+            from bot.handlers.route_chooser import make_route_callback
+            keyboard_buttons.insert(0, [
+                InlineKeyboardButton(
+                    text="🧭 Открыть маршрут",
+                    callback_data=make_route_callback(nav["lat"], nav["lon"], "advisor"),
+                )
+            ])
+        elif nav and nav.get("navigator_url") and nav.get("maps_url"):
+            # Fallback (shouldn't happen after update)
             keyboard_buttons.insert(0, [
                 InlineKeyboardButton(text="🚗 Навигатор", url=nav["navigator_url"]),
                 InlineKeyboardButton(text="🗺 Карты", url=nav["maps_url"]),

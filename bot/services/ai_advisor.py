@@ -320,6 +320,8 @@ async def get_smart_recommendation(user_id: Optional[int] = None) -> Recommendat
             from bot.services.yandex_api import generate_yandex_navigator_link, generate_yandex_maps_link
             navigation = {
                 "name": nearest.zone.name,
+                "lat": nearest.zone.lat,
+                "lon": nearest.zone.lon,
                 "navigator_url": generate_yandex_navigator_link(nearest.zone.lat, nearest.zone.lon),
                 "maps_url": generate_yandex_maps_link(nearest.zone.lat, nearest.zone.lon),
             }
