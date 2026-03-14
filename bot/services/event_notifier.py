@@ -56,16 +56,12 @@ async def send_pre_notification(bot: Bot, event):
         f"💡 Ожидается высокий спрос на такси!"
     )
 
-    # Create navigation buttons if zone has coordinates
+    # Create one route button if zone has coordinates
     keyboard = None
     if zone:
-        from bot.services.yandex_api import generate_yandex_navigator_link, generate_yandex_maps_link
-        navigator_link = generate_yandex_navigator_link(zone.lat, zone.lon)
-        maps_link = generate_yandex_maps_link(zone.lat, zone.lon)
-
+        from bot.handlers.route_chooser import make_route_callback
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="🚗 Поехали (Навигатор)", url=navigator_link)],
-            [InlineKeyboardButton(text="🗺 Поехали (Карты)", url=maps_link)],
+            [InlineKeyboardButton(text="🧭 Открыть маршрут", callback_data=make_route_callback(zone.lat, zone.lon, "menu"))],
             [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
         ])
 
@@ -107,16 +103,12 @@ async def send_end_notification(bot: Bot, event):
         f"💰 Самое время работать в этой зоне!"
     )
 
-    # Create navigation buttons if zone has coordinates
+    # Create one route button if zone has coordinates
     keyboard = None
     if zone:
-        from bot.services.yandex_api import generate_yandex_navigator_link, generate_yandex_maps_link
-        navigator_link = generate_yandex_navigator_link(zone.lat, zone.lon)
-        maps_link = generate_yandex_maps_link(zone.lat, zone.lon)
-
+        from bot.handlers.route_chooser import make_route_callback
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="🚗 Поехали (Навигатор)", url=navigator_link)],
-            [InlineKeyboardButton(text="🗺 Поехали (Карты)", url=maps_link)],
+            [InlineKeyboardButton(text="🧭 Открыть маршрут", callback_data=make_route_callback(zone.lat, zone.lon, "menu"))],
             [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
         ])
 

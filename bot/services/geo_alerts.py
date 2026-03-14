@@ -203,19 +203,13 @@ async def _send_alert(bot: Bot, user: User, alert: dict):
         f"💰 Коэффициент: <b>x{coeff}</b>\n"
         f"🚗 Тариф: {tariff_names.get(tariff, tariff)}\n"
         f"📏 Расстояние: <b>{distance:.1f} км</b>"
-        f"{usage_text}\n\n"
-        f"Выберите приложение для навигации:"
+        f"{usage_text}"
     )
 
-    # Yandex Maps and Navigator URLs (HTTPS for Telegram compatibility)
-    maps_url = f"https://yandex.ru/maps/?rtext=~{zone.lat},{zone.lon}&rtt=auto"
-    navigator_url = f"https://yandex.ru/navi/?rtext=~{zone.lat},{zone.lon}"
+    from bot.handlers.route_chooser import make_route_callback
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [
-            InlineKeyboardButton(text="🗺 Яндекс.Карты", url=maps_url),
-            InlineKeyboardButton(text="🧭 Яндекс.Навигатор", url=navigator_url),
-        ],
+        [InlineKeyboardButton(text="🧭 Открыть маршрут", callback_data=make_route_callback(zone.lat, zone.lon, "menu"))],
         [InlineKeyboardButton(text="🔕 Отключить геоалерты", callback_data="geo_alerts:disable")],
         [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")],
     ])

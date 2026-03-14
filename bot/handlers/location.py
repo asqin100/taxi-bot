@@ -158,19 +158,16 @@ async def _handle_where_to_go(message: Message, location):
             # Silently ignore metro lookup errors
             pass
 
-        # Found a zone! Show navigation options
-        navigator_link = generate_yandex_navigator_link(
-            zone_result.zone.lat,
-            zone_result.zone.lon
-        )
-        maps_link = generate_yandex_maps_link(
-            zone_result.zone.lat,
-            zone_result.zone.lon
-        )
+        # Found a zone! Show one route button
+        from bot.handlers.route_chooser import route_choice_keyboard
+
+        from bot.handlers.route_chooser import make_route_callback
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="🚗 Яндекс Навигатор", url=navigator_link)],
-            [InlineKeyboardButton(text="🗺 Яндекс Карты", url=maps_link)],
+            [InlineKeyboardButton(
+                text="🧭 Открыть маршрут",
+                callback_data=make_route_callback(zone_result.zone.lat, zone_result.zone.lon, "menu"),
+            )],
             [InlineKeyboardButton(text="◀️ Главное меню", callback_data="cmd:menu")]
         ])
 
