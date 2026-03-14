@@ -3,13 +3,7 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
-from bot.handlers.route_chooser import route_choice_keyboard, handle_route_callback
-
-
-@router.callback_query(F.data.startswith("route:"))
-async def cb_route_choose(callback: CallbackQuery):
-    await handle_route_callback(callback)
-
+from bot.handlers.route_chooser import handle_route_callback
 
 from bot.keyboards.inline import financial_menu_keyboard, traffic_menu_keyboard, main_menu_keyboard, features_menu_keyboard, profile_menu_keyboard
 from bot.services import financial as fin_service
@@ -19,6 +13,11 @@ from bot.services.message_manager import send_and_cleanup
 from bot.services.subscription import get_subscription
 
 router = Router()
+
+
+@router.callback_query(F.data.startswith("route:"))
+async def cb_route_choose(callback: CallbackQuery):
+    await handle_route_callback(callback)
 
 
 @router.callback_query(F.data == "menu:features")
@@ -42,6 +41,44 @@ async def cb_features_menu(callback: CallbackQuery):
     )
     await callback.answer()
 
+
+@router.callback_query(F.data.startswith("feature_locked:"))
+async def cb_feature_locked(callback: CallbackQuery):
+    """Handle clicks on locked features."""
+    feature = callback.data.split(":")[1]
+
+    feature_names = {
+        "ai_advisor": "AI-советник",
+        "traffic": "Прогноз пробок",
+        "csv_export": "Экспорт в CSV",
+        "heatmap": "Карта заработка",
+        "tax": "Калькулятор налогов"
+    }
+
+    feature_tiers = {
+        "ai_advisor": "Pro",
+        "traffic": "Pro",
+        "csv_export": "Elite",
+        "heatmap": "Elite",
+        "tax": "Elite"
+    }
+
+    feature_name = feature_names.get(feature, "Эта функция")
+    required_tier = feature_tiers.get(feature, "Pro")
+
+    from bot.keyboards.inline import InlineKeyboardMarkup, InlineKeyboardButton
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=f"⭐ Улучшить до {required_tier}", callback_data="menu:subscription")],
+        [InlineKeyboardButton(text="◀️ Назад", callback_data="menu:features")],
+    ])
+
+    await callback.answer(
+        f"🔒 {feature_name} доступен только в подписке {required_tier}",
+        show_alert=True
+    )
+
+
+# (rest of handlers below)
 
 @router.callback_query(F.data.startswith("feature_locked:"))
 async def cb_feature_locked(callback: CallbackQuery):
