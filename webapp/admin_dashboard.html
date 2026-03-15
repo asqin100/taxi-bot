@@ -534,7 +534,7 @@
                 <button class="close-btn" onclick="closeEventModal()">&times;</button>
             </div>
             <div id="eventModalStatus"></div>
-            <form onsubmit="createEvent(event)">
+            <form onsubmit="event.preventDefault(); createEvent(event); return false;">
                 <div class="form-group">
                     <label>Название мероприятия *</label>
                     <input type="text" id="eventName" required placeholder="Концерт в Лужниках">
