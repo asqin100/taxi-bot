@@ -198,7 +198,6 @@ async def _send_alert(bot: Bot, user: User, alert: dict):
 
     text = (
         f"🔥 <b>ВЫСОКИЙ КОЭФФИЦИЕНТ РЯДОМ!</b>\n\n"
-        f"📍 Зона: <b>{zone.name}</b>\n"
         f"{metro_text}"
         f"💰 Коэффициент: <b>x{coeff}</b>\n"
         f"🚗 Тариф: {tariff_names.get(tariff, tariff)}\n"

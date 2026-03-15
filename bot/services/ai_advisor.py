@@ -1,6 +1,7 @@
 """AI Advisor service - intelligent recommendations for drivers."""
 import logging
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from typing import Optional
 from collections import Counter
 
@@ -42,7 +43,7 @@ async def _get_user_shift_stats(user_id: int, days: int = 30) -> dict:
     """
     async with get_session() as session:
         # Get shifts from last N days
-        cutoff_date = datetime.now() - timedelta(days=days)
+        cutoff_date = datetime.now(tz=ZoneInfo("Europe/Moscow")) - timedelta(days=days)
 
         result = await session.execute(
             select(Shift).where(
@@ -154,7 +155,7 @@ async def get_smart_recommendation(user_id: Optional[int] = None) -> Recommendat
     - Day of week
     - User's personal shift history (if user_id provided)
     """
-    now = datetime.now()
+    now = datetime.now(tz=ZoneInfo("Europe/Moscow"))
     hour = now.hour
     is_weekend = now.weekday() >= 5
     current_day = now.weekday()

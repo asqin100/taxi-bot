@@ -2,6 +2,7 @@ import logging
 import secrets
 from pathlib import Path
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 from aiohttp import web
 
@@ -998,20 +999,27 @@ async def admin_create_event(request: web.Request) -> web.Response:
         # Parse end_time
         try:
             end_time = datetime.fromisoformat(end_time_str)
-            logger.info(f"Parsed end_time: {end_time}, current time: {datetime.now()}")
         except ValueError as e:
             logger.error(f"Invalid datetime format '{end_time_str}': {e}")
             return web.json_response({"error": f"Invalid datetime format: {end_time_str}"}, status=400)
 
-        # Check if end_time is in the future
-        now = datetime.now()
+        # Admin UI sends datetime-local without timezone.
+        # Interpret it as Moscow time to avoid server timezone mismatch.
+        msk = ZoneInfo("Europe/Moscow")
+        if end_time.tzinfo is None:
+            end_time = end_time.replace(tzinfo=msk)
+
+        # Check if end_time is in the future (MSK)
+        now = datetime.now(tz=msk)
+        logger.info(f"Parsed end_time: {end_time.isoformat()}, current time: {now.isoformat()}")
+
         if end_time <= now:
             logger.warning(f"End time {end_time} is not in the future (now: {now})")
             return web.json_response({
-                "error": f"End time must be in the future. Received: {end_time}, Server time: {now}"
+                "error": f"End time must be in the future. Received: {end_time.isoformat()}, Server time: {now.isoformat()}"
             }, status=400)
 
-        event = await create_event(name, zone_id, event_type, end_time)
+        event = await create_event(name, zone_id, event_type, end_time.replace(tzinfo=None))
 
         logger.info(f"Admin created event: {name} at {zone_id}, ends at {end_time}")
 

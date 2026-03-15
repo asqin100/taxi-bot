@@ -3,6 +3,7 @@ from datetime import datetime
 from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.fsm.context import FSMContext
 from sqlalchemy import select
 
 from bot.database.db import session_factory
@@ -10,12 +11,90 @@ from bot.models.user import User
 from bot.keyboards.inline import main_menu_keyboard, tariff_keyboard
 from bot.services.message_manager import send_and_cleanup
 from bot.services.onboarding import should_show_onboarding, get_onboarding_step
+from bot.config import settings
+from bot.handlers.promo_code import PromoCodeStates
+from bot.database.db import get_session
+from bot.models.promo_code import PromoCodeUsage
+from sqlalchemy import select, func as sa_func
+
+
+async def _has_any_promo_usage(user_id: int) -> bool:
+    async with get_session() as session:
+        result = await session.execute(
+            select(sa_func.count()).select_from(PromoCodeUsage).where(PromoCodeUsage.user_id == user_id)
+        )
+        return (result.scalar_one() or 0) > 0
+
+
+async def _has_beta_access(user_id: int) -> bool:
+    # Admin bypass is handled outside.
+    # Requirement: entered promo once -> access forever.
+    return await _has_any_promo_usage(user_id)
+
+
+async def _prompt_for_invite_promo(message: Message, state: FSMContext) -> None:
+    await state.set_state(PromoCodeStates.waiting_for_code)
+    await send_and_cleanup(
+        message,
+        "🔒 <b>Бета-доступ</b>\n\n"
+        "Для входа в бот введите <b>пригласительный промокод</b> (он даёт максимальную подписку).\n\n"
+        "Отправьте код сообщением:",
+        parse_mode="HTML",
+        delete_user_message=False,
+    )
+    return
+
+
+def _needs_beta_gate() -> bool:
+    return bool(settings.restrict_beta_gate)
+
+
+def _admin_ids() -> set[int]:
+    return {int(x.strip()) for x in (settings.admin_ids or "").split(",") if x.strip()}
+
+
+def _is_admin(user_id: int) -> bool:
+    return user_id in _admin_ids()
+
+
+async def _ensure_beta_access_or_prompt(message: Message, state: FSMContext) -> bool:
+    """Return True if access is allowed, otherwise prompt for invite promo code and return False."""
+    if not _needs_beta_gate():
+        return True
+
+    user_id = message.from_user.id
+    if _is_admin(user_id):
+        return True
+
+    if await _has_beta_access(user_id):
+        return True
+
+    await _prompt_for_invite_promo(message, state)
+    return False
+
+
+async def _ensure_beta_access_or_prompt_callback(callback: CallbackQuery) -> bool:
+    """Same check for callback-only entrypoints (no FSM prompt)."""
+    if not _needs_beta_gate():
+        return True
+
+    user_id = callback.from_user.id
+    if _is_admin(user_id):
+        return True
+
+    if await _has_beta_access(user_id):
+        return True
+
+    await callback.answer("🔒 Нужен пригласительный промокод. Нажмите /start", show_alert=True)
+    return False
+
+
 
 router = Router()
 
 
 @router.message(CommandStart())
-async def cmd_start(message: Message):
+async def cmd_start(message: Message, state: FSMContext):
     import logging
     logger = logging.getLogger(__name__)
 
@@ -26,6 +105,9 @@ async def cmd_start(message: Message):
         should_choose_tariff = False
 
         logger.info(f"[START] Processing /start for user {user_id}")
+
+        if not await _ensure_beta_access_or_prompt(message, state):
+            return
 
         # Extract referral code from deep link
         if message.text and len(message.text.split()) > 1:
@@ -119,6 +201,18 @@ async def cmd_start(message: Message):
             logger.error(f"[START] Error getting subscription: {e}", exc_info=True)
             raise
 
+        # Enforce invite promo gate (entered once -> access forever)
+        if settings.restrict_beta_gate and (not _is_admin(user_id)) and (not await _has_beta_access(user_id)):
+            await _prompt_for_invite_promo(message, state)
+            return
+
+        # Ensure user always has at least a free subscription record
+        try:
+            subscription = await get_subscription(user_id)
+        except Exception as e:
+            logger.error(f"[START] Error ensuring subscription: {e}", exc_info=True)
+            raise
+
         # Check if user should see onboarding
         try:
             logger.info(f"[START] Checking onboarding for user {user_id}")
@@ -175,6 +269,8 @@ async def cmd_start(message: Message):
 
 @router.callback_query(F.data == "cmd:menu")
 async def cb_menu(callback: CallbackQuery):
+    if not await _ensure_beta_access_or_prompt_callback(callback):
+        return
     user_id = callback.from_user.id
 
     # Get user subscription tier for menu

@@ -43,6 +43,9 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"  # Redis connection URL
     environment: str = "development"  # development or production
 
+    # Beta gate (promo-only access)
+    restrict_beta_gate: bool = False
+
     model_config = {"env_file": str(BASE_DIR / ".env"), "env_file_encoding": "utf-8", "extra": "allow"}
 
     @property

@@ -83,7 +83,7 @@ async def lunch_location(message: Message, state: FSMContext):
         text = "🍽 <b>Рестораны рядом с вами</b>\n\n"
         buttons = []
 
-        for i, restaurant in enumerate(restaurants[:10], 1):
+        for i, restaurant in enumerate(restaurants, 1):
             name = restaurant.get("name", "Ресторан")
             address = restaurant.get("address", "")
             distance = restaurant.get("distance", 0)
@@ -149,7 +149,7 @@ async def lunch_location(message: Message, state: FSMContext):
         text = "🍽 <b>Рестораны рядом с вами</b>\n\n"
         buttons = []
 
-        for i, restaurant in enumerate(restaurants[:10], 1):
+        for i, restaurant in enumerate(restaurants, 1):
             name = restaurant.get("name", "Ресторан")
             address = restaurant.get("address", "")
             distance = restaurant.get("distance", 0)
@@ -203,7 +203,7 @@ async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
     logger.info(f"Starting restaurant search at ({lat}, {lon}) with radius {radius}m")
 
     # Search for each restaurant chain separately
-    restaurant_chains = ["Вкусно и точка", "Ростикс", "Бургер Кинг", "Burger King"]
+    restaurant_chains = ["Вкусно и точка", "KFC", "Бургер Кинг"]
     all_restaurants = []
 
     # Nominatim search endpoint
@@ -300,7 +300,7 @@ async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
         # Sort by distance
         all_restaurants.sort(key=lambda x: x["distance"])
         logger.info(f"Total restaurants found: {len(all_restaurants)}")
-        return all_restaurants
+        return all_restaurants[:3]
 
     except Exception as e:
         logger.error(f"Error in _search_restaurants: {e}", exc_info=True)
@@ -323,7 +323,7 @@ async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
         text = "🍽 <b>Рестораны рядом с вами</b>\n\n"
         buttons = []
 
-        for i, restaurant in enumerate(restaurants[:10], 1):
+        for i, restaurant in enumerate(restaurants, 1):
             name = restaurant.get("name", "Ресторан")
             address = restaurant.get("address", "")
             distance = restaurant.get("distance", 0)
@@ -377,7 +377,7 @@ async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
     logger.info(f"Starting restaurant search at ({lat}, {lon}) with radius {radius}m")
 
     # Search for each restaurant chain separately
-    restaurant_chains = ["Вкусно и точка", "Ростикс", "Бургер Кинг", "Burger King"]
+    restaurant_chains = ["Вкусно и точка", "KFC", "Бургер Кинг"]
     all_restaurants = []
 
     # Nominatim search endpoint
@@ -474,7 +474,7 @@ async def _search_restaurants(lat: float, lon: float, radius: int = 10000):
         # Sort by distance
         all_restaurants.sort(key=lambda x: x["distance"])
         logger.info(f"Total restaurants found: {len(all_restaurants)}")
-        return all_restaurants
+        return all_restaurants[:3]
 
     except Exception as e:
         logger.error(f"Error in _search_restaurants: {e}", exc_info=True)
