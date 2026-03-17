@@ -1,0 +1,50 @@
+# 🚀 КОМАНДА ДЛЯ ДЕПЛОЯ (обновлено)
+
+На сервере выполни:
+
+```bash
+cd /opt/taxibot
+git stash
+git pull origin main
+python3 migrations/add_ban_fields.py
+python3 migrations/add_where_to_go_fields.py
+chmod +x update_bot.sh
+./update_bot.sh
+```
+
+## ✅ Что задеплоится (9 из 11 функций)
+
+1. ✅ Фильтры в уведомлениях (тарифы/зоны)
+2. ✅ Убрана кнопка тест платёж
+3. ✅ Кнопка "Заехать на обед" (ИСПРАВЛЕНО - теперь использует Search API)
+4. ✅ Лимиты "Куда ехать" (3/7/20/∞)
+5. ✅ Исправлен геокодер (метро от центра зоны)
+6. ✅ Кнопка VPN
+7. ✅ Бан-система (веб админка + Telegram)
+8. ✅ Счётчик геоалертов
+9. ✅ Business только МКАД
+
+## ❌ Что не сделано
+
+10. ❌ Минимальная цена - нет в Yandex API (невозможно)
+11. ✅ События без порога - УЖЕ РАБОТАЕТ
+
+## ⚠️ После деплоя
+
+Настрой ADMIN_IDS для команд /ban:
+```bash
+nano /opt/taxibot/.env
+# Добавь: ADMIN_IDS=твой_telegram_id
+./update_bot.sh
+```
+
+Узнать свой ID: @userinfobot
+
+## 📦 Последние коммиты
+
+- 3861ad0 Fix lunch feature: use Yandex Search API
+- ceff9db Add final deployment guide
+- 3e05f77 Apply Business MKAD restriction
+- 863c845 Add 7 features: filters, lunch, VPN, ban, limits
+
+Всё готово! 🎉
