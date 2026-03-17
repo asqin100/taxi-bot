@@ -51,31 +51,43 @@ async def send_pre_notification(bot: Bot, event):
 
     time_str = event.end_time.strftime("%H:%M")
 
-    # Get zone info
-    zones = get_zones()
-    zone = next((z for z in zones if z.id == event.zone_id), None)
-    zone_name = zone.name if zone else event.zone_id
+    # Use venue name if available, otherwise fall back to zone name
+    location_name = event.venue_name
+    if not location_name:
+        zones = get_zones()
+        zone = next((z for z in zones if z.id == event.zone_id), None)
+        location_name = zone.name if zone else event.zone_id
 
     text = (
         f"⏰ <b>Скоро закончится мероприятие!</b>\n\n"
         f"{emoji} <b>{event.name}</b>\n"
-        f"📍 Зона: {zone_name}\n"
+        f"📍 Место: {location_name}\n"
         f"⏰ Окончание: {time_str}\n\n"
         f"💡 Ожидается высокий спрос на такси!"
     )
 
-    # Create one route button if zone has coordinates
+    # Create route button - use venue coordinates if available, otherwise zone coordinates
     keyboard = None
-    if zone:
+    lat, lon = event.venue_lat, event.venue_lon
+
+    if not lat or not lon:
+        # Fall back to zone coordinates
+        zones = get_zones()
+        zone = next((z for z in zones if z.id == event.zone_id), None)
+        if zone:
+            lat, lon = zone.lat, zone.lon
+
+    if lat and lon:
         from bot.handlers.route_chooser import make_route_callback
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="🧭 Открыть маршрут", callback_data=make_route_callback(zone.lat, zone.lon, "menu"))],
+            [InlineKeyboardButton(text="🚕 Поехать", callback_data=make_route_callback(lat, lon, "menu"))],
             [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
         ])
 
     # Send only to paid subscribers (Pro/Premium/Elite)
     await send_to_users_by_event_type(bot, text, event.event_type, keyboard, paid_only=True)
-    logger.info("Sent pre-notification for event: %s (type: %s) to paid users only", event.name, event.event_type)
+    logger.info("Sent pre-notification for event: %s (type: %s, venue: %s) to paid users only",
+                event.name, event.event_type, event.venue_name or "unknown")
 
 
 async def send_end_notification(bot: Bot, event):
@@ -96,32 +108,44 @@ async def send_end_notification(bot: Bot, event):
     if zone_coeffs:
         max_coeff = max(c.coefficient for c in zone_coeffs)
 
-    # Get zone info
-    zones = get_zones()
-    zone = next((z for z in zones if z.id == event.zone_id), None)
-    zone_name = zone.name if zone else event.zone_id
+    # Use venue name if available, otherwise fall back to zone name
+    location_name = event.venue_name
+    if not location_name:
+        zones = get_zones()
+        zone = next((z for z in zones if z.id == event.zone_id), None)
+        location_name = zone.name if zone else event.zone_id
 
     coeff_emoji = "🔥" if max_coeff >= 2.0 else "📈" if max_coeff >= 1.5 else "📊"
 
     text = (
         f"🎉 <b>Мероприятие закончилось!</b>\n\n"
         f"{emoji} <b>{event.name}</b>\n"
-        f"📍 Зона: {zone_name}\n"
+        f"📍 Место: {location_name}\n"
         f"{coeff_emoji} Коэффициент: <b>x{max_coeff:.2f}</b>\n\n"
         f"💰 Самое время работать в этой зоне!"
     )
 
-    # Create one route button if zone has coordinates
+    # Create route button - use venue coordinates if available, otherwise zone coordinates
     keyboard = None
-    if zone:
+    lat, lon = event.venue_lat, event.venue_lon
+
+    if not lat or not lon:
+        # Fall back to zone coordinates
+        zones = get_zones()
+        zone = next((z for z in zones if z.id == event.zone_id), None)
+        if zone:
+            lat, lon = zone.lat, zone.lon
+
+    if lat and lon:
         from bot.handlers.route_chooser import make_route_callback
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="🧭 Открыть маршрут", callback_data=make_route_callback(zone.lat, zone.lon, "menu"))],
+            [InlineKeyboardButton(text="🚕 Поехать", callback_data=make_route_callback(lat, lon, "menu"))],
             [InlineKeyboardButton(text="🏠 Главное меню", callback_data="cmd:menu")]
         ])
 
     await send_to_users_by_event_type(bot, text, event.event_type, keyboard, paid_only=False)
-    logger.info("Sent end notification for event: %s (type: %s, coeff: %.2f) to all users", event.name, event.event_type, max_coeff)
+    logger.info("Sent end notification for event: %s (type: %s, venue: %s, coeff: %.2f) to all users",
+                event.name, event.event_type, event.venue_name or "unknown", max_coeff)
 
 
 async def send_to_users_by_event_type(bot: Bot, text: str, event_type: str, keyboard: InlineKeyboardMarkup = None, paid_only: bool = False):

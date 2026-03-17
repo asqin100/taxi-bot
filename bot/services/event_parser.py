@@ -60,6 +60,32 @@ class VenueMapper:
 
         return None
 
+    def get_venue_info(self, venue_name: str) -> Optional[dict]:
+        """Get full venue info (name, lat, lon) for a venue name."""
+        venue_lower = venue_name.lower().strip()
+
+        for venue in self.venues:
+            # Check main name
+            if venue["name"].lower() in venue_lower or venue_lower in venue["name"].lower():
+                return {
+                    "name": venue["name"],
+                    "lat": venue.get("lat"),
+                    "lon": venue.get("lon"),
+                    "zone_id": venue["zone_id"]
+                }
+
+            # Check aliases
+            for alias in venue.get("aliases", []):
+                if alias.lower() in venue_lower or venue_lower in alias.lower():
+                    return {
+                        "name": venue["name"],
+                        "lat": venue.get("lat"),
+                        "lon": venue.get("lon"),
+                        "zone_id": venue["zone_id"]
+                    }
+
+        return None
+
 
 venue_mapper = VenueMapper()
 
@@ -299,10 +325,19 @@ def _parse_kudago_event(event_json: dict) -> Optional[dict]:
         if not title or not place or not dates:
             return None
 
-        # Extract venue name from place object
+        # Extract venue name and coordinates from place object
         venue_name = None
+        venue_lat = None
+        venue_lon = None
+
         if isinstance(place, dict):
             venue_name = place.get("title") or place.get("name")
+            # Try to get coordinates from place
+            if "coords" in place and place["coords"]:
+                coords = place["coords"]
+                if "lat" in coords and "lon" in coords:
+                    venue_lat = coords["lat"]
+                    venue_lon = coords["lon"]
         elif isinstance(place, str):
             venue_name = place
 
@@ -315,6 +350,13 @@ def _parse_kudago_event(event_json: dict) -> Optional[dict]:
         if not zone_id:
             logger.debug("No zone found for venue: %s", venue_name)
             return None
+
+        # If we don't have coordinates from API, try to get from venues.json
+        if not venue_lat or not venue_lon:
+            venue_info = venue_mapper.get_venue_info(venue_name)
+            if venue_info:
+                venue_lat = venue_info.get("lat")
+                venue_lon = venue_info.get("lon")
 
         # Get the earliest future date
         now_timestamp = now().timestamp()
@@ -342,6 +384,9 @@ def _parse_kudago_event(event_json: dict) -> Optional[dict]:
             "zone_id": zone_id,
             "event_type": event_type,
             "end_time": end_time,
+            "venue_name": venue_name,
+            "venue_lat": venue_lat,
+            "venue_lon": venue_lon,
         }
 
     except Exception as e:

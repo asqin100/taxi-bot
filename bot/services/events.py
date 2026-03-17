@@ -17,6 +17,9 @@ async def create_event(
     zone_id: str,
     event_type: str,
     end_time: datetime,
+    venue_name: str = None,
+    venue_lat: float = None,
+    venue_lon: float = None,
 ) -> Event:
     """Create a new event."""
     async with session_factory() as session:
@@ -25,12 +28,15 @@ async def create_event(
             zone_id=zone_id,
             event_type=event_type,
             end_time=end_time,
+            venue_name=venue_name,
+            venue_lat=venue_lat,
+            venue_lon=venue_lon,
             created_at=get_moscow_now(),
         )
         session.add(event)
         await session.commit()
         await session.refresh(event)
-        logger.info("Created event: %s at %s, ends at %s", name, zone_id, end_time)
+        logger.info("Created event: %s at %s (venue: %s), ends at %s", name, zone_id, venue_name or "unknown", end_time)
         return event
 
 

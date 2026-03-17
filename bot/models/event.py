@@ -15,6 +15,11 @@ class Event(Base):
     event_type: Mapped[str] = mapped_column(String(64))  # concert, sport, conference, etc.
     end_time: Mapped[datetime] = mapped_column(DateTime)
 
+    # Venue information for better notifications
+    venue_name: Mapped[str | None] = mapped_column(String(256), nullable=True)  # Human-readable venue name
+    venue_lat: Mapped[float | None] = mapped_column(Float, nullable=True)  # Venue latitude
+    venue_lon: Mapped[float | None] = mapped_column(Float, nullable=True)  # Venue longitude
+
     # Alert tracking
     pre_notified: Mapped[bool] = mapped_column(Boolean, default=False)  # 20 min before alert sent
     end_notified: Mapped[bool] = mapped_column(Boolean, default=False)  # End alert sent
