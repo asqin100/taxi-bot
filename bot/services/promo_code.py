@@ -9,9 +9,41 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from bot.database.db import get_session
 from bot.models.promo_code import PromoCode, PromoCodeUsage
 from bot.models.subscription import SubscriptionTier
+from bot.models.user import User
 from bot.services.subscription import upgrade_subscription
 
 logger = logging.getLogger(__name__)
+
+
+async def ensure_user_exists(user_id: int, username: Optional[str] = None) -> None:
+    """Ensure user record exists in database, create if missing."""
+    async with get_session() as session:
+        result = await session.execute(
+            select(User).where(User.telegram_id == user_id)
+        )
+        user = result.scalar_one_or_none()
+
+        if not user:
+            # Generate referral code for new user
+            from bot.services.referral import generate_referral_code
+
+            while True:
+                code = generate_referral_code()
+                existing = await session.execute(
+                    select(User).where(User.referral_code == code)
+                )
+                if not existing.scalar_one_or_none():
+                    break
+
+            user = User(
+                telegram_id=user_id,
+                username=username,
+                referral_code=code,
+                created_at=datetime.now(),
+            )
+            session.add(user)
+            await session.commit()
+            logger.info(f"Created user record for {user_id} during promo activation")
 
 
 async def validate_promo_code(code: str, user_id: int) -> tuple[bool, str, Optional[PromoCode]]:
@@ -59,7 +91,7 @@ async def validate_promo_code(code: str, user_id: int) -> tuple[bool, str, Optio
         return True, "", promo
 
 
-async def activate_promo_code(code: str, user_id: int, tier: Optional[str] = None) -> tuple[bool, str, Optional[PromoCode]]:
+async def activate_promo_code(code: str, user_id: int, tier: Optional[str] = None, username: Optional[str] = None) -> tuple[bool, str, Optional[PromoCode]]:
     """
     Activate promo code for user.
 
@@ -67,6 +99,7 @@ async def activate_promo_code(code: str, user_id: int, tier: Optional[str] = Non
         code: Promo code
         user_id: User ID
         tier: Target tier (required for discount type)
+        username: Username (optional, for creating user record if needed)
 
     Returns:
         (success, message, promo_code_object)
@@ -83,6 +116,9 @@ async def activate_promo_code(code: str, user_id: int, tier: Optional[str] = Non
     }
 
     if promo.promo_type == "activation":
+        # Ensure user exists before creating subscription
+        await ensure_user_exists(user_id, username)
+
         # Free subscription activation
         async with get_session() as session:
             promo.current_uses += 1

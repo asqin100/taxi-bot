@@ -44,7 +44,7 @@ async def process_promo_code(message: Message, state: FSMContext):
     code = message.text.strip().upper()
 
     # Validate and activate
-    success, result_message, promo = await activate_promo_code(code, message.from_user.id)
+    success, result_message, promo = await activate_promo_code(code, message.from_user.id, username=message.from_user.username)
 
     if not success:
         # Error - show retry options
