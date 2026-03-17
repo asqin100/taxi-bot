@@ -1755,27 +1755,27 @@
                                 const now = new Date();
                                 const isEnded = endTime < now;
 
-                                return \`
-                                    <tr style="\${isEnded ? 'opacity: 0.6;' : ''}">
-                                        <td>\${event.id}</td>
-                                        <td><strong>\${event.name}</strong></td>
-                                        <td>\${event.zone_name}</td>
-                                        <td>\${eventTypes[event.event_type] || event.event_type}</td>
+                                return `
+                                    <tr style="${isEnded ? 'opacity: 0.6;' : ''}">
+                                        <td>${event.id}</td>
+                                        <td><strong>${event.name}</strong></td>
+                                        <td>${event.zone_name}</td>
+                                        <td>${eventTypes[event.event_type] || event.event_type}</td>
                                         <td>
-                                            \${endTime.toLocaleString('ru-RU')}
-                                            \${isEnded ? '<br><span style="color: #dc3545; font-size: 12px;">Завершено</span>' : ''}
+                                            ${endTime.toLocaleString('ru-RU')}
+                                            ${isEnded ? '<br><span style="color: #dc3545; font-size: 12px;">Завершено</span>' : ''}
                                         </td>
                                         <td>
-                                            \${event.pre_notified ? '✅' : '⏳'} За 20 мин<br>
-                                            \${event.end_notified ? '✅' : '⏳'} Окончание
+                                            ${event.pre_notified ? '✅' : '⏳'} За 20 мин<br>
+                                            ${event.end_notified ? '✅' : '⏳'} Окончание
                                         </td>
                                         <td>
-                                            <button class="btn-action" onclick="removeEvent(\${event.id})" style="background: #dc3545;">
+                                            <button class="btn-action" onclick="removeEvent(${event.id})" style="background: #dc3545;">
                                                 🗑 Удалить
                                             </button>
                                         </td>
                                     </tr>
-                                \`;
+                                `;
                             }).join('')}
                         </tbody>
                     </table>
