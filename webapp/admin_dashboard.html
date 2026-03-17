@@ -1681,33 +1681,49 @@
             }
         }
 
-        async function loadEvents() {
-            const content = document.getElementById('eventsContent');
-            content.className = 'loading';
-            content.innerHTML = 'Загрузка мероприятий...';
+        // ========== EVENTS MANAGEMENT (NEW) ==========
+
+        function openEventForm() {
+            console.log('Opening event form...');
+            document.getElementById('newEventModal').classList.add('show');
+            document.getElementById('eventFormStatus').innerHTML = '';
+            document.getElementById('newEventName').value = '';
+            document.getElementById('newEventZone').value = '';
+            document.getElementById('newEventType').value = 'concert';
+            document.getElementById('newEventEndTime').value = '';
+        }
+
+        function closeEventForm() {
+            console.log('Closing event form...');
+            document.getElementById('newEventModal').classList.remove('show');
+        }
+
+        async function fetchEventsList() {
+            const container = document.getElementById('eventsListContainer');
+            container.className = 'loading';
+            container.innerHTML = 'Загрузка мероприятий...';
 
             const token = localStorage.getItem('admin_token');
-
-            console.log('Loading events...');
+            console.log('Fetching events list...');
 
             try {
                 const response = await fetch('/admin/api/events', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                console.log('Events response status:', response.status);
+                console.log('Events API response status:', response.status);
 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
                 }
 
                 const events = await response.json();
-                console.log('Events loaded:', events.length, events);
+                console.log('Events fetched:', events.length);
 
-                content.className = '';
+                container.className = '';
 
                 if (events.length === 0) {
-                    content.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Нет мероприятий</p>';
+                    container.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Нет мероприятий</p>';
                     return;
                 }
 
@@ -1720,7 +1736,7 @@
                     'other': '📅 Другое'
                 };
 
-                content.innerHTML = `
+                container.innerHTML = `
                     <table>
                         <thead>
                             <tr>
@@ -1739,116 +1755,39 @@
                                 const now = new Date();
                                 const isEnded = endTime < now;
 
-                                return `
-                                    <tr style="${isEnded ? 'opacity: 0.6;' : ''}">
-                                        <td>${event.id}</td>
-                                        <td><strong>${event.name}</strong></td>
-                                        <td>${event.zone_name}</td>
-                                        <td>${eventTypes[event.event_type] || event.event_type}</td>
+                                return \`
+                                    <tr style="\${isEnded ? 'opacity: 0.6;' : ''}">
+                                        <td>\${event.id}</td>
+                                        <td><strong>\${event.name}</strong></td>
+                                        <td>\${event.zone_name}</td>
+                                        <td>\${eventTypes[event.event_type] || event.event_type}</td>
                                         <td>
-                                            ${endTime.toLocaleString('ru-RU')}
-                                            ${isEnded ? '<br><span style="color: #dc3545; font-size: 12px;">Завершено</span>' : ''}
+                                            \${endTime.toLocaleString('ru-RU')}
+                                            \${isEnded ? '<br><span style="color: #dc3545; font-size: 12px;">Завершено</span>' : ''}
                                         </td>
                                         <td>
-                                            ${event.pre_notified ? '✅' : '⏳'} За 20 мин<br>
-                                            ${event.end_notified ? '✅' : '⏳'} Окончание
+                                            \${event.pre_notified ? '✅' : '⏳'} За 20 мин<br>
+                                            \${event.end_notified ? '✅' : '⏳'} Окончание
                                         </td>
                                         <td>
-                                            <button class="btn-action" onclick="deleteEvent(${event.id})" style="background: #dc3545;">
+                                            <button class="btn-action" onclick="removeEvent(\${event.id})" style="background: #dc3545;">
                                                 🗑 Удалить
                                             </button>
                                         </td>
                                     </tr>
-                                `;
+                                \`;
                             }).join('')}
                         </tbody>
                     </table>
                 `;
             } catch (error) {
-                console.error('Error loading events:', error);
-                content.className = '';
-                content.innerHTML = `<p style="color: #dc3545;">Ошибка загрузки: ${error.message}</p>`;
+                console.error('Error fetching events:', error);
+                container.className = '';
+                container.innerHTML = `<p style="color: #dc3545;">Ошибка загрузки: ${error.message}</p>`;
             }
         }
 
-        function showCreateEventModal() {
-            document.getElementById('eventModal').classList.add('show');
-            document.getElementById('eventModalStatus').innerHTML = '';
-            document.getElementById('eventName').value = '';
-            document.getElementById('eventZone').value = '';
-            document.getElementById('eventType').value = 'concert';
-            document.getElementById('eventEndTime').value = '';
-        }
-
-        function closeEventModal() {
-            document.getElementById('eventModal').classList.remove('show');
-        }
-
-        async function createEvent(e) {
-            e.preventDefault();
-
-            const statusDiv = document.getElementById('eventModalStatus');
-            statusDiv.innerHTML = '<p class="loading">Создание мероприятия...</p>';
-
-            const name = document.getElementById('eventName').value.trim();
-            const zoneId = document.getElementById('eventZone').value.trim();
-            const eventType = document.getElementById('eventType').value;
-            const endTime = document.getElementById('eventEndTime').value;
-
-            console.log('Creating event:', { name, zoneId, eventType, endTime });
-
-            if (!name || !zoneId || !eventType || !endTime) {
-                statusDiv.innerHTML = '<p class="error-msg">❌ Заполните все поля</p>';
-                return;
-            }
-
-            const token = localStorage.getItem('admin_token');
-
-            try {
-                // Add seconds to datetime if missing (datetime-local returns format without seconds)
-                let formattedEndTime = endTime;
-                if (endTime && endTime.length === 16) {
-                    formattedEndTime = endTime + ':00';
-                }
-
-                console.log('Formatted end_time:', formattedEndTime);
-
-                const response = await fetch('/admin/api/events/create', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name,
-                        zone_id: zoneId,
-                        event_type: eventType,
-                        end_time: formattedEndTime
-                    })
-                });
-
-                console.log('Response status:', response.status);
-                const result = await response.json();
-                console.log('Response data:', result);
-
-                if (response.ok && result.success) {
-                    statusDiv.innerHTML = `<p class="success-msg">✅ Мероприятие <strong>${name}</strong> создано!</p>`;
-                    setTimeout(() => {
-                        closeEventModal();
-                        console.log('Loading events after creation...');
-                        loadEvents();
-                    }, 2000);
-                } else {
-                    statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось создать мероприятие'}</p>`;
-                    console.error('Event creation failed:', result);
-                }
-            } catch (error) {
-                statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка сети: ${error.message}</p>`;
-                console.error('Network error:', error);
-            }
-        }
-
-        async function deleteEvent(eventId) {
+        async function removeEvent(eventId) {
             if (!confirm('Вы уверены, что хотите удалить это мероприятие?')) {
                 return;
             }
@@ -1869,14 +1808,85 @@
 
                 if (response.ok && result.success) {
                     alert('✅ Мероприятие удалено');
-                    loadEvents();
+                    fetchEventsList();
                 } else {
-                    alert(`❌ Ошибка: ${result.error || 'Не удалось удалить мероприятие'}`);
+                    alert(`❌ Ошибка: ${result.error || 'Не удалось удалить'}`);
                 }
             } catch (error) {
                 alert(`❌ Ошибка сети: ${error.message}`);
             }
         }
+
+        // Form submission handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('eventCreationForm');
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    console.log('Form submitted');
+
+                    const statusDiv = document.getElementById('eventFormStatus');
+                    statusDiv.innerHTML = '<p class="loading">Создание мероприятия...</p>';
+
+                    const name = document.getElementById('newEventName').value.trim();
+                    const zoneId = document.getElementById('newEventZone').value.trim();
+                    const eventType = document.getElementById('newEventType').value;
+                    const endTime = document.getElementById('newEventEndTime').value;
+
+                    console.log('Form data:', { name, zoneId, eventType, endTime });
+
+                    if (!name || !zoneId || !eventType || !endTime) {
+                        statusDiv.innerHTML = '<p class="error-msg">❌ Заполните все поля</p>';
+                        return;
+                    }
+
+                    const token = localStorage.getItem('admin_token');
+
+                    try {
+                        let formattedEndTime = endTime;
+                        if (endTime && endTime.length === 16) {
+                            formattedEndTime = endTime + ':00';
+                        }
+
+                        console.log('Sending request with end_time:', formattedEndTime);
+
+                        const response = await fetch('/admin/api/events/create', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                name,
+                                zone_id: zoneId,
+                                event_type: eventType,
+                                end_time: formattedEndTime
+                            })
+                        });
+
+                        console.log('Response status:', response.status);
+                        const result = await response.json();
+                        console.log('Response data:', result);
+
+                        if (response.ok && result.success) {
+                            statusDiv.innerHTML = `<p class="success-msg">✅ Мероприятие <strong>${name}</strong> создано!</p>`;
+                            setTimeout(() => {
+                                closeEventForm();
+                                fetchEventsList();
+                            }, 2000);
+                        } else {
+                            statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось создать мероприятие'}</p>`;
+                            console.error('Event creation failed:', result);
+                        }
+                    } catch (error) {
+                        statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка сети: ${error.message}</p>`;
+                        console.error('Network error:', error);
+                    }
+                });
+            }
+        });
+
+        // ========== END EVENTS MANAGEMENT ==========
 
         loadDashboard();
     </script>
