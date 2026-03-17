@@ -1,23 +1,15 @@
 """Event management service."""
 import logging
-from datetime import datetime, timedelta
-from zoneinfo import ZoneInfo
+from datetime import timedelta
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bot.models.event import Event
 from bot.database.db import session_factory
+from bot.utils.timezone import now as get_moscow_now
 
 logger = logging.getLogger(__name__)
-
-# Moscow timezone - all times in database are stored as naive datetime in Moscow time
-MOSCOW_TZ = ZoneInfo("Europe/Moscow")
-
-
-def get_moscow_now() -> datetime:
-    """Get current time in Moscow timezone as naive datetime."""
-    return datetime.now(tz=MOSCOW_TZ).replace(tzinfo=None)
 
 
 async def create_event(

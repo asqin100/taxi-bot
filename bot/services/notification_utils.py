@@ -1,7 +1,6 @@
 """Utility functions for notifications."""
-from datetime import datetime
-
 from bot.models.user import User
+from bot.utils.timezone import now
 
 
 def is_quiet_hours(user: User) -> bool:
@@ -17,7 +16,7 @@ def is_quiet_hours(user: User) -> bool:
     if not user.quiet_hours_enabled:
         return False
 
-    current_hour = datetime.now().hour
+    current_hour = now().hour
     start = user.quiet_hours_start
     end = user.quiet_hours_end
 

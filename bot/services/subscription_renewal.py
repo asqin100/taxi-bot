@@ -1,6 +1,6 @@
 """Subscription renewal service - automatic subscription renewal."""
 import logging
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import List
 
 from sqlalchemy import select, and_
@@ -8,6 +8,7 @@ from sqlalchemy import select, and_
 from bot.database.db import get_session
 from bot.models.subscription import Subscription, SubscriptionTier
 from bot.services.payment import create_payment
+from bot.utils.timezone import now
 
 logger = logging.getLogger(__name__)
 
@@ -23,8 +24,8 @@ async def get_expiring_subscriptions(days_before: int = 3) -> List[Subscription]
         List of subscriptions to renew
     """
     async with get_session() as session:
-        now = datetime.now()
-        threshold = now + timedelta(days=days_before)
+        current_time = now()
+        threshold = current_time + timedelta(days=days_before)
 
         result = await session.execute(
             select(Subscription).where(
@@ -33,7 +34,7 @@ async def get_expiring_subscriptions(days_before: int = 3) -> List[Subscription]
                     Subscription.is_active == True,
                     Subscription.expires_at != None,
                     Subscription.expires_at <= threshold,
-                    Subscription.expires_at > now,
+                    Subscription.expires_at > current_time,
                     Subscription.tier != SubscriptionTier.FREE.value
                 )
             )
