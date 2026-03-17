@@ -18,15 +18,23 @@ logger = logging.getLogger(__name__)
 
 async def check_and_notify_events(bot: Bot):
     """Check for events that need notifications and send alerts."""
+    logger.info("Checking for events that need notifications...")
+
     # Check for pre-notifications (20 min before end)
     pre_events = await event_service.get_events_for_pre_notification()
+    logger.info("Found %d events needing pre-notification", len(pre_events))
+
     for event in pre_events:
+        logger.info("Sending pre-notification for event: %s (ends at %s)", event.name, event.end_time)
         await send_pre_notification(bot, event)
         await event_service.mark_pre_notified(event.id)
 
     # Check for end notifications
     end_events = await event_service.get_events_for_end_notification()
+    logger.info("Found %d events needing end notification", len(end_events))
+
     for event in end_events:
+        logger.info("Sending end notification for event: %s (ended at %s)", event.name, event.end_time)
         await send_end_notification(bot, event)
         await event_service.mark_end_notified(event.id)
 

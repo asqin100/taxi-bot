@@ -51,6 +51,8 @@ async def get_events_for_pre_notification() -> list[Event]:
     now = datetime.now()
     pre_notify_time = now + timedelta(minutes=20)
 
+    logger.debug("Looking for pre-notifications: now=%s, pre_notify_time=%s", now, pre_notify_time)
+
     async with session_factory() as session:
         stmt = (
             select(Event)
@@ -61,7 +63,13 @@ async def get_events_for_pre_notification() -> list[Event]:
             )
         )
         result = await session.execute(stmt)
-        return list(result.scalars().all())
+        events = list(result.scalars().all())
+
+        logger.debug("Pre-notification query found %d events", len(events))
+        for event in events:
+            logger.debug("  - %s (ends at %s, pre_notified=%s)", event.name, event.end_time, event.pre_notified)
+
+        return events
 
 
 async def get_events_for_end_notification() -> list[Event]:
