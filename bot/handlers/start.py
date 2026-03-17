@@ -116,25 +116,22 @@ async def cmd_start(message: Message, state: FSMContext):
         try:
             logger.info(f"[START] Creating/fetching user {user_id}")
             async with session_factory() as session:
+                # Optimized: Single query to get user
                 result = await session.execute(
                     select(User).where(User.telegram_id == user_id)
                 )
                 user = result.scalar_one_or_none()
+
                 if not user:
                     is_new_user = True
                     should_choose_tariff = True
                     # Generate referral code for new user
                     from bot.services.referral import generate_referral_code
 
-                    # Ensure unique code
-                    while True:
-                        code = generate_referral_code()
-                        existing = await session.execute(
-                            select(User).where(User.referral_code == code)
-                        )
-                        if not existing.scalar_one_or_none():
-                            break
+                    # Optimized: Generate code once, rely on unique constraint
+                    code = generate_referral_code()
 
+                    # Optimized: Use INSERT OR IGNORE pattern to handle race conditions
                     user = User(
                         telegram_id=user_id,
                         username=message.from_user.username,
@@ -142,8 +139,21 @@ async def cmd_start(message: Message, state: FSMContext):
                         created_at=datetime.now(),
                     )
                     session.add(user)
-                    await session.commit()
-                    logger.info(f"[START] Created new user {user_id}")
+
+                    try:
+                        await session.commit()
+                        logger.info(f"[START] Created new user {user_id}")
+                    except Exception as e:
+                        # If unique constraint fails (rare race condition), fetch existing user
+                        await session.rollback()
+                        result = await session.execute(
+                            select(User).where(User.telegram_id == user_id)
+                        )
+                        user = result.scalar_one_or_none()
+                        if not user:
+                            raise  # Re-raise if it's a different error
+                        is_new_user = False
+                        logger.info(f"[START] User {user_id} already exists (race condition)")
                 else:
                     # Existing user but tariff not selected yet
                     if not getattr(user, "preferred_tariff", None):
