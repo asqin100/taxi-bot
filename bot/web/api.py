@@ -382,7 +382,11 @@ async def admin_login_page(request: web.Request) -> web.FileResponse:
 
 async def admin_dashboard_page(request: web.Request) -> web.FileResponse:
     """Serve admin dashboard page."""
-    return web.FileResponse(WEBAPP_DIR / "admin_dashboard.html")
+    response = web.FileResponse(WEBAPP_DIR / "admin_dashboard.html")
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 
 async def admin_login(request: web.Request) -> web.Response:
