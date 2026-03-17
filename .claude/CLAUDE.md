@@ -163,13 +163,16 @@ This project uses gstack for specialized workflow modes. Available skills:
 - `/plan-eng-review` - Technical architecture mode
 - `/review` - Paranoid code review mode
 - `/ship` - Release automation
-- `/browse` - Browser automation for testing
-- `/qa` - QA testing + bug fixing
-- `/qa-only` - Report-only QA testing
 - `/retro` - Weekly retrospective
 - `/document-release` - Documentation updates
+- `/plan-design-review` - Design audit mode
+- `/design-consultation` - Design system creation
 
-**IMPORTANT**: Always use `/browse` from gstack for web browsing. Never use `mcp__claude-in-chrome__*` tools.
+**Note**: Browser-based skills (`/browse`, `/qa`, `/qa-only`) require the browse binary which has compilation issues on Windows. Use the non-browser skills listed above.
+
+Custom taxi-bot skills:
+- `/taxi-deploy` - Production deployment automation
+- `/taxi-test` - Comprehensive testing suite
 
 ### Recommended Workflow
 
