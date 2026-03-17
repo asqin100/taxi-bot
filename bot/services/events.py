@@ -1,6 +1,6 @@
 """Event management service."""
 import logging
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
