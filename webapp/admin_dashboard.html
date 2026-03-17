@@ -343,11 +343,11 @@
             <div class="section">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h2>🎭 Управление мероприятиями</h2>
-                    <button class="btn-action" onclick="showCreateEventModal()" style="padding: 10px 20px; font-size: 14px;">
+                    <button class="btn-action" onclick="openEventForm()" style="padding: 10px 20px; font-size: 14px;">
                         ➕ Добавить мероприятие
                     </button>
                 </div>
-                <div id="eventsContent" class="loading">Загрузка...</div>
+                <div id="eventsListContainer" class="loading">Загрузка...</div>
             </div>
         </div>
 
@@ -526,23 +526,23 @@
         </div>
     </div>
 
-    <!-- Create Event Modal -->
-    <div id="eventModal" class="modal">
+    <!-- Create Event Modal (NEW) -->
+    <div id="newEventModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Добавить мероприятие</h2>
-                <button class="close-btn" onclick="closeEventModal()">&times;</button>
+                <button class="close-btn" onclick="closeEventForm()">&times;</button>
             </div>
-            <div id="eventModalStatus"></div>
-            <form onsubmit="event.preventDefault(); createEvent(event); return false;">
+            <div id="eventFormStatus"></div>
+            <form id="eventCreationForm">
                 <div class="form-group">
                     <label>Название мероприятия *</label>
-                    <input type="text" id="eventName" required placeholder="Концерт в Лужниках">
+                    <input type="text" id="newEventName" required placeholder="Концерт в Лужниках">
                 </div>
                 <div class="form-group">
                     <label>ID зоны *</label>
-                    <input type="text" id="eventZone" required placeholder="luzhniki" list="zonesList">
-                    <datalist id="zonesList">
+                    <input type="text" id="newEventZone" required placeholder="luzhniki" list="zonesDatalist">
+                    <datalist id="zonesDatalist">
                         <option value="luzhniki">Лужники</option>
                         <option value="crocus">Крокус Сити Холл</option>
                         <option value="vdnh">ВДНХ</option>
@@ -558,7 +558,7 @@
                 </div>
                 <div class="form-group">
                     <label>Тип мероприятия *</label>
-                    <select id="eventType" required>
+                    <select id="newEventType" required>
                         <option value="concert">🎵 Концерт</option>
                         <option value="sport">⚽ Спортивное событие</option>
                         <option value="conference">🎤 Конференция</option>
@@ -569,7 +569,7 @@
                 </div>
                 <div class="form-group">
                     <label>Время окончания *</label>
-                    <input type="datetime-local" id="eventEndTime" required>
+                    <input type="datetime-local" id="newEventEndTime" required>
                     <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">
                         Уведомления будут отправлены за 20 минут до окончания и сразу после
                     </small>
@@ -595,7 +595,7 @@
             if (tab === 'promo') {
                 loadPromoCodes();
             } else if (tab === 'events') {
-                loadEvents();
+                fetchEventsList();
             } else if (tab === 'bans') {
                 loadBannedUsers();
             }
