@@ -1,6 +1,7 @@
 """Event management service."""
 import logging
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,6 +10,14 @@ from bot.models.event import Event
 from bot.database.db import session_factory
 
 logger = logging.getLogger(__name__)
+
+# Moscow timezone - all times in database are stored as naive datetime in Moscow time
+MOSCOW_TZ = ZoneInfo("Europe/Moscow")
+
+
+def get_moscow_now() -> datetime:
+    """Get current time in Moscow timezone as naive datetime."""
+    return datetime.now(tz=MOSCOW_TZ).replace(tzinfo=None)
 
 
 async def create_event(
@@ -24,7 +33,7 @@ async def create_event(
             zone_id=zone_id,
             event_type=event_type,
             end_time=end_time,
-            created_at=datetime.now(),
+            created_at=get_moscow_now(),
         )
         session.add(event)
         await session.commit()
@@ -38,7 +47,7 @@ async def get_upcoming_events(limit: int = 10) -> list[Event]:
     async with session_factory() as session:
         stmt = (
             select(Event)
-            .where(Event.end_time > datetime.now())
+            .where(Event.end_time > get_moscow_now())
             .order_by(Event.end_time)
             .limit(limit)
         )
@@ -48,7 +57,7 @@ async def get_upcoming_events(limit: int = 10) -> list[Event]:
 
 async def get_events_for_pre_notification() -> list[Event]:
     """Get events that need pre-notification (20 min before end, not yet notified)."""
-    now = datetime.now()
+    now = get_moscow_now()
     pre_notify_time = now + timedelta(minutes=20)
 
     logger.debug("Looking for pre-notifications: now=%s, pre_notify_time=%s", now, pre_notify_time)
@@ -74,7 +83,7 @@ async def get_events_for_pre_notification() -> list[Event]:
 
 async def get_events_for_end_notification() -> list[Event]:
     """Get events that just ended (within last 5 min, not yet notified)."""
-    now = datetime.now()
+    now = get_moscow_now()
     five_min_ago = now - timedelta(minutes=5)
 
     async with session_factory() as session:

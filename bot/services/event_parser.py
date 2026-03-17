@@ -5,6 +5,7 @@ import re
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
+from zoneinfo import ZoneInfo
 
 import aiohttp
 from bs4 import BeautifulSoup
@@ -12,6 +13,9 @@ from bs4 import BeautifulSoup
 from bot.services import events as event_service
 
 logger = logging.getLogger(__name__)
+
+# Moscow timezone
+MOSCOW_TZ = ZoneInfo("Europe/Moscow")
 
 VENUES_FILE = Path(__file__).resolve().parent.parent.parent / "data" / "venues.json"
 
@@ -71,7 +75,7 @@ async def parse_kudago_events() -> list[dict]:
         url = "https://kudago.com/public-api/v1.4/events/"
 
         # Get events for next 30 days
-        now = datetime.now()
+        now = datetime.now(tz=MOSCOW_TZ)
         future_date = now + timedelta(days=30)
 
         # Convert to Unix timestamps
@@ -316,7 +320,7 @@ def _parse_kudago_event(event_json: dict) -> Optional[dict]:
             return None
 
         # Get the earliest future date
-        now_timestamp = datetime.now().timestamp()
+        now_timestamp = datetime.now(tz=MOSCOW_TZ).timestamp()
         future_dates = [d for d in dates if isinstance(d, dict) and d.get("end", 0) > now_timestamp]
 
         if not future_dates:
@@ -329,8 +333,12 @@ def _parse_kudago_event(event_json: dict) -> Optional[dict]:
         if not end_timestamp:
             return None
 
-        # Convert Unix timestamp to datetime
-        end_time = datetime.fromtimestamp(end_timestamp)
+        # Convert Unix timestamp to datetime in Moscow timezone
+        # KudaGo API returns UTC timestamps, convert to Moscow time
+        end_time_utc = datetime.fromtimestamp(end_timestamp, tz=ZoneInfo("UTC"))
+        end_time_moscow = end_time_utc.astimezone(MOSCOW_TZ)
+        # Store as naive datetime (database expects naive, assumes Moscow timezone)
+        end_time = end_time_moscow.replace(tzinfo=None)
 
         # Determine event type
         event_type = _guess_event_type(title)
