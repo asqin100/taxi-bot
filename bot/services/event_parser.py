@@ -71,24 +71,32 @@ async def parse_kudago_events() -> list[dict]:
         url = "https://kudago.com/public-api/v1.4/events/"
 
         # Get events for next 30 days
-        import time
-        actual_since = int(time.time())
-        actual_until = actual_since + (30 * 24 * 3600)  # 30 days ahead
+        now = datetime.now()
+        future_date = now + timedelta(days=30)
+
+        # Convert to Unix timestamps
+        actual_since = int(now.timestamp())
+        actual_until = int(future_date.timestamp())
 
         params = {
             "location": "msk",
-            "categories": "concert,theater,festival,party,exhibition,show,kids,sport,entertainment",
+            "categories": "concert",
             "fields": "id,title,place,dates",
             "expand": "place",
+            "page_size": 100,
             "actual_since": actual_since,
             "actual_until": actual_until,
-            "page_size": 200,
         }
+
+        logger.info(f"Fetching events from KudaGo API with params: {params}")
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params, timeout=aiohttp.ClientTimeout(total=30)) as resp:
+                logger.info(f"KudaGo API response status: {resp.status}")
+
                 if resp.status != 200:
-                    logger.warning("KudaGo API returned status %d", resp.status)
+                    text = await resp.text()
+                    logger.error("KudaGo API failed with status %d: %s", resp.status, text[:500])
                     return events
 
                 data = await resp.json()
