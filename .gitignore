@@ -45,4 +45,10 @@ node_modules/
 # Temp files
 *.txt
 !requirements.txt
-!requirements_elite.txtDEPLOY_ROBOKASSA_NOW.sh
+!requirements_elite.txt
+
+# Claude Code
+.claude/worktrees/
+
+# Deploy scripts
+DEPLOY_ROBOKASSA_NOW.sh
