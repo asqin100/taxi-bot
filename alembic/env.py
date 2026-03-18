@@ -28,10 +28,12 @@ target_metadata = Base.metadata
 def get_url():
     """Get database URL from bot config."""
     from bot.config import settings
-    # Convert asyncpg URL to psycopg2 for synchronous migrations
-    url = settings.effective_db_url
+    # Convert async URLs to sync for synchronous migrations
+    url = settings.database_url
     if url.startswith("postgresql+asyncpg://"):
         url = url.replace("postgresql+asyncpg://", "postgresql://")
+    elif url.startswith("sqlite+aiosqlite://"):
+        url = url.replace("sqlite+aiosqlite://", "sqlite://")
     return url
 
 
