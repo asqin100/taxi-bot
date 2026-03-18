@@ -57,28 +57,23 @@
             gap: 15px;
             align-items: center;
         }
-        .theme-toggle {
+        .header-btn {
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.3);
             color: white;
             padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
+            transition: background 0.3s;
+        }
+        .header-btn:hover { background: rgba(255,255,255,0.3); }
+        .theme-toggle {
             font-size: 20px;
-            transition: background 0.3s;
         }
-        .theme-toggle:hover { background: rgba(255,255,255,0.3); }
         .logout-btn {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 8px;
-            cursor: pointer;
             font-size: 14px;
-            transition: background 0.3s;
+            padding: 8px 20px;
         }
-        .logout-btn:hover { background: rgba(255,255,255,0.3); }
         .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
         .tabs {
             display: flex;
@@ -102,13 +97,14 @@
             content: '';
             position: absolute;
             bottom: -3px;
-            left: 50%;
-            width: 0;
+            left: 0;
+            width: 100%;
             height: 3px;
             background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-            transform: translateX(-50%);
-            transition: width 0.3s ease;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
             border-radius: 2px;
+            transform-origin: center;
         }
         .tab:hover {
             color: var(--gradient-start);
@@ -119,7 +115,7 @@
             border-bottom-color: transparent;
         }
         .tab.active::before {
-            width: 100%;
+            transform: scaleX(1);
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -134,7 +130,7 @@
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 4px 20px var(--shadow);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
             position: relative;
             overflow: hidden;
             border: 1px solid var(--border-light);
@@ -224,7 +220,7 @@
             font-size: 15px;
             background: var(--bg-secondary);
             color: var(--text-primary);
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
             outline: none;
         }
         .search-box input:focus {
@@ -243,7 +239,7 @@
             border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
             position: relative;
             overflow: hidden;
@@ -252,18 +248,19 @@
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
+            transform: translateX(-100%);
+            transition: transform 0.5s;
         }
         .search-box button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
         }
         .search-box button:hover::before {
-            left: 100%;
+            transform: translateX(100%);
         }
         .search-box button:active {
             transform: translateY(0);
@@ -365,26 +362,24 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 0;
-            height: 0;
+            width: 300px;
+            height: 300px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s;
         }
         .btn-action:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
         }
         .btn-action:hover::after {
-            width: 300px;
-            height: 300px;
+            transform: translate(-50%, -50%) scale(1);
         }
         .btn-action:active {
             transform: translateY(0);
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
         }
-        .btn-action:hover { background: #5568d3; }
         .modal {
             display: none;
             position: fixed;
@@ -491,8 +486,8 @@
     <div class="header">
         <h1>🚕 KefPulse - Админ-панель</h1>
         <div class="header-controls">
-            <button class="theme-toggle" onclick="toggleTheme()" title="Переключить тему">🌙</button>
-            <button class="logout-btn" onclick="logout()">Выйти</button>
+            <button class="header-btn theme-toggle" onclick="toggleTheme()" title="Переключить тему">🌙</button>
+            <button class="header-btn logout-btn" onclick="logout()">Выйти</button>
         </div>
     </div>
 
