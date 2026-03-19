@@ -1,0 +1,54 @@
+# Logs
+*.log
+bot.log
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Database
+*.db
+data/*.db
+
+# Binaries
+*.exe
+
+# Images (test files)
+*.png
+*.jpg
+*.jpeg
+
+# Documents
+*.docx
+
+# Test files
+test_*.py
+test_*.json
+*_test.py
+nul
+
+# Batch files
+*.bat
+
+# Environment
+.env
+.env.local
+
+# Node modules
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# Temp files
+*.txt
+!requirements.txt
+!requirements_elite.txt
+
+# Claude Code
+.claude/worktrees/
+
+# Deploy scripts
+DEPLOY_ROBOKASSA_NOW.sh

@@ -1,0 +1,18 @@
+# Зависимости для новых функций Elite тариф
+
+# Визуализация (тепловая карта)
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Анализ данных (статистика, ML)
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Machine Learning (предсказания)
+scikit-learn>=1.3.0
+joblib>=1.3.0
+
+# REST API
+fastapi>=0.115.0
+uvicorn>=0.32.0
+pydantic>=2.0.0

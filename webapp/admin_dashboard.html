@@ -1,0 +1,2074 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дашборд - Админ-панель</title>
+    <style>
+        :root {
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f8f9fa;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-tertiary: #999;
+            --border-color: #e0e0e0;
+            --border-light: #f0f0f0;
+            --shadow: rgba(0,0,0,0.05);
+            --shadow-hover: rgba(0,0,0,0.1);
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+        }
+
+        body.dark-theme {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --text-primary: #e4e4e4;
+            --text-secondary: #b8b8b8;
+            --text-tertiary: #888;
+            --border-color: #2d3748;
+            --border-light: #374151;
+            --shadow: rgba(0,0,0,0.3);
+            --shadow-hover: rgba(0,0,0,0.5);
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.3s, color 0.3s;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px var(--shadow-hover);
+        }
+        .header h1 { font-size: 24px; }
+        .header-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .header-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .header-btn:hover { background: rgba(255,255,255,0.3); }
+        .theme-toggle {
+            font-size: 20px;
+        }
+        .logout-btn {
+            font-size: 14px;
+            padding: 8px 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        .tab {
+            padding: 14px 28px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+        }
+        .tab::before {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            border-radius: 2px;
+            transform-origin: center;
+        }
+        .tab:hover {
+            color: var(--gradient-start);
+            background: rgba(102, 126, 234, 0.05);
+        }
+        .tab.active {
+            color: var(--gradient-start);
+            border-bottom-color: transparent;
+        }
+        .tab.active::before {
+            transform: scaleX(1);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px var(--shadow-hover);
+            border-color: var(--gradient-start);
+        }
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+        .stat-card h3 {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .stat-card .value {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+        .stat-card .label {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+        .section {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px var(--shadow);
+            border: 1px solid var(--border-light);
+            transition: box-shadow 0.3s ease;
+        }
+        .section:hover {
+            box-shadow: 0 6px 30px var(--shadow-hover);
+        }
+        .section h2 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: var(--text-primary);
+            position: relative;
+            padding-bottom: 12px;
+        }
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 2px;
+        }
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 15px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            outline: none;
+        }
+        .search-box input:focus {
+            border-color: var(--gradient-start);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        .search-box input::placeholder {
+            color: var(--text-tertiary);
+        }
+        .search-box button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .search-box button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+        }
+        .search-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+        }
+        .search-box button:hover::before {
+            transform: translateX(100%);
+        }
+        .search-box button:active {
+            transform: translateY(0);
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        th {
+            text-align: left;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+        }
+        th:first-child {
+            border-top-left-radius: 12px;
+        }
+        th:last-child {
+            border-top-right-radius: 12px;
+        }
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: background 0.2s ease;
+        }
+        tr:hover td {
+            background: var(--bg-tertiary);
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:last-child td:first-child {
+            border-bottom-left-radius: 12px;
+        }
+        tr:last-child td:last-child {
+            border-bottom-right-radius: 12px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .badge-free {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            color: #0d47a1;
+            border: 1px solid #90caf9;
+        }
+        .badge-pro {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100;
+            border: 1px solid #ffb74d;
+        }
+        .badge-premium {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #4a148c;
+            border: 1px solid #ba68c8;
+        }
+        .badge-elite {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            color: #880e4f;
+            border: 1px solid #f06292;
+        }
+        .btn-action {
+            padding: 8px 18px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-action::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s;
+        }
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+        }
+        .btn-action:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .btn-action:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-header h2 { font-size: 24px; color: var(--text-primary); }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-tertiary);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .form-group select, .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .user-info {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .user-info p {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        .user-info strong { color: var(--gradient-start); }
+        .loading { text-align: center; padding: 40px; color: var(--text-tertiary); }
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .error-msg {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        /* Radio button styles */
+        input[type="radio"] {
+            accent-color: #667eea;
+        }
+        input[type="radio"]:checked + span {
+            font-weight: 600;
+            color: #667eea;
+        }
+        label:has(input[type="radio"]:checked) {
+            border-color: #667eea !important;
+            background: #f0f4ff !important;
+        }
+        label:has(input[type="radio"]) {
+            transition: all 0.2s ease;
+        }
+        label:has(input[type="radio"]):hover {
+            border-color: #b8c5f2 !important;
+            background: #f8f9ff !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚕 KefPulse - Админ-панель</h1>
+        <div class="header-controls">
+            <button class="header-btn theme-toggle" onclick="toggleTheme()" title="Переключить тему">🌙</button>
+            <button class="header-btn logout-btn" onclick="logout()">Выйти</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('dashboard')">📊 Дашборд</button>
+            <button class="tab" onclick="switchTab('users')">👥 Управление пользователями</button>
+            <button class="tab" onclick="switchTab('events')">🎭 Мероприятия</button>
+            <button class="tab" onclick="switchTab('bans')">🚫 Забаненные</button>
+            <button class="tab" onclick="switchTab('promo')">🎁 Промокоды</button>
+            <button class="tab" onclick="switchTab('broadcast')">📢 Рассылка</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard-tab" class="tab-content active">
+            <div id="content" class="loading">Загрузка...</div>
+        </div>
+
+        <!-- Users Management Tab -->
+        <div id="users-tab" class="tab-content">
+            <div class="section">
+                <h2>🔍 Поиск пользователей</h2>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Введите username или telegram_id">
+                    <button onclick="searchUsers()">Найти</button>
+                </div>
+                <div id="searchResults"></div>
+            </div>
+        </div>
+
+        <!-- Events Management Tab -->
+        <div id="events-tab" class="tab-content">
+            <div class="section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>🎭 Управление мероприятиями</h2>
+                    <button class="btn-action" onclick="openEventForm()" style="padding: 10px 20px; font-size: 14px;">
+                        ➕ Добавить мероприятие
+                    </button>
+                </div>
+                <div id="eventsListContainer" class="loading">Загрузка...</div>
+            </div>
+        </div>
+
+        <!-- Banned Users Tab -->
+        <div id="bans-tab" class="tab-content">
+            <div class="section">
+                <h2>🚫 Забаненные пользователи</h2>
+
+                <!-- Ban User Form -->
+                <div style="background: #fff3cd; padding: 20px; border-radius: 10px; margin-bottom: 30px; border-left: 4px solid #ffc107;">
+                    <h3 style="margin-bottom: 15px;">➕ Забанить пользователя</h3>
+                    <div id="banFormStatus"></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Telegram ID или @username</label>
+                            <input type="text" id="banUserInput" placeholder="Например: 123456789 или @username" style="width: 100%;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Причина бана</label>
+                            <input type="text" id="banReasonInput" placeholder="Например: Нарушение правил" value="Нарушение правил" style="width: 100%;">
+                        </div>
+                    </div>
+                    <button onclick="banUserByInput()" style="background: #ff9800; color: white; padding: 12px 30px; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                        🚫 Забанить
+                    </button>
+                </div>
+
+                <div id="bannedUsersContent" class="loading">Загрузка...</div>
+            </div>
+        </div>
+
+        <!-- Promo Codes Tab -->
+        <div id="promo-tab" class="tab-content">
+            <div class="section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>🎁 Управление промокодами</h2>
+                    <button class="btn-action" onclick="showCreatePromoModal()" style="padding: 10px 20px; font-size: 14px;">
+                        ➕ Создать промокод
+                    </button>
+                </div>
+                <div id="promoCodesContent" class="loading">Загрузка...</div>
+            </div>
+        </div>
+
+        <!-- Broadcast Tab -->
+        <div id="broadcast-tab" class="tab-content">
+            <div class="section">
+                <h2>📢 Массовая рассылка сообщений</h2>
+                <div id="broadcastStatus"></div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-weight: bold;">Текст сообщения:</label>
+                    <textarea id="broadcastMessage"
+                              style="width: 100%; min-height: 200px; padding: 15px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 14px; font-family: inherit; resize: vertical;"
+                              placeholder="Введите текст сообщения для всех пользователей...&#10;&#10;Поддерживается HTML форматирование:&#10;• <b>жирный</b>&#10;• <i>курсив</i>&#10;• <code>код</code>&#10;• <a href='url'>ссылка</a>"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button onclick="sendBroadcast()"
+                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 30px; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                        📤 Отправить всем пользователям
+                    </button>
+                    <button onclick="clearBroadcast()"
+                            style="background: #f0f0f0; color: #666; padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-size: 14px;">
+                        🗑 Очистить
+                    </button>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 10px; border-left: 4px solid #ffc107;">
+                    <strong>⚠️ Внимание:</strong> Сообщение будет отправлено ВСЕМ пользователям бота. Убедитесь, что текст корректен перед отправкой.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Details Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Управление пользователем</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Create Promo Code Modal -->
+    <div id="promoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Создать промокод</h2>
+                <button class="close-btn" onclick="closePromoModal()">&times;</button>
+            </div>
+            <div id="promoModalStatus"></div>
+            <form onsubmit="createPromoCode(event)">
+                <div class="form-group">
+                    <label>Код промокода *</label>
+                    <input type="text" id="promoCode" required placeholder="SUMMER2026" style="text-transform: uppercase;">
+                </div>
+                <div class="form-group">
+                    <label>Тип промокода *</label>
+                    <select id="promoType" required onchange="togglePromoFields()">
+                        <option value="activation">🎁 Активация подписки (бесплатно)</option>
+                        <option value="discount">💰 Скидка на покупку</option>
+                    </select>
+                </div>
+
+                <!-- Activation fields -->
+                <div id="activationFields">
+                    <div class="form-group">
+                        <label>Тариф *</label>
+                        <select id="promoTier">
+                            <option value="pro">⭐ Pro (299₽/мес)</option>
+                            <option value="premium">💎 Premium (499₽/мес)</option>
+                            <option value="elite">👑 Elite (999₽/мес)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Длительность (дней) *</label>
+                        <input type="number" id="promoDuration" value="30" min="1" max="365">
+                    </div>
+                </div>
+
+                <!-- Discount fields -->
+                <div id="discountFields" style="display: none;">
+                    <div class="form-group">
+                        <label style="margin-bottom: 12px; display: block; font-weight: 600;">Тип скидки *</label>
+                        <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; flex: 1; transition: all 0.2s;">
+                                <input type="radio" name="discountTypeRadio" value="percent" checked onchange="updateDiscountPlaceholder()">
+                                <span style="font-weight: 500;">📊 Процент (%)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; flex: 1; transition: all 0.2s;">
+                                <input type="radio" name="discountTypeRadio" value="fixed" onchange="updateDiscountPlaceholder()">
+                                <span style="font-weight: 500;">💵 Фиксированная сумма (₽)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="discountValueLabel">Размер скидки (%) *</label>
+                        <input type="number" id="discountValue" min="1" step="0.01" placeholder="Например: 20">
+                        <small id="discountHint" style="color: #666; font-size: 12px; margin-top: 5px; display: block;">Введите процент скидки (например, 20 для скидки 20%)</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Применяется к тарифам * (выберите один или несколько)</label>
+                        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="tierPro" value="pro" checked>
+                                <span>⭐ Pro (299₽/мес)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="tierPremium" value="premium" checked>
+                                <span>💎 Premium (499₽/мес)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="tierElite" value="elite" checked>
+                                <span>👑 Elite (999₽/мес)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Максимум использований (оставьте пустым для безлимита)</label>
+                    <input type="number" id="promoMaxUses" min="1" placeholder="Без ограничений">
+                </div>
+                <div class="form-group">
+                    <label>Действителен до (оставьте пустым для бессрочного)</label>
+                    <input type="datetime-local" id="promoValidUntil">
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <input type="text" id="promoDescription" placeholder="Летняя акция 2026">
+                </div>
+                <button type="submit" class="btn-action" style="width: 100%; padding: 12px; font-size: 16px;">
+                    ✅ Создать промокод
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Event Modal (NEW) -->
+    <div id="newEventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить мероприятие</h2>
+                <button class="close-btn" onclick="closeEventForm()">&times;</button>
+            </div>
+            <div id="eventFormStatus"></div>
+            <form id="eventCreationForm">
+                <div class="form-group">
+                    <label>Название мероприятия *</label>
+                    <input type="text" id="newEventName" required placeholder="Концерт в Лужниках">
+                </div>
+                <div class="form-group">
+                    <label>ID зоны *</label>
+                    <input type="text" id="newEventZone" required placeholder="luzhniki" list="zonesDatalist">
+                    <datalist id="zonesDatalist">
+                        <option value="luzhniki">Лужники</option>
+                        <option value="crocus">Крокус Сити Холл</option>
+                        <option value="vdnh">ВДНХ</option>
+                        <option value="olympic">Олимпийский</option>
+                        <option value="megasport">Мегаспорт</option>
+                        <option value="svo">Шереметьево</option>
+                        <option value="dme">Домодедово</option>
+                        <option value="vko">Внуково</option>
+                    </datalist>
+                    <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">
+                        Введите ID зоны из списка или свой ID
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label>Тип мероприятия *</label>
+                    <select id="newEventType" required>
+                        <option value="concert">🎵 Концерт</option>
+                        <option value="sport">⚽ Спортивное событие</option>
+                        <option value="conference">🎤 Конференция</option>
+                        <option value="festival">🎪 Фестиваль</option>
+                        <option value="exhibition">🖼 Выставка</option>
+                        <option value="other">📅 Другое</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Время окончания *</label>
+                    <input type="datetime-local" id="newEventEndTime" required>
+                    <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">
+                        Уведомления будут отправлены за 20 минут до окончания и сразу после
+                    </small>
+                </div>
+                <button type="submit" class="btn-action" style="width: 100%; padding: 12px; font-size: 16px;">
+                    ✅ Создать мероприятие
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tab + '-tab').classList.add('active');
+
+            // Load data when switching tabs
+            if (tab === 'promo') {
+                loadPromoCodes();
+            } else if (tab === 'events') {
+                fetchEventsList();
+            } else if (tab === 'bans') {
+                loadBannedUsers();
+            }
+        }
+
+        async function loadDashboard() {
+            const token = localStorage.getItem('admin_token');
+            if (!token) {
+                window.location.href = '/admin/login';
+                return;
+            }
+
+            try {
+                const response = await fetch('/admin/api/stats', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Unauthorized');
+
+                const data = await response.json();
+                renderDashboard(data);
+            } catch (error) {
+                localStorage.removeItem('admin_token');
+                window.location.href = '/admin/login';
+            }
+        }
+
+        function renderDashboard(data) {
+            const content = document.getElementById('content');
+            content.className = '';
+            content.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Всего пользователей</h3>
+                        <div class="value">${data.users.total}</div>
+                        <div class="label">Активных за неделю: ${data.users.active}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Новые сегодня</h3>
+                        <div class="value">${data.users.new_today}</div>
+                        <div class="label">Регистраций</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Pro подписки</h3>
+                        <div class="value">${data.subscriptions.pro}</div>
+                        <div class="label">Активных</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Premium подписки</h3>
+                        <div class="value">${data.subscriptions.premium}</div>
+                        <div class="label">Активных</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Elite подписки</h3>
+                        <div class="value">${data.subscriptions.elite || 0}</div>
+                        <div class="label">Активных</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Всего смен</h3>
+                        <div class="value">${data.shifts.total}</div>
+                        <div class="label">Сегодня: ${data.shifts.today}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Общий заработок</h3>
+                        <div class="value">${Math.round(data.shifts.total_earnings).toLocaleString()}₽</div>
+                        <div class="label">Все время</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Достижения</h3>
+                        <div class="value">${data.gamification.achievements}</div>
+                        <div class="label">Разблокировано</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Челленджи</h3>
+                        <div class="value">${data.gamification.active_challenges}</div>
+                        <div class="label">Активных</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>📊 Топ водителей по заработку</h2>
+                    <table id="topEarners">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Username</th>
+                                <th>Заработок</th>
+                                <th>Смен</th>
+                            </tr>
+                        </thead>
+                        <tbody class="loading">
+                            <tr><td colspan="4" style="text-align:center">Загрузка...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h2>👥 Последние пользователи</h2>
+                    <table id="recentUsers">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Дата регистрации</th>
+                            </tr>
+                        </thead>
+                        <tbody class="loading">
+                            <tr><td colspan="3" style="text-align:center">Загрузка...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            loadTopEarners();
+            loadRecentUsers();
+        }
+
+        async function loadTopEarners() {
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch('/admin/api/top-earners', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            const tbody = document.querySelector('#topEarners tbody');
+            tbody.innerHTML = data.map((user, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>@${user.username}</td>
+                    <td>${Math.round(user.total_earnings).toLocaleString()}₽</td>
+                    <td>${user.shift_count}</td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadRecentUsers() {
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch('/admin/api/recent-users', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            const tbody = document.querySelector('#recentUsers tbody');
+            tbody.innerHTML = data.map(user => `
+                <tr>
+                    <td>${user.telegram_id}</td>
+                    <td>@${user.username || 'Unknown'}</td>
+                    <td>${new Date(user.created_at).toLocaleString('ru-RU')}</td>
+                </tr>
+            `).join('');
+        }
+
+        async function searchUsers() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = '<p class="loading">Поиск...</p>';
+
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch(`/admin/api/search-users?q=${encodeURIComponent(query)}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            const users = await response.json();
+
+            if (users.length === 0) {
+                resultsDiv.innerHTML = '<p>Пользователи не найдены</p>';
+                return;
+            }
+
+            resultsDiv.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Telegram ID</th>
+                            <th>Username</th>
+                            <th>Дата регистрации</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${users.map(user => `
+                            <tr>
+                                <td>${user.telegram_id}</td>
+                                <td>@${user.username}</td>
+                                <td>${new Date(user.created_at).toLocaleString('ru-RU')}</td>
+                                <td>
+                                    <button class="btn-action" onclick="showUserDetails(${user.telegram_id})">
+                                        Управление
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        async function showUserDetails(telegramId) {
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch(`/admin/api/user/${telegramId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            const data = await response.json();
+            currentUser = data;
+
+            const modal = document.getElementById('userModal');
+            const content = document.getElementById('modalContent');
+
+            const tierBadge = data.subscription ?
+                `<span class="badge badge-${data.subscription.tier}">${data.subscription.tier.toUpperCase()}</span>` :
+                '<span class="badge badge-free">FREE</span>';
+
+            content.innerHTML = `
+                <div class="user-info">
+                    <p><strong>Telegram ID:</strong> ${data.user.telegram_id}</p>
+                    <p><strong>Username:</strong> @${data.user.username}</p>
+                    <p><strong>Подписка:</strong> ${tierBadge}</p>
+                    ${data.subscription && data.subscription.expires_at ?
+                        `<p><strong>Истекает:</strong> ${new Date(data.subscription.expires_at).toLocaleString('ru-RU')}</p>` : ''}
+                    <p><strong>Смен:</strong> ${data.stats.shift_count}</p>
+                    <p><strong>Заработок:</strong> ${Math.round(data.stats.total_earnings).toLocaleString()}₽</p>
+                    <p><strong>Достижений:</strong> ${data.stats.achievements}</p>
+                </div>
+
+                <h3 style="margin-bottom: 15px;">Выдать подписку</h3>
+                <div id="grantMessage"></div>
+                <div class="form-group">
+                    <label>Тариф</label>
+                    <select id="tierSelect">
+                        <option value="pro">⭐ Pro</option>
+                        <option value="premium">💎 Premium</option>
+                        <option value="elite">👑 Elite</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Длительность (дней)</label>
+                    <input type="number" id="durationInput" value="30" min="1" max="365">
+                </div>
+                <button class="btn-action" style="width: 100%; padding: 12px;" onclick="grantSubscription()">
+                    Выдать подписку
+                </button>
+
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
+
+                <h3 style="margin-bottom: 15px;">💰 Управление балансом</h3>
+                <div class="form-group">
+                    <label>Реферальный баланс (₽)</label>
+                    <input type="number" id="balanceInput" value="0" min="0" step="0.01">
+                </div>
+                <button class="btn-action" style="width: 100%; padding: 12px; background: #4caf50;" onclick="updateBalance()">
+                    💳 Обновить баланс
+                </button>
+
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
+
+                <h3 style="margin-bottom: 15px;">🔧 Изменить подписку</h3>
+                <div class="form-group">
+                    <label>Установить тариф</label>
+                    <select id="changeTierSelect">
+                        <option value="free">🆓 Free</option>
+                        <option value="pro">⭐ Pro (30 дней)</option>
+                        <option value="premium">💎 Premium (30 дней)</option>
+                        <option value="elite">👑 Elite (30 дней)</option>
+                    </select>
+                </div>
+                <button class="btn-action" style="width: 100%; padding: 12px; background: #2196f3;" onclick="changeSubscription()">
+                    ✏️ Изменить тариф
+                </button>
+
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
+
+                <h3 style="margin-bottom: 15px; color: #ff9800;">🚫 Управление баном</h3>
+                <div class="form-group">
+                    <label>Причина бана</label>
+                    <input type="text" id="banReason" placeholder="Например: Нарушение правил" value="Нарушение правил">
+                </div>
+                <button class="btn-action" style="width: 100%; padding: 12px; background: #ff9800; margin-bottom: 15px;" onclick="banUser()">
+                    🚫 Забанить пользователя
+                </button>
+                <button class="btn-action" style="width: 100%; padding: 12px; background: #4caf50; margin-bottom: 15px;" onclick="unbanUser()">
+                    ✅ Разбанить пользователя
+                </button>
+
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
+
+                <h3 style="margin-bottom: 15px; color: #d32f2f;">⚠️ Опасная зона</h3>
+                <p style="margin-bottom: 15px; font-size: 14px; color: #666;">
+                    <strong>Сброс:</strong> Удалит все данные пользователя (смены, подписки, достижения), но пользователь останется в базе с новым реферальным кодом.
+                </p>
+                <button class="btn-action" style="width: 100%; padding: 12px; background: #d32f2f; margin-bottom: 15px;" onclick="confirmResetUser()">
+                    🔄 Сбросить пользователя
+                </button>
+
+                <p style="margin-bottom: 15px; font-size: 14px; color: #666;">
+                    <strong>Удаление:</strong> ПОЛНОСТЬЮ удалит пользователя из базы данных. Это действие необратимо!
+                </p>
+                <button class="btn-action" style="width: 100%; padding: 12px; background: #b71c1c;" onclick="confirmDeleteUser()">
+                    ❌ Удалить пользователя навсегда
+                </button>
+            `;
+
+            modal.classList.add('show');
+        }
+
+        async function updateBalance() {
+            const balance = parseFloat(document.getElementById('balanceInput').value);
+            const messageDiv = document.getElementById('grantMessage');
+
+            messageDiv.innerHTML = '<p class="loading">Обновление баланса...</p>';
+
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch('/admin/api/update-balance', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    telegram_id: currentUser.user.telegram_id,
+                    amount: balance
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                messageDiv.innerHTML = '<p class="success-msg">✅ Баланс успешно обновлён!</p>';
+                setTimeout(() => messageDiv.innerHTML = '', 3000);
+            } else {
+                messageDiv.innerHTML = '<p class="error-msg">❌ Ошибка при обновлении баланса</p>';
+            }
+        }
+
+        async function changeSubscription() {
+            const tier = document.getElementById('changeTierSelect').value;
+            const messageDiv = document.getElementById('grantMessage');
+
+            messageDiv.innerHTML = '<p class="loading">Изменение подписки...</p>';
+
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch('/admin/api/update-subscription', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    telegram_id: currentUser.user.telegram_id,
+                    tier: tier
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                messageDiv.innerHTML = '<p class="success-msg">✅ Подписка успешно изменена!</p>';
+                setTimeout(() => {
+                    closeModal();
+                    searchUsers();
+                }, 2000);
+            } else {
+                messageDiv.innerHTML = '<p class="error-msg">❌ Ошибка при изменении подписки</p>';
+            }
+        }
+
+        async function grantSubscription() {
+            const tier = document.getElementById('tierSelect').value;
+            const duration = parseInt(document.getElementById('durationInput').value);
+            const messageDiv = document.getElementById('grantMessage');
+
+            messageDiv.innerHTML = '<p class="loading">Выдача подписки...</p>';
+
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch('/admin/api/grant-subscription', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    telegram_id: currentUser.user.telegram_id,
+                    tier: tier,
+                    duration_days: duration
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                messageDiv.innerHTML = '<p class="success-msg">✅ Подписка успешно выдана!</p>';
+                setTimeout(() => {
+                    closeModal();
+                    searchUsers(); // Refresh search results
+                }, 2000);
+            } else {
+                messageDiv.innerHTML = '<p class="error-msg">❌ Ошибка при выдаче подписки</p>';
+            }
+        }
+
+        function confirmResetUser() {
+            const username = currentUser.user.username;
+            const telegramId = currentUser.user.telegram_id;
+
+            if (confirm(`⚠️ ВНИМАНИЕ!\n\nВы уверены, что хотите сбросить пользователя @${username} (ID: ${telegramId})?\n\nБудут удалены:\n• Все смены и заработок\n• Подписки\n• Достижения и челленджи\n• Настройки уведомлений\n• Геолокация\n• Реферальный баланс\n\nПользователь вернется к начальному состоянию.\n\nЭто действие НЕОБРАТИМО!`)) {
+                resetUser();
+            }
+        }
+
+        async function resetUser() {
+            const messageDiv = document.getElementById('grantMessage');
+            messageDiv.innerHTML = '<p class="loading">Сброс пользователя...</p>';
+
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch('/admin/api/reset-user', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    telegram_id: currentUser.user.telegram_id
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                messageDiv.innerHTML = '<p class="success-msg">✅ Пользователь успешно сброшен!</p>';
+                setTimeout(() => {
+                    closeModal();
+                    searchUsers(); // Refresh search results
+                }, 2000);
+            } else {
+                messageDiv.innerHTML = '<p class="error-msg">❌ Ошибка при сбросе пользователя</p>';
+            }
+        }
+
+        function confirmDeleteUser() {
+            const username = currentUser.user.username;
+            const telegramId = currentUser.user.telegram_id;
+
+            if (confirm(`🚨 КРИТИЧЕСКОЕ ПРЕДУПРЕЖДЕНИЕ!\n\nВы собираетесь ПОЛНОСТЬЮ УДАЛИТЬ пользователя @${username} (ID: ${telegramId}) из базы данных!\n\nБудут БЕЗВОЗВРАТНО удалены:\n• Сам пользователь\n• Все смены и заработок\n• Подписки\n• Достижения и челленджи\n• Настройки\n• Реферальные связи\n• История платежей\n\nПользователь исчезнет из базы данных!\n\nЭТО ДЕЙСТВИЕ НЕОБРАТИМО!\n\nВы АБСОЛЮТНО УВЕРЕНЫ?`)) {
+                if (confirm(`Последнее подтверждение!\n\nВы действительно хотите удалить @${username}?\n\nВведите "ДА" в следующем окне для подтверждения.`)) {
+                    const finalConfirm = prompt('Введите "ДА" (заглавными буквами) для подтверждения удаления:');
+                    if (finalConfirm === 'ДА') {
+                        deleteUser();
+                    } else {
+                        alert('Удаление отменено.');
+                    }
+                }
+            }
+        }
+
+        async function deleteUser() {
+            const messageDiv = document.getElementById('grantMessage');
+            messageDiv.innerHTML = '<p class="loading">Удаление пользователя из базы данных...</p>';
+
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch('/admin/api/delete-user', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    telegram_id: currentUser.user.telegram_id
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                messageDiv.innerHTML = '<p class="success-msg">✅ Пользователь полностью удален из базы данных!</p>';
+                setTimeout(() => {
+                    closeModal();
+                    searchUsers(); // Refresh search results
+                }, 2000);
+            } else {
+                messageDiv.innerHTML = '<p class="error-msg">❌ Ошибка при удалении пользователя</p>';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('userModal').classList.remove('show');
+        }
+
+        function clearBroadcast() {
+            document.getElementById('broadcastMessage').value = '';
+            document.getElementById('broadcastStatus').innerHTML = '';
+        }
+
+        async function sendBroadcast() {
+            const message = document.getElementById('broadcastMessage').value.trim();
+            const statusDiv = document.getElementById('broadcastStatus');
+
+            if (!message) {
+                statusDiv.innerHTML = '<p class="error-msg">❌ Введите текст сообщения</p>';
+                return;
+            }
+
+            if (!confirm(`⚠️ ВНИМАНИЕ!\n\nВы уверены, что хотите отправить это сообщение ВСЕМ пользователям бота?\n\nТекст сообщения:\n${message.substring(0, 200)}${message.length > 200 ? '...' : ''}\n\nЭто действие нельзя отменить!`)) {
+                return;
+            }
+
+            statusDiv.innerHTML = '<p class="loading">📤 Отправка сообщений... Пожалуйста, подождите.</p>';
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/broadcast', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    statusDiv.innerHTML = `
+                        <p class="success-msg">
+                            ✅ Рассылка завершена!<br>
+                            📊 Всего пользователей: ${result.total}<br>
+                            ✅ Успешно отправлено: ${result.sent}<br>
+                            ${result.failed > 0 ? `❌ Не удалось отправить: ${result.failed}` : ''}
+                        </p>
+                    `;
+                    // Clear message after successful broadcast
+                    setTimeout(() => {
+                        document.getElementById('broadcastMessage').value = '';
+                    }, 3000);
+                } else {
+                    statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось отправить сообщения'}</p>`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка сети: ${error.message}</p>`;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('admin_token');
+            window.location.href = '/admin/login';
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.querySelector('.theme-toggle');
+
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                themeBtn.textContent = '🌙';
+                localStorage.setItem('admin_theme', 'light');
+            } else {
+                body.classList.add('dark-theme');
+                themeBtn.textContent = '☀️';
+                localStorage.setItem('admin_theme', 'dark');
+            }
+        }
+
+        // Load saved theme on page load
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('admin_theme');
+            const themeBtn = document.querySelector('.theme-toggle');
+
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                if (themeBtn) themeBtn.textContent = '☀️';
+            }
+        }
+
+        // Initialize theme on page load
+        document.addEventListener('DOMContentLoaded', loadTheme);
+
+        // Ban System Functions
+        async function loadBannedUsers() {
+            const content = document.getElementById('bannedUsersContent');
+            content.className = 'loading';
+            content.innerHTML = 'Загрузка забаненных пользователей...';
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/banned-users', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load banned users');
+
+                const bannedUsers = await response.json();
+                renderBannedUsers(bannedUsers);
+            } catch (error) {
+                content.className = '';
+                content.innerHTML = '<p class="error-msg">❌ Ошибка загрузки забаненных пользователей</p>';
+            }
+        }
+
+        function renderBannedUsers(bannedUsers) {
+            const content = document.getElementById('bannedUsersContent');
+            content.className = '';
+
+            if (bannedUsers.length === 0) {
+                content.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Забаненных пользователей нет</p>';
+                return;
+            }
+
+            content.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Telegram ID</th>
+                            <th>Username</th>
+                            <th>Причина</th>
+                            <th>Дата бана</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${bannedUsers.map(user => `
+                            <tr>
+                                <td>${user.telegram_id}</td>
+                                <td>@${user.username || 'Unknown'}</td>
+                                <td>${user.ban_reason || '-'}</td>
+                                <td>${user.banned_at ? new Date(user.banned_at).toLocaleString('ru-RU') : '-'}</td>
+                                <td>
+                                    <button class="btn-action" onclick="unbanUserById(${user.telegram_id})" style="background: #4caf50;">
+                                        ✅ Разбанить
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        async function banUser() {
+            const reason = document.getElementById('banReason').value.trim() || 'Нарушение правил';
+            const messageDiv = document.getElementById('grantMessage');
+
+            if (!confirm(`⚠️ Вы уверены, что хотите забанить пользователя @${currentUser.user.username}?\n\nПричина: ${reason}\n\nПользователь не сможет использовать бота.`)) {
+                return;
+            }
+
+            messageDiv.innerHTML = '<p class="loading">Бан пользователя...</p>';
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/ban-user', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        telegram_id: currentUser.user.telegram_id,
+                        reason: reason
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    messageDiv.innerHTML = '<p class="success-msg">✅ Пользователь успешно забанен!</p>';
+                    setTimeout(() => {
+                        closeModal();
+                        searchUsers();
+                    }, 2000);
+                } else {
+                    messageDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось забанить пользователя'}</p>`;
+                }
+            } catch (error) {
+                messageDiv.innerHTML = `<p class="error-msg">❌ Ошибка сети: ${error.message}</p>`;
+            }
+        }
+
+        async function unbanUser() {
+            const messageDiv = document.getElementById('grantMessage');
+
+            if (!confirm(`Вы уверены, что хотите разбанить пользователя @${currentUser.user.username}?`)) {
+                return;
+            }
+
+            messageDiv.innerHTML = '<p class="loading">Разбан пользователя...</p>';
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/unban-user', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        telegram_id: currentUser.user.telegram_id
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    messageDiv.innerHTML = '<p class="success-msg">✅ Пользователь успешно разбанен!</p>';
+                    setTimeout(() => {
+                        closeModal();
+                        searchUsers();
+                    }, 2000);
+                } else {
+                    messageDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось разбанить пользователя'}</p>`;
+                }
+            } catch (error) {
+                messageDiv.innerHTML = `<p class="error-msg">❌ Ошибка сети: ${error.message}</p>`;
+            }
+        }
+
+        async function unbanUserById(telegramId) {
+            if (!confirm(`Вы уверены, что хотите разбанить пользователя ${telegramId}?`)) {
+                return;
+            }
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/unban-user', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        telegram_id: telegramId
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    alert('✅ Пользователь успешно разбанен!');
+                    loadBannedUsers();
+                } else {
+                    alert(`❌ Ошибка: ${result.error || 'Не удалось разбанить пользователя'}`);
+                }
+            } catch (error) {
+                alert(`❌ Ошибка сети: ${error.message}`);
+            }
+        }
+
+        async function banUserByInput() {
+            const input = document.getElementById('banUserInput').value.trim();
+            const reason = document.getElementById('banReasonInput').value.trim() || 'Нарушение правил';
+            const statusDiv = document.getElementById('banFormStatus');
+
+            if (!input) {
+                statusDiv.innerHTML = '<p class="error-msg">❌ Введите Telegram ID или username</p>';
+                return;
+            }
+
+            statusDiv.innerHTML = '<p class="loading">Поиск пользователя...</p>';
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                // First, search for the user
+                const searchQuery = input.startsWith('@') ? input.substring(1) : input;
+                const searchResponse = await fetch(`/admin/api/search-users?q=${encodeURIComponent(searchQuery)}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const users = await searchResponse.json();
+
+                if (!users || users.length === 0) {
+                    statusDiv.innerHTML = '<p class="error-msg">❌ Пользователь не найден</p>';
+                    return;
+                }
+
+                // If multiple users found, use the first one (or we could show a selection)
+                const user = users[0];
+                const telegramId = user.telegram_id;
+
+                if (!confirm(`Забанить пользователя @${user.username} (ID: ${telegramId})?\n\nПричина: ${reason}`)) {
+                    statusDiv.innerHTML = '';
+                    return;
+                }
+
+                statusDiv.innerHTML = '<p class="loading">Бан пользователя...</p>';
+
+                // Ban the user
+                const banResponse = await fetch('/admin/api/ban-user', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        telegram_id: telegramId,
+                        reason: reason
+                    })
+                });
+
+                const result = await banResponse.json();
+
+                if (banResponse.ok && result.success) {
+                    statusDiv.innerHTML = '<p class="success-msg">✅ Пользователь успешно забанен!</p>';
+                    document.getElementById('banUserInput').value = '';
+                    document.getElementById('banReasonInput').value = 'Нарушение правил';
+                    setTimeout(() => {
+                        statusDiv.innerHTML = '';
+                        loadBannedUsers();
+                    }, 2000);
+                } else {
+                    statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось забанить пользователя'}</p>`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${error.message}</p>`;
+            }
+        }
+
+        // Promo Codes Functions
+        async function loadPromoCodes() {
+            const content = document.getElementById('promoCodesContent');
+            content.className = 'loading';
+            content.innerHTML = 'Загрузка промокодов...';
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/promo-codes', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load promo codes');
+
+                const promoCodes = await response.json();
+                renderPromoCodes(promoCodes);
+            } catch (error) {
+                content.className = '';
+                content.innerHTML = '<p class="error-msg">❌ Ошибка загрузки промокодов</p>';
+            }
+        }
+
+        function renderPromoCodes(promoCodes) {
+            const content = document.getElementById('promoCodesContent');
+            content.className = '';
+
+            if (promoCodes.length === 0) {
+                content.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Промокодов пока нет. Создайте первый!</p>';
+                return;
+            }
+
+            const tierNames = {
+                'pro': '⭐ Pro',
+                'premium': '💎 Premium',
+                'elite': '👑 Elite'
+            };
+
+            content.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Код</th>
+                            <th>Тип</th>
+                            <th>Детали</th>
+                            <th>Использований</th>
+                            <th>Статус</th>
+                            <th>Действителен до</th>
+                            <th>Описание</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${promoCodes.map(promo => {
+                            let typeText = '';
+                            let detailsText = '';
+
+                            if (promo.promo_type === 'activation') {
+                                typeText = '🎁 Активация';
+                                detailsText = `${tierNames[promo.tier] || promo.tier}<br>${promo.duration_days} дней`;
+                            } else if (promo.promo_type === 'discount') {
+                                typeText = '💰 Скидка';
+                                const discountText = promo.discount_type === 'percent'
+                                    ? `${promo.discount_value}%`
+                                    : `${promo.discount_value}₽`;
+                                const tiersArray = promo.applicable_tiers ? promo.applicable_tiers.split(',') : [];
+                                const tiersText = tiersArray.map(t => tierNames[t.trim()] || t).join(', ');
+                                detailsText = `Скидка: <strong>${discountText}</strong><br>Тарифы: ${tiersText}`;
+                            }
+
+                            return `
+                                <tr>
+                                    <td><strong>${promo.code}</strong></td>
+                                    <td>${typeText}</td>
+                                    <td>${detailsText}</td>
+                                    <td>
+                                        ${promo.current_uses}${promo.max_uses ? ` / ${promo.max_uses}` : ' / ∞'}
+                                        ${promo.uses_remaining !== null ? `<br><small style="color: #999;">(осталось: ${promo.uses_remaining})</small>` : ''}
+                                    </td>
+                                    <td>
+                                        ${promo.is_valid
+                                            ? '<span class="badge" style="background: #d4edda; color: #155724;">✅ Активен</span>'
+                                            : '<span class="badge" style="background: #f8d7da; color: #721c24;">❌ Неактивен</span>'}
+                                    </td>
+                                    <td>${promo.valid_until ? new Date(promo.valid_until).toLocaleString('ru-RU') : 'Бессрочно'}</td>
+                                    <td>${promo.description || '-'}</td>
+                                    <td>
+                                        ${promo.is_active
+                                            ? `<button class="btn-action" onclick="deactivatePromoCode('${promo.code}')" style="background: #dc3545;">🚫 Деактивировать</button>`
+                                            : '<span style="color: #999;">Деактивирован</span>'}
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function showCreatePromoModal() {
+            document.getElementById('promoModal').classList.add('show');
+            document.getElementById('promoModalStatus').innerHTML = '';
+            document.getElementById('promoCode').value = '';
+            document.getElementById('promoType').value = 'activation';
+            document.getElementById('promoTier').value = 'pro';
+            document.getElementById('promoDuration').value = '30';
+
+            // Reset radio buttons
+            document.querySelector('input[name="discountTypeRadio"][value="percent"]').checked = true;
+            document.getElementById('discountValue').value = '';
+
+            document.getElementById('tierPro').checked = true;
+            document.getElementById('tierPremium').checked = true;
+            document.getElementById('tierElite').checked = true;
+            document.getElementById('promoMaxUses').value = '';
+            document.getElementById('promoValidUntil').value = '';
+            document.getElementById('promoDescription').value = '';
+
+            togglePromoFields();
+            updateDiscountPlaceholder();
+        }
+
+        function togglePromoFields() {
+            const promoType = document.getElementById('promoType').value;
+            const activationFields = document.getElementById('activationFields');
+            const discountFields = document.getElementById('discountFields');
+
+            if (promoType === 'activation') {
+                activationFields.style.display = 'block';
+                discountFields.style.display = 'none';
+            } else {
+                activationFields.style.display = 'none';
+                discountFields.style.display = 'block';
+            }
+        }
+
+        function updateDiscountPlaceholder() {
+            const discountType = document.querySelector('input[name="discountTypeRadio"]:checked').value;
+            const label = document.getElementById('discountValueLabel');
+            const input = document.getElementById('discountValue');
+            const hint = document.getElementById('discountHint');
+
+            if (discountType === 'percent') {
+                label.textContent = 'Размер скидки (%) *';
+                input.placeholder = 'Например: 20';
+                hint.textContent = 'Введите процент скидки (например, 20 для скидки 20%)';
+                input.max = '100';
+            } else {
+                label.textContent = 'Размер скидки (₽) *';
+                input.placeholder = 'Например: 100';
+                hint.textContent = 'Введите фиксированную сумму скидки в рублях (например, 100)';
+                input.removeAttribute('max');
+            }
+        }
+
+        function closePromoModal() {
+            document.getElementById('promoModal').classList.remove('show');
+        }
+
+        async function createPromoCode(event) {
+            event.preventDefault();
+
+            const statusDiv = document.getElementById('promoModalStatus');
+            statusDiv.innerHTML = '<p class="loading">Создание промокода...</p>';
+
+            const code = document.getElementById('promoCode').value.trim().toUpperCase();
+            const promo_type = document.getElementById('promoType').value;
+            const max_uses = document.getElementById('promoMaxUses').value ? parseInt(document.getElementById('promoMaxUses').value) : null;
+            const valid_until = document.getElementById('promoValidUntil').value || null;
+            const description = document.getElementById('promoDescription').value.trim() || null;
+
+            const token = localStorage.getItem('admin_token');
+
+            let requestBody = {
+                code,
+                promo_type,
+                max_uses,
+                valid_until,
+                description
+            };
+
+            if (promo_type === 'activation') {
+                const tier = document.getElementById('promoTier').value;
+                const duration_days = parseInt(document.getElementById('promoDuration').value);
+                requestBody.tier = tier;
+                requestBody.duration_days = duration_days;
+            } else {
+                const discount_type = document.querySelector('input[name="discountTypeRadio"]:checked').value;
+                const discount_value = parseFloat(document.getElementById('discountValue').value);
+
+                // Get selected tiers
+                const applicable_tiers = [];
+                if (document.getElementById('tierPro').checked) applicable_tiers.push('pro');
+                if (document.getElementById('tierPremium').checked) applicable_tiers.push('premium');
+                if (document.getElementById('tierElite').checked) applicable_tiers.push('elite');
+
+                if (applicable_tiers.length === 0) {
+                    statusDiv.innerHTML = '<p class="error-msg">❌ Выберите хотя бы один тариф</p>';
+                    return;
+                }
+
+                requestBody.discount_type = discount_type;
+                requestBody.discount_value = discount_value;
+                requestBody.applicable_tiers = applicable_tiers;
+            }
+
+            try {
+                const response = await fetch('/admin/api/promo-codes/create', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    statusDiv.innerHTML = `<p class="success-msg">✅ Промокод <strong>${code}</strong> успешно создан!</p>`;
+                    setTimeout(() => {
+                        closePromoModal();
+                        loadPromoCodes();
+                    }, 2000);
+                } else {
+                    statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось создать промокод'}</p>`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка сети: ${error.message}</p>`;
+            }
+        }
+
+        async function deactivatePromoCode(code) {
+            if (!confirm(`Вы уверены, что хотите деактивировать промокод ${code}?\n\nПосле деактивации его нельзя будет использовать.`)) {
+                return;
+            }
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/promo-codes/deactivate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ code })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    alert(`✅ Промокод ${code} деактивирован`);
+                    loadPromoCodes();
+                } else {
+                    alert(`❌ Ошибка: ${result.error || 'Не удалось деактивировать промокод'}`);
+                }
+            } catch (error) {
+                alert(`❌ Ошибка сети: ${error.message}`);
+            }
+        }
+
+        // ========== EVENTS MANAGEMENT (NEW) ==========
+
+        function openEventForm() {
+            console.log('Opening event form...');
+            document.getElementById('newEventModal').classList.add('show');
+            document.getElementById('eventFormStatus').innerHTML = '';
+            document.getElementById('newEventName').value = '';
+            document.getElementById('newEventZone').value = '';
+            document.getElementById('newEventType').value = 'concert';
+            document.getElementById('newEventEndTime').value = '';
+        }
+
+        function closeEventForm() {
+            console.log('Closing event form...');
+            document.getElementById('newEventModal').classList.remove('show');
+        }
+
+        async function fetchEventsList() {
+            const container = document.getElementById('eventsListContainer');
+            container.className = 'loading';
+            container.innerHTML = 'Загрузка мероприятий...';
+
+            const token = localStorage.getItem('admin_token');
+            console.log('Fetching events list...');
+
+            try {
+                const response = await fetch('/admin/api/events', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                console.log('Events API response status:', response.status);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const events = await response.json();
+                console.log('Events fetched:', events.length);
+
+                container.className = '';
+
+                if (events.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Нет мероприятий</p>';
+                    return;
+                }
+
+                const eventTypes = {
+                    'concert': '🎵 Концерт',
+                    'sport': '⚽ Спорт',
+                    'conference': '🎤 Конференция',
+                    'festival': '🎪 Фестиваль',
+                    'exhibition': '🖼 Выставка',
+                    'other': '📅 Другое'
+                };
+
+                container.innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название</th>
+                                <th>Зона</th>
+                                <th>Тип</th>
+                                <th>Окончание</th>
+                                <th>Уведомления</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${events.map(event => {
+                                const endTime = new Date(event.end_time);
+                                const now = new Date();
+                                const isEnded = endTime < now;
+
+                                return `
+                                    <tr style="${isEnded ? 'opacity: 0.6;' : ''}">
+                                        <td>${event.id}</td>
+                                        <td><strong>${event.name}</strong></td>
+                                        <td>${event.zone_name}</td>
+                                        <td>${eventTypes[event.event_type] || event.event_type}</td>
+                                        <td>
+                                            ${endTime.toLocaleString('ru-RU')}
+                                            ${isEnded ? '<br><span style="color: #dc3545; font-size: 12px;">Завершено</span>' : ''}
+                                        </td>
+                                        <td>
+                                            ${event.pre_notified ? '✅' : '⏳'} За 20 мин<br>
+                                            ${event.end_notified ? '✅' : '⏳'} Окончание
+                                        </td>
+                                        <td>
+                                            <button class="btn-action" onclick="removeEvent(${event.id})" style="background: #dc3545;">
+                                                🗑 Удалить
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error fetching events:', error);
+                container.className = '';
+                container.innerHTML = `<p style="color: #dc3545;">Ошибка загрузки: ${error.message}</p>`;
+            }
+        }
+
+        async function removeEvent(eventId) {
+            if (!confirm('Вы уверены, что хотите удалить это мероприятие?')) {
+                return;
+            }
+
+            const token = localStorage.getItem('admin_token');
+
+            try {
+                const response = await fetch('/admin/api/events/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ event_id: eventId })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    alert('✅ Мероприятие удалено');
+                    fetchEventsList();
+                } else {
+                    alert(`❌ Ошибка: ${result.error || 'Не удалось удалить'}`);
+                }
+            } catch (error) {
+                alert(`❌ Ошибка сети: ${error.message}`);
+            }
+        }
+
+        // Form submission handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('eventCreationForm');
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    console.log('Form submitted');
+
+                    const statusDiv = document.getElementById('eventFormStatus');
+                    statusDiv.innerHTML = '<p class="loading">Создание мероприятия...</p>';
+
+                    const name = document.getElementById('newEventName').value.trim();
+                    const zoneId = document.getElementById('newEventZone').value.trim();
+                    const eventType = document.getElementById('newEventType').value;
+                    const endTime = document.getElementById('newEventEndTime').value;
+
+                    console.log('Form data:', { name, zoneId, eventType, endTime });
+
+                    if (!name || !zoneId || !eventType || !endTime) {
+                        statusDiv.innerHTML = '<p class="error-msg">❌ Заполните все поля</p>';
+                        return;
+                    }
+
+                    const token = localStorage.getItem('admin_token');
+
+                    try {
+                        let formattedEndTime = endTime;
+                        if (endTime && endTime.length === 16) {
+                            formattedEndTime = endTime + ':00';
+                        }
+
+                        console.log('Sending request with end_time:', formattedEndTime);
+
+                        const response = await fetch('/admin/api/events/create', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                name,
+                                zone_id: zoneId,
+                                event_type: eventType,
+                                end_time: formattedEndTime
+                            })
+                        });
+
+                        console.log('Response status:', response.status);
+                        const result = await response.json();
+                        console.log('Response data:', result);
+
+                        if (response.ok && result.success) {
+                            statusDiv.innerHTML = `<p class="success-msg">✅ Мероприятие <strong>${name}</strong> создано!</p>`;
+                            setTimeout(() => {
+                                closeEventForm();
+                                fetchEventsList();
+                            }, 2000);
+                        } else {
+                            statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка: ${result.error || 'Не удалось создать мероприятие'}</p>`;
+                            console.error('Event creation failed:', result);
+                        }
+                    } catch (error) {
+                        statusDiv.innerHTML = `<p class="error-msg">❌ Ошибка сети: ${error.message}</p>`;
+                        console.error('Network error:', error);
+                    }
+                });
+            }
+        });
+
+        // ========== END EVENTS MANAGEMENT ==========
+
+        loadDashboard();
+    </script>
+</body>
+</html>
