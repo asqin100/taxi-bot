@@ -1,0 +1,64 @@
+{
+  "upcoming_matches": [
+    {
+      "name": "Спартак - ЦСКА",
+      "sport": "football",
+      "venue": "Спартак Стадион",
+      "venue_lat": 55.8181,
+      "venue_lon": 37.4403,
+      "zone_id": "northwest",
+      "date": "2026-03-22",
+      "time": "19:00",
+      "league": "РПЛ"
+    },
+    {
+      "name": "Динамо - Локомотив",
+      "sport": "football",
+      "venue": "ВТБ Арена",
+      "venue_lat": 55.7917,
+      "venue_lon": 37.5594,
+      "zone_id": "north",
+      "date": "2026-03-23",
+      "time": "16:00",
+      "league": "РПЛ"
+    },
+    {
+      "name": "ЦСКА - СКА (хоккей)",
+      "sport": "hockey",
+      "venue": "ЦСКА Арена",
+      "venue_lat": 55.8178,
+      "venue_lon": 37.5194,
+      "zone_id": "northwest",
+      "date": "2026-03-24",
+      "time": "19:30",
+      "league": "КХЛ"
+    },
+    {
+      "name": "Динамо - Ак Барс (хоккей)",
+      "sport": "hockey",
+      "venue": "ВТБ Арена",
+      "venue_lat": 55.7917,
+      "venue_lon": 37.5594,
+      "zone_id": "north",
+      "date": "2026-03-25",
+      "time": "19:30",
+      "league": "КХЛ"
+    },
+    {
+      "name": "ЦСКА - Зенит (баскетбол)",
+      "sport": "basketball",
+      "venue": "Мегаспорт",
+      "venue_lat": 55.7897,
+      "venue_lon": 37.4856,
+      "zone_id": "west",
+      "date": "2026-03-26",
+      "time": "18:00",
+      "league": "Единая лига ВТБ"
+    }
+  ],
+  "instructions": {
+    "ru": "Этот файл содержит расписание спортивных матчей московских команд. Обновляй его вручную каждую неделю, добавляя новые матчи. Используй скрипт import_manual_matches.py для загрузки в базу данных.",
+    "en": "This file contains the schedule of sports matches for Moscow teams. Update it manually every week by adding new matches. Use import_manual_matches.py script to load into database."
+  },
+  "update_schedule": "Обновлять каждый понедельник с расписанием на следующие 2 недели"
+}
