@@ -78,9 +78,9 @@ async def check_and_send_nightclub_alerts(bot: Bot):
 
     logger.info("Sending nightclub alerts for %d clubs", len(nightclubs))
 
-    # Send alerts to all users with notifications enabled
+    # Send alerts to all users with nightclub alerts enabled
     async with session_factory() as session:
-        stmt = select(User).where(User.notify_enabled == True)
+        stmt = select(User).where(User.nightclub_alerts_enabled == True)
         result = await session.execute(stmt)
         users = result.scalars().all()
 

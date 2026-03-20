@@ -76,16 +76,18 @@ def event_types_keyboard(selected: set[str] | None = None, from_notifications: b
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def notify_keyboard(enabled: bool, event_notify_enabled: bool = True, quiet_hours_enabled: bool = False, geo_alerts_enabled: bool = False) -> InlineKeyboardMarkup:
+def notify_keyboard(enabled: bool, event_notify_enabled: bool = True, quiet_hours_enabled: bool = False, geo_alerts_enabled: bool = False, nightclub_alerts_enabled: bool = True) -> InlineKeyboardMarkup:
     status = "🔔 Вкл" if enabled else "🔕 Выкл"
     event_status = "🔔 Вкл" if event_notify_enabled else "🔕 Выкл"
     quiet_status = "🔔 Вкл" if quiet_hours_enabled else "🔕 Выкл"
     geo_status = "🔔 Вкл" if geo_alerts_enabled else "🔕 Выкл"
+    nightclub_status = "🔔 Вкл" if nightclub_alerts_enabled else "🔕 Выкл"
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=f"Уведомления о коэффициентах: {status}", callback_data="notify:toggle")],
         [InlineKeyboardButton(text="Порог коэффициента", callback_data="notify:threshold")],
         [InlineKeyboardButton(text=f"Уведомления о мероприятиях: {event_status}", callback_data="notify:event_toggle")],
         [InlineKeyboardButton(text="Типы мероприятий", callback_data="notify:event_types")],
+        [InlineKeyboardButton(text=f"🌃 Ночные клубы: {nightclub_status}", callback_data="notify:nightclub_toggle")],
         [InlineKeyboardButton(text=f"📍 Геоалерты: {geo_status}", callback_data="geo_alerts:toggle")],
         [InlineKeyboardButton(text="📍 Обновить геолокацию", callback_data="geo_alerts:update_location")],
         [InlineKeyboardButton(text=f"Тихие часы: {quiet_status}", callback_data="notify:quiet_toggle")],

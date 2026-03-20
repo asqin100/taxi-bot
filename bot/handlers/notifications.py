@@ -47,11 +47,12 @@ async def cmd_notify(message: Message):
         f"   Порог: x{user.surge_threshold}\n\n"
         f"🎭 Мероприятия: {'включены' if user.event_notify_enabled else 'выключены'}\n"
         f"   Типы: {event_types_str}\n\n"
+        f"🌃 Ночные клубы: {'включены' if user.nightclub_alerts_enabled else 'выключены'}\n\n"
         f"📍 Геоалерты: {'включены' if user.geo_alerts_enabled else 'выключены'}\n"
         f"{geo_alerts_info}"
         f"   Локация: {location_str}\n\n"
         f"🌙 Тихие часы: {quiet_hours_str}",
-        reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled, user.geo_alerts_enabled),
+        reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled, user.geo_alerts_enabled, user.nightclub_alerts_enabled),
         parse_mode="HTML",
     )
 
@@ -91,11 +92,12 @@ async def cb_notify(callback: CallbackQuery):
         f"   Порог: x{user.surge_threshold}\n\n"
         f"🎭 Мероприятия: {'включены' if user.event_notify_enabled else 'выключены'}\n"
         f"   Типы: {event_types_str}\n\n"
+        f"🌃 Ночные клубы: {'включены' if user.nightclub_alerts_enabled else 'выключены'}\n\n"
         f"📍 Геоалерты: {'включены' if user.geo_alerts_enabled else 'выключены'}\n"
         f"{geo_alerts_info}"
         f"   Локация: {location_str}\n\n"
         f"🌙 Тихие часы: {quiet_hours_str}",
-        reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled, user.geo_alerts_enabled),
+        reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled, user.geo_alerts_enabled, user.nightclub_alerts_enabled),
         parse_mode="HTML",
     )
     await callback.answer()
@@ -111,8 +113,10 @@ async def cb_toggle(callback: CallbackQuery):
         enabled = user.notify_enabled
         event_enabled = user.event_notify_enabled
         quiet_enabled = user.quiet_hours_enabled
+        geo_enabled = user.geo_alerts_enabled
+        nightclub_enabled = user.nightclub_alerts_enabled
 
-    await callback.message.edit_reply_markup(reply_markup=notify_keyboard(enabled, event_enabled, quiet_enabled))
+    await callback.message.edit_reply_markup(reply_markup=notify_keyboard(enabled, event_enabled, quiet_enabled, geo_enabled, nightclub_enabled))
     status = "включены ✅" if enabled else "выключены ❌"
     await callback.answer(f"Уведомления о коэффициентах {status}")
 
@@ -127,10 +131,30 @@ async def cb_event_toggle(callback: CallbackQuery):
         enabled = user.notify_enabled
         event_enabled = user.event_notify_enabled
         quiet_enabled = user.quiet_hours_enabled
+        geo_enabled = user.geo_alerts_enabled
+        nightclub_enabled = user.nightclub_alerts_enabled
 
-    await callback.message.edit_reply_markup(reply_markup=notify_keyboard(enabled, event_enabled, quiet_enabled))
+    await callback.message.edit_reply_markup(reply_markup=notify_keyboard(enabled, event_enabled, quiet_enabled, geo_enabled, nightclub_enabled))
     status = "включены ✅" if event_enabled else "выключены ❌"
     await callback.answer(f"Уведомления о мероприятиях {status}")
+
+
+@router.callback_query(F.data == "notify:nightclub_toggle")
+async def cb_nightclub_toggle(callback: CallbackQuery):
+    async with session_factory() as session:
+        result = await session.execute(select(User).where(User.telegram_id == callback.from_user.id))
+        user = result.scalar_one()
+        user.nightclub_alerts_enabled = not user.nightclub_alerts_enabled
+        await session.commit()
+        enabled = user.notify_enabled
+        event_enabled = user.event_notify_enabled
+        quiet_enabled = user.quiet_hours_enabled
+        geo_enabled = user.geo_alerts_enabled
+        nightclub_enabled = user.nightclub_alerts_enabled
+
+    await callback.message.edit_reply_markup(reply_markup=notify_keyboard(enabled, event_enabled, quiet_enabled, geo_enabled, nightclub_enabled))
+    status = "включены ✅" if nightclub_enabled else "выключены ❌"
+    await callback.answer(f"Уведомления о ночных клубах {status}")
 
 
 @router.callback_query(F.data == "notify:quiet_toggle")
@@ -143,8 +167,10 @@ async def cb_quiet_toggle(callback: CallbackQuery):
         enabled = user.notify_enabled
         event_enabled = user.event_notify_enabled
         quiet_enabled = user.quiet_hours_enabled
+        geo_enabled = user.geo_alerts_enabled
+        nightclub_enabled = user.nightclub_alerts_enabled
 
-    await callback.message.edit_reply_markup(reply_markup=notify_keyboard(enabled, event_enabled, quiet_enabled))
+    await callback.message.edit_reply_markup(reply_markup=notify_keyboard(enabled, event_enabled, quiet_enabled, geo_enabled, nightclub_enabled))
     status = "включены ✅" if quiet_enabled else "выключены ❌"
     await callback.answer(f"Тихие часы {status}")
 
@@ -213,7 +239,7 @@ async def cb_set_quiet_hour(callback: CallbackQuery):
             f"🎭 Мероприятия: {'включены' if user.event_notify_enabled else 'выключены'}\n"
             f"   Типы: {event_types_str}\n\n"
             f"🌙 Тихие часы: с {start_hour:02d}:00 до {end_hour:02d}:00",
-            reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled),
+            reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled, user.geo_alerts_enabled, user.nightclub_alerts_enabled),
             parse_mode="HTML",
         )
         await callback.answer(f"✅ Тихие часы установлены: {start_hour:02d}:00 - {end_hour:02d}:00")
@@ -246,7 +272,7 @@ async def cb_event_type(callback: CallbackQuery):
             f"   Порог: x{user.surge_threshold}\n\n"
             f"🎭 Мероприятия: {'включены' if user.event_notify_enabled else 'выключены'}\n"
             f"   Типы: {event_types_str}",
-            reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled),
+            reply_markup=notify_keyboard(user.notify_enabled, user.event_notify_enabled, user.quiet_hours_enabled, user.geo_alerts_enabled, user.nightclub_alerts_enabled),
             parse_mode="HTML",
         )
         await callback.answer()

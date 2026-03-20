@@ -22,6 +22,9 @@ class User(Base):
     event_notify_enabled: Mapped[bool] = mapped_column(Boolean, default=True)
     event_types: Mapped[str] = mapped_column(String(128), default="concert,sport")  # comma-separated: concert,sport,theater,conference,other
 
+    # Nightclub alerts
+    nightclub_alerts_enabled: Mapped[bool] = mapped_column(Boolean, default=True)
+
     # Quiet hours settings
     quiet_hours_enabled: Mapped[bool] = mapped_column(Boolean, default=False)
     quiet_hours_start: Mapped[int] = mapped_column(Integer, default=22)  # Hour (0-23)
