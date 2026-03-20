@@ -94,6 +94,9 @@ async def parse_kudago_events() -> list[dict]:
     """Parse events from KudaGo API."""
     events = []
 
+    # Categories to fetch: concerts, sports, theater, exhibitions, festivals
+    categories = ["concert", "theater", "exhibition", "festival", "recreation"]
+
     try:
         url = "https://kudago.com/public-api/v1.4/events/"
 
@@ -102,44 +105,50 @@ async def parse_kudago_events() -> list[dict]:
         future_date = current_time + timedelta(days=30)
 
         # Convert to Unix timestamps
-        actual_since = int(now.timestamp())
+        actual_since = int(current_time.timestamp())
         actual_until = int(future_date.timestamp())
 
-        params = {
-            "location": "msk",
-            "categories": "concert",
-            "fields": "id,title,place,dates",
-            "expand": "place",
-            "page_size": 100,
-            "actual_since": actual_since,
-            "actual_until": actual_until,
-        }
+        # Fetch events for each category
+        for category in categories:
+            try:
+                params = {
+                    "location": "msk",
+                    "categories": category,
+                    "fields": "id,title,place,dates",
+                    "expand": "place",
+                    "page_size": 100,
+                    "actual_since": actual_since,
+                    "actual_until": actual_until,
+                }
 
-        logger.info(f"Fetching events from KudaGo API with params: {params}")
+                logger.info(f"Fetching {category} events from KudaGo API")
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, params=params, timeout=aiohttp.ClientTimeout(total=30)) as resp:
-                logger.info(f"KudaGo API response status: {resp.status}")
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(url, params=params, timeout=aiohttp.ClientTimeout(total=30)) as resp:
+                        logger.info(f"KudaGo API response for {category}: status {resp.status}")
 
-                if resp.status != 200:
-                    text = await resp.text()
-                    logger.error("KudaGo API failed with status %d: %s", resp.status, text[:500])
-                    return events
+                        if resp.status != 200:
+                            text = await resp.text()
+                            logger.error("KudaGo API failed for %s with status %d: %s", category, resp.status, text[:500])
+                            continue
 
-                data = await resp.json()
-                results = data.get("results", [])
+                        data = await resp.json()
+                        results = data.get("results", [])
 
-                logger.info("Fetched %d events from KudaGo API", len(results))
+                        logger.info("Fetched %d %s events from KudaGo API", len(results), category)
 
-                for event_json in results:
-                    try:
-                        event_data = _parse_kudago_event(event_json)
-                        if event_data:
-                            events.append(event_data)
-                    except Exception as e:
-                        logger.debug("Failed to parse KudaGo event: %s", e)
+                        for event_json in results:
+                            try:
+                                event_data = _parse_kudago_event(event_json)
+                                if event_data:
+                                    events.append(event_data)
+                            except Exception as e:
+                                logger.debug("Failed to parse KudaGo event: %s", e)
 
-        logger.info("Parsed %d events from KudaGo", len(events))
+            except Exception as e:
+                logger.error("Failed to fetch %s events: %s", category, e)
+
+        logger.info("Parsed %d total events from KudaGo", len(events))
 
     except Exception as e:
         logger.error("Failed to parse KudaGo API: %s", e)
@@ -527,14 +536,19 @@ def _guess_event_type(title: str) -> str:
     """Guess event type from title."""
     title_lower = title.lower()
 
-    if any(word in title_lower for word in ["концерт", "concert", "шоу", "show"]):
-        return "concert"
-    elif any(word in title_lower for word in ["футбол", "хоккей", "баскетбол", "матч", "football", "hockey"]):
+    # Sport events
+    if any(word in title_lower for word in ["футбол", "хоккей", "баскетбол", "матч", "football", "hockey", "basketball",
+                                              "волейбол", "теннис", "бокс", "мма", "спорт", "чемпионат", "кубок", "лига"]):
         return "sport"
-    elif any(word in title_lower for word in ["конференция", "форум", "выставка", "conference", "expo"]):
-        return "conference"
-    elif any(word in title_lower for word in ["спектакль", "театр", "theater", "play"]):
+    # Concerts and music
+    elif any(word in title_lower for word in ["концерт", "concert", "шоу", "show", "фестиваль", "festival", "музык"]):
+        return "concert"
+    # Theater and performances
+    elif any(word in title_lower for word in ["спектакль", "театр", "theater", "play", "опера", "балет", "мюзикл"]):
         return "theater"
+    # Conferences and exhibitions
+    elif any(word in title_lower for word in ["конференция", "форум", "выставка", "conference", "expo", "exhibition"]):
+        return "conference"
     else:
         return "other"
 

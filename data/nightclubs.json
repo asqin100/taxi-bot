@@ -1,0 +1,112 @@
+{
+  "nightclubs": [
+    {
+      "name": "Gipsy",
+      "zone_id": "center",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "address": "Болотная набережная, 3, стр. 1",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    },
+    {
+      "name": "Mutabor",
+      "zone_id": "center",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "address": "Котельническая набережная, 1/15",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    },
+    {
+      "name": "Propaganda",
+      "zone_id": "center",
+      "lat": 55.7603,
+      "lon": 37.6186,
+      "address": "Большой Златоустинский переулок, 7",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    },
+    {
+      "name": "Powerhouse",
+      "zone_id": "center",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "address": "Берсеневская набережная, 2/1",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    },
+    {
+      "name": "Театръ",
+      "zone_id": "center",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "address": "Большая Дмитровка, 32, стр. 1",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    },
+    {
+      "name": "Мумий Тролль Music Bar",
+      "zone_id": "center",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "address": "Тверская, 12, стр. 2",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    },
+    {
+      "name": "Китайский Летчик Джао Да",
+      "zone_id": "center",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "address": "Лубянский проезд, 25, стр. 1",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    },
+    {
+      "name": "Дом",
+      "zone_id": "center",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "address": "Большая Ордынка, 40, стр. 4",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    },
+    {
+      "name": "Lookin Rooms",
+      "zone_id": "center",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "address": "Большая Никитская, 22/2",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    },
+    {
+      "name": "Plan B",
+      "zone_id": "center",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "address": "Малая Бронная, 23/7, стр. 1",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    },
+    {
+      "name": "Космонавт",
+      "zone_id": "center",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "address": "Большая Дмитровка, 32, стр. 1",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    },
+    {
+      "name": "Руки Вверх Бар",
+      "zone_id": "center",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "address": "Тверская, 12, стр. 2",
+      "peak_days": [5, 6],
+      "alert_time": "05:00"
+    }
+  ]
+}
