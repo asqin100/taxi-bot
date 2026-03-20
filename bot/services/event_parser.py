@@ -532,23 +532,80 @@ def _parse_russian_datetime(date_text: str) -> Optional[datetime]:
         return None
 
 
+def _detect_sports_venue(title: str, venue_name: str) -> tuple[str, str]:
+    """Detect sports team and return their home venue and zone."""
+    title_lower = title.lower()
+
+    # Football teams
+    if any(word in title_lower for word in ["спартак", "spartak"]) and "хоккей" not in title_lower:
+        return "northwest", "Спартак Стадион"
+
+    if "цска" in title_lower:
+        if "хоккей" in title_lower or "hockey" in title_lower:
+            return "northwest", "ЦСКА Арена"
+        elif "баскетбол" in title_lower or "basketball" in title_lower:
+            return "west", "Мегаспорт"
+        else:  # Football
+            return "north", "ВТБ Арена"
+
+    if "динамо" in title_lower or "dynamo" in title_lower:
+        return "north", "ВТБ Арена"
+
+    if "локомотив" in title_lower or "lokomotiv" in title_lower:
+        return "northeast", "Локомотив Стадион"
+
+    # General sports venues
+    if "лужники" in title_lower or "luzhniki" in title_lower:
+        return "south", "Лужники"
+
+    if "олимпийский" in title_lower or "olympic" in title_lower:
+        return "center", "Олимпийский"
+
+    # Return None if no specific venue detected
+    return None, None
+
+
 def _guess_event_type(title: str) -> str:
     """Guess event type from title."""
     title_lower = title.lower()
 
-    # Sport events
-    if any(word in title_lower for word in ["футбол", "хоккей", "баскетбол", "матч", "football", "hockey", "basketball",
-                                              "волейбол", "теннис", "бокс", "мма", "спорт", "чемпионат", "кубок", "лига"]):
+    # Sport events - expanded keywords
+    sport_keywords = [
+        # General
+        "матч", "игра", "турнир", "чемпионат", "кубок", "лига", "финал", "полуфинал", "плей-офф",
+        # Football
+        "футбол", "football", "рпл", "премьер-лига", "спартак", "цска", "динамо", "локомотив",
+        # Hockey
+        "хоккей", "hockey", "кхл", "нхл",
+        # Basketball
+        "баскетбол", "basketball", "втб", "единая лига",
+        # Other sports
+        "волейбол", "volleyball", "теннис", "tennis", "бокс", "boxing", "бой",
+        "мма", "mma", "ufc", "fight", "единоборств",
+        "фигурное катание", "figure skating", "легкая атлетика", "athletics",
+        "гимнастика", "gymnastics", "плавание", "swimming",
+        "биатлон", "biathlon", "лыжи", "skiing",
+        # Sports venues
+        "стадион", "stadium", "арена", "arena", "дворец спорта", "sports palace",
+        # General sports terms
+        "спорт", "sport", "олимпиада", "olympic"
+    ]
+
+    if any(word in title_lower for word in sport_keywords):
         return "sport"
+
     # Concerts and music
     elif any(word in title_lower for word in ["концерт", "concert", "шоу", "show", "фестиваль", "festival", "музык"]):
         return "concert"
+
     # Theater and performances
     elif any(word in title_lower for word in ["спектакль", "театр", "theater", "play", "опера", "балет", "мюзикл"]):
         return "theater"
+
     # Conferences and exhibitions
     elif any(word in title_lower for word in ["конференция", "форум", "выставка", "conference", "expo", "exhibition"]):
         return "conference"
+
     else:
         return "other"
 

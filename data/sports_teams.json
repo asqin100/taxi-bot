@@ -1,0 +1,93 @@
+{
+  "sports_teams": {
+    "football": [
+      {
+        "name": "Спартак Москва",
+        "venue": "Спартак Стадион",
+        "venue_lat": 55.8181,
+        "venue_lon": 37.4403,
+        "zone_id": "northwest",
+        "league": "РПЛ",
+        "keywords": ["спартак", "spartak", "красно-белые"]
+      },
+      {
+        "name": "ЦСКА Москва",
+        "venue": "ВТБ Арена",
+        "venue_lat": 55.7917,
+        "venue_lon": 37.5594,
+        "zone_id": "north",
+        "league": "РПЛ",
+        "keywords": ["цска", "cska", "армейцы"]
+      },
+      {
+        "name": "Динамо Москва",
+        "venue": "ВТБ Арена",
+        "venue_lat": 55.7917,
+        "venue_lon": 37.5594,
+        "zone_id": "north",
+        "league": "РПЛ",
+        "keywords": ["динамо", "dynamo", "бело-голубые"]
+      },
+      {
+        "name": "Локомотив Москва",
+        "venue": "Локомотив Стадион",
+        "venue_lat": 55.8208,
+        "venue_lon": 37.7403,
+        "zone_id": "northeast",
+        "league": "РПЛ",
+        "keywords": ["локомотив", "lokomotiv", "железнодорожники"]
+      }
+    ],
+    "hockey": [
+      {
+        "name": "ЦСКА (хоккей)",
+        "venue": "ЦСКА Арена",
+        "venue_lat": 55.8178,
+        "venue_lon": 37.5194,
+        "zone_id": "northwest",
+        "league": "КХЛ",
+        "keywords": ["цска", "cska", "хоккей", "hockey"]
+      },
+      {
+        "name": "Динамо Москва (хоккей)",
+        "venue": "ВТБ Арена",
+        "venue_lat": 55.7917,
+        "venue_lon": 37.5594,
+        "zone_id": "north",
+        "league": "КХЛ",
+        "keywords": ["динамо", "dynamo", "хоккей", "hockey"]
+      },
+      {
+        "name": "Спартак Москва (хоккей)",
+        "venue": "Мегаспорт",
+        "venue_lat": 55.7897,
+        "venue_lon": 37.4856,
+        "zone_id": "west",
+        "league": "КХЛ",
+        "keywords": ["спартак", "spartak", "хоккей", "hockey"]
+      }
+    ],
+    "basketball": [
+      {
+        "name": "ЦСКА (баскетбол)",
+        "venue": "Мегаспорт",
+        "venue_lat": 55.7897,
+        "venue_lon": 37.4856,
+        "zone_id": "west",
+        "league": "Единая лига ВТБ",
+        "keywords": ["цска", "cska", "баскетбол", "basketball"]
+      }
+    ]
+  },
+  "sport_keywords": {
+    "football": ["футбол", "football", "матч", "рпл", "премьер-лига"],
+    "hockey": ["хоккей", "hockey", "кхл"],
+    "basketball": ["баскетбол", "basketball", "втб"],
+    "volleyball": ["волейбол", "volleyball"],
+    "tennis": ["теннис", "tennis"],
+    "boxing": ["бокс", "boxing", "бой"],
+    "mma": ["мма", "mma", "ufc", "fight nights"],
+    "figure_skating": ["фигурное катание", "figure skating"],
+    "athletics": ["легкая атлетика", "athletics"]
+  }
+}
