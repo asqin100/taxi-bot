@@ -53,6 +53,19 @@ async def get_upcoming_events(limit: int = 10) -> list[Event]:
         return list(result.scalars().all())
 
 
+async def get_upcoming_events_by_type(event_type: str = None, limit: int = 100) -> list[Event]:
+    """Get upcoming events filtered by type."""
+    async with session_factory() as session:
+        stmt = select(Event).where(Event.end_time > get_moscow_now())
+
+        if event_type:
+            stmt = stmt.where(Event.event_type == event_type)
+
+        stmt = stmt.order_by(Event.end_time).limit(limit)
+        result = await session.execute(stmt)
+        return list(result.scalars().all())
+
+
 async def get_events_for_pre_notification() -> list[Event]:
     """Get events that need pre-notification (20 min before end, not yet notified)."""
     now = get_moscow_now()

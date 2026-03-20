@@ -380,6 +380,27 @@
             transform: translateY(0);
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
         }
+        .event-filter-btn {
+            padding: 10px 20px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        .event-filter-btn:hover {
+            border-color: var(--gradient-start);
+            color: var(--gradient-start);
+            transform: translateY(-2px);
+        }
+        .event-filter-btn.active {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border-color: transparent;
+        }
         .modal {
             display: none;
             position: fixed;
@@ -527,6 +548,32 @@
                         ➕ Добавить мероприятие
                     </button>
                 </div>
+
+                <!-- Event Type Filters -->
+                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <button class="event-filter-btn active" data-type="" onclick="filterEvents('')">
+                        📋 Все
+                    </button>
+                    <button class="event-filter-btn" data-type="concert" onclick="filterEvents('concert')">
+                        🎵 Концерты
+                    </button>
+                    <button class="event-filter-btn" data-type="theater" onclick="filterEvents('theater')">
+                        🎭 Театр
+                    </button>
+                    <button class="event-filter-btn" data-type="sport" onclick="filterEvents('sport')">
+                        ⚽ Спорт
+                    </button>
+                    <button class="event-filter-btn" data-type="conference" onclick="filterEvents('conference')">
+                        🎤 Конференции
+                    </button>
+                    <button class="event-filter-btn" data-type="festival" onclick="filterEvents('festival')">
+                        🎪 Фестивали
+                    </button>
+                    <button class="event-filter-btn" data-type="exhibition" onclick="filterEvents('exhibition')">
+                        🖼 Выставки
+                    </button>
+                </div>
+
                 <div id="eventsListContainer" class="loading">Загрузка...</div>
             </div>
         </div>
@@ -1878,16 +1925,20 @@
             document.getElementById('newEventModal').classList.remove('show');
         }
 
-        async function fetchEventsList() {
+        async function fetchEventsList(eventType = '') {
             const container = document.getElementById('eventsListContainer');
             container.className = 'loading';
             container.innerHTML = 'Загрузка мероприятий...';
 
             const token = localStorage.getItem('admin_token');
-            console.log('Fetching events list...');
+            console.log('Fetching events list with filter:', eventType);
 
             try {
-                const response = await fetch('/admin/api/events', {
+                const url = eventType
+                    ? `/admin/api/events?event_type=${eventType}`
+                    : '/admin/api/events';
+
+                const response = await fetch(url, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
@@ -1911,6 +1962,7 @@
                     'concert': '🎵 Концерт',
                     'sport': '⚽ Спорт',
                     'conference': '🎤 Конференция',
+                    'theater': '🎭 Театр',
                     'festival': '🎪 Фестиваль',
                     'exhibition': '🖼 Выставка',
                     'other': '📅 Другое'
@@ -1965,6 +2017,17 @@
                 container.className = '';
                 container.innerHTML = `<p style="color: #dc3545;">Ошибка загрузки: ${error.message}</p>`;
             }
+        }
+
+        function filterEvents(eventType) {
+            // Update active button
+            document.querySelectorAll('.event-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Fetch filtered events
+            fetchEventsList(eventType);
         }
 
         async function removeEvent(eventId) {

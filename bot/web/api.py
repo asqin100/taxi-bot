@@ -947,15 +947,18 @@ async def admin_banned_users(request: web.Request) -> web.Response:
 
 
 async def admin_get_events(request: web.Request) -> web.Response:
-    """Get all upcoming events."""
+    """Get all upcoming events with optional type filter."""
     if not check_admin_token(request):
         return web.json_response({"error": "Unauthorized"}, status=401)
 
     try:
-        from bot.services.events import get_upcoming_events
+        from bot.services.events import get_upcoming_events_by_type
         from bot.services.zones import get_zones
 
-        events = await get_upcoming_events(limit=100)
+        # Get event_type filter from query params
+        event_type = request.query.get("event_type", None)
+
+        events = await get_upcoming_events_by_type(event_type=event_type, limit=100)
         zones_map = {z.id: z.name for z in get_zones()}
 
         result = []
