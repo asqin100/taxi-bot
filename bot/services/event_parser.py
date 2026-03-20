@@ -354,8 +354,21 @@ def _parse_kudago_event(event_json: dict) -> Optional[dict]:
             logger.debug("No venue name for event: %s", title)
             return None
 
-        # Find zone for this venue
-        zone_id = venue_mapper.find_zone(venue_name)
+        # Try to detect sports team and use their home venue
+        zone_id, detected_venue = _detect_sports_venue(title, venue_name)
+
+        # If sports venue detected, use it
+        if detected_venue:
+            venue_name = detected_venue
+            venue_info = venue_mapper.get_venue_info(venue_name)
+            if venue_info:
+                venue_lat = venue_info.get("lat")
+                venue_lon = venue_info.get("lon")
+
+        # If no zone found yet, try regular venue mapping
+        if not zone_id:
+            zone_id = venue_mapper.find_zone(venue_name)
+
         if not zone_id:
             logger.debug("No zone found for venue: %s", venue_name)
             return None
