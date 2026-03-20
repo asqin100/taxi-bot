@@ -1,32 +1,19 @@
 #!/bin/bash
-# Quick verification and restart
+# Быстрое исправление и деплой обновления
+# Использование: скопируй и вставь эту команду на сервере
 
-cd /opt/taxibot
-
-echo "1. Обновляю код..."
-git pull origin main
-
-echo ""
-echo "2. Перезапускаю бота..."
-systemctl restart taxibot
-sleep 3
-
-echo ""
-echo "3. Проверяю статус..."
-if systemctl is-active --quiet taxibot; then
-    echo "✅ Бот работает"
-
-    echo ""
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo ""
-    echo "✅ Кнопка добавлена! Откройте бота:"
-    echo ""
-    echo "   /menu → 💎 Подписка → ⬆️ Улучшить тариф"
-    echo ""
-    echo "   Там будет кнопка: 🧪 ТЕСТ — 5₽ (1 день)"
-    echo ""
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-else
-    echo "❌ Бот не запустился!"
-    journalctl -u taxibot -n 20
-fi
+cd /opt/taxibot && \
+git fetch origin main && \
+git reset --hard origin/main && \
+systemctl restart taxibot && \
+echo "✅ Бот перезапущен. Проверяем статус..." && \
+systemctl status taxibot --no-pager && \
+echo "" && \
+echo "📋 Последние 30 строк логов:" && \
+tail -30 bot.log && \
+echo "" && \
+echo "✅ ДЕПЛОЙ ЗАВЕРШЕН!" && \
+echo "Новые функции:" && \
+echo "  - Расширенный парсинг событий (спорт, театр, выставки)" && \
+echo "  - Алерты по ночным клубам (пт/сб 05:00)" && \
+echo "  - 12 топовых клубов Москвы"
